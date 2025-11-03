@@ -76,11 +76,44 @@
               <div class="row items-center q-mb-md">
                 <q-icon name="description" color="grey-6" size="20px" class="q-mr-sm" />
                 <div class="text-h6 text-grey-8">Treść meldunku</div>
+                <q-space />
+                <q-chip size="sm" color="green-1" text-color="green-8" icon="verified">
+                  Format NATO
+                </q-chip>
               </div>
 
-              <q-card bordered class="bg-grey-1">
-                <q-card-section>
-                  <pre class="report-text">{{ selectedReport.content }}</pre>
+              <q-card class="modern-report-container" bordered>
+                <q-card-section class="report-header">
+                  <div class="row items-center">
+                    <q-icon name="military_tech" color="primary" size="18px" class="q-mr-sm" />
+                    <span class="text-caption text-primary font-weight-medium">
+                      DOKUMENT SŁUŻBOWY
+                    </span>
+                    <q-space />
+                    <q-chip size="xs" color="orange-1" text-color="orange-8" icon="schedule">
+                      Wzór
+                    </q-chip>
+                  </div>
+                </q-card-section>
+
+                <q-separator />
+
+                <q-card-section class="report-content-modern">
+                  <div class="report-text-wrapper">
+                    <pre class="report-text">{{ selectedReport.content }}</pre>
+                  </div>
+                </q-card-section>
+
+                <q-separator />
+
+                <q-card-section class="report-footer">
+                  <div class="row items-center text-caption text-grey-6">
+                    <q-icon name="info" size="14px" class="q-mr-xs" />
+                    Wypełnij pola oznaczone [NAWIASAMI KWADRATOWYMI]
+                    <q-space />
+                    <q-icon name="security" size="14px" class="q-mr-xs" />
+                    Niejawne
+                  </div>
                 </q-card-section>
               </q-card>
             </q-card-section>
@@ -192,11 +225,6 @@ const allReports = [
     color: 'red',
     content: `MELDUNEK SALUTE - OBSERWACJA PRZECIWNIKA
 
-Data: [DATA]
-Godzina: [GODZINA]
-Obserwator: [STOPIEŃ, NAZWISKO]
-Pozycja obserwatora: [GRID/WSPÓŁRZĘDNE]
-
 S (SIZE) - LICZEBNOŚĆ:
 [LICZBA ŻOŁNIERZY/POJAZDÓW]
 
@@ -218,9 +246,7 @@ E (EQUIPMENT) - SPRZĘT:
 DODATKOWE INFORMACJE:
 [KIERUNEK PRZEMIESZCZANIA, ZACHOWANIE]
 
-Przykład: 4 rozbijają obóz GRID 12345 67890 Szwedzkie 1200 4 x AUG, 1 x Carl Gustaf M4
-
-Meldunek złożył: [STOPIEŃ, NAZWISKO]`,
+Przykład: 4 rozbijają obóz GRID 12345 67890 Szwedzkie 1200 4 x AUG, 1 x Carl Gustaf M4`,
     instructions: 'Używaj do raportowania zaobserwowanej aktywności przeciwnika. Przekazuj przez RTO do TOC. Bądź precyzyjny w opisie lokalizacji i sprzętu.'
   },
   {
@@ -230,11 +256,6 @@ Meldunek złożył: [STOPIEŃ, NAZWISKO]`,
     icon: 'warning',
     color: 'red',
     content: `MELDUNEK SALTR - KONTAKT Z PRZECIWNIKIEM
-
-Data: [DATA]
-Godzina: [GODZINA]
-Dowódca: [STOPIEŃ, NAZWISKO]
-Pozycja własna: [GRID/WSPÓŁRZĘDNE]
 
 S (SITUATION) - SYTUACJA SIŁ WŁASNYCH:
 [OPIS STANU WŁASNEGO ODDZIAŁU]
@@ -259,9 +280,7 @@ STAN WŁASNY:
 WSPARCIE:
 [POTRZEBNE WSPARCIE/EWAKUACJA]
 
-Przykład: Zostaliśmy zaatakowani przez przeciwnika w sile drużyny. Przeciwnik prowadzi lekki ogień z broni strzeleckiej oraz prowadzi ostrzał moździerzowy. GRID to 12345 67890. Czas to 0500. Zajęliśmy pozycje obronne, Alfa flankuje przeciwnika od zachodu.
-
-Meldunek złożył: [STOPIEŃ, NAZWISKO]`,
+Przykład: Zostaliśmy zaatakowani przez przeciwnika w sile drużyny. Przeciwnik prowadzi lekki ogień z broni strzeleckiej oraz prowadzi ostrzał moździerzowy. GRID to 12345 67890. Czas to 0500. Zajęliśmy pozycje obronne, Alfa flankuje przeciwnika od zachodu.`,
     instructions: 'Używaj po nawiązaniu kontaktu z przeciwnikiem (także ogniowego). Przekazuj natychmiast przez RTO do TOC w celu aktualizacji sytuacji.'
   },
   {
@@ -271,11 +290,6 @@ Meldunek złożył: [STOPIEŃ, NAZWISKO]`,
     icon: 'inventory_2',
     color: 'orange',
     content: `MELDUNEK LACE - STAN GOTOWOŚCI BOJOWEJ
-
-Data: [DATA]
-Godzina: [GODZINA]
-Jednostka: [NAZWA JEDNOSTKI]
-Raportuje: [STOPIEŃ, NAZWISKO]
 
 L (LIQUIDS) - PŁYNY/WYŻYWIENIE:
 - Woda: [ZIELONY/ŻÓŁTY/CZERWONY] ([PROCENT]%)
@@ -302,9 +316,7 @@ KODY KOLORÓW:
 🟡 Żółty: 30-70%
 🔴 Czerwony: 0-30%
 
-GOTOWOŚĆ OGÓLNA: [ZIELONY/ŻÓŁTY/CZERWONY]
-
-Meldunek złożył: [STOPIEŃ, NAZWISKO]`,
+GOTOWOŚĆ OGÓLNA: [ZIELONY/ŻÓŁTY/CZERWONY]`,
     instructions: 'Raportuj po kontakcie ogniowym lub zakończeniu misji. Zbierz dane od operatorów indywidualnie. Podsumowanie wysyłaj przez RTO do TOC.'
   },
   {
@@ -314,11 +326,6 @@ Meldunek złożył: [STOPIEŃ, NAZWISKO]`,
     icon: 'group_work',
     color: 'blue',
     content: `MELDUNEK GOTWA - WYDZIELENIE SIŁ
-
-Data: [DATA]
-Godzina: [GODZINA]
-Przekazuje: [STOPIEŃ, NAZWISKO]
-Odbiera: [STOPIEŃ, NAZWISKO]
 
 G (GOING) - GDZIE IDZIEMY:
 [DOKŁADNE MIEJSCE DOCELOWE/GRID]
@@ -343,9 +350,7 @@ A (ACTION) - DZIAŁANIA W PRZYPADKU ATAKU:
 RV (PUNKT ZBORNY):
 [LOKALIZACJA ZAPASOWA]
 
-Przykład: Ramzes, biorę RTO i kaemistę i idziemy sprawdzić teren pod punkt obserwacyjny. Wrócimy najpóźniej o 1430. Jeśli nie wrócimy do tego czasu, przejmujesz dowodzenie – skontaktuj się z TOC i raportuj sytuację. Jeśli zostaniecie zaatakowani, wycofajcie się do RV i czekajcie na nas do 1500.
-
-Meldunek przekazał: [STOPIEŃ, NAZWISKO]`,
+Przykład: Ramzes, biorę RTO i kaemistę i idziemy sprawdzić teren pod punkt obserwacyjny. Wrócimy najpóźniej o 1430. Jeśli nie wrócimy do tego czasu, przejmujesz dowodzenie – skontaktuj się z TOC i raportuj sytuację. Jeśli zostaniecie zaatakowani, wycofajcie się do RV i czekajcie na nas do 1500.`,
     instructions: 'Używaj przy odłączaniu jednostki od głównych sił. Osoba wydzielająca przekazuje info do C2, C2 wydzielający się - do kolejnej osoby w łańcuchu dowodzenia.'
   },
   {
@@ -355,11 +360,6 @@ Meldunek przekazał: [STOPIEŃ, NAZWISKO]`,
     icon: 'pause_circle',
     color: 'green',
     content: `PROCEDURA SLLS - ZATRZYMANIE I CZUWANIE
-
-Data: [DATA]
-Godzina rozpoczęcia: [GODZINA]
-Pozycja: [GRID/WSPÓŁRZĘDNE]
-Dowódca: [STOPIEŃ, NAZWISKO]
 
 S (STOP) - ZATRZYMAJ SIĘ:
 ✓ Oddział zatrzymany
@@ -383,18 +383,14 @@ Wykryte zapachy:
 □ Brak podejrzanych zapachów
 □ Wykryto: [OPIS - DYM, SPALINY, ETC.]
 
-WYNIK PROCEDURY:
-□ Teren bezpieczny - kontynuacja marszu
-□ Wykryto aktywność - zmiana trasy
-□ Podejrzenia - przedłużenie obserwacji
+OCENA BEZPIECZEŃSTWA:
+🟢 Bezpieczne - kontynuujemy misję
+🟡 Podejrzane - zwiększona czujność
+🔴 Niebezpieczne - zmiana trasy/wycofanie
 
-CZAS ZAKOŃCZENIA: [GODZINA]
-DECYZJA: [OPIS DALSZYCH DZIAŁAŃ]
+DECYZJA: [ZIELONY/ŻÓŁTY/CZERWONY]
 
-UWAGI:
-[DODATKOWE SPOSTRZEŻENIA]
-
-Procedurę przeprowadził: [STOPIEŃ, NAZWISKO]`,
+Przykład: Zatrzymaliśmy się na 5 minut w lesie przed wejściem na otwartą przestrzeń. Przez 2 minuty nasłuchiwaliśmy - cisza. Przez 2 minuty obserwowaliśmy otwartą przestrzeń - brak ruchu. Wszystko czyste, idziemy dalej.`,
     instructions: 'Stosuj co kilka/kilkanaście minut marszu w rejonie wysokiego ryzyka. Pozwala zidentyfikować czy obecność została wykryta przez przeciwnika.'
   }
 ]
@@ -476,31 +472,143 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Minimalne style - głównie używamy natywnych komponentów Quasar */
+/* Nowoczesne style dla tekstu meldunku */
+
+.modern-report-container {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e1f5fe;
+}
+
+.report-header {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 12px 16px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.report-content-modern {
+  background: #ffffff;
+  padding: 0;
+  position: relative;
+}
+
+.report-text-wrapper {
+  background: linear-gradient(145deg, #fafbfc 0%, #ffffff 100%);
+  border: 1px solid #f1f3f4;
+  border-radius: 8px;
+  margin: 16px;
+  position: relative;
+  overflow: hidden;
+}
+
+.report-text-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #1976d2, #42a5f5, #1976d2);
+}
 
 .report-text {
-  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', monospace;
   font-size: 13px;
-  line-height: 1.5;
-  color: #37474f;
+  line-height: 1.6;
+  color: #2c3e50;
   margin: 0;
+  padding: 20px;
   white-space: pre-wrap;
   background: transparent;
+  border: none;
+  font-weight: 400;
+  letter-spacing: 0.25px;
+  text-rendering: optimizeLegibility;
+}
+
+.report-footer {
+  background: #f8f9fa;
+  padding: 8px 16px;
+  border-top: 1px solid #dee2e6;
+}
+
+/* Wyróżnienie pól do wypełnienia */
+.report-text-wrapper {
+  position: relative;
+}
+
+.report-text-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 8px;
+  height: 8px;
+  background: #4caf50;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+/* Hover effect dla całego kontenera */
+.modern-report-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Responsywność */
 @media (max-width: 768px) {
   .report-text {
     font-size: 12px;
+    padding: 16px;
+    letter-spacing: 0.1px;
+  }
+
+  .report-text-wrapper {
+    margin: 12px;
+  }
+
+  .modern-report-container {
+    border-radius: 8px;
   }
 }
 
-/* Smooth transitions dla lepszego UX */
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .report-text {
+    color: #ecf0f1;
+  }
+
+  .report-text-wrapper {
+    background: linear-gradient(145deg, #34495e 0%, #2c3e50 100%);
+    border-color: #7f8c8d;
+  }
+}
+
+/* Smooth transitions */
 .q-card {
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .q-btn {
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Typography enhancements */
+.text-caption {
+  font-weight: 500;
 }
 </style>
