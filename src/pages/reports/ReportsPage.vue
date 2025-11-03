@@ -47,55 +47,121 @@
 
         <!-- Prezentacja wybranego meldunku -->
         <div v-if="selectedReport" class="q-mt-lg">
-          <q-card class="modern-report-card">
+          <q-card class="shadow-5">
             <q-card-section class="bg-primary text-white">
               <div class="row items-center">
                 <div class="col">
-                  <div class="text-h5">{{ selectedReport.name }}</div>
-                  <div class="text-subtitle2 text-blue-2">{{ selectedReport.category }}</div>
+                  <div class="text-h5 q-mb-xs">{{ selectedReport.name }}</div>
+                  <q-chip
+                    :icon="selectedReport.icon"
+                    :color="selectedReport.color"
+                    text-color="white"
+                    size="sm"
+                  >
+                  >
+                    {{ selectedReport.category }}
+                  </q-chip>
                 </div>
                 <div class="col-auto">
-                  <q-icon :name="selectedReport.icon" size="2rem" />
+                  <q-avatar size="48px" :color="selectedReport.color" text-color="white">
+                    <q-icon :name="selectedReport.icon" size="24px" />
+                  </q-avatar>
                 </div>
               </div>
             </q-card-section>
 
+            <q-separator />
+
             <q-card-section>
-              <div class="text-h6 q-mb-md text-grey-8">📄 Treść meldunku</div>
-              <div class="report-content">
-                <pre class="report-text">{{ selectedReport.content }}</pre>
+              <div class="row items-center q-mb-md">
+                <q-icon name="description" color="grey-6" size="20px" class="q-mr-sm" />
+                <div class="text-h6 text-grey-8">Treść meldunku</div>
               </div>
+
+              <q-card bordered class="bg-grey-1">
+                <q-card-section>
+                  <pre class="report-text">{{ selectedReport.content }}</pre>
+                </q-card-section>
+              </q-card>
             </q-card-section>
+
+            <q-separator v-if="selectedReport.instructions" />
 
             <q-card-section v-if="selectedReport.instructions" class="bg-blue-1">
-              <div class="text-h6 q-mb-md text-blue-8">💡 Instrukcje wypełnienia</div>
-              <div class="text-body2 text-blue-9">
-                {{ selectedReport.instructions }}
+              <div class="row items-center q-mb-md">
+                <q-icon name="lightbulb" color="blue-8" size="20px" class="q-mr-sm" />
+                <div class="text-h6 text-blue-8">Instrukcje wypełnienia</div>
               </div>
+              <q-banner inline-actions class="bg-blue-2 text-blue-9">
+                {{ selectedReport.instructions }}
+                <template v-slot:action>
+                  <q-btn flat color="blue-8" icon="info" size="sm" />
+                </template>
+              </q-banner>
             </q-card-section>
 
-            <q-card-actions align="right" class="bg-grey-1">
-              <q-btn
-                color="primary"
-                icon="content_copy"
-                label="Kopiuj tekst"
-                @click="copyToClipboard"
-              />
-              <q-btn
-                color="green"
-                icon="print"
-                label="Drukuj"
-                @click="printReport"
-              />
+            <q-separator />
+
+            <q-card-actions align="between" class="q-pa-md">
+              <q-chip icon="schedule" color="grey-4" text-color="grey-8" size="sm">
+                Wzór NATO
+              </q-chip>
+
+              <div class="row q-gutter-sm">
+                <q-btn
+                  unelevated
+                  color="primary"
+                  icon="content_copy"
+                  label="Kopiuj"
+                  @click="copyToClipboard"
+                  size="sm"
+                />
+                <q-btn
+                  unelevated
+                  color="green"
+                  icon="print"
+                  label="Drukuj"
+                  @click="printReport"
+                  size="sm"
+                />
+              </div>
             </q-card-actions>
           </q-card>
         </div>
 
         <!-- Stan początkowy -->
-        <div v-else class="q-mt-lg text-center">
-          <q-icon name="description" size="4rem" color="grey-4" />
-          <div class="text-h6 text-grey-6 q-mt-md">Wybierz wzór meldunku z listy powyżej</div>
-          <div class="text-body2 text-grey-5">Dostępnych jest {{ allReports.length }} wzorów meldunków</div>
+        <div v-else class="q-mt-lg">
+          <q-card class="text-center q-pa-lg">
+            <q-card-section>
+              <q-avatar size="80px" color="grey-3" text-color="grey-6">
+                <q-icon name="description" size="40px" />
+              </q-avatar>
+
+              <div class="text-h6 text-grey-6 q-mt-md q-mb-sm">
+                Wybierz wzór meldunku z listy powyżej
+              </div>
+
+              <q-chip color="grey-4" text-color="grey-8" icon="info">
+                Dostępnych jest {{ allReports.length }} wzorów meldunków
+              </q-chip>
+
+              <q-separator class="q-my-md" />
+
+              <div class="row justify-center q-gutter-md">
+                <q-chip
+                  v-for="category in ['Meldunki taktyczne', 'Meldunki logistyczne', 'Meldunki operacyjne']"
+                  :key="category"
+                  color="blue-1"
+                  text-color="blue-8"
+                  size="sm"
+                  icon="folder"
+                >
+                >
+                  {{ category }}
+                </q-chip>
+              </div>
+            </q-card-section>
+          </q-card>
         </div>
       </div>
     </div>
@@ -410,25 +476,31 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.modern-report-card {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.report-content {
-  background: #fafafa;
-  border-radius: 4px;
-  padding: 16px;
-  border-left: 4px solid #1976d2;
-}
+/* Minimalne style - głównie używamy natywnych komponentów Quasar */
 
 .report-text {
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #2c3e50;
+  font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #37474f;
   margin: 0;
   white-space: pre-wrap;
+  background: transparent;
+}
+
+/* Responsywność */
+@media (max-width: 768px) {
+  .report-text {
+    font-size: 12px;
+  }
+}
+
+/* Smooth transitions dla lepszego UX */
+.q-card {
+  transition: all 0.3s ease;
+}
+
+.q-btn {
+  transition: all 0.2s ease;
 }
 </style>
