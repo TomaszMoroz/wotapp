@@ -157,340 +157,577 @@ const selectedTactic = ref(null)
 const searchQuery = ref('')
 
 const categories = [
-  { id: 'combat', name: 'Walka', icon: 'military_tech', color: 'red' },
-  { id: 'movement', name: 'Ruch', icon: 'directions_run', color: 'blue' },
-  { id: 'communication', name: 'Łączność', icon: 'wifi', color: 'green' },
-  { id: 'equipment', name: 'Sprzęt', icon: 'construction', color: 'orange' },
-  { id: 'topography', name: 'Topografia', icon: 'map', color: 'purple' }
+  { id: 'formations', name: 'Formacje', icon: 'group_work', color: 'blue' },
+  { id: 'operations', name: 'Operacje', icon: 'military_tech', color: 'red' },
+  { id: 'observation', name: 'Obserwacja', icon: 'visibility', color: 'green' }
 ]
 
 const tactics = [
-  // Combat tactics
+  // Formacje
   {
-    id: 'patrol-base',
-    name: 'Organizacja bazy patrolu',
-    category: 'Walka',
-    icon: 'security',
-    color: 'red',
-    readTime: '8 min',
+    id: 'hak',
+    name: 'HAK (Hak)',
+    category: 'Formacje',
+    icon: 'call_split',
+    color: 'blue',
+    readTime: '5 min',
     content: `
-      <h3>🏕️ Organizacja bazy patrolu</h3>
-      <p><strong>Cel:</strong> Zapewnienie bezpiecznego miejsca odpoczynku i reorganizacji dla patrolu.</p>
+      <h3>🪝 HAK (Hak)</h3>
+      <p><strong>Formacja taktyczna służąca do oskrzydlenia przeciwnika.</strong></p>
 
-      <h4>📍 Wybór miejsca:</h4>
+      <h4>📐 Charakterystyka:</h4>
       <ul>
-        <li>Ukryte przed obserwacją przeciwnika</li>
-        <li>Łatwe do obrony</li>
-        <li>Dostęp do wody (jeśli możliwe)</li>
-        <li>Drogi ewakuacji</li>
+        <li>Formacja w kształcie litery "L" lub haka</li>
+        <li>Jedna część jednostki atakuje frontalnie</li>
+        <li>Druga część oskrzydla przeciwnika z boku</li>
+        <li>Pozwala na koncentrację ognia z dwóch kierunków</li>
       </ul>
 
-      <h4>🛡️ Organizacja obrony:</h4>
+      <h4>🎯 Zastosowanie:</h4>
       <ul>
-        <li>Obsada stanowisk ogniowych na 360°</li>
-        <li>Wyznaczenie sektorów ostrzału</li>
-        <li>Umieszczenie czujek</li>
-        <li>Plan ewakuacji</li>
+        <li>Atak na pozycje obronne przeciwnika</li>
+        <li>Oskrzydlenie ugrupowania wroga</li>
+        <li>Przełamanie obrony liniowej</li>
+        <li>Wykorzystanie słabych punktów w obronie</li>
       </ul>
 
-      <h4>⏰ Czynności w bazie:</h4>
+      <h4>⚡ Wykonanie:</h4>
       <ol>
-        <li>Rozpoznanie okolicy</li>
-        <li>Organizacja służby wartowniczej</li>
-        <li>Przygotowanie posiłku i odpoczynek</li>
-        <li>Kontrola sprzętu i broni</li>
-        <li>Planowanie dalszych działań</li>
+        <li>Rozpoznanie pozycji przeciwnika</li>
+        <li>Podział sił na dwie grupy</li>
+        <li>Grupa główna wiąże ogniem frontalnie</li>
+        <li>Grupa oskrzydlająca atakuje z boku</li>
+        <li>Skoordynowany atak z dwóch kierunków</li>
       </ol>
+
+      <h4>⚠️ Uwagi taktyczne:</h4>
+      <ul>
+        <li>Wymaga dobrej koordynacji między grupami</li>
+        <li>Konieczna łączność radiowa</li>
+        <li>Uwaga na własny ogień - identyfikacja celów</li>
+        <li>Wykorzystanie osłon terenowych</li>
+      </ul>
     `
   },
   {
-    id: 'fire-team-movement',
-    name: 'Ruch drużyny ogniowej',
-    category: 'Ruch',
-    icon: 'directions_run',
+    id: 'okrezna',
+    name: 'Okrężna',
+    category: 'Formacje',
+    icon: 'rotate_right',
     color: 'blue',
     readTime: '6 min',
     content: `
-      <h3>🏃‍♂️ Ruch drużyny ogniowej</h3>
-      <p><strong>Podstawowe formacje ruchu w terenie.</strong></p>
+      <h3>🔄 Okrężna</h3>
+      <p><strong>Manewr oskrzydlający polegający na obejściu pozycji przeciwnika.</strong></p>
 
-      <h4>📐 Podstawowe formacje:</h4>
+      <h4>🎯 Cel operacji:</h4>
       <ul>
-        <li><strong>Kolumna:</strong> Szybki ruch, ograniczona obserwacja boków</li>
-        <li><strong>Linia:</strong> Maksymalna siła ognia do przodu</li>
-        <li><strong>Klin:</strong> Dobra obserwacja i elastyczność</li>
-        <li><strong>Rozwinięcie:</strong> Ruch przez teren odkryty</li>
+        <li>Obejście głównych sił obrończych</li>
+        <li>Atak na tyły lub skrzydło przeciwnika</li>
+        <li>Unikanie najsilniej bronionych pozycji</li>
+        <li>Wprowadzenie zamętu w szeregach wroga</li>
       </ul>
 
-      <h4>🔄 Zasady ruchu:</h4>
-      <ul>
-        <li>Zachowanie odstępów (5-10m w lesie, 10-50m na otwartym)</li>
-        <li>Obserwacja wyznaczonych sektorów</li>
-        <li>Wykorzystanie osłon terenowych</li>
-        <li>Sygnalizacja ręczna</li>
-      </ul>
-
-      <h4>⚠️ Reakcja na kontakt z przeciwnikiem:</h4>
+      <h4>📋 Fazy wykonania:</h4>
       <ol>
-        <li>Natychmiastowe zajęcie osłon</li>
-        <li>Otwarcie ognia</li>
-        <li>Komunikacja z dowódcą</li>
-        <li>Wykonanie rozkazów taktycznych</li>
+        <li><strong>Rozpoznanie:</strong> Identyfikacja słabych punktów obrony</li>
+        <li><strong>Demonstracja:</strong> Pozorowany atak frontalny dla odwrócenia uwagi</li>
+        <li><strong>Manewrowanie:</strong> Skryty ruch okrężny głównych sił</li>
+        <li><strong>Atak:</strong> Uderzenie z nieoczekiwanego kierunku</li>
+        <li><strong>Wykorzystanie sukcesu:</strong> Rozwinięcie przewagi</li>
       </ol>
+
+      <h4>🗺️ Wymagania terenowe:</h4>
+      <ul>
+        <li>Dostępność dróg obejścia</li>
+        <li>Możliwość ukrycia ruchu wojsk</li>
+        <li>Teren umożliwiający szybki marsz</li>
+        <li>Punkty orientacyjne dla nawigacji</li>
+      </ul>
+
+      <h4>⏰ Czynniki czasowe:</h4>
+      <ul>
+        <li>Szybkość wykonania manewru</li>
+        <li>Synchronizacja z atakiem demonstracyjnym</li>
+        <li>Wykorzystanie pory dnia/nocy</li>
+        <li>Warunki atmosferyczne</li>
+      </ul>
     `
   },
   {
-    id: 'radio-procedures',
-    name: 'Procedury radiowe',
-    category: 'Łączność',
-    icon: 'radio',
-    color: 'green',
-    readTime: '7 min',
+    id: 'sierzant',
+    name: 'Sierżant',
+    category: 'Formacje',
+    icon: 'format_align_center',
+    color: 'blue',
+    readTime: '4 min',
     content: `
-      <h3>📻 Procedury radiowe</h3>
-      <p><strong>Zasady bezpiecznej i skutecznej komunikacji radiowej.</strong></p>
+      <h3>📐 Sierżant</h3>
+      <p><strong>Formacja drużyny w kształcie litery "I" - linia prosta.</strong></p>
 
-      <h4>🔤 Alfabet fonetyczny NATO:</h4>
-      <div style="columns: 2; margin: 1rem 0;">
-        <p>A - Alpha<br>B - Bravo<br>C - Charlie<br>D - Delta<br>E - Echo<br>F - Foxtrot<br>G - Golf<br>H - Hotel<br>I - India<br>J - Juliet<br>K - Kilo<br>L - Lima<br>M - Mike</p>
-        <p>N - November<br>O - Oscar<br>P - Papa<br>Q - Quebec<br>R - Romeo<br>S - Sierra<br>T - Tango<br>U - Uniform<br>V - Victor<br>W - Whiskey<br>X - X-ray<br>Y - Yankee<br>Z - Zulu</p>
-      </div>
-
-      <h4>📋 Procedury nadawania:</h4>
-      <ol>
-        <li><strong>Sprawdzenie częstotliwości</strong> - nasłuch przed nadaniem</li>
-        <li><strong>Wywołanie:</strong> "[Znak wywoływanego], tu [własny znak]"</li>
-        <li><strong>Oczekiwanie na odpowiedź</strong></li>
-        <li><strong>Przekazanie komunikatu</strong> - jasno i zwięźle</li>
-        <li><strong>Potwierdzenie odbioru</strong></li>
-      </ol>
-
-      <h4>🚨 Komunikaty priorytetowe:</h4>
+      <h4>🏗️ Struktura formacji:</h4>
       <ul>
-        <li><strong>MAYDAY:</strong> Zagrożenie życia</li>
-        <li><strong>PAN PAN:</strong> Sytuacja pilna</li>
-        <li><strong>SECURITE:</strong> Ostrzeżenie o zagrożeniu</li>
+        <li>Wszyscy żołnierze ustawieni w jednej linii</li>
+        <li>Równe odstępy między żołnierzami</li>
+        <li>Dowódca w centrum lub na skrzydle</li>
+        <li>Maksymalna koncentracja ognia do przodu</li>
+      </ul>
+
+      <h4>✅ Zalety:</h4>
+      <ul>
+        <li>Największa siła ognia w kierunku przeciwnika</li>
+        <li>Prosta kontrola i dowodzenie</li>
+        <li>Łatwa koordynacja działań</li>
+        <li>Skuteczna w obronie pozycji</li>
+      </ul>
+
+      <h4>❌ Wady:</h4>
+      <ul>
+        <li>Podatność na ostrzał boczny</li>
+        <li>Brak ochrony skrzydeł</li>
+        <li>Duża powierzchnia celu dla przeciwnika</li>
+        <li>Trudność w manewrowaniu</li>
+      </ul>
+
+      <h4>🎯 Zastosowanie:</h4>
+      <ul>
+        <li>Obrona umocnionej pozycji</li>
+        <li>Atak czołowy na szerokim froncie</li>
+        <li>Przekraczanie przeszkód liniowych</li>
+        <li>Działania w otwartym terenie</li>
+      </ul>
+
+      <h4>📏 Odstępy:</h4>
+      <ul>
+        <li><strong>W lesie:</strong> 5-10 metrów</li>
+        <li><strong>Na otwartym terenie:</strong> 10-20 metrów</li>
+        <li><strong>Pod ogniem:</strong> Maksymalne rozprzestrzenienie</li>
       </ul>
     `
   },
-  // Equipment
   {
-    id: 'night-vision',
-    name: 'Obsługa noktowizji',
-    category: 'Sprzęt',
-    icon: 'visibility',
-    color: 'orange',
+    id: 'podwojny-sierzant',
+    name: 'Podwójny Sierżant',
+    category: 'Formacje',
+    icon: 'view_headline',
+    color: 'blue',
     readTime: '5 min',
     content: `
-      <h3>🌙 Obsługa noktowizji</h3>
-      <p><strong>Podstawy używania urządzeń noktowizyjnych.</strong></p>
+      <h3>📐📐 Podwójny Sierżant</h3>
+      <p><strong>Formacja składająca się z dwóch linii żołnierzy ustawionych jedna za drugą.</strong></p>
 
-      <h4>🔧 Przygotowanie do użycia:</h4>
+      <h4>🏗️ Struktura formacji:</h4>
+      <ul>
+        <li>Pierwsza linia - główna siła ognia</li>
+        <li>Druga linia - wsparcie i rezerwa</li>
+        <li>Żołnierze drugiej linii w lukach pierwszej</li>
+        <li>Odległość między liniami 20-50 metrów</li>
+      </ul>
+
+      <h4>⚡ Funkcje linii:</h4>
+      <ul>
+        <li><strong>Pierwsza linia:</strong>
+          <ul>
+            <li>Główny ogień bojowy</li>
+            <li>Pierwsze uderzenie</li>
+            <li>Rozpoznanie bojem</li>
+          </ul>
+        </li>
+        <li><strong>Druga linia:</strong>
+          <ul>
+            <li>Wsparcie ogniowe</li>
+            <li>Uzupełnienie strat</li>
+            <li>Wykorzystanie sukcesu</li>
+            <li>Ochrona odwrotu</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h4>✅ Zalety:</h4>
+      <ul>
+        <li>Głębia ugrupowania bojowego</li>
+        <li>Możliwość rotacji żołnierzy</li>
+        <li>Lepsze wykorzystanie terenu</li>
+        <li>Zwiększona przeżywalność</li>
+        <li>Elastyczność w dowodzeniu</li>
+      </ul>
+
+      <h4>🎯 Zastosowanie taktyczne:</h4>
+      <ul>
+        <li>Atak na ufortyfikowane pozycje</li>
+        <li>Działania w terenie zalesionym</li>
+        <li>Długotrwałe operacje bojowe</li>
+        <li>Sytuacje wymagające rezerwy</li>
+      </ul>
+
+      <h4>🔄 Dynamika walki:</h4>
       <ol>
-        <li>Sprawdzenie stanu baterii</li>
-        <li>Oczyszczenie soczewek</li>
-        <li>Regulacja ostrości</li>
-        <li>Test funkcjonalności</li>
+        <li>Pierwsza linia nawiązuje kontakt</li>
+        <li>Druga linia obserwuje i wspiera</li>
+        <li>W razie potrzeby - wymiana linii</li>
+        <li>Skoordynowane działanie obu linii</li>
       </ol>
-
-      <h4>👁️ Techniki obserwacji:</h4>
-      <ul>
-        <li><strong>Obserwacja boczna:</strong> Większa czułość siatkówki</li>
-        <li><strong>Skanowanie:</strong> Powolne ruchy wzrokiem</li>
-        <li><strong>Unikanie jasnych źródeł światła</strong></li>
-        <li><strong>Częste mruganie</strong> - zapobiega zmęczeniu oczu</li>
-      </ul>
-
-      <h4>⚠️ Ograniczenia:</h4>
-      <ul>
-        <li>Ograniczona głębia ostrości</li>
-        <li>Brak percepcji kolorów</li>
-        <li>Zmniejszone pole widzenia</li>
-        <li>Wrażliwość na jasne światło</li>
-      </ul>
-
-      <h4>🔋 Konserwacja:</h4>
-      <ul>
-        <li>Wyłączanie po użyciu</li>
-        <li>Przechowywanie w suchym miejscu</li>
-        <li>Regularna wymiana baterii</li>
-        <li>Ochrona przed upadkiem</li>
-      </ul>
     `
   },
-  // Topography
   {
-    id: 'map-reading',
-    name: 'Czytanie map topograficznych',
-    category: 'Topografia',
-    icon: 'map',
-    color: 'purple',
-    readTime: '10 min',
+    id: 'walijczyk',
+    name: 'Walijczyk',
+    category: 'Formacje',
+    icon: 'call_merge',
+    color: 'blue',
+    readTime: '5 min',
     content: `
-      <h3>🗺️ Czytanie map topograficznych</h3>
-      <p><strong>Podstawowe umiejętności topograficzne żołnierza.</strong></p>
+      <h3>🔺 Walijczyk</h3>
+      <p><strong>Formacja w kształcie klina służąca do przełamywania obrony przeciwnika.</strong></p>
 
-      <h4>📏 Skala mapy:</h4>
+      <h4>🏗️ Struktura klina:</h4>
       <ul>
-        <li><strong>1:25 000:</strong> Bardzo szczegółowa, działania taktyczne</li>
-        <li><strong>1:50 000:</strong> Standardowa mapa taktyczna</li>
-        <li><strong>1:100 000:</strong> Planowanie operacyjne</li>
+        <li>Wierzchołek - najlepsi żołnierze i dowódca</li>
+        <li>Skrzydła - siły główne</li>
+        <li>Podstawa - wsparcie i rezerwa</li>
+        <li>Koncentracja siły w punkcie uderzenia</li>
       </ul>
 
-      <h4>🧭 Elementy mapy:</h4>
-      <ul>
-        <li><strong>Siatka współrzędnych:</strong> System prostokątny</li>
-        <li><strong>Południk magnetyczny:</strong> Kierunek północy magnetycznej</li>
-        <li><strong>Warstwice:</strong> Linie jednakowej wysokości</li>
-        <li><strong>Legenda:</strong> Objaśnienie znaków umownych</li>
-      </ul>
-
-      <h4>📍 Określanie współrzędnych:</h4>
+      <h4>⚡ Mechanizm działania:</h4>
       <ol>
-        <li>Znajdź kwadrat siatki</li>
-        <li>Zmierz odległość od lewej krawędzi (współrzędna X)</li>
-        <li>Zmierz odległość od dolnej krawędzi (współrzędna Y)</li>
-        <li>Zapisz w formacie 6-cyfrowym</li>
+        <li>Wierzchołek klina przełamuje obronę</li>
+        <li>Skrzydła poszerzają wyłom</li>
+        <li>Podstawa wykorzystuje sukces</li>
+        <li>Całość rozwija przewagę w głąb</li>
       </ol>
 
-      <h4>🧮 Obliczanie odległości:</h4>
+      <h4>✅ Zalety taktyczne:</h4>
       <ul>
-        <li><strong>Siatka:</strong> 1 cm = 250m (skala 1:25 000)</li>
-        <li><strong>Linijka:</strong> Pomiar w linii prostej</li>
-        <li><strong>Sznurek:</strong> Pomiar tras krętych</li>
-        <li><strong>Krok marszowy:</strong> ~70cm dla żołnierza</li>
+        <li>Koncentracja siły w punkcie głównego wysiłku</li>
+        <li>Przełamywanie obrony liniowej</li>
+        <li>Penetracja w głąb ugrupowania wroga</li>
+        <li>Wykorzystanie zasady zaskoczenia</li>
+        <li>Demoralizacja obrońców</li>
+      </ul>
+
+      <h4>🎯 Warunki skuteczności:</h4>
+      <ul>
+        <li>Precyzyjne rozpoznanie słabego punktu obrony</li>
+        <li>Odpowiednia przewaga sił w punkcie uderzenia</li>
+        <li>Element zaskoczenia</li>
+        <li>Dobra koordynacja między elementami klina</li>
+        <li>Szybkość wykonania</li>
+      </ul>
+
+      <h4>⚠️ Ryzyko i przeciwdziałanie:</h4>
+      <ul>
+        <li>Narażenie na ostrzał z boków</li>
+        <li>Możliwość okrążenia przez przeciwnika</li>
+        <li>Rozciągnięcie linii zaopatrzenia</li>
+        <li>Konieczność ochrony skrzydeł</li>
+      </ul>
+
+      <h4>📏 Odstępy i proporcje:</h4>
+      <ul>
+        <li>Wierzchołek: 1/4 sił</li>
+        <li>Skrzydła: po 1/3 sił</li>
+        <li>Kąt klina: 60-90 stopni</li>
       </ul>
     `
   },
+  // Obserwacja
   {
-    id: 'compass-navigation',
-    name: 'Nawigacja kompasowa',
-    category: 'Topografia',
-    icon: 'explore',
-    color: 'purple',
+    id: 'punkt-obserwacyjny',
+    name: 'Punkt Obserwacyjny (PO)',
+    category: 'Obserwacja',
+    icon: 'visibility',
+    color: 'green',
     readTime: '8 min',
     content: `
-      <h3>🧭 Nawigacja kompasowa</h3>
-      <p><strong>Orientacja w terenie za pomocą kompasu.</strong></p>
+      <h3>👁️ Punkt Obserwacyjny (PO)</h3>
+      <p><strong>Stanowisko przeznaczone do obserwacji i rozpoznania terenu oraz przeciwnika.</strong></p>
 
-      <h4>🎯 Podstawowe azymut:</h4>
+      <h4>🎯 Funkcje PO:</h4>
       <ul>
-        <li><strong>0° / 360°:</strong> Północ</li>
-        <li><strong>90°:</strong> Wschód</li>
-        <li><strong>180°:</strong> Południe</li>
-        <li><strong>270°:</strong> Zachód</li>
+        <li>Obserwacja ruchu przeciwnika</li>
+        <li>Przekazywanie informacji o zagrożeniach</li>
+        <li>Korekta ognia artylerii</li>
+        <li>Wczesne ostrzeganie przed atakiem</li>
+        <li>Kontrola obszaru odpowiedzialności</li>
       </ul>
 
-      <h4>📐 Określanie azymutu:</h4>
+      <h4>📍 Wybór lokalizacji:</h4>
+      <ul>
+        <li><strong>Wysokość względna:</strong> Dominacja nad terenem</li>
+        <li><strong>Pole obserwacji:</strong> Szeroki kąt widzenia</li>
+        <li><strong>Ukrycie:</strong> Ochrona przed wykryciem</li>
+        <li><strong>Łączność:</strong> Możliwość komunikacji</li>
+        <li><strong>Dostępność:</strong> Bezpieczne dotarcie</li>
+        <li><strong>Drogi odwrotu:</strong> Alternatywne trasy ewakuacji</li>
+      </ul>
+
+      <h4>🏗️ Organizacja stanowiska:</h4>
+      <ul>
+        <li><strong>Stanowisko główne:</strong> Miejsce obserwacji</li>
+        <li><strong>Stanowisko zapasowe:</strong> Alternatywna pozycja</li>
+        <li><strong>Ukrycie sprzętu:</strong> Ochrona wyposażenia</li>
+        <li><strong>System alarmowy:</strong> Szybka łączność</li>
+        <li><strong>Zapasy:</strong> Żywność, woda, amunicja</li>
+      </ul>
+
+      <h4>🔭 Wyposażenie PO:</h4>
+      <ul>
+        <li>Lornetka lub luneta obserwacyjna</li>
+        <li>Środki łączności (radio, telefon)</li>
+        <li>Mapa z naniesionymi punktami orientacyjnymi</li>
+        <li>Kompas i dalmierz</li>
+        <li>Noktowizja lub przyrządy noktowizyjne</li>
+        <li>Dziennik obserwacji</li>
+        <li>Karabin wyborowy lub karabin automatyczny</li>
+      </ul>
+
+      <h4>📝 Procedury obserwacji:</h4>
       <ol>
-        <li>Wyceluj kompas w kierunek celu</li>
-        <li>Odczytaj wartość na tarczy</li>
-        <li>Uwzględnij deklinację magnetyczną</li>
-        <li>Zapisz azymut</li>
+        <li><strong>Systematyczne skanowanie:</strong> Podział terenu na sektory</li>
+        <li><strong>Identyfikacja celów:</strong> Klasyfikacja i ocena zagrożenia</li>
+        <li><strong>Dokumentowanie:</strong> Zapisywanie obserwacji</li>
+        <li><strong>Przekazywanie informacji:</strong> Natychmiastowe raportowanie</li>
+        <li><strong>Śledzenie celów:</strong> Monitorowanie ruchu</li>
       </ol>
 
-      <h4>🔄 Azymut przeciwny:</h4>
+      <h4>📊 Format meldonku z PO:</h4>
       <ul>
-        <li><strong>Jeśli azymut < 180°:</strong> Dodaj 180°</li>
-        <li><strong>Jeśli azymut > 180°:</strong> Odejmij 180°</li>
-        <li>Służy do powrotu tą samą trasą</li>
+        <li><strong>GDZIE:</strong> Lokalizacja obserwowanego obiektu</li>
+        <li><strong>CO:</strong> Opis obserwowanego celu</li>
+        <li><strong>KIEDY:</strong> Czas obserwacji</li>
+        <li><strong>DZIAŁANIE:</strong> Co obiekt robi</li>
+        <li><strong>SIŁA:</strong> Liczebność i uzbrojenie</li>
       </ul>
 
-      <h4>⚠️ Błędy w nawigacji:</h4>
+      <h4>⚠️ Bezpieczeństwo PO:</h4>
       <ul>
-        <li><strong>Deklinacja magnetyczna:</strong> Różnica między północą geograficzną a magnetyczną</li>
-        <li><strong>Dewiacja:</strong> Wpływ metalowych przedmiotów</li>
-        <li><strong>Błędy odczytu:</strong> Nieprecyzyjne odczytanie wartości</li>
+        <li>Zachowanie dyscypliny świetlnej</li>
+        <li>Minimalizowanie ruchu</li>
+        <li>Maskowanie stanowiska</li>
+        <li>Zmiana pozycji po wykryciu</li>
+        <li>Plan ewakuacji</li>
       </ul>
     `
   },
+  // Operacje
   {
-    id: 'terrain-analysis',
-    name: 'Analiza terenu pod kątem taktycznym',
-    category: 'Topografia',
-    icon: 'terrain',
-    color: 'purple',
-    readTime: '12 min',
+    id: 'zasadzka',
+    name: 'Zasadzka',
+    category: 'Operacje',
+    icon: 'forest',
+    color: 'red',
+    readTime: '10 min',
     content: `
-      <h3>🏔️ Analiza terenu pod kątem taktycznym</h3>
-      <p><strong>Ocena terenu dla potrzeb działań bojowych.</strong></p>
+      <h3>🪤 Zasadzka</h3>
+      <p><strong>Atak z ukrycia na poruszającego się przeciwnika w celu jego zniszczenia lub schwytania.</strong></p>
 
-      <h4>🔍 Metoda KOCOA:</h4>
+      <h4>🎯 Cele zasadzki:</h4>
       <ul>
-        <li><strong>K - Kluczowy teren:</strong> Punkty decydujące o sukcesie</li>
-        <li><strong>O - Obserwacja i pola ostrzału:</strong> Widoczność i możliwości strzelania</li>
-        <li><strong>C - Osłony i ukrycia:</strong> Ochrona przed ogniem i obserwacją</li>
-        <li><strong>O - Przeszkody:</strong> Elementy ograniczające ruch</li>
-        <li><strong>A - Avenues of approach:</strong> Drogi zbliżenia</li>
+        <li>Zniszczenie lub schwytanie przeciwnika</li>
+        <li>Zdobycie dokumentów, wyposażenia, jeńców</li>
+        <li>Dezorganizacja ruchu wroga</li>
+        <li>Wywołanie zamętu i paniki</li>
+        <li>Osłabienie morale przeciwnika</li>
       </ul>
 
-      <h4>📍 Kluczowy teren:</h4>
+      <h4>📍 Wybór miejsca zasadzki:</h4>
       <ul>
-        <li><strong>Wzgórza i wzniesienia:</strong> Punkty obserwacyjne</li>
-        <li><strong>Skrzyżowania dróg:</strong> Kontrola ruchu</li>
-        <li><strong>Mosty i przeprawy:</strong> Punkty przejścia</li>
-        <li><strong>Budynki dominujące:</strong> Punkty oporu</li>
+        <li><strong>Punkt kontrolny:</strong> Miejsce, którym przeciwnik musi przejść</li>
+        <li><strong>Ograniczenie manewru:</strong> Wąskie przejścia, mosty, serpentyny</li>
+        <li><strong>Osłony naturalne:</strong> Lasy, zarośla, nierówności terenu</li>
+        <li><strong>Pole rażenia:</strong> Dobra widoczność na strefę zabójczą</li>
+        <li><strong>Drogi odwrotu:</strong> Bezpieczne trasy ewakuacji</li>
+        <li><strong>Teren niejednolity:</strong> Utrudniający organizację obrony</li>
       </ul>
 
-      <h4>👁️ Obserwacja i pola ostrzału:</h4>
+      <h4>🏗️ Elementy zasadzki:</h4>
       <ul>
-        <li><strong>Linie horyzontu:</strong> Granice obserwacji</li>
-        <li><strong>Martwe przestrzenie:</strong> Obszary niewidoczne</li>
-        <li><strong>Sektory ostrzału:</strong> Obszary skutecznego ognia</li>
-        <li><strong>Pozycje obserwacyjne:</strong> Punkty rozpoznania</li>
+        <li><strong>Strefa zabójcza:</strong> Obszar głównego ostrzału</li>
+        <li><strong>Stanowiska ogniowe:</strong> Pozycje strzelców</li>
+        <li><strong>Grupa wsparcia:</strong> Ciężkie uzbrojenie</li>
+        <li><strong>Grupa zabezpieczenia:</strong> Ochrona skrzydeł i tyłów</li>
+        <li><strong>Grupa szturmowa:</strong> Likwidacja ocalałych</li>
+        <li><strong>Posterunek obserwacyjny:</strong> Ostrzeganie o zbliżaniu się celu</li>
       </ul>
 
-      <h4>🛡️ Osłony i ukrycia:</h4>
+      <h4>⏱️ Fazy wykonania zasadzki:</h4>
+      <ol>
+        <li><strong>Przygotowanie:</strong>
+          <ul>
+            <li>Rozpoznanie trasy przeciwnika</li>
+            <li>Wybór miejsca zasadzki</li>
+            <li>Zajęcie pozycji</li>
+            <li>Maskowanie stanowisk</li>
+            <li>Sprawdzenie łączności</li>
+          </ul>
+        </li>
+        <li><strong>Oczekiwanie:</strong>
+          <ul>
+            <li>Obserwacja zbliżającego się przeciwnika</li>
+            <li>Potwierdzenie tożsamości celu</li>
+            <li>Przygotowanie do ataku</li>
+          </ul>
+        </li>
+        <li><strong>Atak:</strong>
+          <ul>
+            <li>Rozpoczęcie ognia na sygnał</li>
+            <li>Koncentracja na priorytetowych celach</li>
+            <li>Blokowanie dróg ucieczki</li>
+          </ul>
+        </li>
+        <li><strong>Szturm:</strong>
+          <ul>
+            <li>Likwidacja ocalałych</li>
+            <li>Przeszukanie trupów i pojazdów</li>
+            <li>Zdobycie materiałów</li>
+          </ul>
+        </li>
+        <li><strong>Odwrót:</strong>
+          <ul>
+            <li>Szybka ewakuacja z miejsca zasadzki</li>
+            <li>Rozproszenie na umówione punkty zbornych</li>
+          </ul>
+        </li>
+      </ol>
+
+      <h4>🎯 Priorytet celów:</h4>
+      <ol>
+        <li>Dowódcy i oficerowie</li>
+        <li>Łącznościowcy</li>
+        <li>Operatorzy ciężkiej broni</li>
+        <li>Pojazdy i sprzęt</li>
+        <li>Pozostali żołnierze</li>
+      </ol>
+
+      <h4>🕒 Czas trwania:</h4>
       <ul>
-        <li><strong>Osłona:</strong> Ochrona przed ogniem (betonowe ściany, nasypy)</li>
-        <li><strong>Ukrycie:</strong> Ochrona przed obserwacją (las, mgła)</li>
-        <li><strong>Pozycje strzeleckie:</strong> Naturalne lub sztuczne</li>
-        <li><strong>Drogi podejścia:</strong> Ukryte trasy ruchu</li>
+        <li><strong>Idealny czas:</strong> 3-5 minut maksymalnie</li>
+        <li><strong>Szybkie uderzenie:</strong> Im krócej, tym lepiej</li>
+        <li><strong>Unikanie przedłużonych walk</strong></li>
+        <li><strong>Ewakuacja przed przybyciem posiłków</strong></li>
+      </ul>
+
+      <h4>⚠️ Bezpieczeństwo własnych sił:</h4>
+      <ul>
+        <li>Jasny podział sektorów ostrzału</li>
+        <li>Identyfikacja własnych żołnierzy</li>
+        <li>Sygnały rozpoznawcze</li>
+        <li>Plan działania w przypadku niepowodzenia</li>
+        <li>Ewakuacja rannych</li>
       </ul>
     `
   },
   {
-    id: 'coordinate-systems',
-    name: 'Systemy współrzędnych wojskowych',
-    category: 'Topografia',
-    icon: 'grid_3x3',
-    color: 'purple',
+    id: 'marsz-ubezpieczony',
+    name: 'Marsz Ubezpieczony',
+    category: 'Operacje',
+    icon: 'security',
+    color: 'red',
     readTime: '9 min',
     content: `
-      <h3>📐 Systemy współrzędnych wojskowych</h3>
-      <p><strong>Precyzyjne określanie położenia w terenie.</strong></p>
+      <h3>🛡️ Marsz Ubezpieczony</h3>
+      <p><strong>Przemieszczanie się jednostki z zachowaniem pełnej gotowości bojowej i ochrony przed atakiem przeciwnika.</strong></p>
 
-      <h4>🌍 System MGRS (Military Grid Reference System):</h4>
+      <h4>🎯 Cele marszu ubezpieczonego:</h4>
       <ul>
-        <li><strong>Zona UTM:</strong> 6° pasy długości geograficznej</li>
-        <li><strong>Pasmo:</strong> 8° pasy szerokości geograficznej</li>
-        <li><strong>Identyfikator kwadratu 100km:</strong> Dwie litery</li>
-        <li><strong>Współrzędne numeryczne:</strong> Określenie pozycji w kwadracie</li>
+        <li>Bezpieczne przemieszczenie jednostki</li>
+        <li>Zachowanie gotowości bojowej w ruchu</li>
+        <li>Wczesne wykrycie zagrożeń</li>
+        <li>Ochrona przed zasadzkami</li>
+        <li>Utrzymanie zwartości ugrupowania</li>
       </ul>
 
-      <h4>📍 Format zapisywania MGRS:</h4>
+      <h4>🏗️ Elementy ubezpieczenia:</h4>
       <ul>
-        <li><strong>Pełny format:</strong> 34U DQ 12345 67890</li>
-        <li><strong>10 cyfr:</strong> DQ 12345 67890 (dokładność 1m)</li>
-        <li><strong>8 cyfr:</strong> DQ 1234 6789 (dokładność 10m)</li>
-        <li><strong>6 cyfr:</strong> DQ 123 678 (dokładność 100m)</li>
+        <li><strong>Czołówka:</strong>
+          <ul>
+            <li>Rozpoznanie trasy marszu</li>
+            <li>Wykrywanie zasadzek i przeszkód</li>
+            <li>Zabezpieczenie punktów przejścia</li>
+            <li>Odległość: 200-1000m przed głównym ugrupowaniem</li>
+          </ul>
+        </li>
+        <li><strong>Boczne ubezpieczenie:</strong>
+          <ul>
+            <li>Ochrona skrzydeł kolumny</li>
+            <li>Obserwacja terenu przyległego</li>
+            <li>Blokowanie dróg dojazdowych</li>
+            <li>Odległość: 100-500m od osi marszu</li>
+          </ul>
+        </li>
+        <li><strong>Tylna straż:</strong>
+          <ul>
+            <li>Ochrona przed atakiem z tyłu</li>
+            <li>Kontrola opuszczanego terenu</li>
+            <li>Ewakuacja pozostawionych elementów</li>
+            <li>Odległość: 200-500m za głównym ugrupowaniem</li>
+          </ul>
+        </li>
       </ul>
 
-      <h4>🎯 Określanie współrzędnych:</h4>
+      <h4>📋 Organizacja kolumny marszowej:</h4>
       <ol>
-        <li>Znajdź kwadrat 100km na mapie</li>
-        <li>Odczytaj identyfikator (np. DQ)</li>
-        <li>Zmierz odległość od lewej krawędzi kwadratu (E)</li>
-        <li>Zmierz odległość od dolnej krawędzi kwadratu (N)</li>
-        <li>Zapisz w odpowiednim formacie</li>
+        <li><strong>Czołówka:</strong> Grupa rozpoznawcza (10-20% sił)</li>
+        <li><strong>Główne ugrupowanie:</strong>
+          <ul>
+            <li>Dowództwo</li>
+            <li>Siły główne</li>
+            <li>Wsparcie logistyczne</li>
+          </ul>
+        </li>
+        <li><strong>Tylna straż:</strong> Grupa ochronna (10-15% sił)</li>
       </ol>
 
-      <h4>🔧 Narzędzia pomocnicze:</h4>
+      <h4>📏 Odstępy i prędkości:</h4>
       <ul>
-        <li><strong>GPS:</strong> Automatyczne określanie MGRS</li>
-        <li><strong>Siatka transparentna:</strong> Pomoc w pomiarach</li>
-        <li><strong>Linijka koordinatowa:</strong> Precyzyjny pomiar</li>
-        <li><strong>Aplikacje mobilne:</strong> Konwersja współrzędnych</li>
+        <li><strong>Odstępy między pojazdami:</strong> 25-100m (w zależności od zagrożenia)</li>
+        <li><strong>Prędkość marszu:</strong> 25-40 km/h (dostosowana do najwolniejszego pojazdu)</li>
+        <li><strong>Postoje:</strong> Co 2-3 godziny na 15-20 minut</li>
+        <li><strong>Długość kolumny:</strong> Maksymalnie 5-10 km</li>
+      </ul>
+
+      <h4>🗺️ Planowanie trasy:</h4>
+      <ul>
+        <li>Wybór głównej trasy i tras zapasowych</li>
+        <li>Identyfikacja punktów niebezpiecznych</li>
+        <li>Wyznaczenie punktów kontrolnych</li>
+        <li>Planowanie miejsc postoju</li>
+        <li>Koordynacja z innymi jednostkami</li>
+      </ul>
+
+      <h4>📻 Łączność:</h4>
+      <ul>
+        <li><strong>Sieć dowódcza:</strong> Łączność między dowódcami grup</li>
+        <li><strong>Sieć ostrzegawcza:</strong> Szybkie przekazywanie alarmów</li>
+        <li><strong>Sygnały ręczne:</strong> Backup dla łączności radiowej</li>
+        <li><strong>Procedury łączności:</strong> Określone czasy i częstotliwości</li>
+      </ul>
+
+      <h4>⚡ Reakcja na kontakt z przeciwnikiem:</h4>
+      <ul>
+        <li><strong>Natychmiastowe alarmowanie:</strong> Wszystkie elementy informowane</li>
+        <li><strong>Rozwinięcie bojowe:</strong> Przejście z marszu do walki</li>
+        <li><strong>Wsparcie ogniowe:</strong> Koncentracja siły na zagrożeniu</li>
+        <li><strong>Manewrowanie:</strong> Oskrzydlenie lub przełamanie</li>
+        <li><strong>Ewakuacja:</strong> W przypadku przewagi przeciwnika</li>
+      </ul>
+
+      <h4>🌙 Marsz nocny:</h4>
+      <ul>
+        <li>Zwiększone odstępy</li>
+        <li>Ograniczone użycie świateł</li>
+        <li>Wzmocnione ubezpieczenie</li>
+        <li>Dodatkowe środki łączności</li>
+        <li>Punkty orientacyjne</li>
+      </ul>
+
+      <h4>⚠️ Zasady bezpieczeństwa:</h4>
+      <ul>
+        <li>Nieregularne zmiany prędkości i tras</li>
+        <li>Unikanie przewidywalności</li>
+        <li>Wykorzystanie osłon terenowych</li>
+        <li>Maskowanie ruchu</li>
+        <li>Gotowość do natychmiastowej walki</li>
       </ul>
     `
   }
