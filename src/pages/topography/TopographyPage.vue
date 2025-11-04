@@ -212,15 +212,15 @@ const categories = [
 ]
 
 const allTopics = [
-  // Maps
+  // Orientation topics
   {
-    id: 'map-reading',
-    name: 'Czytanie map topograficznych',
-    category: 'Mapy',
-    icon: 'map',
-    color: 'blue',
-    readTime: '10 min',
-    description: 'Podstawowe umiejętności interpretacji map topograficznych',
+    id: 'terrain-orientation',
+    name: 'Orientacja w terenie',
+    category: 'Orientacja',
+    icon: 'explore',
+    color: 'green',
+    readTime: '12 min',
+    description: 'Podstawowe metody orientacji w nieznanych warunkach terenowych',
     content: `
       <h3>🗺️ Czytanie map topograficznych</h3>
       <p><strong>Mapa topograficzna</strong> to szczegółowe przedstawienie powierzchni ziemi z uwzględnieniem rzeźby terenu, obiektów naturalnych i sztucznych.</p>

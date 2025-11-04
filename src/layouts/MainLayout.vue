@@ -126,7 +126,7 @@
 
         <q-separator class="q-my-md" />
 
-        <q-item-label header class="text-grey-7 text-weight-bold q-px-md">
+        <!-- <q-item-label header class="text-grey-7 text-weight-bold q-px-md">
           Ustawienia
         </q-item-label>
 
@@ -146,7 +146,7 @@
           <q-item-section>
             <q-item-label class="text-weight-medium">O aplikacji</q-item-label>
           </q-item-section>
-        </q-item>
+        </q-item> -->
       </q-list>
     </q-drawer>
 
