@@ -27,12 +27,13 @@
 
             <q-card-section class="visualization-section">
               <div class="target-container">
-                <svg
-                  width="100%"
-                  height="400"
-                  viewBox="0 0 400 400"
-                  class="target-svg"
-                >
+                <div class="target-wrapper">
+                  <svg
+                    width="100%"
+                    height="400"
+                    viewBox="0 0 400 400"
+                    class="target-svg"
+                  >
                   <!-- Tło tarczy -->
                   <circle cx="200" cy="200" r="200" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
 
@@ -110,25 +111,25 @@
                   <text x="390" y="205" font-family="Arial" font-size="10" fill="#6c757d" text-anchor="end">+50cm</text>
                   <text x="205" y="15" font-family="Arial" font-size="10" fill="#6c757d">+50cm</text>
                   <text x="205" y="395" font-family="Arial" font-size="10" fill="#6c757d">-50cm</text>
-
-                  <!-- Chip z informacją o korekcji wewnątrz SVG -->
-                  <foreignObject
-                    v-if="offsetValue !== 0 && aimPoint"
-                    :x="(200 + aimPoint.x) / 2 + 10"
-                    :y="(200 + aimPoint.y) / 2 - 20"
-                    width="140"
-                    height="40">
-                    <q-chip
-                      :color="offsetValue > 0 ? 'blue' : 'orange'"
-                      text-color="white"
-                      :icon="offsetValue > 0 ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                      size="md"
-                    >
-                      {{ Math.abs(offsetValue) }}cm {{ offsetValue > 0 ? '↑' : '↓' }}
-                    </q-chip>
-                  </foreignObject>
                 </svg>
-              </div>
+
+                <!-- Chip z informacją o korekcji poza SVG -->
+                <div
+                  v-if="offsetValue !== 0 && aimPoint"
+                  class="offset-chip-container"
+                >
+                  <q-chip
+                    :color="offsetValue > 0 ? 'blue' : 'orange'"
+                    text-color="white"
+                    :icon="offsetValue > 0 ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+                    size="md"
+                    class="offset-chip"
+                  >
+                    {{ Math.abs(offsetValue) }}cm {{ offsetValue > 0 ? '↑' : '↓' }}
+                  </q-chip>
+                </div>
+                </div> <!-- koniec target-wrapper -->
+              </div> <!-- koniec target-container -->
             </q-card-section>
           </q-card>
         </div>
@@ -430,6 +431,13 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   padding: 16px;
+  position: relative;
+}
+
+.target-wrapper {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 20px; /* dodaj miejsce na chip pod tarczą */
 }
 
 .target-svg {
@@ -438,6 +446,20 @@ onMounted(() => {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   max-width: 100%;
   height: auto;
+}
+
+.offset-chip-container {
+  position: absolute;
+  top: 50%;
+  left: calc(50% + 100px);
+  transform: translate(-50%, -100%);
+  z-index: 10;
+  pointer-events: none;
+}
+
+.offset-chip {
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .distance-input {
@@ -525,7 +547,26 @@ onMounted(() => {
   }
 
   .target-svg {
-    height: 300px;
+    height: 350px;
+  }
+
+  .target-wrapper {
+    margin-bottom: 40px; /* więcej miejsca na mobile */
+  }
+
+  .offset-chip {
+    font-size: 1rem;
+    padding: 8px 16px;
+    min-width: 120px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .offset-chip-container {
+    top: 100%;
+    transform: translate(-50%, 10px);
   }
 }
 
@@ -535,7 +576,27 @@ onMounted(() => {
   }
 
   .target-svg {
-    height: 250px;
+    height: 320px;
+  }
+
+  .target-wrapper {
+    margin-bottom: 50px; /* jeszcze więcej miejsca na małych ekranach */
+  }
+
+  .offset-chip {
+    font-size: 1.1rem;
+    padding: 12px 20px;
+    min-width: 140px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .offset-chip-container {
+    top: 100%;
+    transform: translate(-50%, 15px);
   }
 
   .result-item {
