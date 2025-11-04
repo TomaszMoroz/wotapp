@@ -1,1 +1,33 @@
 /* app global css */
+
+/* Military Color Palette for Quasar */
+:root {
+  --q-military-primary: #2D3E2F;
+  --q-military-secondary: #4A5D31;
+  --q-military-accent: #556B2F;
+  --q-military-green: #2D3E2F;
+  --q-military-brown: #8B4513;
+  --q-military-dark: #1A1A1A;
+  --q-military-light: #F5F5F5;
+}
+
+/* Custom Quasar color classes */
+.text-military-primary { color: #2D3E2F !important; }
+.text-military-secondary { color: #4A5D31 !important; }
+.text-military-accent { color: #556B2F !important; }
+.text-military-green { color: #2D3E2F !important; }
+.text-military-brown { color: #8B4513 !important; }
+.text-military-dark { color: #1A1A1A !important; }
+.text-military-light { color: #F5F5F5 !important; }
+
+.bg-military-primary { background-color: #2D3E2F !important; }
+.bg-military-secondary { background-color: #4A5D31 !important; }
+.bg-military-accent { background-color: #556B2F !important; }
+.bg-military-green { background-color: #2D3E2F !important; }
+.bg-military-brown { background-color: #8B4513 !important; }
+.bg-military-dark { background-color: #1A1A1A !important; }
+.bg-military-light { background-color: #F5F5F5 !important; }
+
+/* Override primary colors to military theme */
+.q-primary { background-color: #2D3E2F !important; }
+.text-primary { color: #2D3E2F !important; }

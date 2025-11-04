@@ -4,12 +4,13 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { path: '', component: () => import('pages/IndexPage.vue') },
-      { path: '/communication', component: () => import('pages/communication/CommunicationPage.vue') },
+      { path: '/communication', component: () => import('pages/nato/NatoAlphabetPage.vue') },
       { path: '/training', component: () => import('pages/training/TrainingPage.vue') },
+      { path: '/tactics', component: () => import('pages/tactics/TacticsPage.vue') },
+      { path: '/map', component: () => import('pages/topography/TopographyPage.vue') },
       { path: '/reports', component: () => import('pages/reports/ReportsPage.vue') },
       { path: '/emergency', component: () => import('pages/emergency/EmergencyPage.vue') },
       { path: '/unit', component: () => import('pages/unit/UnitPage.vue') },
-      { path: '/map', component: () => import('pages/map/MapPage.vue') },
       { path: '/equipment', component: () => import('pages/equipment/EquipmentPage.vue') }
     ]
   },
