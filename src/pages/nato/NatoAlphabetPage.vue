@@ -243,8 +243,8 @@ const toggleSpeech = () => {
   if ('speechSynthesis' in window) {
     isLoading.value = true
 
-    // Tekst do wymówienia
-    const textToSpeak = `${selectedLetter.value.letter} ${selectedLetter.value.word}`
+    // Tekst do wymówienia - tylko słowo kodowe
+    const textToSpeak = selectedLetter.value.word
 
     const utterance = new SpeechSynthesisUtterance(textToSpeak)
     utterance.lang = 'en-US'
@@ -272,7 +272,7 @@ const toggleSpeech = () => {
 
 const playAllLetters = () => {
   if ('speechSynthesis' in window) {
-    const allText = natoAlphabet.map(item => `${item.letter} ${item.word}`).join(', ')
+    const allText = natoAlphabet.map(item => item.word).join(', ')
     const utterance = new SpeechSynthesisUtterance(allText)
     utterance.lang = 'en-US'
     utterance.rate = 0.6
