@@ -166,46 +166,104 @@ const tactics = [
   // Formacje
   {
     id: 'hak',
-    name: 'HAK (Hak)',
-    category: 'Formacje',
-    icon: 'call_split',
-    color: 'blue',
-    readTime: '5 min',
+    name: 'HAK',
+    category: 'Operacje',
+    icon: 'route',
+    color: 'red',
+    readTime: '7 min',
     content: `
-      <h3>🪝 HAK (Hak)</h3>
-      <p><strong>Formacja taktyczna służąca do oskrzydlenia przeciwnika.</strong></p>
+      <h3>🪝 HAK</h3>
+      <p><strong>Procedura antyśledzeniowa wykonywana podczas marszu w celu sprawdzenia czy sekcja nie jest śledzona.</strong></p>
 
-      <h4>📐 Charakterystyka:</h4>
+      <h4>🎯 Cel procedury:</h4>
       <ul>
-        <li>Formacja w kształcie litery "L" lub haka</li>
-        <li>Jedna część jednostki atakuje frontalnie</li>
-        <li>Druga część oskrzydla przeciwnika z boku</li>
-        <li>Pozwala na koncentrację ognia z dwóch kierunków</li>
+        <li>Sprawdzenie czy sekcja nie jest śledzona przez przeciwnika</li>
+        <li>Wykrycie ewentualnego śledzącego</li>
+        <li>Zapewnienie bezpieczeństwa podczas marszu</li>
+        <li>Możliwość likwidacji śledzącego</li>
       </ul>
 
-      <h4>🎯 Zastosowanie:</h4>
-      <ul>
-        <li>Atak na pozycje obronne przeciwnika</li>
-        <li>Oskrzydlenie ugrupowania wroga</li>
-        <li>Przełamanie obrony liniowej</li>
-        <li>Wykorzystanie słabych punktów w obronie</li>
-      </ul>
-
-      <h4>⚡ Wykonanie:</h4>
+      <h4>⚡ Wykonanie procedury:</h4>
       <ol>
-        <li>Rozpoznanie pozycji przeciwnika</li>
-        <li>Podział sił na dwie grupy</li>
-        <li>Grupa główna wiąże ogniem frontalnie</li>
-        <li>Grupa oskrzydlająca atakuje z boku</li>
-        <li>Skoordynowany atak z dwóch kierunków</li>
+        <li><strong>Sygnał dowódcy:</strong> Prowadzący sygnalizuje "HAK"</li>
+        <li><strong>Zejście z trasy:</strong> Sekcja schodzi z kierunku marszu w lewo lub prawo</li>
+        <li><strong>Oddalenie:</strong> Odchodzi na maksymalną odległość zachowując obserwację miejsca zejścia</li>
+        <li><strong>Ruch równoległy:</strong> Zmienia kierunek poruszając się równolegle do pierwotnej trasy w kierunku przeciwnym</li>
+        <li><strong>Zawrócenie:</strong> Zawraca o 180° i porusza się równolegle do pierwotnej trasy</li>
+        <li><strong>Pozycja końcowa:</strong> Zatrzymuje się na wysokości punktu zejścia z trasy</li>
+        <li><strong>Obserwacja:</strong> Ubezpiecza 360° i obserwuje pierwotną trasę marszu</li>
       </ol>
 
-      <h4>⚠️ Uwagi taktyczne:</h4>
+      <h4>👥 Rozmieszczenie żołnierzy podczas obserwacji:</h4>
       <ul>
-        <li>Wymaga dobrej koordynacji między grupami</li>
-        <li>Konieczna łączność radiowa</li>
-        <li>Uwaga na własny ogień - identyfikacja celów</li>
-        <li>Wykorzystanie osłon terenowych</li>
+        <li><strong>Nr 1:</strong> Obserwacja w kierunku marszu</li>
+        <li><strong>Nr 2 i 11:</strong> Obserwacja sektora tylnego</li>
+        <li><strong>Nr 3-10:</strong> Obserwacja pierwotnej drogi (główne zagrożenie)</li>
+        <li><strong>Nr 12:</strong> Obserwacja sektora od strony wejścia w HAK</li>
+      </ul>
+
+      <h4>📊 Schemat procedury HAK:</h4>
+      <div style="font-family: monospace; background: #f5f5f5; padding: 20px; border-radius: 8px; margin: 16px 0; overflow-x: auto;">
+        <pre style="margin: 0; font-size: 12px; line-height: 1.4;">
+    ▲                                    ▲     Minimalny dystans,
+    │                                    │     tylko do odwrócenia
+╭─── 2 ────╮                     ╭──── 11 ────╮    o 180°
+│     ▲    │                     │      ▲     │        ╱
+╰─────│────╯                     ╰──────│─────╯       ╱
+      │                                 │            ╱
+╭─ 1 ─┼─ 3 ─ 4 ─ 5 ─ 6 ─ 7 ─ 8 ─ 9 ─ 10 ─ 12 ────╱────────╮
+      ▼    ▼   ▼   ▼   ▼   ▼   ▼   ▼    ▼    ▼              │
+                                                             │
+   ◎─◎                                                      ▲
+   2  1 ═══════════════════════════════════════════════════ │
+                                                             │
+     ◎                                                      │
+     3                                                      │ Dystans
+                                                            │ zapewniający
+     ◎                                                      │ skrytą
+     4                                                      │ obserwację
+     │                                                      │ drogi
+     ▼                                                      │
+═════════════════════════════════════════════════════════════▼═══
+◄── ◎ ◎ ◎ ◎ ◎ ◎ ◎ ◎ ────                        PIERWOTNA
+    5 6 7 8 9 10 11 12                           TRASA MARSZU
+                                                     ▼
+     ◄═══ ═══ ═══ ═══ ═══
+        KIERUNEK MARSZU
+        </pre>
+      </div>
+
+      <h4>🗺️ Legenda schematu:</h4>
+      <ul>
+        <li><strong>◎</strong> - Pozycje żołnierzy podczas obserwacji</li>
+        <li><strong>▲ ▼</strong> - Kierunki obserwacji</li>
+        <li><strong>═══</strong> - Pierwotna trasa marszu</li>
+        <li><strong>╭───╮</strong> - Sektory obserwacji żołnierzy 2 i 11</li>
+        <li><strong>◄───</strong> - Kierunek pierwotnego marszu</li>
+      </ul>
+
+      <h4>🔍 Zasady wykonania:</h4>
+      <ul>
+        <li>Większość środków ogniowych skierowana na pierwotną trasę marszu</li>
+        <li>Czas obserwacji reguluje dowódca</li>
+        <li>Dystans zapewniający skrytą obserwację drogi</li>
+        <li>Możliwość oddziaływania ogniowego na miejsce zejścia</li>
+      </ul>
+
+      <h4>📅 Częstotliwość wykonania:</h4>
+      <ul>
+        <li>Według doraźnych potrzeb</li>
+        <li>Planowo co pewien czas</li>
+        <li>Co określony odcinek marszu</li>
+        <li>W miejscach szczególnie niebezpiecznych</li>
+      </ul>
+
+      <h4>✅ Po zakończeniu obserwacji:</h4>
+      <ul>
+        <li>Jeśli nie wykryto śledzącego - kontynuacja działań</li>
+        <li>Możliwość poprawy oporządzenia</li>
+        <li>Przejście do zajmowania rejonu bazy</li>
+        <li>Realizacja zaplanowanych działań</li>
       </ul>
     `
   },
@@ -314,59 +372,193 @@ const tactics = [
     readTime: '5 min',
     content: `
       <h3>📐📐 Podwójny Sierżant</h3>
-      <p><strong>Formacja składająca się z dwóch linii żołnierzy ustawionych jedna za drugą.</strong></p>
+      <p><strong>Formacja taktyczna złożona z dwóch sierżantów: "ALFA" (pierwszy) i "BRAWO" (drugi).</strong></p>
 
-      <h4>🏗️ Struktura formacji:</h4>
+      <h4>🎯 Zasady rozstawienia:</h4>
       <ul>
-        <li>Pierwsza linia - główna siła ognia</li>
-        <li>Druga linia - wsparcie i rezerwa</li>
-        <li>Żołnierze drugiej linii w lukach pierwszej</li>
-        <li>Odległość między liniami 20-50 metrów</li>
+        <li>Odległości między żołnierzami określa dowódca według terenu</li>
+        <li>Każdy żołnierz musi mieć możliwość ognia w przód, tył, lewo i prawo</li>
+        <li>Ogień "przez szyk" - bez blokowania innych żołnierzy</li>
+        <li>Sprawdzenie: tarcza na 100m - wszyscy muszą mieć czyste pole ostrzału</li>
       </ul>
 
-      <h4>⚡ Funkcje linii:</h4>
-      <ul>
-        <li><strong>Pierwsza linia:</strong>
-          <ul>
-            <li>Główny ogień bojowy</li>
-            <li>Pierwsze uderzenie</li>
-            <li>Rozpoznanie bojem</li>
-          </ul>
-        </li>
-        <li><strong>Druga linia:</strong>
-          <ul>
-            <li>Wsparcie ogniowe</li>
-            <li>Uzupełnienie strat</li>
-            <li>Wykorzystanie sukcesu</li>
-            <li>Ochrona odwrotu</li>
-          </ul>
-        </li>
-      </ul>
-
-      <h4>✅ Zalety:</h4>
-      <ul>
-        <li>Głębia ugrupowania bojowego</li>
-        <li>Możliwość rotacji żołnierzy</li>
-        <li>Lepsze wykorzystanie terenu</li>
-        <li>Zwiększona przeżywalność</li>
-        <li>Elastyczność w dowodzeniu</li>
-      </ul>
-
-      <h4>🎯 Zastosowanie taktyczne:</h4>
-      <ul>
-        <li>Atak na ufortyfikowane pozycje</li>
-        <li>Działania w terenie zalesionym</li>
-        <li>Długotrwałe operacje bojowe</li>
-        <li>Sytuacje wymagające rezerwy</li>
-      </ul>
-
-      <h4>🔄 Dynamika walki:</h4>
+      <h4>🔍 Test prawidłowości rozstawienia:</h4>
       <ol>
-        <li>Pierwsza linia nawiązuje kontakt</li>
-        <li>Druga linia obserwuje i wspiera</li>
-        <li>W razie potrzeby - wymiana linii</li>
-        <li>Skoordynowane działanie obu linii</li>
+        <li>Ustawić tarczę/figurę bojową na kierunku marszu (ok. 100m)</li>
+        <li>Nakazać żołnierzom wycelowanie do celu</li>
+        <li>Sprawdzić czy żaden żołnierz nie blokuje pola ostrzału</li>
+        <li>Poprawić pozycje jeśli konieczne</li>
       </ol>
+
+      <h4>🅰️ SIERŻANT "ALFA" (pierwszy):</h4>
+      <div style="font-family: monospace; background: #f0f8ff; padding: 15px; border-radius: 8px; margin: 10px 0;">
+        <pre style="margin: 0; font-size: 11px; line-height: 1.3;">
+        ↑   ↑   ↑   ↑   ↑   ↑
+        │   │   │   │   │   │
+    ←───┼───┼───┼───┼───┼───┼───→
+        │   │   │   │   │   │
+        ↓   ↓   ↓   ↓   ↓   ↓
+
+            ◎
+            1
+
+    ◎           ◎
+    4           2
+
+◎           ◎       ◎
+5           3       6
+
+        SIERŻANT "ALFA"
+
+Legenda:
+◎ 1 - ZD (Zastępca Dowódcy)
+◎ 2 - Medyk
+◎ 3 - St. Saper
+◎ 4 - R2 (Radiotelefonista)
+◎ 5 - Strzelec UKM
+◎ 6 - Nawigator (St. Strz. Wyb.)
+        </pre>
+      </div>
+
+      <h4>📊 Warianty ustawienia sekcji 12-osobowej:</h4>
+
+      <h5>📍 WARIANT I - Dowódca z "BRAWO" na prawym skrzydle:</h5>
+      <div style="font-family: monospace; background: #f5f5dc; padding: 15px; border-radius: 8px; margin: 10px 0;">
+        <pre style="margin: 0; font-size: 10px; line-height: 1.2;">
+                ◎
+                1
+    ◎       ◎           ↑
+    4       2           │
+                        │
+◎       ◎       ◎       │ KIERUNEK
+5       3       6       │ MARSZU
+                        │
+┌─────────────────┐     │
+│   "ALFA"        │     │
+└─────────────────┘     │
+┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄│┄┄┄┄┄┄┄
+┌─────────────────┐     │
+│                 │     │
+│              ◎  │     │
+│              7  │     │
+│                 │     │
+│          ◎   ◎  │     │
+│          8   10 │     │
+│                 │     │
+│      ◎       ◎  │ ↑   │
+│      9      11  │ │   │
+│                 │ │   │
+│  ┌────┐     ◎   │ │   │
+│  │(-) │    12   │ │   │
+│  │BRAWO│         │ │   │
+│  └────┘         │     │
+└─────────────────┘     │
+        </pre>
+      </div>
+
+      <h5>📍 WARIANT II - Dowódca z "BRAWO" na lewym skrzydle:</h5>
+      <div style="font-family: monospace; background: #f0fff0; padding: 15px; border-radius: 8px; margin: 10px 0;">
+        <pre style="margin: 0; font-size: 10px; line-height: 1.2;">
+            ↑
+            │ KIERUNEK
+            │ MARSZU
+            │
+    ◎   ◎   │   ◎   ◎
+    1   4   │   2   5
+            │
+        ◎   │       ◎
+        3   │       6
+            │
+    ┌─────────┐ │ ┌──────────┐
+    │ "ALFA"  │ │ │          │
+    └─────────┘ │ └──────────┘
+┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄│┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄
+                │
+◎               │
+7               │
+                │
+    ◎           │
+    10          │
+                │
+        ◎       │
+        8       │ ↑
+                │ │
+            ◎   │ │
+            9   │ │
+                │
+    ┌────┐      │
+    │(-) │      │
+    │BRAWO│     │
+    └────┘      │
+        </pre>
+      </div>
+
+      <h4>👥 Skład sierżanta "ALFA":</h4>
+      <ul>
+        <li><strong>Pozycja 1:</strong> Zastępca Dowódcy Sekcji (ZD)</li>
+        <li><strong>Pozycja 2:</strong> Medyk</li>
+        <li><strong>Pozycja 3:</strong> Starszy saper</li>
+        <li><strong>Pozycja 4:</strong> Radiotelefonista (R2) - przy ZD</li>
+        <li><strong>Pozycja 5:</strong> Strzelec UKM</li>
+        <li><strong>Pozycja 6:</strong> Nawigator (St. strzelec wyborowy)</li>
+      </ul>
+
+      <h4>🎯 Funkcje kluczowe w "ALFA":</h4>
+      <ul>
+        <li><strong>ZD:</strong> Dowodzenie pierwszą linią, większe ryzyko kontaktu</li>
+        <li><strong>R2:</strong> Stały kontakt z ZD, łączność w sierżancie</li>
+        <li><strong>Strzelec UKM:</strong> Likwidacja środków ogniowych przeciwnika (1. granatnik, 2. km, 3. strzelcy)</li>
+        <li><strong>Nawigator:</strong> Znajomość terenu, mapa, busola, GPS</li>
+        <li><strong>Medyk:</strong> Pierwsza pomoc w kontakcie</li>
+      </ul>
+
+      <h4>🅱️ SIERŻANT "BRAWO" (drugi):</h4>
+      <ul>
+        <li><strong>Dowódca (D)</strong> z radiotelefonistą (R1)</li>
+        <li><strong>R1:</strong> Ciągłość komunikacji we wszystkich kierunkach</li>
+        <li><strong>Łączność z:</strong> Sztab, siły powietrzne, sprzymierzeni, inne elementy</li>
+        <li><strong>Wszyscy żołnierze:</strong> Odpowiedzialni za swoje sektory obserwacji</li>
+      </ul>
+
+      <h4>📋 Wybór wariantu ustawienia:</h4>
+      <ul>
+        <li><strong>WARIANT I:</strong> Dowódca na prawym skrzydle - gdy przeciwnik spodziewany z lewej</li>
+        <li><strong>WARIANT II:</strong> Dowódca na lewym skrzydle - gdy sytuacja taktyczna tego wymaga</li>
+        <li><strong>Sektory boczne:</strong> Dystanse określane przez warunki terenu</li>
+        <li><strong>Sektory prowadzenia ognia:</strong> Przód, tył, lewo, prawo dla każdego żołnierza</li>
+      </ul>
+
+      <h4>🎯 Zasady rozmieszczenia w wariantach:</h4>
+      <ul>
+        <li>Żołnierz idący na szczyt "BRAWO" dobiera kierunek marszu</li>
+        <li>Pozostali żołnierze z jego podsekcji mieli otwarte sektory prowadzenia ognia</li>
+        <li>Situacja taktyczna i teren determinują dystanse "boczne" i "odległościowe"</li>
+        <li>Między "ALFA" i "BRAWO" linia podziału (pokazana punktami)</li>
+      </ul>
+
+      <h4>⚡ Zasady w kontakcie ogniowym:</h4>
+      <ul>
+        <li><strong>R2 przy ZD:</strong> Nie rozdzielać podczas "wchodzenia" w szyk</li>
+        <li><strong>R1 przy D:</strong> Stały kontakt, natychmiastowe meldowanie</li>
+        <li><strong>Przemieszczanie:</strong> Na komendy Dowódcy (D)</li>
+        <li><strong>Priorytet UKM:</strong> Środki ogniowe przeciwnika według zagrożenia</li>
+      </ul>
+
+      <h4>🧭 Wymagania specjalistyczne:</h4>
+      <ul>
+        <li><strong>Szperacz/Nawigator:</strong> Wyczucie terenu, wyobraźnia przestrzenna, spostrzegawczość</li>
+        <li><strong>Nawigator:</strong> Doskonała znajomość map, busoli, GPS</li>
+        <li><strong>R1/R2:</strong> Bezpośrednia bliskość dowódców</li>
+        <li><strong>Ochrona kluczowych żołnierzy:</strong> D i R1 w drugiej linii</li>
+      </ul>
+
+      <h4>⚠️ Uwagi taktyczne:</h4>
+      <ul>
+        <li>Nie wystawiać Dowódcy z R1 na "pierwszy ogień"</li>
+        <li>Utrata kluczowych żołnierzy może uniemożliwić realizację zadania</li>
+        <li>Dystanse między radiotelefonistami a dowódcami według sytuacji taktycznej</li>
+        <li>Zajmowanie pozycji w tej samej luce podczas kontaktu</li>
+      </ul>
     `
   },
   {
@@ -521,100 +713,231 @@ const tactics = [
       <h3>🪤 Zasadzka</h3>
       <p><strong>Atak z ukrycia na poruszającego się przeciwnika w celu jego zniszczenia lub schwytania.</strong></p>
 
-      <h4>🎯 Cele zasadzki:</h4>
+      <h4>🏗️ Elementy rejonu zasadzki:</h4>
       <ul>
-        <li>Zniszczenie lub schwytanie przeciwnika</li>
-        <li>Zdobycie dokumentów, wyposażenia, jeńców</li>
-        <li>Dezorganizacja ruchu wroga</li>
-        <li>Wywołanie zamętu i paniki</li>
-        <li>Osłabienie morale przeciwnika</li>
+        <li><strong>Rejon ześrodkowania (RZ):</strong> Miejsce ześrodkowania sił przed akcją, przygotowania do działania oraz kontroli i reorganizacji po akcji</li>
+        <li><strong>Punkt rozejścia/rozwinięcia (PR):</strong> Miejsce między RZ a strefą śmierci, gdzie elementy patrolu rozdzielają się na pozycje</li>
+        <li><strong>Strefa śmierci:</strong> Określony przez dowódcę odcinek szlaku, na którym zatrzymuje się i atakuje przeciwnika</li>
+        <li><strong>Granica działania:</strong> Punkt za strefą śmierci, do którego prowadzi szturm grupa szturmowa (łatwy do identyfikacji w terenie)</li>
       </ul>
 
-      <h4>📍 Wybór miejsca zasadzki:</h4>
+      <h4>👥 Organizacja patrolu do zasadzki:</h4>
+
+      <h5>🎖️ Dowództwo patrolu:</h5>
       <ul>
-        <li><strong>Punkt kontrolny:</strong> Miejsce, którym przeciwnik musi przejść</li>
-        <li><strong>Ograniczenie manewru:</strong> Wąskie przejścia, mosty, serpentyny</li>
-        <li><strong>Osłony naturalne:</strong> Lasy, zarośla, nierówności terenu</li>
-        <li><strong>Pole rażenia:</strong> Dobra widoczność na strefę zabójczą</li>
-        <li><strong>Drogi odwrotu:</strong> Bezpieczne trasy ewakuacji</li>
-        <li><strong>Teren niejednolity:</strong> Utrudniający organizację obrony</li>
+        <li>Kontroluje i koordynuje działania patrolu</li>
+        <li><strong>Skład:</strong> Dowódca, radiotelefonista, zastępca dowódcy, medyk, specjaliści</li>
+        <li><strong>Pozycja:</strong> Dowódca przy grupie szturmowej, zastępca przy grupie wspierającej</li>
       </ul>
 
-      <h4>🏗️ Elementy zasadzki:</h4>
+      <h5>🛡️ Grupa ubezpieczenia (GU1, GU2):</h5>
       <ul>
-        <li><strong>Strefa zabójcza:</strong> Obszar głównego ostrzału</li>
-        <li><strong>Stanowiska ogniowe:</strong> Pozycje strzelców</li>
-        <li><strong>Grupa wsparcia:</strong> Ciężkie uzbrojenie</li>
-        <li><strong>Grupa zabezpieczenia:</strong> Ochrona skrzydeł i tyłów</li>
-        <li><strong>Grupa szturmowa:</strong> Likwidacja ocalałych</li>
-        <li><strong>Posterunek obserwacyjny:</strong> Ostrzeganie o zbliżaniu się celu</li>
+        <li>Ubezpiecza grupę szturmową i wspierającą podczas zajmowania pozycji</li>
+        <li>Informuje dowódcę o siłach przeciwnika</li>
+        <li>Izoluje przeciwnika w strefie śmierci</li>
+        <li>Niedopuszcza odwodów i ucieczki z zasadzki</li>
       </ul>
 
-      <h4>⏱️ Fazy wykonania zasadzki:</h4>
-      <ol>
-        <li><strong>Przygotowanie:</strong>
-          <ul>
-            <li>Rozpoznanie trasy przeciwnika</li>
-            <li>Wybór miejsca zasadzki</li>
-            <li>Zajęcie pozycji</li>
-            <li>Maskowanie stanowisk</li>
-            <li>Sprawdzenie łączności</li>
-          </ul>
-        </li>
-        <li><strong>Oczekiwanie:</strong>
-          <ul>
-            <li>Obserwacja zbliżającego się przeciwnika</li>
-            <li>Potwierdzenie tożsamości celu</li>
-            <li>Przygotowanie do ataku</li>
-          </ul>
-        </li>
-        <li><strong>Atak:</strong>
-          <ul>
-            <li>Rozpoczęcie ognia na sygnał</li>
-            <li>Koncentracja na priorytetowych celach</li>
-            <li>Blokowanie dróg ucieczki</li>
-          </ul>
-        </li>
-        <li><strong>Szturm:</strong>
-          <ul>
-            <li>Likwidacja ocalałych</li>
-            <li>Przeszukanie trupów i pojazdów</li>
-            <li>Zdobycie materiałów</li>
-          </ul>
-        </li>
-        <li><strong>Odwrót:</strong>
-          <ul>
-            <li>Szybka ewakuacja z miejsca zasadzki</li>
-            <li>Rozproszenie na umówione punkty zbornych</li>
-          </ul>
-        </li>
-      </ol>
-
-      <h4>🎯 Priorytet celów:</h4>
-      <ol>
-        <li>Dowódcy i oficerowie</li>
-        <li>Łącznościowcy</li>
-        <li>Operatorzy ciężkiej broni</li>
-        <li>Pojazdy i sprzęt</li>
-        <li>Pozostali żołnierze</li>
-      </ol>
-
-      <h4>🕒 Czas trwania:</h4>
+      <h5>🔥 Grupa wsparcia (GW):</h5>
       <ul>
-        <li><strong>Idealny czas:</strong> 3-5 minut maksymalnie</li>
-        <li><strong>Szybkie uderzenie:</strong> Im krócej, tym lepiej</li>
-        <li><strong>Unikanie przedłużonych walk</strong></li>
-        <li><strong>Ewakuacja przed przybyciem posiłków</strong></li>
+        <li>Podstawa ognia i bezpośrednia osłona grupy szturmowej</li>
+        <li>Najsilniejsze środki rażenia</li>
+        <li>Może pełnić rolę odwodu dowódcy patrolu</li>
       </ul>
 
-      <h4>⚠️ Bezpieczeństwo własnych sił:</h4>
+      <h5>⚡ Grupa szturmowa (GSZ):</h5>
       <ul>
-        <li>Jasny podział sektorów ostrzału</li>
-        <li>Identyfikacja własnych żołnierzy</li>
-        <li>Sygnały rozpoznawcze</li>
+        <li>Przeprowadza bezpośrednie uderzenie na przeciwnika</li>
+        <li>Wykonuje szczegółowe zadania w strefie śmierci</li>
+        <li>Może być podzielona na specjalistyczne zespoły</li>
+      </ul>
+
+      <h4>🔍 Podgrupy specjalistyczne:</h4>
+      <ul>
+        <li><strong>Obserwacyjna:</strong> Źródło informacji o zmianach sytuacji przed akcją</li>
+        <li><strong>Przeszukująca:</strong> Przeszukuje strefę śmierci, sprawdza osiągnięcie celu</li>
+        <li><strong>Niszcząca:</strong> Niszczy sprzęt, pojazdy, broń przeciwnika</li>
+        <li><strong>Ewakuacyjna:</strong> Ewakuuje rannych i zabitych (min. 2 żołnierzy)</li>
+        <li><strong>Obezwładniająca:</strong> Obezwładnia i eskortuje jeńców</li>
+      </ul>
+
+      <h4>📊 Schematy zasadzek:</h4>
+
+      <h5>📏 Zasadzka liniowa:</h5>
+      <div style="font-family: monospace; background: #fff8dc; padding: 20px; border-radius: 8px; margin: 15px 0; overflow-x: auto;">
+        <pre style="margin: 0; font-size: 11px; line-height: 1.3;">
+                          Zasadzka liniowa
+                                │
+                    ╭─────────────┴─────────────╮
+                   ╱                           ╲
+                  ╱                             ╲
+              ◎ 2                               ◎ 5
+              GU1 ▲                            GU1 ▲
+                  │                               │
+        ┄┄┄┄┄┄┄┄┄┄┼┄┄┄┄┄ Granica działania ┄┄┄┄┄┼┄┄┄┄┄┄┄┄┄┄
+                  │                               │
+                  ▼         STREFA ŚMIERCI        ▼
+        ╔═════════╪═══════════════════════════════╪═════════╗
+        ║         │                               │         ║
+        ║    ◎ 3  │            ◎ 8               │  ◎ 6    ║
+        ║         │                               │         ║
+        ║         ▼          ◎ 4 GW              ▼         ║  ◎ 9
+        ║                                                   ║     GU2
+        ║         ▲                               ▲         ║
+        ║         │                               │         ║
+        ║ ◎ 1  ◎ 7│     ◎ 10   ◎ 11   ◎ 12      │         ║
+        ║         │            GSZ                │         ║
+        ╚═════════╪═══════════════════════════════╪═════════╝
+                  │                               │
+                  │                               │
+                  ▼                               ▼
+                                │
+                           ┌────┴────┐
+                           │   PR    │ ◄─── Punkt Rozejścia
+                           └────┬────┘
+                                │
+                                ▼
+                          ┌─────────────┐
+                          │     RZ      │ ◄─── Rejon Ześrodkowania
+                          │ ┌─────────┐ │      (str. 71)
+                          │ │ ┌─────┐ │ │
+                          │ │ │  D  │ │ │
+                          │ │ └─────┘ │ │
+                          │ └─────────┘ │
+                          └─────────────┘
+        </pre>
+      </div>
+
+      <h5>📐 Zasadzka w kształcie litery "L":</h5>
+      <div style="font-family: monospace; background: #f0fff0; padding: 20px; border-radius: 8px; margin: 15px 0; overflow-x: auto;">
+        <pre style="margin: 0; font-size: 11px; line-height: 1.3;">
+                    Zasadzka w kształcie litery "L"
+                                    │
+                        ╭───────────┴──────────╮
+                       ╱                      ╲
+                      ╱                        ╲
+              ◎ 5    ╱              ◎ 2        ╲
+              GU1 ▲ ╱                         ▲ GU1
+                  ││                           │
+                  ││                           │
+                  ││                           │
+            ◎ 3   ││                ◎ 4       │
+            GW    ││                GW        │
+                  ▼│               ┄┄┄┄┄┄┄┄┄┄┄┼┄┄┄ Granica działania
+                   │                           │
+                   │                           ▼
+        ═══════════╪═════════════════════════════════════════
+                   │         STREFA ŚMIERCI            ▲
+                   │                                   │
+            ◎ 9    │                                   │
+            GW     │                                   │
+                   ▼                                   │
+                                                       │
+        ◎ 1    ◎ 7    ◎ 10    ◎ 11    ◎ 12           │ ◎ 8
+               GSZ                                     │
+                                                       │ ◎ 6
+                                                       │ GU2
+                                                       ▼
+                              │
+                         ┌────┴────┐
+                         │   PR    │ ◄─── Punkt Rozejścia
+                         └────┬────┘
+                              │
+                              ▼
+                        ┌─────────────┐
+                        │     RZ      │ ◄─── Rejon Ześrodkowania
+                        │ ┌─────────┐ │      (str. 72)
+                        │ │ ┌─────┐ │ │
+                        │ │ │  D  │ │ │
+                        │ │ └─────┘ │ │
+                        │ └─────────┘ │
+                        └─────────────┘
+        </pre>
+      </div>
+
+      <h4>🗺️ Legenda schematów:</h4>
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 10px 0;">
+        <ul style="margin: 0; font-size: 14px;">
+          <li><strong>◎ + numer</strong> - Pozycje żołnierzy z numeracją</li>
+          <li><strong>GU1, GU2</strong> - Grupa Ubezpieczenia 1 i 2</li>
+          <li><strong>GW</strong> - Grupa Wsparcia</li>
+          <li><strong>GSZ</strong> - Grupa Szturmowa</li>
+          <li><strong>PR</strong> - Punkt Rozejścia/Rozwinięcia</li>
+          <li><strong>RZ</strong> - Rejon Ześrodkowania</li>
+          <li><strong>D</strong> - Dowództwo patrolu</li>
+          <li><strong>▲▼</strong> - Kierunki obserwacji i ognia</li>
+          <li><strong>╔═══╗</strong> - Strefa śmierci</li>
+          <li><strong>┄┄┄</strong> - Granica działania</li>
+        </ul>
+      </div>      <h4>⚡ Przebieg działania:</h4>
+
+      <h5>🏕️ 1. Zajęcie rejonu ześrodkowania (RZ):</h5>
+      <ul>
+        <li>Skryte przemieszczenie do punktu kontaktowego</li>
+        <li>Połączenie plutonu w RZ</li>
+        <li>RZ zapewnia ukrycie i możliwość krótkiej obrony</li>
+        <li>Z dala od skupisk ludzi i naturalnych szlaków</li>
+        <li>Poza zasięgiem obserwacji ze strefy śmierci</li>
+        <li>Ostateczny podział na grupy funkcyjne</li>
+      </ul>
+
+      <h5>🔍 2. Rekonesans strefy śmierci:</h5>
+      <ul>
+        <li>Dowódca i dowódcy podgrup udają się na rekonesans</li>
+        <li>Ustanowienie Punktu Rozwinięcia (PR) między RZ a strefą śmierci</li>
+        <li>PR poza zasięgiem obserwacji ze strefy śmierci</li>
+        <li>Określenie pozycji dla wszystkich elementów</li>
+        <li>Precyzyjne wyznaczenie granic strefy śmierci i granicy działania</li>
+      </ul>
+
+      <h5>📍 3. Zajęcie pozycji:</h5>
+      <ul>
+        <li>Kolejność: GU1 i GU2, następnie GW i GSZ</li>
+        <li>GW i GSZ opuszczają RP po zameldowaniu zajęcia pozycji przez GU</li>
+        <li>Zajmowanie pozycji skrycie</li>
+        <li>Nieujawnienie zamiaru wykonania zasadzki</li>
+      </ul>
+
+      <h5>🔥 4. Uderzenie ogniowe:</h5>
+      <ul>
+        <li>GU1 lub GU2 informuje o zbliżaniu się przeciwnika</li>
+        <li>Gdy przeciwnik w strefie śmierci - GW i GSZ otwierają ogień</li>
+        <li>Sygnał: wystrzał dowódcy lub najsilniejszego środka ogniowego</li>
+        <li>Jeśli zasadzka zdemaskowana - ogień otwiera wykrywający żołnierz</li>
+        <li>Ogień do wyczerpania limitu amunicji lub sygnału dowódcy</li>
+      </ul>
+
+      <h5>⚔️ 5. Szturm:</h5>
+      <ul>
+        <li>Po przerwaniu ognia - taktyczna wymiana magazynka</li>
+        <li>Dowódca ocenia sytuację</li>
+        <li>Jeśli przeciwnik obezwładniony - rozkaz wejścia do strefy śmierci</li>
+        <li>GSZ wkracza do strefy śmierci i przechodzi do granicy działania</li>
+        <li>Likwidacja żywych żołnierzy stawiających opór</li>
+        <li>Przeszukanie strefy śmierci, zabieranie jeńców i rannych</li>
+        <li>Przygotowanie do wysadzenia pojazdów</li>
+      </ul>
+
+      <h5>🏃 6. Odskok:</h5>
+      <ul>
+        <li>Komenda do wycofania się od dowódcy patrolu</li>
+        <li>Kolejność wycofania: GW i GSZ, następnie GU1 i GU2</li>
+        <li>Łączenie w PR - kontrola stanu żołnierzy</li>
+        <li>Kontynuacja odskoku do RZ</li>
+        <li>Odbudowanie gotowości bojowej w RZ</li>
+      </ul>
+
+      <h4>⚠️ Zasady bezpieczeństwa:</h4>
+      <ul>
+        <li>Jeden żołnierz może pełnić kilka funkcji w zależności od zadania</li>
+        <li>GU powstrzymują dodatkowe siły przeciwnika do wycofania reszty</li>
+        <li>Stała łączność między elementami</li>
         <li>Plan działania w przypadku niepowodzenia</li>
-        <li>Ewakuacja rannych</li>
+        <li>Ewakuacja rannych przez specjalną podgrupę</li>
       </ul>
+
+      <h4>💭 Zasada obserwacji:</h4>
+      <p><em>"Czy Ty kogoś widzisz to wiesz, ale czy Ciebie ktoś widzi? Tego nie możesz być pewny."</em></p>
     `
   },
   {

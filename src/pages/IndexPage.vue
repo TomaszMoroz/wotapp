@@ -4,9 +4,11 @@
       <!-- Header Section -->
       <div class="text-center q-mb-xl">
         <div class="hero-section q-pa-lg rounded-borders">
-          <q-icon name="shield" size="4rem" color="primary" class="q-mb-md" />
+          <div class="logo-wrapper q-mb-md">
+            <img src="~/assets/721.jpeg" alt="WOT Logo" class="wot-logo" />
+          </div>
           <div class="text-h3 text-weight-bold text-primary q-mb-sm">Dashboard</div>
-          <!-- <div class="text-h6 text-grey-7 q-mb-md">Wojska Obrony Terytorialnej</div> -->
+          <div class="text-subtitle1 text-grey-7 q-mb-md">aplikacja wewnętrzna</div>
           <div class="text-body1 text-grey-6">Wybierz sekcję aby rozpocząć pracę</div>
         </div>
       </div>
@@ -174,9 +176,25 @@ const navigateTo = (path) => {
 }
 
 .hero-section {
-  background: linear-gradient(135deg, rgba(245,245,245,0.95) 0%, rgba(245,245,245,0.9) 100%);
+  background: white;
   border: 1px solid rgba(139, 69, 19, 0.3);
   backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.wot-logo {
+  max-width: 120px;
+  max-height: 120px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .cards-grid {
@@ -279,6 +297,11 @@ const navigateTo = (path) => {
   .text-h3 {
     font-size: 2rem;
   }
+
+  .wot-logo {
+    max-width: 100px;
+    max-height: 100px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -294,6 +317,11 @@ const navigateTo = (path) => {
   .status-bar .row {
     flex-direction: column;
     gap: 8px;
+  }
+
+  .wot-logo {
+    max-width: 80px;
+    max-height: 80px;
   }
 }
 </style>
