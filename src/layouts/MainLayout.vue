@@ -15,13 +15,9 @@
         <q-toolbar-title class="text-weight-bold text-white">
           <div class="row items-center no-wrap">
             <q-icon name="shield" class="q-mr-sm" size="sm" color="white" />
-            WOT PWA
           </div>
         </q-toolbar-title>
 
-        <div class="text-body2 gt-sm text-white">
-          🇵🇱 Wojska Obrony Terytorialnej
-        </div>
       </q-toolbar>
     </q-header>
 

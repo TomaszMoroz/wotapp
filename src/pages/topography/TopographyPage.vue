@@ -182,30 +182,30 @@ const selectedTopic = ref(null)
 
 const categories = [
   {
+    id: 'orientation',
+    name: 'Orientacja',
+    icon: 'explore',
+    color: 'green',
+    count: 4
+  },
+  {
     id: 'maps',
-    name: 'Mapy',
+    name: 'Mapa topograficzna',
     icon: 'map',
     color: 'blue',
     count: 3
   },
   {
-    id: 'orientation',
-    name: 'Orientacja',
-    icon: 'explore',
-    color: 'green',
-    count: 2
-  },
-  {
-    id: 'terrain',
-    name: 'Analiza terenu',
-    icon: 'terrain',
+    id: 'navigation',
+    name: 'Nawigacja',
+    icon: 'navigation',
     color: 'orange',
-    count: 2
+    count: 3
   },
   {
-    id: 'coordinates',
-    name: 'Współrzędne',
-    icon: 'grid_3x3',
+    id: 'equipment',
+    name: 'Sprzęt nawigacyjny',
+    icon: 'compass_calibration',
     color: 'purple',
     count: 2
   }
@@ -224,7 +224,7 @@ const allTopics = [
     content: `
       <h3>🗺️ Czytanie map topograficznych</h3>
       <p><strong>Mapa topograficzna</strong> to szczegółowe przedstawienie powierzchni ziemi z uwzględnieniem rzeźby terenu, obiektów naturalnych i sztucznych.</p>
-      
+
       <h4>📏 Skale map:</h4>
       <ul>
         <li><strong>1:10 000:</strong> Mapa bardzo szczegółowa (1 cm = 100 m)</li>
@@ -271,7 +271,7 @@ const allTopics = [
     content: `
       <h3>🔣 Znaki umowne map topograficznych</h3>
       <p>Znaki umowne to symbole graficzne przedstawiające różne obiekty i zjawiska na mapie.</p>
-      
+
       <h4>🏘️ Obiekty osadnicze:</h4>
       <ul>
         <li><strong>Miasto:</strong> Wypełniony prostokąt lub okrąg</li>
@@ -329,7 +329,7 @@ const allTopics = [
     content: `
       <h3>📏 Skala mapy i pomiar odległości</h3>
       <p>Skala mapy określa stosunek odległości na mapie do rzeczywistej odległości w terenie.</p>
-      
+
       <h4>🔢 Rodzaje skal:</h4>
       <ul>
         <li><strong>Skala liczbowa:</strong> 1:25 000 (1 cm na mapie = 250 m w terenie)</li>
@@ -385,7 +385,7 @@ const allTopics = [
     content: `
       <h3>🧭 Nawigacja kompasowa</h3>
       <p>Kompas jest podstawowym narzędziem nawigacji terenowej, pozwalającym określić kierunki geograficzne.</p>
-      
+
       <h4>🎯 Rodzaje kompasów:</h4>
       <ul>
         <li><strong>Kompas magnetyczny:</strong> Wykorzystuje pole magnetyczne Ziemi</li>
@@ -445,7 +445,7 @@ const allTopics = [
     content: `
       <h3>📍 Triangulacja i określanie pozycji</h3>
       <p>Triangulacja pozwala określić dokładną pozycję na podstawie pomiarów azymutów do znanych punktów.</p>
-      
+
       <h4>🎯 Zasada triangulacji:</h4>
       <p>Przecięcie się linii azymutowych z co najmniej dwóch znanych punktów wskazuje naszą pozycję.</p>
 
@@ -515,7 +515,7 @@ const allTopics = [
     content: `
       <h3>🏔️ Analiza terenu pod kątem taktycznym</h3>
       <p>Właściwa analiza terenu jest kluczowa dla planowania i prowadzenia działań bojowych.</p>
-      
+
       <h4>🔍 Metoda KOCOA:</h4>
       <ul>
         <li><strong>K - Kluczowy teren:</strong> Punkty decydujące o powodzeniu misji</li>
@@ -590,7 +590,7 @@ const allTopics = [
     content: `
       <h3>🌤️ Wpływ pogody na warunki terenowe</h3>
       <p>Warunki pogodowe znacząco wpływają na możliwości prowadzenia działań w terenie.</p>
-      
+
       <h4>🌧️ Opady:</h4>
       <ul>
         <li><strong>Deszcz:</strong> Błoto, poślizg, ograniczona widoczność</li>
@@ -668,7 +668,7 @@ const allTopics = [
     content: `
       <h3>📐 Systemy współrzędnych wojskowych</h3>
       <p>Precyzyjne określanie pozycji jest kluczowe w działaniach wojskowych.</p>
-      
+
       <h4>🌍 System MGRS (Military Grid Reference System):</h4>
       <p>Standardowy system NATO do określania pozycji na powierzchni Ziemi.</p>
 
@@ -750,7 +750,7 @@ const allTopics = [
     content: `
       <h3>📡 Praktyczne wykorzystanie GPS</h3>
       <p>GPS (Global Positioning System) to system nawigacji satelitarnej wykorzystywany przez wojsko na całym świecie.</p>
-      
+
       <h4>🛰️ Zasada działania GPS:</h4>
       <ul>
         <li><strong>Konstelacja satelitów:</strong> 24+ satelity na orbicie</li>

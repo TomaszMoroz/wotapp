@@ -5,8 +5,8 @@
       <div class="text-center q-mb-xl">
         <div class="hero-section q-pa-lg rounded-borders">
           <q-icon name="shield" size="4rem" color="primary" class="q-mb-md" />
-          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Dashboard WOT</div>
-          <div class="text-h6 text-grey-7 q-mb-md">Wojska Obrony Terytorialnej</div>
+          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Dashboard</div>
+          <!-- <div class="text-h6 text-grey-7 q-mb-md">Wojska Obrony Terytorialnej</div> -->
           <div class="text-body1 text-grey-6">Wybierz sekcję aby rozpocząć pracę</div>
         </div>
       </div>
@@ -25,11 +25,11 @@
             <div class="text-h6 q-mt-md text-weight-bold">Alfabet NATO</div>
             <div class="text-caption text-grey-4">Komunikacja fonetyczna</div>
           </q-card-section>
-          <q-card-section class="card-footer">
-            <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="volume_up">
+          <!-- <q-card-section class="card-footer">
+            <q-chip size="sm" color="rgba(255,255,255,0.7)" text-color="white" icon="volume_up">
               Wymowa
             </q-chip>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
 
         <q-card
@@ -42,13 +42,13 @@
               <q-icon name="gps_fixed" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">GROT Offset</div>
-            <div class="text-caption text-grey-4">Kalkulator balistyczny</div>
+            <div class="text-caption text-grey-4">Korekta celowania</div>
           </q-card-section>
-          <q-card-section class="card-footer">
+          <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="calculate">
               Kalkulator
             </q-chip>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
 
         <q-card
@@ -63,11 +63,11 @@
             <div class="text-h6 q-mt-md text-weight-bold">Taktyka</div>
             <div class="text-caption text-grey-4">Materiały szkoleniowe</div>
           </q-card-section>
-          <q-card-section class="card-footer">
+          <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="menu_book">
               Szkolenia
             </q-chip>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
 
         <q-card
@@ -82,11 +82,11 @@
             <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
             <div class="text-caption text-grey-4">Mapy i orientacja</div>
           </q-card-section>
-          <q-card-section class="card-footer">
+          <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="explore">
               Nawigacja
             </q-chip>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
 
         <q-card
@@ -101,11 +101,11 @@
             <div class="text-h6 q-mt-md text-weight-bold">Meldunki</div>
             <div class="text-caption text-grey-4">Raporty wojskowe</div>
           </q-card-section>
-          <q-card-section class="card-footer">
+          <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="assignment">
               Formularze
             </q-chip>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
 
         <q-card
@@ -120,11 +120,11 @@
             <div class="text-h6 q-mt-md text-weight-bold">Procedury</div>
             <div class="text-caption text-grey-4">Protokoły awaryjne</div>
           </q-card-section>
-          <q-card-section class="card-footer">
+          <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="emergency">
               Alerty
             </q-chip>
-          </q-card-section>
+          </q-card-section> -->
         </q-card>
       </div>
 
