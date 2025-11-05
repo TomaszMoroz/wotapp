@@ -144,11 +144,33 @@ module.exports = configure(function (/* ctx */) {
       injectPwaMetaTags: true,
       swFilename: 'sw.js',
       manifestFilename: 'manifest.json',
-      useCredentialsForManifestTag: false
+      useCredentialsForManifestTag: false,
+      extendManifestJson (json) {
+        json.prefer_related_applications = false
+        json.display_override = ['window-controls-overlay', 'standalone']
+        json.edge_side_panel = {
+          preferred_width: 400
+        }
+        json.shortcuts = [
+          {
+            name: 'Taktyka',
+            short_name: 'Taktyka',
+            description: 'Manewry i procedury taktyczne',
+            url: '/tactics',
+            icons: [{ src: 'icons/icon-192x192.png', sizes: '192x192' }]
+          },
+          {
+            name: 'Komunikacja',
+            short_name: 'Komunikacja',
+            description: 'System komunikacji wewnętrznej',
+            url: '/communication',
+            icons: [{ src: 'icons/icon-192x192.png', sizes: '192x192' }]
+          }
+        ]
+      }
       // useFilenameHashes: true,
       // extendGenerateSWOptions (cfg) {}
       // extendInjectManifestOptions (cfg) {},
-      // extendManifestJson (json) {}
       // extendPWACustomSWConf (esbuildConf) {}
     },
 
