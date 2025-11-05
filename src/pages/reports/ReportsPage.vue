@@ -331,14 +331,6 @@ T (TIME) - CZAS KONTAKTU:
 R (REACTION) - REAKCJA SIŁ WŁASNYCH:
 [OPIS PODEJMOWANYCH DZIAŁAŃ]
 
-STAN WŁASNY:
-- Ranni: [LICZBA]
-- KIA: [LICZBA]
-- Sprzęt uszkodzony: [LISTA]
-
-WSPARCIE:
-[POTRZEBNE WSPARCIE/EWAKUACJA]
-
 Przykład: Zostaliśmy zaatakowani przez przeciwnika w sile drużyny. Przeciwnik prowadzi lekki ogień z broni strzeleckiej oraz prowadzi ostrzał moździerzowy. GRID to 12345 67890. Czas to 0500. Zajęliśmy pozycje obronne, Alfa flankuje przeciwnika od zachodu.`
   },
   {
@@ -408,45 +400,6 @@ RV (PUNKT ZBORNY):
 [LOKALIZACJA ZAPASOWA]
 
 Przykład: Ramzes, biorę RTO i kaemistę i idziemy sprawdzić teren pod punkt obserwacyjny. Wrócimy najpóźniej o 1430. Jeśli nie wrócimy do tego czasu, przejmujesz dowodzenie – skontaktuj się z TOC i raportuj sytuację. Jeśli zostaniecie zaatakowani, wycofajcie się do RV i czekajcie na nas do 1500.`
-  },
-  {
-    id: 11,
-    name: 'SLLS - Zatrzymanie i czuwanie',
-    category: 'Meldunki proceduralne',
-    icon: 'pause_circle',
-    color: 'green',
-    content: `PROCEDURA SLLS - ZATRZYMANIE I CZUWANIE
-
-S (STOP) - ZATRZYMAJ SIĘ:
-✓ Oddział zatrzymany
-✓ Pozycje zabezpieczone
-✓ Obserwatorzy wystawieni
-
-L (LISTEN) - NASŁUCHUJ:
-Czas nasłuchiwania: [MINUTY] min
-Odgłosy wykryte:
-□ Brak podejrzanych dźwięków
-□ Wykryto: [OPIS DŹWIĘKÓW]
-
-L (LOOK) - OBSERWUJ:
-Czas obserwacji: [MINUTY] min
-Obserwacje:
-□ Brak ruchu przeciwnika
-□ Wykryto: [OPIS OBSERWACJI]
-
-S (SMELL) - WĘSZ/CZUJNOŚĆ:
-Wykryte zapachy:
-□ Brak podejrzanych zapachów
-□ Wykryto: [OPIS - DYM, SPALINY, ETC.]
-
-OCENA BEZPIECZEŃSTWA:
-🟢 Bezpieczne - kontynuujemy misję
-🟡 Podejrzane - zwiększona czujność
-🔴 Niebezpieczne - zmiana trasy/wycofanie
-
-DECYZJA: [ZIELONY/ŻÓŁTY/CZERWONY]
-
-Przykład: Zatrzymaliśmy się na 5 minut w lesie przed wejściem na otwartą przestrzeń. Przez 2 minuty nasłuchiwaliśmy - cisza. Przez 2 minuty obserwowaliśmy otwartą przestrzeń - brak ruchu. Wszystko czyste, idziemy dalej.`
   }
 ]
 

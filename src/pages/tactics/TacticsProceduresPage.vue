@@ -301,6 +301,55 @@ const procedures = [
         <li><strong>ZGŁOŚ</strong> natychmiast jednostce EOD</li>
       </ul>
     `
+  },
+  {
+    id: 6,
+    title: 'SLLS - Zatrzymanie i czuwanie',
+    category: 'Procedury ruchu',
+    content: `
+      <h4>Procedura SLLS - Zatrzymanie i czuwanie</h4>
+
+      <h5>S (STOP) - ZATRZYMAJ SIĘ:</h5>
+      <ul>
+        <li>✓ Oddział zatrzymany</li>
+        <li>✓ Pozycje zabezpieczone</li>
+        <li>✓ Obserwatorzy wystawieni</li>
+      </ul>
+
+      <h5>L (LISTEN) - NASŁUCHUJ:</h5>
+      <ul>
+        <li>Czas nasłuchiwania: [MINUTY] min</li>
+        <li>Odgłosy wykryte:</li>
+        <li>□ Brak podejrzanych dźwięków</li>
+        <li>□ Wykryto: [OPIS DŹWIĘKÓW]</li>
+      </ul>
+
+      <h5>L (LOOK) - OBSERWUJ:</h5>
+      <ul>
+        <li>Czas obserwacji: [MINUTY] min</li>
+        <li>Obserwacje:</li>
+        <li>□ Brak ruchu przeciwnika</li>
+        <li>□ Wykryto: [OPIS OBSERWACJI]</li>
+      </ul>
+
+      <h5>S (SMELL) - WĘSZ/CZUJNOŚĆ:</h5>
+      <ul>
+        <li>Wykryte zapachy:</li>
+        <li>□ Brak podejrzanych zapachów</li>
+        <li>□ Wykryto: [OPIS - DYM, SPALINY, ETC.]</li>
+      </ul>
+
+      <h5>OCENA BEZPIECZEŃSTWA:</h5>
+      <ul>
+        <li>🟢 Bezpieczne - kontynuujemy misję</li>
+        <li>🟡 Podejrzane - zwiększona czujność</li>
+        <li>🔴 Niebezpieczne - zmiana trasy/wycofanie</li>
+      </ul>
+
+      <p><strong>DECYZJA:</strong> [ZIELONY/ŻÓŁTY/CZERWONY]</p>
+
+      <p><strong>Przykład:</strong> Zatrzymaliśmy się na 5 minut w lesie przed wejściem na otwartą przestrzeń. Przez 2 minuty nasłuchiwaliśmy - cisza. Przez 2 minuty obserwowaliśmy otwartą przestrzeń - brak ruchu. Wszystko czyste, idziemy dalej.</p>
+    `
   }
 ]
 

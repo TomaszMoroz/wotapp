@@ -44,7 +44,7 @@
               <q-icon name="build" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Narzędzia</div>
-            <div class="text-caption text-grey-4">Kalkulatory wojskowe</div>
+            <div class="text-caption text-grey-4">Pomoce</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="calculate">
@@ -62,7 +62,7 @@
             <div class="card-icon-wrapper">
               <q-icon name="school" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Taktyka</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Taktyka i procedury</div>
             <div class="text-caption text-grey-4">Materiały szkoleniowe</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
@@ -114,8 +114,8 @@
             <div class="card-icon-wrapper">
               <q-icon name="military_tech" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Stopnie</div>
-            <div class="text-caption text-grey-4">Regulaminy wojskowe</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Stopnie i regulaminy</div>
+            <div class="text-caption text-grey-4">Skrot regulaminu, stopnie</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="emergency">
