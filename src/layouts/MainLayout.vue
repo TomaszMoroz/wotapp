@@ -213,6 +213,12 @@
 
         <q-separator class="q-my-md" />
 
+        <!-- Logo 721 -->
+        <div class="logo-section q-pa-md text-center">
+          <img :src="logo721" alt="WOT 721 Logo" class="wot-logo-drawer" />
+          <div class="text-caption text-grey-6 q-mt-sm">Aplikacja wewnętrzna</div>
+        </div>
+
         <!-- <q-item-label header class="text-grey-7 text-weight-bold q-px-md">
           Ustawienia
         </q-item-label>
@@ -246,6 +252,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
+import logo721 from 'assets/721.jpeg'
 
 defineOptions({
   name: 'MainLayout'
@@ -301,6 +308,25 @@ const isInToolsSection = computed(() => {
 .q-item.bg-military-active:hover {
   background-color: #4A5D31 !important;
   transform: translateX(0);
+}
+
+.logo-section {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: auto;
+}
+
+.wot-logo-drawer {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 2px solid #2D3E2F;
+  transition: transform 0.2s ease;
+}
+
+.wot-logo-drawer:hover {
+  transform: scale(1.05);
 }
 
 /* Military color definitions for use in templates */

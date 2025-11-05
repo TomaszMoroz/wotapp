@@ -4,11 +4,11 @@
       <!-- Header Section -->
       <div class="text-center q-mb-xl">
         <div class="hero-section q-pa-lg rounded-borders">
-          <div class="logo-wrapper q-mb-md">
+          <!-- <div class="logo-wrapper q-mb-md">
             <img src="~/assets/721.jpeg" alt="WOT Logo" class="wot-logo" />
-          </div>
+          </div> -->
           <div class="text-h3 text-weight-bold text-primary q-mb-sm">Dashboard</div>
-          <div class="text-subtitle1 text-grey-7 q-mb-md">aplikacja wewnętrzna</div>
+          <!-- <div class="text-subtitle1 text-grey-7 q-mb-md">aplikacja wewnętrzna</div> -->
           <div class="text-body1 text-grey-6">Wybierz sekcję aby rozpocząć pracę</div>
         </div>
       </div>
