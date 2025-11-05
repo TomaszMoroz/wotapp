@@ -3,10 +3,9 @@
     <div class="page-container">
       <div class="page-header">
         <h1 class="page-title">
-          <q-icon name="military_tech" class="title-icon" />
           Stopnie wojskowe w Polsce
         </h1>
-        <p class="page-subtitle">Wojska lądowe i powietrzne</p>
+        <p class="page-subtitle">Wojska lądowe</p>
       </div>
 
       <div class="ranks-sections">
