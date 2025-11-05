@@ -1,39 +1,49 @@
 <template>
   <q-page class="grot-page">
-    <div class="container q-pa-md">
-      <!-- Header -->
-      <div class="page-header q-mb-xl">
-        <div class="row items-center q-gutter-md">
-          <q-icon name="gps_fixed" size="3rem" color="primary" />
-          <div>
-            <div class="text-h4 text-weight-bold text-primary">GROT - Kalkulator Offsetu</div>
-            <div class="text-subtitle1 text-grey-7">Precyzyjne wyliczenia dla strzelań na odległość</div>
+    <div class="container">
+      <!-- Modern Header -->
+      <div class="modern-header">
+        <div class="header-content">
+          <div class="header-icon">
+            <q-icon name="gps_fixed" size="2.5rem" color="white" />
+          </div>
+          <div class="header-text">
+            <h1 class="header-title">GROT Offset Calculator</h1>
+            <p class="header-subtitle">Precyzyjne obliczenia korekcji celowania</p>
           </div>
         </div>
       </div>
 
-      <div class="row q-gutter-lg">
-        <!-- Panel wizualizacji -->
-        <div class="col-12 col-lg-7">
-          <q-card class="visualization-card">
-            <q-card-section class="card-header">
-              <div class="row items-center justify-between">
-                <div class="text-h6 text-weight-bold">🎯 Wizualizacja punktu celowania</div>
-                <q-chip :color="targetDistance > 0 ? 'positive' : 'grey'" text-color="white" icon="straighten">
+      <!-- Main Content Grid -->
+      <div class="main-grid">
+        <!-- Visualization Section -->
+        <div class="visualization-section">
+          <div class="section-card">
+            <div class="card-header-modern">
+              <div class="header-left">
+                <h3 class="section-title">Wizualizacja tarczy</h3>
+                <p class="section-subtitle">Punkt celowania na {{ targetDistance }}m</p>
+              </div>
+              <div class="distance-badge">
+                <q-chip
+                  :color="targetDistance > 0 ? 'primary' : 'grey-5'"
+                  text-color="white"
+                  icon="straighten"
+                  size="lg"
+                >
                   {{ targetDistance }}m
                 </q-chip>
               </div>
-            </q-card-section>
+            </div>
 
-            <q-card-section class="visualization-section">
+            <div class="visualization-content">
               <div class="target-container">
-                <div class="target-wrapper">
-                  <svg
-                    width="100%"
-                    height="400"
-                    viewBox="0 0 400 400"
-                    class="target-svg"
-                  >
+                <svg
+                  width="100%"
+                  height="400"
+                  viewBox="0 0 400 400"
+                  class="target-svg"
+                >
                   <!-- Tło tarczy -->
                   <circle cx="200" cy="200" r="200" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
 
@@ -128,32 +138,34 @@
                     {{ Math.abs(offsetValue) }}cm {{ offsetValue > 0 ? '↑' : '↓' }}
                   </q-chip>
                 </div>
-                </div> <!-- koniec target-wrapper -->
-              </div> <!-- koniec target-container -->
-            </q-card-section>
-          </q-card>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Panel kontrolny -->
-        <div class="col-12 col-lg-5">
-          <q-card class="control-card">
-            <q-card-section class="card-header">
-              <div class="text-h6 text-weight-bold">📏 Ustawienia strzelania</div>
-            </q-card-section>
+        <!-- Controls Section -->
+        <div class="controls-section">
+          <div class="section-card">
+            <div class="card-header-modern">
+              <div class="header-left">
+                <h3 class="section-title">Ustawienia strzelania</h3>
+                <p class="section-subtitle">Konfiguracja parametrów</p>
+              </div>
+            </div>
 
-            <q-card-section>
-              <!-- Input odległości -->
-              <div class="q-mb-lg">
+            <div class="controls-content">
+              <!-- Distance Input -->
+              <div class="input-group">
+                <label class="input-label">Odległość do celu</label>
                 <q-input
                   v-model.number="targetDistance"
                   type="number"
-                  label="Odległość do celu"
                   outlined
                   suffix="m"
                   min="0"
                   max="600"
                   @input="calculateOffset"
-                  class="distance-input"
+                  class="modern-input"
                 >
                   <template v-slot:prepend>
                     <q-icon name="straighten" color="primary" />
@@ -161,26 +173,26 @@
                 </q-input>
               </div>
 
-              <!-- Szybkie dystanse -->
-              <div class="q-mb-lg">
-                <div class="text-subtitle2 q-mb-sm text-weight-medium">🎯 Szybkie dystanse:</div>
-                <div class="quick-distances-grid">
+              <!-- Quick Distances -->
+              <div class="input-group">
+                <label class="input-label">Szybkie dystanse</label>
+                <div class="quick-distances">
                   <q-btn
                     v-for="dist in quickDistances"
                     :key="dist"
-                    size="md"
                     :outline="targetDistance !== dist"
                     :color="targetDistance === dist ? 'primary' : 'grey-5'"
                     @click="setDistance(dist)"
                     :label="`${dist}m`"
                     class="distance-btn"
+                    no-caps
                   />
                 </div>
               </div>
 
-              <!-- Slider -->
-              <div class="q-mb-lg">
-                <div class="text-subtitle2 q-mb-sm text-weight-medium">🎚️ Precyzyjna regulacja:</div>
+              <!-- Precision Slider -->
+              <div class="input-group">
+                <label class="input-label">Precyzyjna regulacja</label>
                 <q-slider
                   v-model="targetDistance"
                   :min="0"
@@ -189,74 +201,80 @@
                   label
                   color="primary"
                   @update:model-value="calculateOffset"
-                  class="distance-slider"
+                  class="modern-slider"
                 />
               </div>
 
-              <!-- Wyniki -->
-              <q-card flat bordered class="results-card">
-                <q-card-section>
-                  <div class="text-subtitle2 q-mb-md text-weight-bold">📊 Wyniki obliczeń:</div>
-                  <div class="results-grid">
-                    <div class="result-item">
-                      <q-icon name="straighten" color="primary" size="sm" />
-                      <span class="result-label">Dystans:</span>
+              <!-- Results -->
+              <div class="results-section">
+                <h4 class="results-title">Wyniki obliczeń</h4>
+                <div class="results-grid">
+                  <div class="result-card">
+                    <div class="result-icon">
+                      <q-icon name="straighten" color="primary" />
+                    </div>
+                    <div class="result-content">
+                      <span class="result-label">Dystans</span>
                       <span class="result-value">{{ targetDistance }} m</span>
                     </div>
-                    <div class="result-item">
-                      <q-icon name="height" color="secondary" size="sm" />
-                      <span class="result-label">Przewyższenie:</span>
-                      <span class="result-value" :class="offsetValue > 0 ? 'text-positive' : offsetValue < 0 ? 'text-negative' : ''">
+                  </div>
+
+                  <div class="result-card">
+                    <div class="result-icon">
+                      <q-icon name="height" color="secondary" />
+                    </div>
+                    <div class="result-content">
+                      <span class="result-label">Korekcja</span>
+                      <span class="result-value" :class="offsetValue > 0 ? 'positive' : offsetValue < 0 ? 'negative' : ''">
                         {{ offsetValue }} cm
                       </span>
                     </div>
-                    <div class="result-instruction">
-                      <q-icon name="my_location" color="accent" size="sm" />
-                      <span>{{ getAimingInstruction() }}</span>
-                    </div>
                   </div>
-                </q-card-section>
-              </q-card>
-            </q-card-section>
-          </q-card>
+                </div>
 
-          <!-- Tabela balistyczna -->
-          <q-card class="ballistic-card q-mt-lg">
-            <q-card-section class="card-header">
-              <div class="text-h6 text-weight-bold">📋 Tabela balistyczna GROT</div>
-            </q-card-section>
-            <q-card-section class="q-pa-none">
-              <div class="ballistic-table-container">
-                <q-table
-                  :rows="ballisticData"
-                  :columns="ballisticColumns"
-                  row-key="distance"
-                  flat
-                  :rows-per-page-options="[0]"
-                  hide-pagination
-                  dense
-                  class="ballistic-table"
-                >
-                  <template v-slot:body-cell-elevation="props">
-                    <q-td :props="props" :class="{
-                      'text-positive': props.value > 0,
-                      'text-negative': props.value < 0,
-                      'text-weight-bold': props.row.distance === targetDistance
-                    }">
-                      {{ props.value > 0 ? '+' : '' }}{{ props.value }}
-                    </q-td>
-                  </template>
-                  <template v-slot:body-cell-distance="props">
-                    <q-td :props="props" :class="{
-                      'text-weight-bold bg-primary text-white': props.row.distance === targetDistance
-                    }">
-                      {{ props.value }}
-                    </q-td>
-                  </template>
-                </q-table>
+                <div class="instruction-card">
+                  <q-icon name="my_location" color="accent" />
+                  <span class="instruction-text">{{ getAimingInstruction() }}</span>
+                </div>
               </div>
-            </q-card-section>
-          </q-card>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ballistic Table Section -->
+      <div class="table-section">
+        <div class="section-card">
+          <div class="card-header-modern">
+            <div class="header-left">
+              <h3 class="section-title">Tabela balistyczna</h3>
+              <p class="section-subtitle">Wartości korekcji dla różnych dystansów</p>
+            </div>
+          </div>
+
+          <div class="table-content">
+            <q-table
+              :rows="ballisticData"
+              :columns="ballisticColumns"
+              row-key="distance"
+              flat
+              class="modern-table"
+              :pagination="{ rowsPerPage: 0 }"
+            >
+              <template v-slot:body-cell-offset="props">
+                <q-td :props="props">
+                  <q-chip
+                    :color="props.value > 0 ? 'blue' : props.value < 0 ? 'orange' : 'grey'"
+                    text-color="white"
+                    size="sm"
+                    :icon="props.value > 0 ? 'keyboard_arrow_up' : props.value < 0 ? 'keyboard_arrow_down' : 'remove'"
+                  >
+                    {{ props.value }} cm
+                  </q-chip>
+                </q-td>
+              </template>
+            </q-table>
+          </div>
         </div>
       </div>
     </div>
@@ -273,96 +291,106 @@ defineOptions({
 const targetDistance = ref(100)
 const offsetValue = ref(0)
 
-const quickDistances = [15, 20, 50, 100, 150, 200, 250, 300, 400, 500]
+const quickDistances = [0, 15, 20, 25, 40, 60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 400]
+
+// Dane balistyczne dla GROT - oficjalne dane z instrukcji WOT
+// Tabela 6: Przewyższenie toru lotu pocisku nad linią celowania (w cm)
+// Dystans co 20m od 0 do 600m + interpolowane wartości dla 15m i 25m
+const offsetData = {
+  0: -7,
+  15: -1.75, // interpolowane między 0m i 20m
+  20: 0,
+  25: 1.75, // interpolowane między 20m i 40m
+  40: 7,
+  60: 14,
+  80: 20,
+  100: 25,
+  120: 30,
+  140: 34,
+  160: 37,
+  180: 40,
+  200: 42,
+  220: 43,
+  240: 43,
+  260: 43,
+  280: 41,
+  300: 39,
+  320: 36,
+  340: 31,
+  360: 26,
+  380: 19,
+  400: 11,
+  420: 2,
+  440: -9,
+  460: -21,
+  480: -35,
+  500: -50,
+  520: -57,
+  540: -86,
+  560: -107,
+  580: -130,
+  600: -156
+}
 
 const ballisticColumns = [
-  {
-    name: 'distance',
-    label: 'Dystans (m)',
-    field: 'distance',
-    align: 'center',
-    sortable: true
-  },
-  {
-    name: 'elevation',
-    label: 'Przewyższenie (cm)',
-    field: 'elevation',
-    align: 'center',
-    sortable: true
-  }
+  { name: 'distance', label: 'Dystans (m)', field: 'distance', align: 'center' },
+  { name: 'offset', label: 'Korekcja (cm)', field: 'offset', align: 'center' },
+  { name: 'instruction', label: 'Instrukcja', field: 'instruction', align: 'left' }
 ]
 
-// Dane balistyczne z tabeli (dystans w metrach, przewyższenie w cm)
-const ballisticData = [
-  { distance: 0, elevation: -7 },
-  { distance: 20, elevation: 0 },
-  { distance: 40, elevation: 7 },
-  { distance: 60, elevation: 14 },
-  { distance: 80, elevation: 19 },
-  { distance: 100, elevation: 25 },
-  { distance: 120, elevation: 30 },
-  { distance: 140, elevation: 34 },
-  { distance: 160, elevation: 37 },
-  { distance: 180, elevation: 40 },
-  { distance: 200, elevation: 42 },
-  { distance: 220, elevation: 43 },
-  { distance: 240, elevation: 43 },
-  { distance: 260, elevation: 43 },
-  { distance: 280, elevation: 41 },
-  { distance: 300, elevation: 39 },
-  { distance: 320, elevation: 36 },
-  { distance: 340, elevation: 31 },
-  { distance: 360, elevation: 26 },
-  { distance: 380, elevation: 19 },
-  { distance: 400, elevation: 11 },
-  { distance: 420, elevation: 2 },
-  { distance: 440, elevation: -9 },
-  { distance: 460, elevation: -21 },
-  { distance: 480, elevation: -35 },
-  { distance: 500, elevation: -50 },
-  { distance: 520, elevation: -67 },
-  { distance: 540, elevation: -86 },
-  { distance: 560, elevation: -107 },
-  { distance: 580, elevation: -130 },
-  { distance: 600, elevation: -156 }
-]
+const ballisticData = computed(() => {
+  return Object.entries(offsetData).map(([dist, offset]) => ({
+    distance: parseInt(dist),
+    offset,
+    instruction: offset < 0 ? 'Celuj wyżej' : offset > 0 ? 'Celuj niżej' : 'Celuj w centrum'
+  })).filter(item => item.distance % 25 === 0)
+})
 
-// Punkt celowania na tarczy
 const aimPoint = computed(() => {
-  // Skala: 1cm = 4px, centrum tarczy na x=200, y=200
-  // LOGIKA: Pokazujemy gdzie celować, żeby trafić w centrum
-  // Jeśli pocisk leci wyżej (+), musimy celować niżej (y większe)
-  // Jeśli pocisk leci niżej (-), musimy celować wyżej (y mniejsze)
-  const y = 200 + (offsetValue.value * 4)
+  const centerX = 200
+  const centerY = 200
+  const pixelsPerCm = 4 // 4 piksele na cm
+
+  // Jeśli offset ujemny (z tabeli) - celuj wyżej (minus offsetY)
+  // Jeśli offset dodatni (z tabeli) - celuj niżej (plus offsetY)
+  const offsetY = offsetValue.value * pixelsPerCm
+
   return {
-    x: 200,
-    y: Math.max(10, Math.min(390, y))
+    x: centerX,
+    y: centerY + offsetY
   }
 })
 
 const calculateOffset = () => {
   const distance = targetDistance.value
-
-  // Znajdź najbliższe punkty w tabeli
-  let lowerPoint = null
-  let upperPoint = null
-
-  for (let i = 0; i < ballisticData.length - 1; i++) {
-    if (distance >= ballisticData[i].distance && distance <= ballisticData[i + 1].distance) {
-      lowerPoint = ballisticData[i]
-      upperPoint = ballisticData[i + 1]
-      break
-    }
+  if (distance === 0) {
+    offsetValue.value = offsetData[0]
+    return
   }
 
-  if (distance <= ballisticData[0].distance) {
-    offsetValue.value = ballisticData[0].elevation
-  } else if (distance >= ballisticData[ballisticData.length - 1].distance) {
-    offsetValue.value = ballisticData[ballisticData.length - 1].elevation
-  } else if (lowerPoint && upperPoint) {
-    // Interpolacja liniowa
-    const ratio = (distance - lowerPoint.distance) / (upperPoint.distance - lowerPoint.distance)
-    offsetValue.value = Math.round(lowerPoint.elevation + ratio * (upperPoint.elevation - lowerPoint.elevation))
+  const distances = Object.keys(offsetData).map(Number).sort((a, b) => a - b)
+
+  if (distance <= distances[0]) {
+    offsetValue.value = offsetData[distances[0]]
+    return
+  }
+
+  if (distance >= distances[distances.length - 1]) {
+    offsetValue.value = offsetData[distances[distances.length - 1]]
+    return
+  }
+
+  for (let i = 0; i < distances.length - 1; i++) {
+    if (distance >= distances[i] && distance <= distances[i + 1]) {
+      const d1 = distances[i]
+      const d2 = distances[i + 1]
+      const o1 = offsetData[d1]
+      const o2 = offsetData[d2]
+
+      const ratio = (distance - d1) / (d2 - d1)
+      offsetValue.value = Math.round(o1 + (o2 - o1) * ratio)
+      break
+    }
   }
 }
 
@@ -372,12 +400,12 @@ const setDistance = (distance) => {
 }
 
 const getAimingInstruction = () => {
-  if (offsetValue.value > 0) {
-    return `Celuj ${offsetValue.value}cm NIŻEJ od centrum`
-  } else if (offsetValue.value < 0) {
-    return `Celuj ${Math.abs(offsetValue.value)}cm WYŻEJ od centrum`
+  if (offsetValue.value < 0) {
+    return `Celuj ${Math.abs(offsetValue.value)}cm wyżej od centrum tarczy`
+  } else if (offsetValue.value > 0) {
+    return `Celuj ${offsetValue.value}cm niżej od centrum tarczy`
   } else {
-    return 'Celuj w centrum tarczy'
+    return 'Celuj w centrum tarczy (10)'
   }
 }
 
@@ -395,192 +423,316 @@ onMounted(() => {
 .container {
   max-width: 1400px;
   margin: 0 auto;
-}
-
-.page-header {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
   padding: 24px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(25, 118, 210, 0.1);
 }
 
-.visualization-card,
-.control-card,
-.ballistic-card {
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-}
-
-.card-header {
+/* Modern Header */
+.modern-header {
   background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-  color: white;
-  border-radius: 16px 16px 0 0;
-  margin: -16px -16px 16px -16px;
-  padding: 16px;
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 32px;
+  box-shadow: 0 8px 32px rgba(25, 118, 210, 0.3);
 }
 
-.visualization-section {
-  padding: 0;
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.header-icon {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.header-title {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.header-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.2rem;
+  margin: 8px 0 0 0;
+  font-weight: 400;
+}
+
+/* Main Grid Layout */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 32px;
+  margin-bottom: 32px;
+}
+
+/* Section Cards */
+.section-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.card-header-modern {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.header-left h3.section-title {
+  color: #2c3e50;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.section-subtitle {
+  color: #6c757d;
+  font-size: 0.95rem;
+  margin: 4px 0 0 0;
+  font-weight: 400;
+}
+
+.distance-badge .q-chip {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Visualization */
+.visualization-content {
+  padding: 32px;
 }
 
 .target-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 16px;
   position: relative;
-}
-
-.target-wrapper {
-  position: relative;
-  display: inline-block;
-  margin-bottom: 20px; /* dodaj miejsce na chip pod tarczą */
+  background: #fafbfc;
+  border-radius: 12px;
+  padding: 24px;
+  border: 2px solid #e9ecef;
 }
 
 .target-svg {
-  border-radius: 12px;
-  background: white;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  max-width: 100%;
+  width: 100%;
   height: auto;
+  border-radius: 8px;
+  background: white;
 }
 
 .offset-chip-container {
   position: absolute;
-  top: 50%;
-  left: calc(50% + 100px);
-  transform: translate(-50%, -100%);
+  top: 100%;
+  left: 50%;
+  transform: translate(-50%, 16px);
   z-index: 10;
-  pointer-events: none;
 }
 
 .offset-chip {
   font-weight: 600;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 0.9rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
-.distance-input {
-  font-size: 1.1rem;
+/* Controls */
+.controls-content {
+  padding: 32px;
 }
 
-.quick-distances-grid {
+.input-group {
+  margin-bottom: 32px;
+}
+
+.input-label {
+  display: block;
+  color: #2c3e50;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 12px;
+}
+
+.modern-input {
+  font-size: 1rem;
+}
+
+.quick-distances {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 8px;
 }
 
 .distance-btn {
-  border-radius: 8px;
   font-weight: 500;
+  border-radius: 8px;
+  transition: all 0.2s ease;
 }
 
-.distance-slider {
+.modern-slider {
   margin: 16px 0;
 }
 
-.results-card {
-  background: linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(21, 101, 192, 0.05) 100%);
-  border: 1px solid rgba(25, 118, 210, 0.2);
+/* Results */
+.results-section {
+  background: #f8f9fa;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e9ecef;
+}
+
+.results-title {
+  color: #2c3e50;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0 0 20px 0;
 }
 
 .results-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
-.result-item {
+.result-card {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.result-icon .q-icon {
+  font-size: 1.5rem;
+}
+
+.result-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .result-label {
-  font-weight: 500;
   color: #6c757d;
-  min-width: 100px;
+  font-size: 0.85rem;
+  font-weight: 500;
 }
 
 .result-value {
-  font-weight: bold;
+  color: #2c3e50;
   font-size: 1.1rem;
+  font-weight: 600;
 }
 
-.result-instruction {
+.result-value.positive {
+  color: #1976d2;
+}
+
+.result-value.negative {
+  color: #f57c00;
+}
+
+.instruction-card {
+  background: white;
+  border-radius: 8px;
+  padding: 16px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px;
-  background: rgba(25, 118, 210, 0.1);
-  border-radius: 8px;
+  gap: 12px;
+  border: 1px solid #e9ecef;
+}
+
+.instruction-text {
+  color: #2c3e50;
   font-weight: 500;
-  color: #1565c0;
 }
 
-.ballistic-table-container {
-  max-height: 300px;
-  overflow-y: auto;
+/* Table Section */
+.table-section {
+  grid-column: 1 / -1;
 }
 
-.ballistic-table {
-  font-size: 0.9rem;
+.table-content {
+  padding: 0;
 }
 
-/* Mobile responsiveness */
+.modern-table {
+  border-radius: 0 0 16px 16px;
+}
+
+.modern-table .q-table__top {
+  background: transparent;
+}
+
+.modern-table .q-table__bottom {
+  background: transparent;
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 1024px) {
-  .row {
-    flex-direction: column;
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
 
-  .col-lg-7,
-  .col-lg-5 {
-    width: 100%;
+  .header-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 16px;
+  }
+
+  .header-title {
+    font-size: 2rem;
+  }
+
+  .card-header-modern {
+    flex-direction: column;
+    gap: 16px;
   }
 }
 
 @media (max-width: 768px) {
-  .quick-distances-grid {
-    grid-template-columns: repeat(4, 1fr);
+  .container {
+    padding: 16px;
   }
 
-  .target-svg {
-    height: 350px;
+  .modern-header {
+    padding: 24px;
+    margin-bottom: 24px;
   }
 
-  .target-wrapper {
-    margin-bottom: 40px; /* więcej miejsca na mobile */
+  .header-title {
+    font-size: 1.8rem;
   }
 
-  .offset-chip {
-    font-size: 1rem;
-    padding: 8px 16px;
-    min-width: 120px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  .visualization-content,
+  .controls-content {
+    padding: 24px;
   }
 
-  .offset-chip-container {
-    top: 100%;
-    transform: translate(-50%, 10px);
+  .target-container {
+    padding: 16px;
   }
-}
 
-@media (max-width: 480px) {
-  .quick-distances-grid {
+  .quick-distances {
     grid-template-columns: repeat(3, 1fr);
+  }
+
+  .results-grid {
+    grid-template-columns: 1fr;
   }
 
   .target-svg {
     height: 320px;
-  }
-
-  .target-wrapper {
-    margin-bottom: 50px; /* jeszcze więcej miejsca na małych ekranach */
   }
 
   .offset-chip {
@@ -588,25 +740,26 @@ onMounted(() => {
     padding: 12px 20px;
     min-width: 140px;
     height: 48px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-weight: 700;
   }
+}
 
-  .offset-chip-container {
-    top: 100%;
-    transform: translate(-50%, 15px);
+@media (max-width: 480px) {
+  .header-title {
+    font-size: 1.5rem;
   }
 
-  .result-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+  .visualization-content,
+  .controls-content {
+    padding: 16px;
   }
 
-  .result-label {
-    min-width: auto;
+  .quick-distances {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .target-svg {
+    height: 280px;
   }
 }
 </style>
