@@ -13,7 +13,9 @@ const routes = [
       { path: '/unit', component: () => import('pages/unit/UnitPage.vue') },
       { path: '/equipment', component: () => import('pages/equipment/EquipmentPage.vue') },
       { path: '/tools', component: () => import('pages/tools/ToolsPage.vue') },
-      { path: '/tools/distance', component: () => import('pages/tools/DistanceCalculatorPage.vue') }
+      { path: '/tools/distance', component: () => import('pages/tools/DistanceCalculatorPage.vue') },
+      { path: '/ranks', component: () => import('pages/ranks/RanksPage.vue') },
+      { path: '/regulations', component: () => import('pages/regulations/RegulationsPage.vue') }
     ]
   },
 
