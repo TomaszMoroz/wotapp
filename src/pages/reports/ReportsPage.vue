@@ -339,8 +339,7 @@ STAN WŁASNY:
 WSPARCIE:
 [POTRZEBNE WSPARCIE/EWAKUACJA]
 
-Przykład: Zostaliśmy zaatakowani przez przeciwnika w sile drużyny. Przeciwnik prowadzi lekki ogień z broni strzeleckiej oraz prowadzi ostrzał moździerzowy. GRID to 12345 67890. Czas to 0500. Zajęliśmy pozycje obronne, Alfa flankuje przeciwnika od zachodu.`,
-    instructions: 'Używaj po nawiązaniu kontaktu z przeciwnikiem (także ogniowego). Przekazuj natychmiast przez RTO do TOC w celu aktualizacji sytuacji.'
+Przykład: Zostaliśmy zaatakowani przez przeciwnika w sile drużyny. Przeciwnik prowadzi lekki ogień z broni strzeleckiej oraz prowadzi ostrzał moździerzowy. GRID to 12345 67890. Czas to 0500. Zajęliśmy pozycje obronne, Alfa flankuje przeciwnika od zachodu.`
   },
   {
     id: 9,
@@ -375,8 +374,7 @@ KODY KOLORÓW:
 🟡 Żółty: 30-70%
 🔴 Czerwony: 0-30%
 
-GOTOWOŚĆ OGÓLNA: [ZIELONY/ŻÓŁTY/CZERWONY]`,
-    instructions: 'Raportuj po kontakcie ogniowym lub zakończeniu misji. Zbierz dane od operatorów indywidualnie. Podsumowanie wysyłaj przez RTO do TOC.'
+GOTOWOŚĆ OGÓLNA: [ZIELONY/ŻÓŁTY/CZERWONY]`
   },
   {
     id: 10,
@@ -409,8 +407,7 @@ A (ACTION) - DZIAŁANIA W PRZYPADKU ATAKU:
 RV (PUNKT ZBORNY):
 [LOKALIZACJA ZAPASOWA]
 
-Przykład: Ramzes, biorę RTO i kaemistę i idziemy sprawdzić teren pod punkt obserwacyjny. Wrócimy najpóźniej o 1430. Jeśli nie wrócimy do tego czasu, przejmujesz dowodzenie – skontaktuj się z TOC i raportuj sytuację. Jeśli zostaniecie zaatakowani, wycofajcie się do RV i czekajcie na nas do 1500.`,
-    instructions: 'Używaj przy odłączaniu jednostki od głównych sił. Osoba wydzielająca przekazuje info do C2, C2 wydzielający się - do kolejnej osoby w łańcuchu dowodzenia.'
+Przykład: Ramzes, biorę RTO i kaemistę i idziemy sprawdzić teren pod punkt obserwacyjny. Wrócimy najpóźniej o 1430. Jeśli nie wrócimy do tego czasu, przejmujesz dowodzenie – skontaktuj się z TOC i raportuj sytuację. Jeśli zostaniecie zaatakowani, wycofajcie się do RV i czekajcie na nas do 1500.`
   },
   {
     id: 11,
@@ -449,8 +446,7 @@ OCENA BEZPIECZEŃSTWA:
 
 DECYZJA: [ZIELONY/ŻÓŁTY/CZERWONY]
 
-Przykład: Zatrzymaliśmy się na 5 minut w lesie przed wejściem na otwartą przestrzeń. Przez 2 minuty nasłuchiwaliśmy - cisza. Przez 2 minuty obserwowaliśmy otwartą przestrzeń - brak ruchu. Wszystko czyste, idziemy dalej.`,
-    instructions: 'Stosuj co kilka/kilkanaście minut marszu w rejonie wysokiego ryzyka. Pozwala zidentyfikować czy obecność została wykryta przez przeciwnika.'
+Przykład: Zatrzymaliśmy się na 5 minut w lesie przed wejściem na otwartą przestrzeń. Przez 2 minuty nasłuchiwaliśmy - cisza. Przez 2 minuty obserwowaliśmy otwartą przestrzeń - brak ruchu. Wszystko czyste, idziemy dalej.`
   }
 ]
 
