@@ -40,29 +40,55 @@
             </div>
           </div>
 
-          <!-- Technical specifications table -->
-          <q-table
-            :rows="selectedWeapon.specs"
-            :columns="specColumns"
-            row-key="parameter"
-            flat
-            bordered
-            separator="cell"
-            no-data-label="Brak danych technicznych"
-            :rows-per-page-options="[0]"
-            rows-per-page="0"
-          >
-            <template v-slot:body-cell-parameter="props">
-              <q-td :props="props" class="text-weight-medium">
-                {{ props.value }}
-              </q-td>
-            </template>
-            <template v-slot:body-cell-value="props">
-              <q-td :props="props">
-                {{ props.value }}
-              </q-td>
-            </template>
-          </q-table>
+          <!-- Technical specifications - responsive layout -->
+          <div class="specs-container">
+            <!-- Desktop table view -->
+            <q-table
+              :rows="selectedWeapon.specs"
+              :columns="specColumns"
+              row-key="parameter"
+              flat
+              bordered
+              separator="cell"
+              no-data-label="Brak danych technicznych"
+              :rows-per-page-options="[0]"
+              rows-per-page="0"
+              class="gt-sm"
+            >
+              <template v-slot:body-cell-parameter="props">
+                <q-td :props="props" class="text-weight-medium">
+                  {{ props.value }}
+                </q-td>
+              </template>
+              <template v-slot:body-cell-value="props">
+                <q-td :props="props">
+                  {{ props.value }}
+                </q-td>
+              </template>
+            </q-table>
+
+            <!-- Mobile card view -->
+            <div class="lt-md">
+              <q-card
+                v-for="spec in selectedWeapon.specs"
+                :key="spec.parameter"
+                class="spec-card q-mb-sm"
+                flat
+                bordered
+              >
+                <q-card-section class="row items-center no-wrap">
+                  <div class="col">
+                    <div class="text-weight-medium text-primary q-mb-xs">
+                      {{ spec.parameter }}
+                    </div>
+                    <div class="text-body2">
+                      {{ spec.value }}
+                    </div>
+                  </div>
+                </q-card-section>
+              </q-card>
+            </div>
+          </div>
                         <img
                 v-if="selectedWeapon.image"
                 :src="selectedWeapon.image"
@@ -179,14 +205,17 @@ const weapons = [
     icon: 'my_location',
     color: 'accent',
     specs: [
-      { parameter: 'Kaliber', value: '7,62 × 51 mm NATO' },
-      { parameter: 'Masa (bez magazynka i celownika optycznego)', value: 'Około 5,4 kg' },
-      { parameter: 'Długość całkowita', value: '1073 mm' },
-      { parameter: 'Długość lufy', value: '508 mm (20 cali)' },
-      { parameter: 'Układ konstrukcyjny', value: 'Bezkolbowy (bullpup), gdzie magazynek i mechanizm zamkowy znajdują się za spustem' },
-      { parameter: 'Magazynek', value: 'Odłączany, standardowo mieści 10 nabojów' },
-      { parameter: 'Zasięg skuteczny', value: 'Około 800 metrów' },
-      { parameter: 'Prędkość wylotowa pocisku', value: 'Około 750 m/s (dla pocisku o masie 12 g)' }
+      { parameter: 'Kaliber', value: '7,62 mm' },
+      { parameter: 'Nabój', value: '7,62 × 51 mm NATO' },
+      { parameter: 'Magazynek', value: '10 nab., 5 nab.' },
+      { parameter: 'Długość całkowita (z urządzeniem wylotowym)', value: '1038 mm' },
+      { parameter: 'Długość całkowita (bez urządzenia wylotowego)', value: '980 mm' },
+      { parameter: 'Długość lufy', value: '660 mm' },
+      { parameter: 'Masa broni (bez celownika optycznego i amunicji)', value: '6,5 kg' },
+      { parameter: 'Prędkość początkowa pocisku', value: '870 m/s' },
+      { parameter: 'Energia początkowa pocisku', value: '3500 J' },
+      { parameter: 'Zasięg skuteczny', value: '1000 – 1600 m' },
+      { parameter: 'Siła spustu', value: '9-25 N' }
     ]
   },
   {
@@ -325,6 +354,25 @@ const goBack = () => {
   margin-top: 20px;
 }
 
+/* Responsive specifications styling */
+.specs-container {
+  margin-top: 20px;
+}
+
+.spec-card {
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.spec-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.spec-card .q-card__section {
+  padding: 12px 16px;
+}
+
+/* Mobile optimizations */
 @media (max-width: 600px) {
   .weapons-grid {
     grid-template-columns: 1fr 1fr;
@@ -333,6 +381,14 @@ const goBack = () => {
 
   .weapon-card {
     min-height: 140px;
+  }
+
+  .spec-card {
+    margin-bottom: 8px;
+  }
+
+  .spec-card .q-card__section {
+    padding: 10px 14px;
   }
 }
 </style>

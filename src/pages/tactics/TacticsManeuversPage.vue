@@ -123,13 +123,13 @@
                 </div>
 
                 <div v-else-if="selectedManeuver.id === 3">
-                  <h4>Formacja podwójny szeregant</h4>
+                  <h4>Formacja podwójny sierżant</h4>
                   <!-- <p>Klasyczna formacja wojskowa stosowana w marszu i walce, zapewniająca optymalną kontrolę i siłę ognia.</p> -->
 
                   <div class="diagram-container q-my-lg">
-                    <img :src="sier1Img" alt="Podwójny szeregant - formacja podstawowa" class="tactical-diagram q-mb-md" />
-                    <img :src="sier2Img" alt="Podwójny szeregant - rozwinięcie" class="tactical-diagram q-mb-md" />
-                    <img :src="sier3Img" alt="Podwójny szeregant - warianty" class="tactical-diagram" />
+                    <img :src="sier1Img" alt="podwójny sierżant - formacja podstawowa" class="tactical-diagram q-mb-md" />
+                    <img :src="sier2Img" alt="podwójny sierżant - rozwinięcie" class="tactical-diagram q-mb-md" />
+                    <img :src="sier3Img" alt="podwójny sierżant - warianty" class="tactical-diagram" />
                   </div>
 
                   <!-- <h5>Struktura formacji:</h5>
@@ -243,7 +243,7 @@ const maneuvers = [
   },
   {
     id: 3,
-    title: 'Podwójny szeregant',
+    title: 'Podwójny sierżant',
     category: 'Formacja taktyczna'
   },
   {
@@ -340,9 +340,8 @@ const goBack = () => {
 }
 
 .tactical-diagram {
+  width: 100%;
   max-width: 100%;
-  max-height: 400px;
-  width: auto;
   height: auto;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -370,6 +369,7 @@ const goBack = () => {
   }
 
   .tactical-diagram {
+    width: 100%;
     max-width: 100%;
     padding: 4px;
   }
@@ -377,6 +377,8 @@ const goBack = () => {
 
 @media (max-width: 480px) {
   .tactical-diagram {
+    width: 100%;
+    max-width: 100%;
     padding: 2px;
   }
 
