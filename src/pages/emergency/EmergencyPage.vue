@@ -1,158 +1,43 @@
 <template>
-  <q-page class="q-pa-lg">
-    <div class="text-h4 q-mb-md">🚨 Procedury Awaryjne</div>
-
-    <div class="row q-gutter-md">
-      <div class="col-12">
-        <q-banner class="bg-negative text-white q-mb-md">
-          <template v-slot:avatar>
-            <q-icon name="warning" />
-          </template>
-          W przypadku zagrożenia natychmiast skontaktuj się z dyżurnym!
-          <template v-slot:action>
-            <q-btn flat color="white" label="Zadzwoń" icon="phone" />
-          </template>
-        </q-banner>
+  <q-page class="page-background">
+    <div class="container q-pa-md">
+      <!-- Header Section -->
+      <div class="text-center q-mb-xl">
+        <div class="hero-section q-pa-lg rounded-borders">
+          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Stopnie i Regulaminy</div>
+          <div class="text-body1 text-grey-6">Wojskowe oznaczenia i przepisy</div>
+        </div>
       </div>
 
-      <div class="col-12 col-md-6">
-        <q-card>
-          <q-card-section class="bg-negative text-white">
-            <div class="text-h6">Alarm pożarowy</div>
-          </q-card-section>
-          <q-card-section>
-            <q-stepper
-              v-model="step"
-              vertical
-              color="negative"
-              animated
-            >
-              <q-step
-                :name="1"
-                title="Wykrycie pożaru"
-                icon="visibility"
-                :done="step > 1"
-              >
-                Natychmiast uruchom alarm pożarowy i powiadom wszystkich w budynku.
-              </q-step>
-
-              <q-step
-                :name="2"
-                title="Ewakuacja"
-                icon="exit_to_app"
-                :done="step > 2"
-              >
-                Kieruj się do najbliższego wyjścia ewakuacyjnego. Nie używaj wind!
-              </q-step>
-
-              <q-step
-                :name="3"
-                title="Zbiórka"
-                icon="group"
-                :done="step > 3"
-              >
-                Zgłoś się w wyznaczonym punkcie zbiórki i czekaj na dalsze instrukcje.
-              </q-step>
-            </q-stepper>
-          </q-card-section>
-        </q-card>
-      </div>
-
-      <div class="col-12 col-md-6">
-        <q-card>
-          <q-card-section class="bg-warning text-white">
-            <div class="text-h6">Alarmy i sygnały</div>
-          </q-card-section>
-          <q-card-section>
-            <q-list>
-              <q-item>
-                <q-item-section avatar>
-                  <q-avatar color="negative" text-color="white">
-                    <q-icon name="volume_up" />
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Alarm pożarowy</q-item-label>
-                  <q-item-label caption>Ciągły sygnał dźwiękowy</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item>
-                <q-item-section avatar>
-                  <q-avatar color="orange" text-color="white">
-                    <q-icon name="notifications" />
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Alarm gazowy</q-item-label>
-                  <q-item-label caption>Przerywany sygnał</q-item-label>
-                </q-item-section>
-              </q-item>
-
-              <q-item>
-                <q-item-section avatar>
-                  <q-avatar color="blue" text-color="white">
-                    <q-icon name="security" />
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Alarm bezpieczeństwa</q-item-label>
-                  <q-item-label caption>Podwójny sygnał</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-card-section>
-        </q-card>
-      </div>
-
-      <div class="col-12">
-        <q-card>
-          <q-card-section>
-            <div class="text-h6">Kontakty awaryjne</div>
-          </q-card-section>
-          <q-separator />
-          <q-card-section>
-            <div class="row q-gutter-md">
-              <div class="col-12 col-sm-6 col-md-3">
-                <q-card flat bordered class="text-center">
-                  <q-card-section>
-                    <q-icon name="phone" size="2rem" color="negative" />
-                    <div class="text-h6 q-mt-sm">112</div>
-                    <div class="text-caption">Numer alarmowy</div>
-                  </q-card-section>
-                </q-card>
-              </div>
-
-              <div class="col-12 col-sm-6 col-md-3">
-                <q-card flat bordered class="text-center">
-                  <q-card-section>
-                    <q-icon name="local_fire_department" size="2rem" color="orange" />
-                    <div class="text-h6 q-mt-sm">998</div>
-                    <div class="text-caption">Straż pożarna</div>
-                  </q-card-section>
-                </q-card>
-              </div>
-
-              <div class="col-12 col-sm-6 col-md-3">
-                <q-card flat bordered class="text-center">
-                  <q-card-section>
-                    <q-icon name="local_police" size="2rem" color="blue" />
-                    <div class="text-h6 q-mt-sm">997</div>
-                    <div class="text-caption">Policja</div>
-                  </q-card-section>
-                </q-card>
-              </div>
-
-              <div class="col-12 col-sm-6 col-md-3">
-                <q-card flat bordered class="text-center">
-                  <q-card-section>
-                    <q-icon name="medical_services" size="2rem" color="positive" />
-                    <div class="text-h6 q-mt-sm">999</div>
-                    <div class="text-caption">Pogotowie</div>
-                  </q-card-section>
-                </q-card>
-              </div>
+      <!-- Cards Grid -->
+      <div class="cards-grid q-mb-xl">
+        <!-- Stopnie Wojskowe -->
+        <q-card
+          class="dashboard-card military-primary-card"
+          clickable
+          @click="navigateTo('/ranks')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="military_tech" size="3rem" color="white" />
             </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Stopnie Wojskowe</div>
+            <div class="text-caption text-grey-4">Oznaczenia i hierarchia WOT</div>
+          </q-card-section>
+        </q-card>
+
+        <!-- Regulaminy -->
+        <q-card
+          class="dashboard-card military-brown-card"
+          clickable
+          @click="navigateTo('/regulations')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="gavel" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Regulaminy</div>
+            <div class="text-caption text-grey-4">Przepisy i procedury WOT</div>
           </q-card-section>
         </q-card>
       </div>
@@ -161,11 +46,87 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'EmergencyPage'
 })
 
-const step = ref(1)
+const router = useRouter()
+
+const navigateTo = (path) => {
+  router.push(path)
+}
 </script>
+
+<style scoped>
+.page-background {
+  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero-section {
+  background: white;
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.dashboard-card {
+  height: 180px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: none;
+  overflow: hidden;
+  position: relative;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.military-primary-card {
+  background: linear-gradient(135deg, #2D3E2F 0%, #1A2A1C 100%);
+  color: white;
+}
+
+.military-brown-card {
+  background: linear-gradient(135deg, #8B4513 0%, #5D2F0A 100%);
+  color: white;
+}
+
+.card-icon-wrapper {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  backdrop-filter: blur(10px);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+</style>
