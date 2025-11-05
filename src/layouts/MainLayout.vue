@@ -122,6 +122,21 @@
         <template v-else>
           <q-item
             clickable
+            @click="$router.push('/equipment')"
+            :class="isActiveRoute('/equipment') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="inventory" :color="isActiveRoute('/equipment') ? 'white' : 'military-primary'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Wyposażenie</q-item-label>
+              <q-item-label caption>Sprzęt wojskowy</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
             @click="$router.push('/tools')"
             :class="isActiveRoute('/tools') ? 'bg-military-active text-white' : ''"
             class="q-my-xs q-mx-sm rounded-borders"
@@ -150,7 +165,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item
+          <!-- <q-item
             clickable
             @click="$router.push('/map')"
             :class="isActiveRoute('/map') ? 'bg-military-active text-white' : ''"
@@ -163,7 +178,7 @@
               <q-item-label class="text-weight-medium">Topografia</q-item-label>
               <q-item-label caption>Mapy i orientacja</q-item-label>
             </q-item-section>
-          </q-item>
+          </q-item> -->
 
           <q-item
             clickable
@@ -187,41 +202,11 @@
             class="q-my-xs q-mx-sm rounded-borders"
           >
             <q-item-section avatar>
-              <q-icon name="warning" :color="isActiveRoute('/emergency') ? 'white' : 'military-accent'" />
+              <q-icon name="military_tech" :color="isActiveRoute('/emergency') ? 'white' : 'military-accent'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label class="text-weight-medium">Procedury</q-item-label>
-              <q-item-label caption>Protokoły awaryjne</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item
-            clickable
-            @click="$router.push('/unit')"
-            :class="isActiveRoute('/unit') ? 'bg-military-active text-white' : ''"
-            class="q-my-xs q-mx-sm rounded-borders"
-          >
-            <q-item-section avatar>
-              <q-icon name="group" :color="isActiveRoute('/unit') ? 'white' : 'military-green'" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-weight-medium">Jednostka</q-item-label>
-              <q-item-label caption>Informacje o jednostce</q-item-label>
-            </q-item-section>
-          </q-item>
-
-          <q-item
-            clickable
-            @click="$router.push('/equipment')"
-            :class="isActiveRoute('/equipment') ? 'bg-military-active text-white' : ''"
-            class="q-my-xs q-mx-sm rounded-borders"
-          >
-            <q-item-section avatar>
-              <q-icon name="inventory" :color="isActiveRoute('/equipment') ? 'white' : 'military-brown'" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-weight-medium">Wyposażenie</q-item-label>
-              <q-item-label caption>Sprzęt wojskowy</q-item-label>
+              <q-item-label class="text-weight-medium">Stopnie</q-item-label>
+              <q-item-label caption>Regulaminy wojskowe</q-item-label>
             </q-item-section>
           </q-item>
         </template>

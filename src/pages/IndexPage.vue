@@ -72,7 +72,7 @@
           </q-card-section> -->
         </q-card>
 
-        <q-card
+        <!-- <q-card
           class="dashboard-card military-secondary-card"
           clickable
           @click="navigateTo('/map')"
@@ -84,12 +84,7 @@
             <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
             <div class="text-caption text-grey-4">Mapy i orientacja</div>
           </q-card-section>
-          <!-- <q-card-section class="card-footer">
-            <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="explore">
-              Nawigacja
-            </q-chip>
-          </q-card-section> -->
-        </q-card>
+        </q-card> -->
 
         <q-card
           class="dashboard-card military-dark-card"

@@ -1,6 +1,5 @@
 <template>
   <q-page class="q-pa-lg">
-    <div class="text-h4 q-mb-md">📋 Wzory Meldunków</div>
 
     <div class="row justify-center">
       <div class="col-12 col-md-8 col-lg-6">
@@ -118,21 +117,6 @@
               </q-card>
             </q-card-section>
 
-            <q-separator v-if="selectedReport.instructions" />
-
-            <q-card-section v-if="selectedReport.instructions" class="bg-blue-1">
-              <div class="row items-center q-mb-md">
-                <q-icon name="lightbulb" color="blue-8" size="20px" class="q-mr-sm" />
-                <div class="text-h6 text-blue-8">Instrukcje wypełnienia</div>
-              </div>
-              <q-banner inline-actions class="bg-blue-2 text-blue-9">
-                {{ selectedReport.instructions }}
-                <template v-slot:action>
-                  <q-btn flat color="blue-8" icon="info" size="sm" />
-                </template>
-              </q-banner>
-            </q-card-section>
-
             <q-separator />
 
             <q-card-actions align="between" class="q-pa-md">
@@ -182,13 +166,12 @@
 
               <div class="row justify-center q-gutter-md">
                 <q-chip
-                  v-for="category in ['Meldunki taktyczne', 'Meldunki logistyczne', 'Meldunki operacyjne']"
+                  v-for="category in ['Meldunki medyczne', 'Meldunki taktyczne', 'Meldunki logistyczne', 'Meldunki operacyjne']"
                   :key="category"
                   color="blue-1"
                   text-color="blue-8"
                   size="sm"
                   icon="folder"
-                >
                 >
                   {{ category }}
                 </q-chip>
@@ -218,6 +201,83 @@ const filteredOptions = ref([])
 // Wszystkie wzory meldunków - alfabetycznie sortowane
 const allReports = [
   {
+    id: 2,
+    name: 'MIST REPORT - Raport medyczny',
+    category: 'Meldunki medyczne',
+    icon: 'healing',
+    color: 'pink',
+    content: `RAPORT M.I.S.T. - RAPORT MEDYCZNY
+
+M (MECHANISM OF INJURY) - MECHANIZM URAZU:
+   [OPIS JAK DOSZŁO DO URAZU]
+
+I (INJURIES SUSTAINED) - ODNIESIONE URAZY:
+   [SZCZEGÓŁOWY OPIS OBRAŻEŃ]
+
+S (SIGNS AND SYMPTOMS) - OBJAWY, PARAMETRY ŻYCIOWE:
+   [TĘTNO, CIŚNIENIE, ODDECH, ŚWIADOMOŚĆ]
+
+T (TREATMENT GIVEN) - ZASTOSOWANE LECZENIE:
+   [LISTA WYKONANYCH CZYNNOŚCI MEDYCZNYCH]
+
+DODATKOWE INFORMACJE:
+- Czas urazu: [CZAS]
+- Wiek poszkodowanego: [WIEK]
+- Alergies: [ALERGIE]
+- Medications: [LEKI]
+- Past medical history: [HISTORIA CHORÓB]
+- Last oral intake: [OSTATNI POSIŁEK]
+
+Przykład:
+M: Odłamek granatu w prawą nogę
+I: Rana odłamkowa uda prawego, krwawienie zewnętrzne
+S: Tętno 110/min, świadomość przytomna, ból 8/10
+T: Opatrunek uciskowy, podano morfina 10mg`
+  },
+  {
+    id: 3,
+    name: 'MELDUNEK MEDEVAC',
+    category: 'Meldunki medyczne',
+    icon: 'emergency',
+    color: 'red',
+    content: `MELDUNEK MEDEVAC - EWAKUACJA MEDYCZNA
+
+1. WSPÓŁRZĘDNE PUNKTU PODJĘCIA:
+   [GRID/WSPÓŁRZĘDNE]
+
+2. CZ. RADIOWA, KRYPTONIM, CRYPTO/PLAINTEXT:
+   [CZĘSTOTLIWOŚĆ, ZNAK WYWOŁAWCZY]
+
+3. LICZBA PACJENTÓW ZE WZGLĘDU NA PRIORYTET:
+   A - pilny (2h) B - priorytetowy (4h) C - rutynowy (24h)
+   [LICZBA W KAŻDEJ KATEGORII]
+
+4. SPRZĘT SPECJALISTYCZNY:
+   A - brak  B - wyciągarka  C - sprzęt ekstrakcyjny  D - respirator
+   [POTRZEBNY SPRZĘT]
+
+5. LICZBA PACJENTÓW ZE WZGLĘDU NA TYP:
+   L - leżący    A - siedzący
+   [NA NOSZACH / CHODZĄCY]
+
+6. BEZPIECZEŃSTWO W REJONIE PODJĘCIA:
+   N - brak npl.  P - możliwy npl.  E - wróg w rejonie  X - kontakt ogniowy
+   [SYTUACJA TAKTYCZNA]
+
+7. OZNACZENIE PUNKTU PODJĘCIA:
+   A - panel B - pirotechnika C - dym D - brak E - inne
+   [SPOSÓB OZNAKOWANIA]
+
+8. LICZBA PACJENTÓW - STATUS:
+   A - żołnierz koalicji  B - cywil koalicji  C - żołnierz spoza koalicji  D - cywil  E - jeniec/HVT
+   [STATUS RANNYCH]
+
+9. ZAGROŻENIE NBC, OPIS TERENU, UZUPEŁNIENIE APTECZKI:
+   [DODATKOWE INFORMACJE]
+
+Przykład: 1: GRID 12345 67890  2: 30.000 ALFA21  3: 2A, 1B  4: A  5: 2L, 1A  6: N  7: C  8: 3A  9: Teren równy, las iglasty`
+  },
+  {
     id: 7,
     name: 'SALUTE - Obserwacja przeciwnika',
     category: 'Meldunki taktyczne',
@@ -246,8 +306,7 @@ E (EQUIPMENT) - SPRZĘT:
 DODATKOWE INFORMACJE:
 [KIERUNEK PRZEMIESZCZANIA, ZACHOWANIE]
 
-Przykład: 4 rozbijają obóz GRID 12345 67890 Szwedzkie 1200 4 x AUG, 1 x Carl Gustaf M4`,
-    instructions: 'Używaj do raportowania zaobserwowanej aktywności przeciwnika. Przekazuj przez RTO do TOC. Bądź precyzyjny w opisie lokalizacji i sprzętu.'
+Przykład: 4 rozbijają obóz GRID 12345 67890 Szwedzkie 1200 4 x AUG, 1 x Carl Gustaf M4`
   },
   {
     id: 8,
