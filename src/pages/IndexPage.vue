@@ -18,14 +18,14 @@
         <q-card
           class="dashboard-card military-primary-card"
           clickable
-          @click="navigateTo('/communication')"
+          @click="navigateTo('/equipment')"
         >
           <q-card-section class="text-center">
             <div class="card-icon-wrapper">
-              <q-icon name="record_voice_over" size="3rem" color="white" />
+              <q-icon name="inventory" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Alfabet NATO</div>
-            <div class="text-caption text-grey-4">Komunikacja fonetyczna</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Wyposażenie</div>
+            <div class="text-caption text-grey-4">Sprzęt wojskowy</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.7)" text-color="white" icon="volume_up">
@@ -37,14 +37,14 @@
         <q-card
           class="dashboard-card military-brown-card"
           clickable
-          @click="navigateTo('/training')"
+          @click="navigateTo('/tools')"
         >
           <q-card-section class="text-center">
             <div class="card-icon-wrapper">
-              <q-icon name="gps_fixed" size="3rem" color="white" />
+              <q-icon name="build" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">GROT Offset</div>
-            <div class="text-caption text-grey-4">Korekta celowania</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Narzędzia</div>
+            <div class="text-caption text-grey-4">Kalkulatory wojskowe</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="calculate">

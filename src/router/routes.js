@@ -11,7 +11,9 @@ const routes = [
       { path: '/reports', component: () => import('pages/reports/ReportsPage.vue') },
       { path: '/emergency', component: () => import('pages/emergency/EmergencyPage.vue') },
       { path: '/unit', component: () => import('pages/unit/UnitPage.vue') },
-      { path: '/equipment', component: () => import('pages/equipment/EquipmentPage.vue') }
+      { path: '/equipment', component: () => import('pages/equipment/EquipmentPage.vue') },
+      { path: '/tools', component: () => import('pages/tools/ToolsPage.vue') },
+      { path: '/tools/distance', component: () => import('pages/tools/DistanceCalculatorPage.vue') }
     ]
   },
 

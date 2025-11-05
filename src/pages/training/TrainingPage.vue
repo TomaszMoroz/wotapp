@@ -8,8 +8,8 @@
             <q-icon name="gps_fixed" size="2.5rem" color="white" />
           </div>
           <div class="header-text">
-            <h1 class="header-title">GROT Offset Calculator</h1>
-            <p class="header-subtitle">Precyzyjne obliczenia korekcji celowania</p>
+            <h1 class="header-title">GROT Offset</h1>
+            <p class="header-subtitle">Korekta punktu celowania</p>
           </div>
         </div>
       </div>
@@ -30,8 +30,17 @@
                   text-color="white"
                   icon="straighten"
                   size="lg"
+                  class="q-mr-sm"
                 >
                   {{ targetDistance }}m
+                </q-chip>
+                <q-chip
+                  :color="offsetValue > 0 ? 'red-5' : 'green-5'"
+                  text-color="white"
+                  :icon="offsetValue > 0 ? 'keyboard_arrow_down' : offsetValue < 0 ? 'keyboard_arrow_up' : 'center_focus_strong'"
+                  size="lg"
+                >
+                  {{ offsetValue > 0 ? '-' : '+' }}{{ Math.abs(offsetValue) }}cm
                 </q-chip>
               </div>
             </div>
@@ -122,22 +131,6 @@
                   <text x="205" y="15" font-family="Arial" font-size="10" fill="#6c757d">+50cm</text>
                   <text x="205" y="395" font-family="Arial" font-size="10" fill="#6c757d">-50cm</text>
                 </svg>
-
-                <!-- Chip z informacją o korekcji poza SVG -->
-                <div
-                  v-if="offsetValue !== 0 && aimPoint"
-                  class="offset-chip-container"
-                >
-                  <q-chip
-                    :color="offsetValue > 0 ? 'blue' : 'orange'"
-                    text-color="white"
-                    :icon="offsetValue > 0 ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-                    size="md"
-                    class="offset-chip"
-                  >
-                    {{ Math.abs(offsetValue) }}cm {{ offsetValue > 0 ? '↑' : '↓' }}
-                  </q-chip>
-                </div>
               </div>
             </div>
           </div>
@@ -190,22 +183,6 @@
                 </div>
               </div>
 
-              <!-- Precision Slider -->
-              <div class="input-group">
-                <label class="input-label">Precyzyjna regulacja</label>
-                <q-slider
-                  v-model="targetDistance"
-                  :min="0"
-                  :max="600"
-                  :step="10"
-                  label
-                  color="primary"
-                  @update:model-value="calculateOffset"
-                  class="modern-slider"
-                />
-              </div>
-
-              <!-- Results -->
               <div class="results-section">
                 <h4 class="results-title">Wyniki obliczeń</h4>
                 <div class="results-grid">

@@ -34,6 +34,7 @@
       </div>
 
       <q-list class="q-mt-sm">
+        <!-- Dashboard - zawsze widoczny -->
         <q-item
           clickable
           @click="$router.push('/')"
@@ -49,80 +50,181 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          @click="$router.push('/training')"
-          :class="isActiveRoute('/training') ? 'bg-military-active text-white' : ''"
-          class="q-my-xs q-mx-sm rounded-borders"
-        >
-          <q-item-section avatar>
-            <q-icon name="gps_fixed" :color="isActiveRoute('/training') ? 'white' : 'military-secondary'" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-weight-medium">GROT - Offset</q-item-label>
-            <q-item-label caption>Kalkulator balistyczny</q-item-label>
-          </q-item-section>
-        </q-item>
+        <!-- Menu dla sekcji Narzędzia -->
+        <template v-if="isInToolsSection">
+          <q-separator class="q-my-md" />
+          <q-item-label header class="text-grey-7 text-weight-bold q-px-md">
+            Narzędzia
+          </q-item-label>
 
-        <q-item
-          clickable
-          @click="$router.push('/tactics')"
-          :class="isActiveRoute('/tactics') ? 'bg-military-active text-white' : ''"
-          class="q-my-xs q-mx-sm rounded-borders"
-        >
-          <q-item-section avatar>
-            <q-icon name="school" :color="isActiveRoute('/tactics') ? 'white' : 'military-accent'" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-weight-medium">Taktyka</q-item-label>
-            <q-item-label caption>Materiały szkoleniowe</q-item-label>
-          </q-item-section>
-        </q-item>
+          <q-item
+            clickable
+            @click="$router.push('/tools')"
+            :class="isActiveRoute('/tools') && route.path === '/tools' ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="build" :color="isActiveRoute('/tools') && route.path === '/tools' ? 'white' : 'military-secondary'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Wszystkie narzędzia</q-item-label>
+              <q-item-label caption>Przegląd kafelków</q-item-label>
+            </q-item-section>
+          </q-item>
 
-        <q-item
-          clickable
-          @click="$router.push('/map')"
-          :class="isActiveRoute('/map') ? 'bg-military-active text-white' : ''"
-          class="q-my-xs q-mx-sm rounded-borders"
-        >
-          <q-item-section avatar>
-            <q-icon name="map" :color="isActiveRoute('/map') ? 'white' : 'military-green'" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-weight-medium">Topografia</q-item-label>
-            <q-item-label caption>Mapy i orientacja</q-item-label>
-          </q-item-section>
-        </q-item>
+          <q-item
+            clickable
+            @click="$router.push('/tools/distance')"
+            :class="isActiveRoute('/tools/distance') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="straighten" :color="isActiveRoute('/tools/distance') ? 'white' : 'military-accent'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Kalkulator odległości</q-item-label>
+              <q-item-label caption>Pomiar przez tysiączne</q-item-label>
+            </q-item-section>
+          </q-item>
 
-        <q-item
-          clickable
-          @click="$router.push('/communication')"
-          :class="isActiveRoute('/communication') ? 'bg-military-active text-white' : ''"
-          class="q-my-xs q-mx-sm rounded-borders"
-        >
-          <q-item-section avatar>
-            <q-icon name="record_voice_over" :color="isActiveRoute('/communication') ? 'white' : 'military-brown'" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-weight-medium">Alfabet NATO</q-item-label>
-            <q-item-label caption>Komunikacja fonetyczna</q-item-label>
-          </q-item-section>
-        </q-item>
+          <q-item
+            clickable
+            @click="$router.push('/training')"
+            :class="isActiveRoute('/training') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="gps_fixed" :color="isActiveRoute('/training') ? 'white' : 'military-brown'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">GROT Offset</q-item-label>
+              <q-item-label caption>Kalkulator balistyczny</q-item-label>
+            </q-item-section>
+          </q-item>
 
-        <q-item
-          clickable
-          @click="$router.push('/reports')"
-          :class="isActiveRoute('/reports') ? 'bg-military-active text-white' : ''"
-          class="q-my-xs q-mx-sm rounded-borders"
-        >
-          <q-item-section avatar>
-            <q-icon name="description" :color="isActiveRoute('/reports') ? 'white' : 'military-dark'" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-weight-medium">Meldunki</q-item-label>
-            <q-item-label caption>Raporty wojskowe</q-item-label>
-          </q-item-section>
-        </q-item>
+          <q-item
+            clickable
+            @click="$router.push('/communication')"
+            :class="isActiveRoute('/communication') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="record_voice_over" :color="isActiveRoute('/communication') ? 'white' : 'military-green'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Alfabet NATO</q-item-label>
+              <q-item-label caption>Komunikacja fonetyczna</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
+
+        <!-- Menu główne (gdy nie jesteśmy w narzędziach) -->
+        <template v-else>
+          <q-item
+            clickable
+            @click="$router.push('/tools')"
+            :class="isActiveRoute('/tools') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="build" :color="isActiveRoute('/tools') ? 'white' : 'military-secondary'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Narzędzia</q-item-label>
+              <q-item-label caption>Kalkulatory wojskowe</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            @click="$router.push('/tactics')"
+            :class="isActiveRoute('/tactics') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="school" :color="isActiveRoute('/tactics') ? 'white' : 'military-accent'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Taktyka</q-item-label>
+              <q-item-label caption>Materiały szkoleniowe</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            @click="$router.push('/map')"
+            :class="isActiveRoute('/map') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="map" :color="isActiveRoute('/map') ? 'white' : 'military-green'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Topografia</q-item-label>
+              <q-item-label caption>Mapy i orientacja</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            @click="$router.push('/reports')"
+            :class="isActiveRoute('/reports') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="description" :color="isActiveRoute('/reports') ? 'white' : 'military-dark'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Meldunki</q-item-label>
+              <q-item-label caption>Raporty wojskowe</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            @click="$router.push('/emergency')"
+            :class="isActiveRoute('/emergency') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="warning" :color="isActiveRoute('/emergency') ? 'white' : 'military-accent'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Procedury</q-item-label>
+              <q-item-label caption>Protokoły awaryjne</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            @click="$router.push('/unit')"
+            :class="isActiveRoute('/unit') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="group" :color="isActiveRoute('/unit') ? 'white' : 'military-green'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Jednostka</q-item-label>
+              <q-item-label caption>Informacje o jednostce</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            @click="$router.push('/equipment')"
+            :class="isActiveRoute('/equipment') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="inventory" :color="isActiveRoute('/equipment') ? 'white' : 'military-brown'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Wyposażenie</q-item-label>
+              <q-item-label caption>Sprzęt wojskowy</q-item-label>
+            </q-item-section>
+          </q-item>
+        </template>
 
         <q-separator class="q-my-md" />
 
@@ -176,6 +278,10 @@ const isActiveRoute = computed(() => (path) => {
     return route.path === '/'
   }
   return route.path.startsWith(path)
+})
+
+const isInToolsSection = computed(() => {
+  return route.path.startsWith('/tools') || route.path === '/training' || route.path === '/communication'
 })
 </script>
 
