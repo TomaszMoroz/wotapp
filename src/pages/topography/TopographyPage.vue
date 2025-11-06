@@ -42,14 +42,30 @@
       <!-- Modal dla artykułów, które nie mają dedykowanych stron -->
       <q-dialog v-model="showArticleModal" maximized transition-show="slide-up" transition-hide="slide-down">
         <q-card class="article-modal">
-          <q-card-section class="row items-center q-pb-none">
-            <div class="text-h5 text-weight-bold">{{ selectedTopic?.name }}</div>
+          <q-card-section class="article-header row items-center q-pb-none">
+            <q-btn
+              flat
+              round
+              icon="arrow_back"
+              color="primary"
+              @click="goBack"
+              class="q-mr-md"
+            />
+            <q-icon :name="selectedTopic?.icon" size="3rem" color="primary" />
+            <div class="q-ml-md">
+              <div class="text-h4 text-weight-bold text-primary">{{ selectedTopic?.name }}</div>
+              <div class="text-subtitle1 text-grey-7">{{ selectedTopic?.description }}</div>
+            </div>
             <q-space />
-            <q-btn icon="close" flat round dense @click="goBack" />
+            <q-btn icon="close" flat round dense color="primary" @click="goBack" />
           </q-card-section>
 
-          <q-card-section class="article-content q-pa-lg">
-            <div v-if="selectedTopic?.content" v-html="selectedTopic.content"></div>
+          <q-card-section class="article-content-section q-pa-lg">
+            <q-card class="content-card">
+              <q-card-section class="article-content">
+                <div v-if="selectedTopic?.content" v-html="selectedTopic.content"></div>
+              </q-card-section>
+            </q-card>
           </q-card-section>
         </q-card>
       </q-dialog>
@@ -79,25 +95,49 @@ const allTopics = [
     color: 'green',
     description: 'Podstawowe metody orientacji bez kompasu',
     content: `
-      <h3>🧭 Orientacja w terenie</h3>
+      <h3>Orientacja w terenie</h3>
 
-      <h4>☀️ Według słońca:</h4>
+      <h4>Określanie Pozycji: Trzy Praktyczne Metody</h4>
+      <p>Umiejętność szybkiego i precyzyjnego ustalania własnego położenia (pozycjonowania) na mapie jest podstawą każdej efektywnej nawigacji. Zawsze należy dążyć do osiągnięcia maksymalnej pewności co do swojej lokalizacji, zanim podejmie się kolejną decyzję nawigacyjną.</p>
+
+      <h4>1. Pozycja Zgodna z Cechą Terenu</h4>
+      <p><strong>Zasada:</strong> Wiesz, że stoisz na konkretnej, wyraźnie zaznaczonej na mapie linii terenowej (np. na brzegu rzeki, na zakręcie głównej drogi asfaltowej, na skrzyżowaniu linii kolejowej z drogą).</p>
+      <p><strong>Działanie:</strong> Dokładne zlokalizowanie się na mapie polega na identyfikacji charakterystycznego punktu wzdłuż tej linii (np. mostu, wieży, charakterystycznego drzewa) i przeniesieniu tej informacji na mapę. Jeśli masz GPS, potwierdź odczytami współrzędnych i dopasuj do mapy.</p>
+
+      <h4>2. Liniowe Przecięcie (Użycie Jednego Namiaru)</h4>
+      <p>Metoda stosowana, gdy stoisz na jakiejś linii terenowej, ale nie masz dodatkowych punktów do weryfikacji.</p>
+      <ol>
+        <li><strong>Stój na Linii:</strong> Ustal, że Twoja pozycja znajduje się na długiej, ciągłej linii (np. linia energetyczna, wyraźna ścieżka, prosta rzeka).</li>
+        <li><strong>Namierz Punkt:</strong> Zmierz kompasem azymut magnetyczny do jednego wyraźnego, rozpoznawalnego punktu, który widzisz w terenie i który jest na mapie (np. odległy szczyt, kościół, maszt).</li>
+        <li><strong>Wsteczny Azymut:</strong> Przelicz ten azymut na azymut wsteczny, dodając lub odejmując 180° (np. jeśli namiar wynosi 30°, wsteczny to 30° + 180° = 210°).</li>
+        <li><strong>Przeniesienie:</strong> Na mapie nanieś ten wsteczny azymut z punktu, który namierzyłeś.</li>
+        <li><strong>Pozycja:</strong> Punkt przecięcia się linii wstecznego azymutu z linią terenową, na której stoisz, to Twoja pozycja.</li>
+      </ol>
+
+      <h4>3. Wsteczne Przecięcie (Triangulacja) – Najdokładniejsza Metoda</h4>
+      <p>Najbardziej precyzyjna metoda, stosowana, gdy nie stoisz na żadnej wyraźnej linii.</p>
+      <ol>
+        <li><strong>Namierz Trzy Punkty:</strong> Zidentyfikuj w terenie i na mapie trzy różne, stabilne punkty orientacyjne (np. najwyższy szczyt w okolicy, wieża, charakterystyczny budynek).</li>
+        <li><strong>Zmierz Azymuty:</strong> Zmierz kompasem azymut magnetyczny do każdego z tych trzech punktów.</li>
+        <li><strong>Wsteczne Azymuty:</strong> Dla każdego z trzech namiarów oblicz azymut wsteczny (dodając/odejmując 180°).</li>
+        <li><strong>Przeniesienie:</strong> Na mapie przenieś każdy z trzech wstecznych azymutów z namierzonych punktów w kierunku swojego położenia.</li>
+        <li><strong>Pozycja:</strong> Linia namiarowa z każdego punktu stworzy na mapie trójkąt błędu. Twoja pozycja znajduje się wewnątrz tego trójkąta.</li>
+      </ol>
+
+      <h4>Praktyczna Wskazówka</h4>
+      <p>Zawsze wybieraj punkty, które nie leżą zbyt blisko siebie i są rozmieszczone szeroko, najlepiej pod kątami zbliżonymi do 60° względem siebie. Zwiększa to dokładność triangulacji.</p>
+
+      <h4>Orientacja według słońca:</h4>
       <ul>
         <li><strong>Południe:</strong> Słońce na południu</li>
         <li><strong>Wschód:</strong> Rano po lewej stronie</li>
         <li><strong>Zachód:</strong> Wieczorem po prawej stronie</li>
       </ul>
 
-      <h4>⭐ Według gwiazd:</h4>
+      <h4>Orientacja według gwiazd:</h4>
       <ul>
         <li><strong>Gwiazda Polarna:</strong> Wskazuje północ</li>
         <li><strong>Wielki Wóz:</strong> Pomaga znaleźć Polarną</li>
-      </ul>
-
-      <h4>🌲 Według przyrody:</h4>
-      <ul>
-        <li><strong>Mech:</strong> Częściej po stronie północnej</li>
-        <li><strong>Korona drzew:</strong> Gęstsza po południu</li>
       </ul>
     `
   },
@@ -109,9 +149,9 @@ const allTopics = [
     color: 'green',
     description: 'Obsługa kompasu i wyznaczanie azymutów',
     content: `
-      <h3>🧭 Podstawy kompasu</h3>
+      <h3>Podstawy kompasu</h3>
 
-      <h4>📐 Kierunki główne:</h4>
+      <h4>Kierunki główne:</h4>
       <ul>
         <li><strong>0°/360°:</strong> Północ</li>
         <li><strong>90°:</strong> Wschód</li>
@@ -119,14 +159,14 @@ const allTopics = [
         <li><strong>270°:</strong> Zachód</li>
       </ul>
 
-      <h4>🎯 Wyznaczanie azymutu:</h4>
+      <h4>Wyznaczanie azymutu:</h4>
       <ol>
         <li>Trzymaj kompas poziomo</li>
         <li>Wyceluj w cel</li>
         <li>Odczytaj wartość</li>
       </ol>
 
-      <h4>🔄 Azymut powrotny:</h4>
+      <h4>Azymut powrotny:</h4>
       <p>Dodaj lub odejmij 180°</p>
     `
   },
@@ -138,23 +178,23 @@ const allTopics = [
     color: 'green',
     description: 'Techniki przemieszczania się na zadany kierunek',
     content: `
-      <h3>🚶 Marsz na azymut</h3>
+      <h3>Marsz na azymut</h3>
 
-      <h4>📋 Przygotowanie:</h4>
+      <h4>Przygotowanie:</h4>
       <ol>
         <li>Wyznacz azymut na mapie</li>
         <li>Ustaw kompas</li>
         <li>Wybierz punkt pośredni</li>
       </ol>
 
-      <h4>🚶 Wykonanie marszu:</h4>
+      <h4>Wykonanie marszu:</h4>
       <ul>
         <li><strong>Wybierz cel pośredni</strong> na linii azymutu</li>
         <li><strong>Idź do celu</strong> nie patrząc na kompas</li>
         <li><strong>Po osiągnięciu</strong> wybierz kolejny punkt</li>
       </ul>
 
-      <h4>🌲 Omijanie przeszkód:</h4>
+      <h4>Omijanie przeszkód:</h4>
       <ol>
         <li>Zapamiętaj azymut podstawowy</li>
         <li>Obejdź przeszkodę pod kątem prostym</li>
@@ -170,9 +210,9 @@ const allTopics = [
     color: 'green',
     description: 'Metody ustalania własnego położenia',
     content: `
-      <h3>📍 Określanie pozycji</h3>
+      <h3>Określanie pozycji</h3>
 
-      <h4>🎯 Triangulacja:</h4>
+      <h4>Triangulacja:</h4>
       <ol>
         <li>Znajdź 2-3 punkty charakterystyczne</li>
         <li>Zmierz azymuty do każdego</li>
@@ -180,7 +220,7 @@ const allTopics = [
         <li>Przecięcie = Twoja pozycja</li>
       </ol>
 
-      <h4>📐 Metoda przesunięcia:</h4>
+      <h4>Metoda przesunięcia:</h4>
       <ul>
         <li>Zorientuj mapę</li>
         <li>Znajdź linię charakterystyczną</li>
@@ -196,16 +236,16 @@ const allTopics = [
     color: 'blue',
     description: 'Podstawy interpretacji map topograficznych',
     content: `
-      <h3>🗺️ Czytanie map</h3>
+      <h3>Czytanie map</h3>
 
-      <h4>📏 Skale wojskowe:</h4>
+      <h4>Skale wojskowe:</h4>
       <ul>
         <li><strong>1:25 000:</strong> Mapa szczegółowa</li>
         <li><strong>1:50 000:</strong> Mapa taktyczna</li>
         <li><strong>1:100 000:</strong> Mapa operacyjna</li>
       </ul>
 
-      <h4>🏔️ Warstwice:</h4>
+      <h4>Warstwice:</h4>
       <ul>
         <li><strong>Blisko siebie:</strong> Teren stromy</li>
         <li><strong>Daleko:</strong> Teren płaski</li>
@@ -292,9 +332,9 @@ const allTopics = [
     color: 'orange',
     description: 'Wybór optymalnej trasy przemieszczania',
     content: `
-      <h3>🗺️ Planowanie trasy</h3>
+      <h3>Planowanie trasy</h3>
 
-      <h4>📋 Etapy planowania:</h4>
+      <h4>Etapy planowania:</h4>
       <ol>
         <li>Określ punkt startowy i docelowy</li>
         <li>Przeanalizuj teren</li>
@@ -303,7 +343,7 @@ const allTopics = [
         <li>Oszacuj czas marszu</li>
       </ol>
 
-      <h4>⚠️ Unikaj:</h4>
+      <h4>Unikaj:</h4>
       <ul>
         <li>Terenów bagnistych</li>
         <li>Stromych zboczy</li>
@@ -320,16 +360,16 @@ const allTopics = [
     color: 'orange',
     description: 'Szacowanie czasu przemieszczania',
     content: `
-      <h3>⏱️ Odległość i czas</h3>
+      <h3>Odległość i czas</h3>
 
-      <h4>📏 Pomiar odległości:</h4>
+      <h4>Pomiar odległości:</h4>
       <ul>
         <li><strong>Linijka:</strong> Proste odcinki</li>
         <li><strong>Sznurek:</strong> Krętą trasę</li>
         <li><strong>Cyrkiel:</strong> Przenoszenie odległości</li>
       </ul>
 
-      <h4>🚶 Szybkość marszu:</h4>
+      <h4>Szybkość marszu:</h4>
       <ul>
         <li><strong>Teren płaski:</strong> 4-5 km/h</li>
         <li><strong>Teren falisty:</strong> 3-4 km/h</li>
@@ -345,16 +385,16 @@ const allTopics = [
     color: 'orange',
     description: 'Specyfika poruszania się w nocy',
     content: `
-      <h3>🌙 Nawigacja nocna</h3>
+      <h3>Nawigacja nocna</h3>
 
-      <h4>👁️ Adaptacja wzroku:</h4>
+      <h4>Adaptacja wzroku:</h4>
       <ul>
         <li><strong>15-30 minut:</strong> Pełna adaptacja</li>
         <li><strong>Czerwone światło:</strong> Nie psuje widzenia nocnego</li>
         <li><strong>Unikaj:</strong> Białego światła</li>
       </ul>
 
-      <h4>🎯 Techniki:</h4>
+      <h4>Techniki:</h4>
       <ul>
         <li>Patrz obok obiektu (widzenie boczne)</li>
         <li>Używaj charakterystycznych konturów</li>
@@ -371,16 +411,16 @@ const allTopics = [
     color: 'purple',
     description: 'Rodzaje i obsługa kompasów wojskowych',
     content: `
-      <h3>🧭 Kompas wojskowy</h3>
+      <h3>Kompas wojskowy</h3>
 
-      <h4>🎯 Typy kompasów:</h4>
+      <h4>Typy kompasów:</h4>
       <ul>
         <li><strong>Kompas z celownikiem:</strong> Precyzyjny pomiar</li>
         <li><strong>Kompas płytkowy:</strong> Szybki odczyt</li>
         <li><strong>Kompas na nadgarstek:</strong> Zawsze dostępny</li>
       </ul>
 
-      <h4>⚙️ Obsługa:</h4>
+      <h4>Obsługa:</h4>
       <ol>
         <li>Trzymaj poziomo</li>
         <li>Z dala od metalu</li>
@@ -388,7 +428,7 @@ const allTopics = [
         <li>Odczytaj wartość</li>
       </ol>
 
-      <h4>⚠️ Błędy:</h4>
+      <h4>Błędy:</h4>
       <ul>
         <li>Deklinacja magnetyczna (+4° w Polsce)</li>
         <li>Zakłócenia od metalu</li>
@@ -404,9 +444,9 @@ const allTopics = [
     color: 'purple',
     description: 'Praktyczne wykorzystanie GPS',
     content: `
-      <h3>📡 GPS w terenie</h3>
+      <h3>GPS w terenie</h3>
 
-      <h4>📱 Podstawowe funkcje:</h4>
+      <h4>Podstawowe funkcje:</h4>
       <ul>
         <li><strong>Pozycja:</strong> Aktualne współrzędne</li>
         <li><strong>Waypoint:</strong> Zapisz ważne punkty</li>
@@ -414,14 +454,14 @@ const allTopics = [
         <li><strong>Track:</strong> Zapis przebytej trasy</li>
       </ul>
 
-      <h4>⚙️ Ustawienia:</h4>
+      <h4>Ustawienia:</h4>
       <ul>
         <li><strong>Format:</strong> MGRS lub UTM</li>
         <li><strong>Datum:</strong> WGS84</li>
         <li><strong>Jednostki:</strong> Metryczne</li>
       </ul>
 
-      <h4>🔋 Oszczędzanie baterii:</h4>
+      <h4>Oszczędzanie baterii:</h4>
       <ul>
         <li>Używaj trybu oszczędzania</li>
         <li>Wyłącz niepotrzebne funkcje</li>
@@ -449,8 +489,7 @@ const goBack = () => {
 
 <style lang="scss" scoped>
 .topography-page {
-  background: radial-gradient(ellipse at top, rgba(16, 24, 40, 0.1) 0%, transparent 50%),
-              linear-gradient(to bottom, var(--q-dark) 0%, #0f1419 100%);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
 }
 
@@ -460,9 +499,13 @@ const goBack = () => {
 }
 
 .page-header {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(25, 118, 210, 0.1);
   text-align: center;
-  padding: 2rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
 }
 
 .topics-grid {
@@ -481,46 +524,74 @@ const goBack = () => {
 }
 
 .topic-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(25, 118, 210, 0.1);
+  border-radius: 16px;
   height: 100%;
   transition: all 0.3s ease;
   cursor: pointer;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.95);
     border-color: var(--q-primary);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
   }
 }
 
 .topic-image {
   text-align: center;
   padding: 2rem 1rem 1rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 12px 12px 0 0;
+  background: rgba(25, 118, 210, 0.05);
+  border-radius: 16px 16px 0 0;
 }
 
+// Modal styling to match MGRS page
 .article-modal {
-  background: var(--q-dark);
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   max-height: 100vh;
   overflow-y: auto;
 }
 
+.article-header {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px 16px 0 0;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(25, 118, 210, 0.1);
+}
+
+.article-content-section {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.content-card {
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.9);
+}
+
 .article-content {
+  line-height: 1.6;
+  font-size: 1rem;
+  color: #424242;
+
   :deep(h3) {
-    color: var(--q-primary);
+    color: #1976d2;
     margin-bottom: 1rem;
     font-size: 1.5rem;
     font-weight: 600;
   }
 
   :deep(h4) {
-    color: #ffffff;
+    color: #424242;
     margin: 1.5rem 0 0.75rem;
     font-size: 1.2rem;
-    font-weight: 500;
+    font-weight: 600;
   }
 
   :deep(ul), :deep(ol) {
@@ -529,21 +600,40 @@ const goBack = () => {
     li {
       margin-bottom: 0.5rem;
       line-height: 1.6;
+      color: #424242;
     }
   }
 
   :deep(p) {
     margin-bottom: 1rem;
     line-height: 1.6;
+    color: #424242;
   }
 
   :deep(strong) {
-    color: var(--q-accent);
+    color: #1976d2;
     font-weight: 600;
   }
 }
 
 @media (max-width: 768px) {
+  .container {
+    padding: 8px !important;
+  }
+
+  .page-header {
+    padding: 16px;
+    margin-bottom: 16px !important;
+  }
+
+  .page-header .row {
+    gap: 12px !important;
+  }
+
+  .page-header .text-h4 {
+    font-size: 1.5rem;
+  }
+
   .topics-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -551,6 +641,58 @@ const goBack = () => {
 
   .topic-card-wrapper:hover {
     transform: none;
+  }
+
+  .article-header {
+    padding: 16px;
+  }
+
+  .article-header .row {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px !important;
+  }
+
+  .article-content {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 4px !important;
+  }
+
+  .page-header {
+    padding: 12px;
+    margin-bottom: 12px !important;
+  }
+
+  .page-header .text-h4 {
+    font-size: 1.25rem;
+  }
+
+  .page-header .text-subtitle1 {
+    font-size: 0.9rem;
+  }
+
+  .article-header {
+    padding: 12px;
+  }
+
+  .article-content {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .article-content :deep(h3) {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .article-content :deep(h4) {
+    font-size: 1rem;
+    margin: 1rem 0 0.5rem 0;
   }
 }
 </style>
