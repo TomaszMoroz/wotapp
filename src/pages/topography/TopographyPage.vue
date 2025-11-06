@@ -131,13 +131,6 @@ const allTopics = computed(() => [
       <h4>Praktyczna Wskazówka</h4>
       <p>Zawsze wybieraj punkty, które nie leżą zbyt blisko siebie i są rozmieszczone szeroko, najlepiej pod kątami zbliżonymi do 60° względem siebie. Zwiększa to dokładność triangulacji.</p>
 
-      <h4>Orientacja według słońca:</h4>
-      <ul>
-        <li><strong>Południe:</strong> Słońce na południu</li>
-        <li><strong>Wschód:</strong> Rano po lewej stronie</li>
-        <li><strong>Zachód:</strong> Wieczorem po prawej stronie</li>
-      </ul>
-
       <h4>Orientacja według gwiazd:</h4>
       <ul>
         <li><strong>Gwiazda Polarna:</strong> Wskazuje północ</li>
