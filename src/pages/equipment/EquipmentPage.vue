@@ -293,6 +293,43 @@ const weapons = [
       { parameter: 'Ciśnienie przy strzale', value: '25 MPa' },
       { parameter: 'Przeznaczenie', value: 'głównie dla jednostek Wojsk Obrony Terytorialnej' }
     ]
+  },
+  {
+    id: 'm72ec',
+    name: 'M72 EC MK1',
+    fullName: 'Granatnik M72 EC MK1',
+    category: 'Broń przeciwpancerna',
+    icon: 'rocket_launch',
+    color: 'deep-orange',
+    specs: [
+      { parameter: 'Kaliber', value: '66 mm' },
+      { parameter: 'Długość rozłożony', value: '980 mm' },
+      { parameter: 'Długość złożony', value: '780 mm' },
+      { parameter: 'Masa', value: '3,44 kg' },
+      { parameter: 'Prędkość pocisku', value: '200 m/s' },
+      { parameter: 'Zasięg', value: '20-1200 m' }
+    ]
+  },
+  {
+    id: 'granatnikgp',
+    name: 'Granatnik GP',
+    fullName: 'Granatnik GP',
+    category: 'Granatnik',
+    icon: 'gps_not_fixed',
+    color: 'purple',
+    specs: [
+      { parameter: 'Amunicja', value: '40 mm x 46SR LV' },
+      { parameter: 'Masa', value: '1,5 kg' },
+      { parameter: 'Długość', value: '295 mm' },
+      { parameter: 'Szerokość (z celownikiem)', value: '92 mm' },
+      { parameter: 'Wysokość', value: '142 mm' },
+      { parameter: 'Długość lufy', value: '200 mm' },
+      { parameter: 'Skok bruzd', value: '1200 mm' },
+      { parameter: 'Liczba bruzd', value: '6' },
+      { parameter: 'Prędkość początkowa pocisku', value: '78 m/s' },
+      { parameter: 'Donośność', value: '350 m' },
+      { parameter: 'Szybkostrzelność teoretyczna', value: '5-7 strz./min.' }
+    ]
   }
 ]
 
