@@ -9,6 +9,7 @@ const routes = [
       { path: '/tactics', component: () => import('pages/tactics/TacticsPage.vue') },
       { path: '/tactics/maneuvers', component: () => import('pages/tactics/TacticsManeuversPage.vue') },
       { path: '/tactics/procedures', component: () => import('pages/tactics/TacticsProceduresPage.vue') },
+      { path: '/tactics/command', component: () => import('pages/tactics/CommandPage.vue') },
       { path: '/map', component: () => import('pages/topography/TopographyPage.vue') },
       { path: '/reports', component: () => import('pages/reports/ReportsPage.vue') },
       { path: '/emergency', component: () => import('pages/emergency/EmergencyPage.vue') },

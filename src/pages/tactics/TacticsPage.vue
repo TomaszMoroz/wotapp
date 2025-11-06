@@ -40,6 +40,21 @@
             <div class="text-caption text-grey-4">Protokoły medyczne i inne</div>
           </q-card-section>
         </q-card>
+
+        <!-- Dowodzenie -->
+        <q-card
+          class="category-card military-green-card"
+          clickable
+          @click="navigateTo('/tactics/command')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="psychology" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Dowodzenie</div>
+            <div class="text-caption text-grey-4">Metody i procedury dowodzenia</div>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>
