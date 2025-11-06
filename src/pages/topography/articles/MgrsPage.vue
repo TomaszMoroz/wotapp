@@ -25,7 +25,7 @@
         <q-card class="content-card">
           <q-card-section>
             <div class="text-center q-mb-lg">
-              <img src="./mgrs.png" alt="MGRS System" class="mgrs-image" />
+              <img :src="mgrsImg" alt="MGRS System" class="mgrs-image" />
             </div>
 
             <div class="article-content">
@@ -73,6 +73,9 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+
+// Import image from assets
+import mgrsImg from '../../assets/mgrs.png'
 
 defineOptions({
   name: 'MgrsPage'

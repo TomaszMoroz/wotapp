@@ -77,6 +77,10 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
+// Import images from assets
+import busolaImg from '../../assets/busola.jpeg'
+import mgrsImg from '../../assets/mgrs.png'
+
 defineOptions({
   name: 'TopographyPage'
 })
@@ -86,7 +90,7 @@ const router = useRouter()
 
 const showArticleModal = computed(() => !!selectedTopic.value)
 
-const allTopics = [
+const allTopics = computed(() => [
   {
     id: 'terrain-orientation',
     name: 'Orientacja w terenie',
@@ -152,7 +156,7 @@ const allTopics = [
       <h3>Budowa busoli</h3>
 
       <div style="text-align: center; margin: 20px 0;">
-        <img src="./busola.jpeg" alt="Budowa busoli" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+        <img src="${busolaImg}" alt="Budowa busoli" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
       </div>
 
       <h4>I. Budowa</h4>
@@ -361,7 +365,7 @@ const allTopics = [
       <h3>System współrzędnych MGRS</h3>
 
       <div style="text-align: center; margin: 20px 0;">
-        <img src="./mgrs.png" alt="MGRS System" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+        <img src="${mgrsImg}" alt="MGRS System" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
       </div>
 
       <h4>Opis systemu:</h4>
@@ -667,7 +671,7 @@ const allTopics = [
   //     </ul>
   //   `
   // }
-]
+])
 
 const selectTopic = (topic) => {
   // Kierowanie do dedykowanych stron dla artykułów
