@@ -25,7 +25,7 @@
               <q-icon name="inventory" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Wyposażenie</div>
-            <div class="text-caption text-grey-4" :class="isMobile && 'q-pa-sm'">Sprzęt wojskowy</div>
+            <div class="text-caption text-grey-4 mobile-caption">Sprzęt wojskowy</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.7)" text-color="white" icon="volume_up">
@@ -44,7 +44,7 @@
               <q-icon name="build" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Narzędzia</div>
-            <div class="text-caption text-grey-4" :class="isMobile && 'q-pa-sm'">Pomoce, kalkulatory</div>
+            <div class="text-caption text-grey-4 mobile-caption">Pomoce, kalkulatory</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="calculate">
@@ -63,7 +63,7 @@
               <q-icon name="school" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Taktyka, dowodzenie i procedury</div>
-            <div class="text-caption text-grey-4 q-pa-sm-mobile">Materiały szkoleniowe</div>
+            <div class="text-caption text-grey-4 mobile-caption">Materiały szkoleniowe</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="menu_book">
@@ -82,7 +82,7 @@
               <q-icon name="map" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
-            <div class="text-caption text-grey-4" :class="isMobile && 'q-pa-sm'">Mapy i nawigacja</div>
+            <div class="text-caption text-grey-4 mobile-caption">Mapy i nawigacja</div>
           </q-card-section>
         </q-card>
 
@@ -96,7 +96,7 @@
               <q-icon name="gps_fixed" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Strzelectwo</div>
-            <div class="text-caption text-grey-4" :class="isMobile && 'q-pa-sm'">Balistyka i techniki</div>
+            <div class="text-caption text-grey-4 mobile-caption">Balistyka i techniki</div>
           </q-card-section>
         </q-card>
 
@@ -124,7 +124,7 @@
               <q-icon name="description" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Meldunki</div>
-            <div class="text-caption text-grey-4" :class="isMobile && 'q-pa-sm'">Raporty wojskowe</div>
+            <div class="text-caption text-grey-4 mobile-caption">Raporty wojskowe</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="assignment">
@@ -143,7 +143,7 @@
               <q-icon name="military_tech" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Stopnie, regulaminy, prawo</div>
-            <div class="text-caption text-grey-4" :class="isMobile && 'q-pa-sm'">Informacje</div>
+            <div class="text-caption text-grey-4 mobile-caption">Informacje</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="emergency">
@@ -174,12 +174,7 @@
 </template>
 
 <script setup>
-import { useQuasar } from 'quasar'
-import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-
-const $q = useQuasar()
-const isMobile = computed(() => $q.screen.width < 600)
 
 const router = useRouter()
 
@@ -313,13 +308,18 @@ const navigateTo = (path) => {
     padding: 8px;
   }
 
+  .mobile-caption {
+    padding: 4px 8px;
+    line-height: 1.3;
+  }
+
   .cards-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
 
   .dashboard-card {
-    height: 160px;
+    height: 180px; /* Zwiększona wysokość dla tablet */
   }
 
   .hero-section {
@@ -344,7 +344,19 @@ const navigateTo = (path) => {
   }
 
   .dashboard-card {
-    height: 140px;
+    height: 170px; /* Zwiększona wysokość dla mobile */
+    padding-bottom: 12px; /* Dodatkowy padding na dole */
+  }
+
+  /* Zapewnienie miejsca dla tekstu na mobile */
+  .dashboard-card .q-card-section {
+    padding-bottom: 20px;
+  }
+
+  .mobile-caption {
+    padding: 6px 12px;
+    line-height: 1.4;
+    font-size: 0.75rem;
   }
 
   .status-bar .row {
