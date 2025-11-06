@@ -160,8 +160,38 @@
               <q-icon name="school" :color="isActiveRoute('/tactics') ? 'white' : 'military-accent'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label class="text-weight-medium">Taktyka</q-item-label>
+              <q-item-label class="text-weight-medium">Taktyka, procedury, dowodzenie</q-item-label>
               <q-item-label caption>Materiały szkoleniowe</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            @click="$router.push('/topography')"
+            :class="isActiveRoute('/topography') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="map" :color="isActiveRoute('/topography') ? 'white' : 'military-green'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Topografia</q-item-label>
+              <q-item-label caption>Mapy i nawigacja</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item
+            clickable
+            @click="$router.push('/shooting')"
+            :class="isActiveRoute('/shooting') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="gps_fixed" :color="isActiveRoute('/shooting') ? 'white' : 'military-brown'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Strzelectwo</q-item-label>
+              <q-item-label caption>Balistyka i techniki</q-item-label>
             </q-item-section>
           </q-item>
 

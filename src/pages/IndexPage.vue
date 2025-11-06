@@ -44,7 +44,7 @@
               <q-icon name="build" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Narzędzia</div>
-            <div class="text-caption text-grey-4">Pomoce</div>
+            <div class="text-caption text-grey-4">Pomoce, kalkulatory</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="calculate">
@@ -62,7 +62,7 @@
             <div class="card-icon-wrapper">
               <q-icon name="school" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Taktyka i procedury</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Taktyka, dowodzenie i procedury</div>
             <div class="text-caption text-grey-4">Materiały szkoleniowe</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
@@ -70,6 +70,34 @@
               Szkolenia
             </q-chip>
           </q-card-section> -->
+        </q-card>
+
+        <q-card
+          class="dashboard-card military-secondary-card"
+          clickable
+          @click="navigateTo('/topography')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="map" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
+            <div class="text-caption text-grey-4">Mapy i nawigacja</div>
+          </q-card-section>
+        </q-card>
+
+        <q-card
+          class="dashboard-card military-shooting-card"
+          clickable
+          @click="navigateTo('/shooting')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="gps_fixed" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Strzelectwo</div>
+            <div class="text-caption text-grey-4">Balistyka i techniki</div>
+          </q-card-section>
         </q-card>
 
         <!-- <q-card
@@ -242,6 +270,11 @@ const navigateTo = (path) => {
 
 .military-accent-card {
   background: linear-gradient(135deg, #704214 0%, #4A2C0E 100%);
+  color: white;
+}
+
+.military-shooting-card {
+  background: linear-gradient(135deg, #8B1538 0%, #5D0E24 100%);
   color: white;
 }
 
