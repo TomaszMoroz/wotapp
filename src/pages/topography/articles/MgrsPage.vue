@@ -25,7 +25,7 @@
         <q-card class="content-card">
           <q-card-section>
             <div class="text-center q-mb-lg">
-              <img src="/mgrs.png" alt="MGRS System" class="mgrs-image" />
+              <img src="./mgrs.png" alt="MGRS System" class="mgrs-image" />
             </div>
 
             <div class="article-content">

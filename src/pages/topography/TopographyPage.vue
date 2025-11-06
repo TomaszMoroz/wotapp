@@ -152,7 +152,7 @@ const allTopics = [
       <h3>Budowa busoli</h3>
 
       <div style="text-align: center; margin: 20px 0;">
-        <img src="/busola.jpeg" alt="Budowa busoli" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+        <img src="./busola.jpeg" alt="Budowa busoli" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
       </div>
 
       <h4>I. Budowa</h4>
@@ -361,7 +361,7 @@ const allTopics = [
       <h3>System współrzędnych MGRS</h3>
 
       <div style="text-align: center; margin: 20px 0;">
-        <img src="/mgrs.png" alt="MGRS System" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+        <img src="./mgrs.png" alt="MGRS System" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
       </div>
 
       <h4>Opis systemu:</h4>
