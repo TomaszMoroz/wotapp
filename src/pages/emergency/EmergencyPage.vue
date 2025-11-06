@@ -4,7 +4,7 @@
       <!-- Header Section -->
       <div class="text-center q-mb-xl">
         <div class="hero-section q-pa-lg rounded-borders">
-          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Stopnie i Regulaminy</div>
+          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Stopnie, regulamin, prawo</div>
           <div class="text-body1 text-grey-6">Wojskowe oznaczenia i przepisy</div>
         </div>
       </div>
@@ -38,6 +38,36 @@
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Regulaminy</div>
             <div class="text-caption text-grey-4">Przepisy i procedury WOT</div>
+          </q-card-section>
+        </q-card>
+
+        <!-- Warunki użycia broni palnej -->
+        <q-card
+          class="dashboard-card military-dark-card"
+          clickable
+          @click="navigateTo('/firearms-law')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="security" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Warunki użycia broni palnej</div>
+            <div class="text-caption text-grey-4">Art. 45 - Ustawa o środkach przymusu</div>
+          </q-card-section>
+        </q-card>
+
+        <!-- Musztra -->
+        <q-card
+          class="dashboard-card military-drill-card"
+          clickable
+          @click="navigateTo('/drill')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="flag" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Musztra</div>
+            <div class="text-caption text-grey-4">Regulamin musztry</div>
           </q-card-section>
         </q-card>
       </div>
@@ -81,7 +111,7 @@ const navigateTo = (path) => {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
-  max-width: 600px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -107,6 +137,16 @@ const navigateTo = (path) => {
 
 .military-brown-card {
   background: linear-gradient(135deg, #8B4513 0%, #5D2F0A 100%);
+  color: white;
+}
+
+.military-dark-card {
+  background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%);
+  color: white;
+}
+
+.military-drill-card {
+  background: linear-gradient(135deg, #556B2F 0%, #3A4A20 100%);
   color: white;
 }
 

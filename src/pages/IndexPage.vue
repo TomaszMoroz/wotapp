@@ -114,8 +114,8 @@
             <div class="card-icon-wrapper">
               <q-icon name="military_tech" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Stopnie i regulaminy</div>
-            <div class="text-caption text-grey-4">Skrot regulaminu, stopnie</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Stopnie, regulaminy, prawo</div>
+            <div class="text-caption text-grey-4">Informacje</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="emergency">

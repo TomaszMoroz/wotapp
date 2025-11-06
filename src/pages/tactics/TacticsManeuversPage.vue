@@ -16,11 +16,11 @@
         </div>
       </div>
 
-      <div class="row q-gutter-lg">
+      <div class="row q-gutter-md">
         <!-- Lista treści -->
-        <div class="col-md-4 col-sm-12">
+        <div class="col-md-4 col-sm-12 col-xs-12">
           <q-card class="content-list-card">
-            <q-card-section>
+            <q-card-section class="q-pa-md">
               <div class="text-h6 q-mb-md">Spis treści</div>
 
               <!-- Filtrowanie -->
@@ -57,9 +57,9 @@
         </div>
 
         <!-- Treść -->
-        <div class="col-md-7 col-sm-12">
+        <div class="col-md-8 col-sm-12 col-xs-12">
           <q-card v-if="selectedManeuver" class="content-card">
-            <q-card-section>
+            <q-card-section class="q-pa-md">
               <div class="text-h5 text-weight-bold q-mb-md">{{ selectedManeuver.title }}</div>
               <div class="text-subtitle2 text-grey-7 q-mb-lg">{{ selectedManeuver.category }}</div>
 
@@ -197,7 +197,7 @@
           </q-card>
 
           <q-card v-else class="content-card">
-            <q-card-section class="text-center">
+            <q-card-section class="text-center q-pa-md">
               <q-icon name="military_tech" size="4rem" color="grey-5" class="q-mb-md" />
               <div class="text-h6 text-grey-6">Wybierz manewer z listy</div>
               <div class="text-body2 text-grey-5">Kliknij na wybrany manewer aby wyświetlić jego treść</div>
@@ -282,6 +282,11 @@ const goBack = () => {
   margin: 0 auto;
 }
 
+.row {
+  align-items: flex-start;
+  gap: 1rem;
+}
+
 .hero-section {
   background: white;
   border: 1px solid rgba(139, 69, 19, 0.3);
@@ -295,6 +300,11 @@ const goBack = () => {
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   min-height: 600px;
+}
+
+.content-list-card {
+  position: sticky;
+  top: 20px;
 }
 
 .content-body {
@@ -330,60 +340,82 @@ const goBack = () => {
 
 .diagram-container {
   text-align: center;
-  padding: 1rem;
-  background: #f5f5f5;
-  border-radius: 8px;
-  border: 2px solid #e0e0e0;
+  padding: 1.5rem;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
   max-width: 100%;
   overflow: hidden;
   box-sizing: border-box;
+  margin: 1.5rem 0;
 }
 
 .tactical-diagram {
   width: 100%;
   max-width: 100%;
   height: auto;
-  border-radius: 4px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   background: white;
-  padding: 8px;
+  padding: 12px;
   object-fit: contain;
   box-sizing: border-box;
   display: block;
   margin: 0 auto;
 }
 
+/* Caption styling for diagrams */
+.diagram-caption {
+  margin-top: 12px;
+  color: #6c757d;
+  font-size: 0.875rem;
+  font-style: italic;
+  padding: 0 16px;
+}
+
 @media (max-width: 768px) {
   .container .row {
     flex-direction: column;
+    gap: 1rem;
   }
 
   .content-list-card {
     min-height: auto;
     margin-bottom: 1rem;
+    position: static;
+  }
+
+  .content-card {
+    min-height: auto;
   }
 
   .diagram-container {
-    padding: 0.5rem;
-    margin: 0.5rem 0;
+    padding: 1rem;
+    margin: 1rem 0;
   }
 
   .tactical-diagram {
-    width: 100%;
-    max-width: 100%;
-    padding: 4px;
+    padding: 8px;
+  }
+
+  .diagram-caption {
+    padding: 0 8px;
   }
 }
 
 @media (max-width: 480px) {
   .tactical-diagram {
-    width: 100%;
-    max-width: 100%;
-    padding: 2px;
+    padding: 6px;
   }
 
   .diagram-container {
-    padding: 0.25rem;
+    padding: 0.75rem;
+    margin: 0.75rem 0;
+  }
+
+  .diagram-caption {
+    padding: 0 4px;
+    font-size: 0.8rem;
   }
 }
 </style>
