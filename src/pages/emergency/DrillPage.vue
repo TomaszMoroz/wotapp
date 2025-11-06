@@ -556,12 +556,6 @@ const scrollToSection = (sectionId) => {
   line-height: 1.5;
 }
 
-.info-box {
-  background: linear-gradient(135deg, rgba(139, 69, 19, 0.2) 0%, rgba(55, 71, 79, 0.2) 100%);
-  border-radius: 8px;
-  border: 1px solid rgba(139, 69, 19, 0.3);
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   .regulation-content {
