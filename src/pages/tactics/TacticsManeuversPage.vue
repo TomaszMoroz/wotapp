@@ -66,65 +66,96 @@
               <div class="content-body">
                 <div v-if="selectedManeuver.id === 1">
                   <h4>Okrężna</h4>
-                  <!-- <p>Podstawowy manewr taktyczny polegający na obejściu przeciwnika i ataku z flanki lub tyłu.</p> -->
+                  <p>Procedura rozpoznania i zajęcia rejonu bazy po wykonaniu manewru "HAK".</p>
 
                   <div class="diagram-container q-my-lg">
                     <img :src="okrImg" alt="Diagram manewru okrężnego" class="tactical-diagram" />
                   </div>
 
-                  <!-- <h5>Zasady wykonania:</h5>
+                  <h5>Przygotowanie do okrężnej:</h5>
+                  <ol>
+                    <li><strong>Wykonanie "HAK":</strong> Sprawdzenie czy sekcja nie jest śledzona</li>
+                    <li><strong>Procedura "5-25 m":</strong> Rozpoznanie planowanego rejonu bazy</li>
+                    <li><strong>Ustalenie miejsca:</strong> Wstępnie w planowaniu, precyzowanie w terenie</li>
+                  </ol>
+
+                  <h5>Rozpoznanie rejonu bazy:</h5>
                   <ul>
-                    <li><strong>Rozpoznanie:</strong> Określ pozycję i siłę przeciwnika</li>
-                    <li><strong>Podział sił:</strong> Część wiąże przeciwnika, część wykonuje manewr</li>
-                    <li><strong>Koordynacja:</strong> Synchronizacja obu elementów</li>
-                    <li><strong>Wykorzystanie terenu:</strong> Ukrycie ruchu obchodzącego</li>
+                    <li><strong>Siły rozpoznawcze:</strong> Minimum 4 (idealnie 5) żołnierzy ze środka szyku</li>
+                    <li><strong>Ubezpieczenie:</strong> Skrajni żołnierze ubezpieczają wyznaczone sektory</li>
+                    <li><strong>Punkt kontrolny:</strong> Wyjście i powrót przez punkt charakterystyczny w terenie</li>
+                    <li><strong>Pozostawienie straży:</strong> 2 żołnierzy pozostaje w rejonie bazy</li>
+                    <li><strong>Łączność:</strong> Dowódca zawsze z radiotelefonistą</li>
+                    <li><strong>Bezpieczeństwo:</strong> Hasło i odzew</li>
                   </ul>
 
-                  <h5>Zalety manewru:</h5>
+                  <h5>Organizacja obrony okrężnej:</h5>
+                  <ol>
+                    <li><strong>Zajęcie pozycji:</strong> Wszystkie siły osiągają rejon bazy</li>
+                    <li><strong>Obrona okrężna:</strong> Rozmieszczenie wokół rejonu</li>
+                    <li><strong>Nasłuch z obserwacją:</strong> Sprawdzenie bezpieczeństwa</li>
+                    <li><strong>Dowodzenie:</strong> Dowódca i radiotelefonista w środku okrężnej</li>
+                    <li><strong>Planowanie:</strong> Czas na przemyślenie kolejnych zadań</li>
+                    <li><strong>Meldunek:</strong> Wysłanie meldunku o osiągnięciu rejonu bazy</li>
+                  </ol>
+
+                  <h5>Działania w bazie:</h5>
                   <ul>
-                    <li>Zaskoczenie przeciwnika</li>
-                    <li>Atak na słabiej bronione pozycje</li>
-                    <li>Zmuszenie do walki na dwa fronty</li>
-                    <li>Możliwość okrążenia i odcięcia</li>
-                  </ul> -->
+                    <li><strong>Odpoczynek:</strong> Regeneracja sił do dalszego działania</li>
+                    <li><strong>Szczegółowe zadania:</strong> Dowódca może wezwać żołnierzy do instrukcji</li>
+                    <li><strong>Stałe ubezpieczenie:</strong> Baza musi być ciągle ubezpieczana</li>
+                    <li><strong>Kontrola:</strong> Monitoring wszystkich elementów procedury</li>
+                  </ul>
+
+                  <div class="q-pa-md bg-amber-1 rounded-borders q-mt-md">
+                    <div class="text-weight-medium text-amber-8 q-mb-xs">
+                      <q-icon name="warning" class="q-mr-xs" />
+                      Zasada podstawowa
+                    </div>
+                    <div class="text-body2">
+                      W czasie wykonywania każdego elementu baza musi być stale ubezpieczana.
+                    </div>
+                  </div>
                 </div>
 
                 <div v-else-if="selectedManeuver.id === 2">
                   <h4>Manewr hak</h4>
-                  <!-- <p>Taktyczny manewr polegający na wykonaniu gwałtownego skrętu i ataku z nieoczekiwanej strony.</p> -->
+                  <p>Procedura sprawdzenia czy sekcja nie jest śledzona podczas marszu w terenie.</p>
 
                   <div class="diagram-container q-my-lg">
                     <img :src="hakImg" alt="Diagram manewru hak" class="tactical-diagram" />
                   </div>
 
-                  <!-- <h5>Charakterystyka manewru:</h5>
+                  <h5>Wykonanie manewru:</h5>
+                  <ol>
+                    <li><strong>Sygnał:</strong> Prowadzący sygnalizuje „HAK"</li>
+                    <li><strong>Zejście z trasy:</strong> Schodzi z kierunku marszu w lewo lub w prawo</li>
+                    <li><strong>Pozycja obserwacyjna:</strong> Odchodzi od pierwotnej trasy na maksymalną odległość, aby obserwować miejsce zejścia i oddziaływać ogniowo</li>
+                    <li><strong>Ruch równoległy:</strong> Zmienia kierunek poruszając się równolegle do pierwotnej trasy w kierunku przeciwnym</li>
+                    <li><strong>Zawrót:</strong> Zawraca o 180° i przechodzi odcinek do pozycji równoległej do pierwotnej trasy</li>
+                    <li><strong>Obserwacja:</strong> Zatrzymuje się na wysokości punktu zejścia z trasy i obserwuje</li>
+                  </ol>
+
+                  <h5>Zasady bezpieczeństwa:</h5>
                   <ul>
-                    <li><strong>Szybkość:</strong> Gwałtowna zmiana kierunku</li>
-                    <li><strong>Zaskoczenie:</strong> Niespodziewany atak z flanki</li>
-                    <li><strong>Koncentracja siły:</strong> Skupienie na wybranym punkcie</li>
-                    <li><strong>Elastyczność:</strong> Możliwość szybkiej adaptacji</li>
+                    <li><strong>Ubezpieczenie 360°:</strong> Pełna obserwacja dookoła</li>
+                    <li><strong>Skupienie ognia:</strong> Większość środków ogniowych w kierunku pierwotnej trasy marszu</li>
+                    <li><strong>Czas obserwacji:</strong> Regulowany przez dowódcę</li>
+                    <li><strong>Działania dodatkowe:</strong> Po obserwacji możliwość poprawy oporządzenia, przejścia do bazy</li>
                   </ul>
 
                   <h5>Zastosowanie:</h5>
                   <ul>
-                    <li>Przełamanie obrony liniowej</li>
-                    <li>Wykorzystanie luki w ugrupowaniu</li>
-                    <li>Odwrót z kontaktem</li>
-                    <li>Przeciwuderzenie</li>
+                    <li>Sprawdzenie czy sekcja jest śledzona</li>
+                    <li>Wykrycie przeciwnika na trasie marszu</li>
+                    <li>Planowo co pewien czas lub odcinek marszu</li>
+                    <li>Według doraźnych potrzeb</li>
                   </ul>
-
-                  <h5>Wymogi realizacji:</h5>
-                  <ul>
-                    <li>Dobra znajomość terenu</li>
-                    <li>Sprawna łączność</li>
-                    <li>Przygotowane pozycje</li>
-                    <li>Rezerwa gotowa do działania</li>
-                  </ul> -->
                 </div>
 
                 <div v-else-if="selectedManeuver.id === 3">
                   <h4>Formacja podwójny sierżant</h4>
-                  <!-- <p>Klasyczna formacja wojskowa stosowana w marszu i walce, zapewniająca optymalną kontrolę i siłę ognia.</p> -->
+                  <p>Formacja taktyczna zapewniająca kontrolę przestrzeni bojowej i wszechkierunkową możliwość prowadzenia ognia przez wszystkich żołnierzy sekcji.</p>
 
                   <div class="diagram-container q-my-lg">
                     <img :src="sier1Img" alt="podwójny sierżant - formacja podstawowa" class="tactical-diagram q-mb-md" />
@@ -132,29 +163,40 @@
                     <img :src="sier3Img" alt="podwójny sierżant - warianty" class="tactical-diagram" />
                   </div>
 
-                  <!-- <h5>Struktura formacji:</h5>
+                  <h5>Zasady rozstawienia żołnierzy:</h5>
                   <ul>
-                    <li><strong>Pierwszy szereg:</strong> Żołnierze z bronią podstawową</li>
-                    <li><strong>Drugi szereg:</strong> Wsparcie i dowodzenie</li>
-                    <li><strong>Odstępy:</strong> Standardowe 1-2 metry między żołnierzami</li>
-                    <li><strong>Głębokość:</strong> 3-5 metrów między szeregami</li>
+                    <li><strong>Odległości między żołnierzami</strong> określa dowódca w zależności od rozległości pokonywanego terenu</li>
+                    <li><strong>Przestrzenne rozstawienie</strong> wszystkich żołnierzy w obu Sierżantach musi zapewniać każdemu z żołnierzy możliwość prowadzenia ognia w przód, tył, lewo i prawo (również „przez szyk")</li>
+                    <li><strong>Sprawdzenie prawidłowości</strong> poprzez ustawienie tarczy/figury bojowej na kierunku marszu w odległości ok. 100 metrów</li>
+                    <li><strong>Test rozstawienia:</strong> Żołnierze celują do tarczy - jeśli między żołnierzem a celem znajduje się inny żołnierz sekcji, szyk jest niewłaściwie rozstawiony</li>
                   </ul>
 
-                  <h5>Zalety formacji:</h5>
+                  <h5>Sierżant "ALFA" (pierwszy sierżant):</h5>
                   <ul>
-                    <li>Maksymalna siła ognia do przodu</li>
-                    <li>Łatwa kontrola dowodzenia</li>
-                    <li>Możliwość szybkiego rozwinięcia</li>
-                    <li>Wzajemne wsparcie żołnierzy</li>
+                    <li><strong>Zastępca Dowódcy Sekcji (ZD)</strong> ze swoim radiotelefonistą (R2)</li>
+                    <li><strong>Medyk</strong> - zapewnienie opieki medycznej</li>
+                    <li><strong>Starszy saper</strong> - rozpoznanie i neutralizacja zagrożeń</li>
+                    <li><strong>Starszy strzelec wyborowy (Nawigator)</strong> - znajomość terenu, mapa, busola, GPS</li>
+                    <li><strong>Strzelec z ukm</strong> - likwidacja środków ogniowych przeciwnika (granatniki, km, strzelcy)</li>
+                    <li><strong>Szperacz</strong> - żołnierz "czujący teren", z wyobraźnią przestrzenną i spostrzegawczością</li>
                   </ul>
 
-                  <h5>Zastosowanie:</h5>
+                  <h5>Sierżant "BRAWO" (drugi sierżant):</h5>
                   <ul>
-                    <li>Atak na pozycje obronne</li>
-                    <li>Marsz przez teren otwarty</li>
-                    <li>Obrona liniowa</li>
-                    <li>Przeglądy i defilady</li>
-                  </ul> -->
+                    <li><strong>Dowódca (D)</strong> ze swoim radiotelefonistą (R1)</li>
+                    <li><strong>R1</strong> odpowiada za ciągłość komunikacji radiowej w obu kierunkach na wszystkich zadanych kierunkach (sztab, siły powietrzne, siły sprzymierzone, inne elementy taktyczne)</li>
+                    <li><strong>Wszyscy żołnierze "BRAWO"</strong> odpowiadają za swoje sektory obserwacji</li>
+                    <li><strong>W kontakcie ogniowym</strong> reagują na komendy do przemieszczania się wydawane przez Dowódcę</li>
+                  </ul>
+
+                  <h5>Zasady taktyczne:</h5>
+                  <ul>
+                    <li><strong>Ochrona kluczowych żołnierzy:</strong> Nie wystawiamy na "pierwszy ogień" Dowódcy z głównym radiotelefonistą</li>
+                    <li><strong>Łączność radiowa:</strong> Radiotelefonista trzyma się bezpośrednio przy swojej stacji dowódczej (ZD lub D)</li>
+                    <li><strong>Kontakt ogniowy:</strong> Nie rozdzielamy radiotelefonistów od dowódców przy "wchodzeniu" w szyk</li>
+                    <li><strong>Kolejność celów dla ukm:</strong> 1. obsługa granatnika, 2. obsługa km, 3. pojedynczy strzelcy</li>
+                  </ul>
+
                 </div>
 
                 <div v-else-if="selectedManeuver.id === 4">
@@ -166,31 +208,49 @@
                     <img :src="zas2Img" alt="Zasadzka - fazy realizacji" class="tactical-diagram" />
                   </div>
 
-                  <h5>Fazy organizacji zasadzki:</h5>
+                  <h5>Elementy rejonu zasadzki:</h5>
+                  <ul>
+                    <li><strong>Rejon ześrodkowania (RZ):</strong> Miejsce ześrodkowania sił przed akcją, przygotowania do działania oraz kontroli i reorganizacji po akcji</li>
+                    <li><strong>Punkt rozejścia/rozwinięcia (PR):</strong> Miejsce pomiędzy RZ i strefą śmierci, gdzie elementy patrolu rozdzielają się i wychodzą na pozycje</li>
+                    <li><strong>Strefa śmierci:</strong> Określony odcinek szlaku, na którym elementy patrolu zatrzymują siły przeciwnika i wykonują atak</li>
+                    <li><strong>Granica działania:</strong> Określony odcinek lub punkt za strefą śmierci, do którego prowadzi szturm grupa szturmowa</li>
+                  </ul>
+
+                  <h5>Organizacja patrolu do zasadzki:</h5>
+                  <ul>
+                    <li><strong>Dowództwo patrolu:</strong> Kontroluje i koordynuje działania (dowódca, radiotelefonista, zastępca, medyk, specjaliści)</li>
+                    <li><strong>Grupa ubezpieczenia (GU1, GU2):</strong> Ubezpiecza w trakcie zajmowania pozycji, akcji i wycofywania. Informuje o siłach przeciwnika i izoluje strefę śmierci</li>
+                    <li><strong>Grupa wsparcia (GW):</strong> Podstawa ognia i bezpośrednia osłona grupy szturmowej. Najsilniejsze środki rażenia</li>
+                    <li><strong>Grupa szturmowa (GS):</strong> Przeprowadza bezpośrednie uderzenie na przeciwnika i wykonuje szczegółowe zadania w strefie śmierci</li>
+                  </ul>
+
+                  <h5>Podgrupy specjalistyczne:</h5>
+                  <ul>
+                    <li><strong>Podgrupa obserwacyjna:</strong> Obserwuje rejon strefy śmierci od rekonesansu do rozpoczęcia akcji</li>
+                    <li><strong>Podgrupa przeszukująca:</strong> Przeszukuje strefę śmierci, sprawdzając osiągnięcie celu zasadzki</li>
+                    <li><strong>Podgrupa niszcząca:</strong> Niszczy sprzęt, pojazdy, broń i wyposażenie przeciwnika</li>
+                    <li><strong>Podgrupa ewakuacyjna:</strong> Ewakuuje rannych i zabitych z sił patrolu (min. 2 żołnierzy)</li>
+                    <li><strong>Podgrupa obezwładniająca:</strong> Obezwładnia i eskortuje jeńców ze strefy śmierci</li>
+                  </ul>
+
+                  <h5>Fazy realizacji zasadzki:</h5>
                   <ol>
-                    <li><strong>Rozpoznanie:</strong> Wybór miejsca i tras przeciwnika</li>
-                    <li><strong>Planowanie:</strong> Rozmieszczenie sił i środków</li>
-                    <li><strong>Zajęcie pozycji:</strong> Ukrycie i przygotowanie</li>
-                    <li><strong>Oczekiwanie:</strong> Zachowanie dyscypliny i ukrycia</li>
-                    <li><strong>Atak:</strong> Skoordynowane uderzenie</li>
-                    <li><strong>Odwrót:</strong> Szybkie wycofanie się</li>
+                    <li><strong>Zajęcie RZ:</strong> Skryte przemieszczenie, połączenie plutonu, organizacja rejonu zapewniającego ukrycie i obronę</li>
+                    <li><strong>Rekonesans strefy śmierci:</strong> Dowódca i dowódcy podgrup ustalają pozycje, granice SŚ i Granicę Działania</li>
+                    <li><strong>Zajęcie pozycji:</strong> Kolejność: GU1→GU2→GW→GS (skrycie, bez zdradzania zamiaru)</li>
+                    <li><strong>Uderzenie ogniowe:</strong> Na sygnał dowódcy lub po demaskacji, ogień do wyczerpania limitu amunicji</li>
+                    <li><strong>Szturm:</strong> GS wkracza do SŚ, przechodzi do Granicy Działania, przeszukuje i wykonuje zadania</li>
+                    <li><strong>Odskok:</strong> Kolejność wycofania: GW→GS→GU1→GU2, połączenie w PR, powrót do RZ</li>
                   </ol>
 
-                  <h5>Kluczowe elementy:</h5>
+                  <h5>Kluczowe zasady:</h5>
                   <ul>
-                    <li><strong>Zaskoczenie:</strong> Całkowite ukrycie intencji</li>
-                    <li><strong>Szybkość:</strong> Błyskawiczny atak i odwrót</li>
-                    <li><strong>Wybór miejsca:</strong> Dogodne warunki terenowe</li>
-                    <li><strong>Drogi odwrotu:</strong> Zabezpieczone trasy ewakuacji</li>
+                    <li><strong>Ukrycie:</strong> RZ z dala od skupisk ludzi i szlaków komunikacyjnych</li>
+                    <li><strong>Kontrola:</strong> Taktyczna wymiana magazynka po każdym uderzeniu ogniowym</li>
+                    <li><strong>Koordynacja:</strong> Dowódca przy GS, zastępca przy GW, stała łączność</li>
+                    <li><strong>Elastyczność:</strong> Jeden żołnierz może pełnić wiele funkcji w grupie</li>
                   </ul>
 
-                  <h5>Rodzaje zasadzek:</h5>
-                  <ul>
-                    <li>Zasadzka punktowa - na konkretny cel</li>
-                    <li>Zasadzka obszarowa - na większą jednostkę</li>
-                    <li>Zasadzka przeciwkonwojowa - na transport</li>
-                    <li>Zasadzka przeciwpatrole - na grupy rozpoznawcze</li>
-                  </ul>
                 </div>
               </div>
             </q-card-section>
@@ -233,7 +293,7 @@ const selectedManeuver = ref(null)
 const maneuvers = [
   {
     id: 1,
-    title: 'Okrężna',
+    title: 'Baza / Okrężna',
     category: 'Manewr taktyczny'
   },
   {
