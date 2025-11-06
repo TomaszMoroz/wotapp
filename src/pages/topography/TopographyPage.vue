@@ -12,196 +12,65 @@
         </div>
       </div>
 
-      <div class="row q-gutter-lg mobile-column">
-        <!-- Panel kategorii -->
-        <div class="col-12 col-lg-3">
-          <q-card class="categories-card">
-            <q-card-section class="card-header">
-              <div class="text-h6 text-weight-bold">
-                <q-icon name="explore" class="q-mr-sm" />
-                Kategorie
-              </div>
+      <!-- Kafelki artykułów -->
+      <div class="topics-grid">
+        <div
+          v-for="topic in allTopics"
+          :key="topic.id"
+          class="topic-card-wrapper"
+        >
+          <q-card
+            class="topic-card"
+            clickable
+            @click="selectTopic(topic)"
+          >
+            <div class="topic-image">
+              <q-icon :name="topic.icon" size="3rem" :color="topic.color" />
+            </div>
+            <q-card-section>
+              <div class="text-h6 text-weight-bold q-mb-sm">{{ topic.name }}</div>
+              <div class="text-caption text-grey-6 q-mb-md">{{ topic.category }}</div>
+              <div class="text-body2">{{ topic.description }}</div>
             </q-card-section>
-
-            <q-card-section class="q-pa-none">
-              <q-list>
-                <q-item
-                  v-for="category in categories"
-                  :key="category.id"
-                  clickable
-                  @click="selectCategory(category)"
-                  :class="selectedCategory?.id === category.id ? 'bg-primary text-white' : ''"
-                >
-                  <q-item-section avatar>
-                    <q-icon :name="category.icon" :color="selectedCategory?.id === category.id ? 'white' : category.color" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-weight-medium">{{ category.name }}</q-item-label>
-                    <q-item-label caption :class="selectedCategory?.id === category.id ? 'text-white' : 'text-grey-6'">
-                      {{ category.count }} tematów
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-card-section>
+            <q-card-actions class="q-pa-md justify-end">
+              <q-btn flat round icon="arrow_forward" color="primary" />
+            </q-card-actions>
           </q-card>
         </div>
-
-        <!-- Panel tematów -->
-        <div class="col-12 col-lg-9">
-          <div v-if="!selectedCategory" class="topics-grid">
-            <div
-              v-for="topic in allTopics"
-              :key="topic.id"
-              class="topic-card-wrapper"
-            >
-              <q-card
-                class="topic-card"
-                clickable
-                @click="selectTopic(topic)"
-              >
-                <div class="topic-image">
-                  <q-icon :name="topic.icon" size="3rem" :color="topic.color" />
-                </div>
-                <q-card-section>
-                  <div class="text-h6 text-weight-bold q-mb-sm">{{ topic.name }}</div>
-                  <div class="text-caption text-grey-6 q-mb-md">{{ topic.category }}</div>
-                  <div class="text-body2">{{ topic.description }}</div>
-                </q-card-section>
-                <q-card-actions class="q-pa-md justify-end">
-                  <q-btn flat round icon="arrow_forward" color="primary" />
-                </q-card-actions>
-              </q-card>
-            </div>
-          </div>
-
-          <div v-else-if="!selectedTopic" class="category-topics">
-            <div class="category-header q-mb-lg">
-              <div class="row items-center q-gutter-md">
-                <q-icon :name="selectedCategory.icon" size="2rem" :color="selectedCategory.color" />
-                <div>
-                  <div class="text-h5 text-weight-bold">{{ selectedCategory.name }}</div>
-                  <div class="text-subtitle2 text-grey-7">{{ filteredTopics.length }} tematów</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="topics-list">
-              <q-card
-                v-for="topic in filteredTopics"
-                :key="topic.id"
-                class="topic-list-item q-mb-md"
-                clickable
-                @click="selectTopic(topic)"
-              >
-                <q-card-section>
-                  <div class="row items-center q-gutter-md">
-                    <q-icon :name="topic.icon" size="2rem" :color="topic.color" />
-                    <div class="col">
-                      <div class="text-h6 text-weight-bold">{{ topic.name }}</div>
-                      <div class="text-body2 text-grey-7 q-mt-xs">{{ topic.description }}</div>
-                    </div>
-                  </div>
-                </q-card-section>
-              </q-card>
-            </div>
-          </div>
-
-          <div v-else class="topic-content">
-            <q-card class="content-card">
-              <q-card-section class="content-header">
-                <div class="row items-center q-gutter-md">
-                  <q-btn
-                    flat
-                    round
-                    icon="arrow_back"
-                    color="white"
-                    @click="goBack"
-                  />
-                  <q-icon :name="selectedTopic.icon" size="2rem" color="white" />
-                  <div>
-                    <div class="text-h5 text-weight-bold">{{ selectedTopic.name }}</div>
-                    <div class="text-subtitle2 opacity-80">{{ selectedTopic.category }}</div>
-                  </div>
-                </div>
-              </q-card-section>
-
-              <q-card-section class="content-body">
-                <div class="content-text" v-html="selectedTopic.content"></div>
-              </q-card-section>
-
-              <q-card-actions class="q-pa-md">
-                <q-btn
-                  flat
-                  icon="print"
-                  label="Drukuj"
-                  color="primary"
-                />
-                <q-btn
-                  flat
-                  icon="share"
-                  label="Udostępnij"
-                  color="primary"
-                />
-                <q-space />
-                <q-btn
-                  icon="bookmark_border"
-                  flat
-                  round
-                  color="grey-6"
-                />
-              </q-card-actions>
-            </q-card>
-          </div>
-        </div>
       </div>
+
+      <!-- Modal dla artykułów, które nie mają dedykowanych stron -->
+      <q-dialog v-model="showArticleModal" maximized transition-show="slide-up" transition-hide="slide-down">
+        <q-card class="article-modal">
+          <q-card-section class="row items-center q-pb-none">
+            <div class="text-h5 text-weight-bold">{{ selectedTopic?.name }}</div>
+            <q-space />
+            <q-btn icon="close" flat round dense @click="goBack" />
+          </q-card-section>
+
+          <q-card-section class="article-content q-pa-lg">
+            <div v-if="selectedTopic?.content" v-html="selectedTopic.content"></div>
+          </q-card-section>
+        </q-card>
+      </q-dialog>
     </div>
   </q-page>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 defineOptions({
   name: 'TopographyPage'
 })
 
-const selectedCategory = ref(null)
 const selectedTopic = ref(null)
+const router = useRouter()
 
-const categories = [
-  {
-    id: 'orientation',
-    name: 'Orientacja',
-    icon: 'explore',
-    color: 'green',
-    count: 4
-  },
-  {
-    id: 'maps',
-    name: 'Mapa topograficzna',
-    icon: 'map',
-    color: 'blue',
-    count: 3
-  },
-  {
-    id: 'navigation',
-    name: 'Nawigacja',
-    icon: 'navigation',
-    color: 'orange',
-    count: 3
-  },
-  {
-    id: 'equipment',
-    name: 'Sprzęt nawigacyjny',
-    icon: 'compass_calibration',
-    color: 'purple',
-    count: 2
-  }
-]
+const showArticleModal = computed(() => !!selectedTopic.value)
 
 const allTopics = [
-  // Orientacja
   {
     id: 'terrain-orientation',
     name: 'Orientacja w terenie',
@@ -319,8 +188,6 @@ const allTopics = [
       </ul>
     `
   },
-
-  // Mapy topograficzne
   {
     id: 'map-reading',
     name: 'Czytanie map',
@@ -378,34 +245,45 @@ const allTopics = [
   },
   {
     id: 'coordinates',
-    name: 'Współrzędne',
-    category: 'Mapa topograficzna',
+    name: 'Współrzędne MGRS',
+    category: 'Systemy współrzędnych',
     icon: 'grid_3x3',
     color: 'blue',
-    description: 'System współrzędnych prostokątnych',
+    description: 'Military Grid Reference System - NATO',
     content: `
-      <h3>📐 Współrzędne</h3>
+      <h3>System współrzędnych MGRS</h3>
 
-      <h4>🗺️ System kwadratowy:</h4>
+      <div style="text-align: center; margin: 20px 0;">
+        <img src="/mgrs.png" alt="MGRS System" style="max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+      </div>
+
+      <h4>Opis systemu:</h4>
+      <p>MGRS, czyli Military Grid Reference System, to standard systemu współrzędnych używany przez wojsko (np. NATO) do precyzyjnego określania położenia na mapach. System ten opiera się na siatce prostokątnej, która dzieli Ziemię na strefy i kwadraty, a jego celem jest ułatwienie szybkiej i dokładnej lokalizacji obiektów oraz meldowania pozycji.</p>
+
+      <h4>System siatki:</h4>
+      <p>MGRS tworzy ogólnoświatową siatkę opartą na systemach UTM (Universal Transverse Mercator) i UPS (Universal Polar Stereographic).</p>
+
+      <h4>Strefy:</h4>
+      <p>Dzieli on świat na 60 stref podłużnych (każda 6° szerokości) i 20 stref poprzecznych (każda 8° wysokości), oznaczanych literami od C do X (z wyłączeniem I i O).</p>
+
+      <h4>Identyfikacja kwadratów:</h4>
+      <p>W ramach każdej strefy tworzone są kwadraty o wymiarach 100x100 km, identyfikowane za pomocą dwuliterowych oznaczeń (np. w przykładzie 34U DC 98765 43210, DC to identyfikator kwadratu 100 km).</p>
+
+      <h4>Określanie pozycji:</h4>
+      <p>Współrzędna podaje pełny adres, który składa się z identyfikatora strefy (np. 34U), identyfikatora kwadratu 100 km (np. DC) oraz współrzędnych liczbowych w metrach (np. 98765 43210), które precyzują położenie w obrębie danego kwadratu.</p>
+
+      <h4>Zastosowanie:</h4>
+      <p>Jest używany do lokalizowania obiektów, określania własnej pozycji i wskazywania celów podczas operacji lądowych, a także do precyzyjnego pozycjonowania GPS.</p>
+
+      <h4>Przykład - Warszawa:</h4>
       <ul>
-        <li><strong>Siatka 1km:</strong> Duże kwadraty</li>
-        <li><strong>Siatka 100m:</strong> Małe kwadraty</li>
+        <li><strong>Pełna współrzędna:</strong> 34U DC 98765 43210</li>
+        <li><strong>Strefa:</strong> 34U (strefa UTM dla Polski)</li>
+        <li><strong>Kwadrat 100km:</strong> DC</li>
+        <li><strong>Pozycja w kwadracie:</strong> 98765 43210 (dokładność 1m)</li>
       </ul>
-
-      <h4>📍 Podawanie pozycji:</h4>
-      <ol>
-        <li>Znajdź kwadrat kilometrowy</li>
-        <li>Określ pozycję w kwadracie</li>
-        <li>Podaj współrzędne: X Y</li>
-      </ol>
-
-      <h4>🎯 Przykład:</h4>
-      <p><strong>Pozycja:</strong> 1234 5678<br>
-      <strong>Dokładność:</strong> 100m</p>
     `
   },
-
-  // Nawigacja
   {
     id: 'route-planning',
     name: 'Planowanie trasy',
@@ -485,8 +363,6 @@ const allTopics = [
       </ul>
     `
   },
-
-  // Sprzęt nawigacyjny
   {
     id: 'military-compass',
     name: 'Kompas wojskowy',
@@ -556,18 +432,14 @@ const allTopics = [
   }
 ]
 
-const filteredTopics = computed(() => {
-  if (!selectedCategory.value) return []
-  return allTopics.filter(topic => topic.category === selectedCategory.value.name)
-})
-
-const selectCategory = (category) => {
-  selectedCategory.value = selectedCategory.value?.id === category.id ? null : category
-  selectedTopic.value = null
-}
-
 const selectTopic = (topic) => {
-  selectedTopic.value = topic
+  // Kierowanie do dedykowanych stron dla artykułów
+  if (topic.id === 'coordinates') {
+    router.push('/topography/mgrs')
+  } else {
+    // Dla innych artykułów wyświetl zawartość w modal
+    selectedTopic.value = topic
+  }
 }
 
 const goBack = () => {
@@ -575,327 +447,110 @@ const goBack = () => {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .topography-page {
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: radial-gradient(ellipse at top, rgba(16, 24, 40, 0.1) 0%, transparent 50%),
+              linear-gradient(to bottom, var(--q-dark) 0%, #0f1419 100%);
   min-height: 100vh;
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .page-header {
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
-  padding: 24px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(25, 118, 210, 0.1);
-}
-
-.categories-card,
-.content-card {
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-}
-
-.card-header {
-  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-  color: white;
-  border-radius: 16px 16px 0 0;
-  margin: -16px -16px 16px -16px;
-  padding: 16px;
-}
-
-.content-header {
-  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
-  color: white;
-  border-radius: 16px 16px 0 0;
-  margin: -16px -16px 0 -16px;
-  padding: 24px;
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .topics-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+  padding: 1rem 0;
 }
 
 .topic-card-wrapper {
-  height: 100%;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+  }
 }
 
 .topic-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
   height: 100%;
-  border-radius: 16px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
-}
+  cursor: pointer;
 
-.topic-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--q-primary);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
 }
 
 .topic-image {
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(21, 101, 192, 0.1) 100%);
-  border-radius: 16px 16px 0 0;
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 12px 12px 0 0;
 }
 
-.topic-list-item {
-  border-radius: 12px;
-  transition: all 0.2s ease;
-}
-
-.topic-list-item:hover {
-  transform: translateX(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
-
-.category-header {
-  padding: 24px;
-  background: rgba(255, 255, 255, 0.9);
-  border-radius: 16px;
-  backdrop-filter: blur(10px);
-}
-
-.content-body {
-  max-height: 600px;
+.article-modal {
+  background: var(--q-dark);
+  max-height: 100vh;
   overflow-y: auto;
 }
 
-.content-text {
-  line-height: 1.6;
-  font-size: 1rem;
-}
-
-.content-text h3 {
-  color: #1976d2;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-.content-text h4 {
-  color: #424242;
-  margin: 1.5rem 0 0.5rem 0;
-  font-weight: 600;
-}
-
-.content-text ul, .content-text ol {
-  margin: 0.5rem 0;
-  padding-left: 1.5rem;
-}
-
-.content-text li {
-  margin-bottom: 0.25rem;
-}
-
-.content-text strong {
-  color: #1976d2;
-  font-weight: 600;
-}
-
-.content-text p {
-  margin: 0.5rem 0;
-}
-
-.mobile-column {
-  flex-direction: row;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 1024px) {
-  .mobile-column {
-    flex-direction: column !important;
+.article-content {
+  :deep(h3) {
+    color: var(--q-primary);
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
 
-  .col-lg-3,
-  .col-lg-9 {
-    width: 100%;
+  :deep(h4) {
+    color: #ffffff;
+    margin: 1.5rem 0 0.75rem;
+    font-size: 1.2rem;
+    font-weight: 500;
   }
 
-  .topics-grid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
+  :deep(ul), :deep(ol) {
+    margin: 0.5rem 0 1rem 1.5rem;
+
+    li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+  }
+
+  :deep(p) {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
+  :deep(strong) {
+    color: var(--q-accent);
+    font-weight: 600;
   }
 }
 
 @media (max-width: 768px) {
-  .container {
-    padding: 8px !important;
-  }
-
-  .page-header {
-    padding: 16px;
-    margin-bottom: 16px !important;
-  }
-
-  .page-header .row {
-    gap: 12px !important;
-  }
-
-  .page-header .text-h4 {
-    font-size: 1.5rem;
-  }
-
-  .row.q-gutter-lg {
-    gap: 12px !important;
-  }
-
   .topics-grid {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 1rem;
   }
 
-  .topic-card {
-    margin-bottom: 0;
-  }
-
-  .topic-image {
-    height: 60px;
-  }
-
-  .content-text {
-    font-size: 0.9rem;
-  }
-
-  .categories-card .q-card__section {
-    padding: 12px;
-  }
-
-  .topic-list-item {
-    margin-bottom: 8px !important;
-  }
-
-  .category-header {
-    padding: 16px;
-    margin-bottom: 16px !important;
-  }
-}
-
-@media (max-width: 480px) {
-  .container {
-    padding: 4px !important;
-  }
-
-  .page-header {
-    padding: 12px;
-    margin-bottom: 12px !important;
-  }
-
-  .page-header .row {
-    flex-direction: column;
-    text-align: center;
-    gap: 8px !important;
-  }
-
-  .page-header .text-h4 {
-    font-size: 1.25rem;
-  }
-
-  .page-header .text-subtitle1 {
-    font-size: 0.9rem;
-  }
-
-  .row.q-gutter-lg {
-    gap: 8px !important;
-  }
-
-  .topics-grid {
-    gap: 8px;
-  }
-
-  .topic-card {
-    border-radius: 12px;
-  }
-
-  .topic-image {
-    height: 50px;
-  }
-
-  .topic-card .q-card__section {
-    padding: 12px;
-  }
-
-  .topic-card .q-card__actions {
-    padding: 8px 12px;
-  }
-
-  .content-header {
-    padding: 16px !important;
-    margin: -16px -16px 0 -16px !important;
-  }
-
-  .content-header .row {
-    gap: 8px !important;
-  }
-
-  .content-header .text-h5 {
-    font-size: 1.1rem;
-  }
-
-  .content-body {
-    max-height: 400px;
-    padding: 12px;
-  }
-
-  .content-text {
-    font-size: 0.85rem;
-    line-height: 1.5;
-  }
-
-  .content-text h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .content-text h4 {
-    font-size: 1rem;
-    margin: 1rem 0 0.5rem 0;
-  }
-
-  .categories-card .card-header {
-    padding: 12px;
-    font-size: 0.9rem;
-  }
-
-  .categories-card .q-item {
-    min-height: 44px;
-    padding: 8px 12px;
-  }
-
-  .category-header {
-    padding: 12px;
-    margin-bottom: 12px !important;
-  }
-
-  .topic-list-item {
-    margin-bottom: 6px !important;
-  }
-
-  .topic-list-item .q-card__section {
-    padding: 12px;
-  }
-
-  .topic-list-item .row {
-    gap: 8px !important;
-  }
-
-  .topic-list-item .text-h6 {
-    font-size: 1rem;
-  }
-
-  .topic-list-item .text-body2 {
-    font-size: 0.8rem;
+  .topic-card-wrapper:hover {
+    transform: none;
   }
 }
 </style>

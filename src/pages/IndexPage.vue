@@ -25,7 +25,7 @@
               <q-icon name="inventory" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Wyposażenie</div>
-            <div class="text-caption text-grey-4">Sprzęt wojskowy</div>
+            <div class="text-caption text-grey-4 q-pa-sm-mobile">Sprzęt wojskowy</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.7)" text-color="white" icon="volume_up">
@@ -44,7 +44,7 @@
               <q-icon name="build" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Narzędzia</div>
-            <div class="text-caption text-grey-4">Pomoce, kalkulatory</div>
+            <div class="text-caption text-grey-4 q-pa-sm-mobile">Pomoce, kalkulatory</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="calculate">
@@ -63,7 +63,7 @@
               <q-icon name="school" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Taktyka, dowodzenie i procedury</div>
-            <div class="text-caption text-grey-4">Materiały szkoleniowe</div>
+            <div class="text-caption text-grey-4 q-pa-sm-mobile">Materiały szkoleniowe</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="menu_book">
@@ -82,7 +82,7 @@
               <q-icon name="map" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
-            <div class="text-caption text-grey-4">Mapy i nawigacja</div>
+            <div class="text-caption text-grey-4 q-pa-sm-mobile">Mapy i nawigacja</div>
           </q-card-section>
         </q-card>
 
@@ -96,7 +96,7 @@
               <q-icon name="gps_fixed" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Strzelectwo</div>
-            <div class="text-caption text-grey-4">Balistyka i techniki</div>
+            <div class="text-caption text-grey-4 q-pa-sm-mobile">Balistyka i techniki</div>
           </q-card-section>
         </q-card>
 
@@ -124,7 +124,7 @@
               <q-icon name="description" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Meldunki</div>
-            <div class="text-caption text-grey-4">Raporty wojskowe</div>
+            <div class="text-caption text-grey-4 q-pa-sm-mobile">Raporty wojskowe</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="assignment">
@@ -143,7 +143,7 @@
               <q-icon name="military_tech" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Stopnie, regulaminy, prawo</div>
-            <div class="text-caption text-grey-4">Informacje</div>
+            <div class="text-caption text-grey-4 q-pa-sm-mobile">Informacje</div>
           </q-card-section>
           <!-- <q-card-section class="card-footer">
             <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="emergency">
@@ -308,6 +308,10 @@ const navigateTo = (path) => {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
+  .q-pa-sm-mobile {
+    padding: 8px;
+  }
+
   .cards-grid {
     grid-template-columns: 1fr;
     gap: 16px;
