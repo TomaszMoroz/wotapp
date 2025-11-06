@@ -75,7 +75,7 @@
 import { useRouter } from 'vue-router'
 
 // Import image from assets
-import mgrsImg from '../../assets/mgrs.png'
+import mgrsImg from '../../../assets/mgrs.png'
 
 defineOptions({
   name: 'MgrsPage'
