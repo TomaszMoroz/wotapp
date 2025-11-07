@@ -96,7 +96,7 @@
               <q-icon name="gps_fixed" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Strzelectwo</div>
-            <div class="text-caption text-grey-4 mobile-caption">Balistyka i techniki</div>
+            <div class="text-caption text-grey-4 mobile-caption">Balistyka, teoria, technika</div>
           </q-card-section>
         </q-card>
 

@@ -25,6 +25,7 @@ const routes = [
       { path: '/tools', component: () => import('pages/tools/ToolsPage.vue') },
       { path: '/tools/distance', component: () => import('pages/tools/DistanceCalculatorPage.vue') },
       { path: '/tools/settings', component: () => import('pages/tools/SettingsCalculatorPage.vue') },
+      { path: '/tools/mils-moa', component: () => import('pages/tools/MilsMoaConverterPage.vue') },
       { path: '/ranks', component: () => import('pages/ranks/RanksPage.vue') },
       { path: '/regulations', component: () => import('pages/regulations/RegulationsPage.vue') },
       { path: '/firearms-law', component: () => import('pages/emergency/FirearmsLawPage.vue') },

@@ -86,7 +86,35 @@
               <q-item-label caption>Pomiar przez tysiączne</q-item-label>
             </q-item-section>
           </q-item>
+                    <q-item
+            clickable
+            @click="$router.push('/tools/settings')"
+            :class="isActiveRoute('/tools/settings') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="tune" :color="isActiveRoute('/tools/settings') ? 'white' : 'military-brown'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Trening korekty nastaw</q-item-label>
+              <q-item-label caption>Symulacja korekty celowania</q-item-label>
+            </q-item-section>
+          </q-item>
 
+          <q-item
+            clickable
+            @click="$router.push('/tools/mils-moa')"
+            :class="isActiveRoute('/tools/mils-moa') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="swap_horiz" :color="isActiveRoute('/tools/mils-moa') ? 'white' : 'military-accent'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">Konwerter MILS - MOA</q-item-label>
+              <q-item-label caption>Przelicznik jednostek</q-item-label>
+            </q-item-section>
+          </q-item>
           <q-item
             clickable
             @click="$router.push('/training')"

@@ -70,6 +70,21 @@
             <div class="text-caption text-grey-4">Obliczenia balistyczne</div>
           </q-card-section>
         </q-card>
+
+        <!-- Konwerter MILS - MOA -->
+        <q-card
+          class="tool-card military-accent-card"
+          clickable
+          @click="navigateTo('/tools/mils-moa')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="swap_horiz" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Konwerter MILS - MOA</div>
+            <div class="text-caption text-grey-4">Przelicznik jednostek</div>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -149,6 +164,11 @@ const navigateTo = (path) => {
 
 .military-dark-card {
   background: linear-gradient(135deg, #2C3E50 0%, #1A252F 100%);
+  color: white;
+}
+
+.military-accent-card {
+  background: linear-gradient(135deg, #4A5D31 0%, #2D3E2F 100%);
   color: white;
 }
 
