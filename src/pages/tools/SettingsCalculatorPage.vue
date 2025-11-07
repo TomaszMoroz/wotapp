@@ -84,6 +84,16 @@
                 />
               </div>
 
+              <!-- Typ korekty -->
+              <q-field label="Typ korekty" stack-label class="q-mb-md">
+                <q-option-group
+                  v-model="correctionType"
+                  :options="correctionTypeOptions"
+                  color="primary"
+                  inline
+                />
+              </q-field>
+
               <!-- Kontrolki nastaw -->
               <div class="text-subtitle2 q-mb-sm">Korekty nastaw</div>
 
@@ -197,63 +207,84 @@
                   @load="onImageLoad"
                 />
 
-                <!-- Siatka mil-dot -->
+                <!-- Celownik MilDot -->
                 <svg class="mil-dot-overlay" v-if="showGrid">
-                  <!-- Linie pionowe -->
-                  <line
-                    v-for="x in gridLines.vertical"
-                    :key="`v-${x}`"
-                    :x1="x"
-                    :y1="0"
-                    :x2="x"
-                    :y2="imageHeight"
-                    stroke="rgba(255, 255, 255, 0.6)"
-                    stroke-width="1"
-                  />
-                  <!-- Linie poziome -->
-                  <line
-                    v-for="y in gridLines.horizontal"
-                    :key="`h-${y}`"
-                    :x1="0"
-                    :y1="y"
-                    :x2="imageWidth"
-                    :y2="y"
-                    stroke="rgba(255, 255, 255, 0.6)"
-                    stroke-width="1"
-                  />
-                  <!-- Kropki mil-dot -->
+                  <!-- Koło zewnętrzne -->
                   <circle
-                    v-for="(dot, index) in milDots"
-                    :key="`dot-${index}`"
-                    :cx="dot.x"
-                    :cy="dot.y"
-                    r="2"
-                    fill="rgba(255, 255, 255, 0.8)"
-                  />
-                  <!-- Celownik centralny -->
-                  <circle
-                    :cx="imageWidth / 2"
-                    :cy="imageHeight / 2"
-                    r="3"
+                    :cx="crosshairPosition.x"
+                    :cy="crosshairPosition.y"
+                    :r="Math.min(imageWidth, imageHeight) * 0.4"
                     fill="none"
-                    stroke="red"
-                    stroke-width="2"
+                    stroke="rgba(0, 0, 0, 0.8)"
+                    stroke-width="3"
                   />
+
+                  <!-- Linia pozioma główna -->
                   <line
-                    :x1="imageWidth / 2 - 10"
-                    :y1="imageHeight / 2"
-                    :x2="imageWidth / 2 + 10"
-                    :y2="imageHeight / 2"
-                    stroke="red"
-                    stroke-width="2"
+                    :x1="crosshairPosition.x - Math.min(imageWidth, imageHeight) * 0.4"
+                    :y1="crosshairPosition.y"
+                    :x2="crosshairPosition.x + Math.min(imageWidth, imageHeight) * 0.4"
+                    :y2="crosshairPosition.y"
+                    stroke="rgba(0, 0, 0, 0.8)"
+                    stroke-width="3"
                   />
+
+                  <!-- Linia pionowa główna -->
                   <line
-                    :x1="imageWidth / 2"
-                    :y1="imageHeight / 2 - 10"
-                    :x2="imageWidth / 2"
-                    :y2="imageHeight / 2 + 10"
-                    stroke="red"
-                    stroke-width="2"
+                    :x1="crosshairPosition.x"
+                    :y1="crosshairPosition.y - Math.min(imageWidth, imageHeight) * 0.4"
+                    :x2="crosshairPosition.x"
+                    :y2="crosshairPosition.y + Math.min(imageWidth, imageHeight) * 0.4"
+                    stroke="rgba(0, 0, 0, 0.8)"
+                    stroke-width="3"
+                  />
+
+                  <!-- Kropki MilDot na linii poziomej (lewa strona) -->
+                  <circle
+                    v-for="i in 5"
+                    :key="`left-${i}`"
+                    :cx="crosshairPosition.x - (i * Math.min(imageWidth, imageHeight) * 0.06)"
+                    :cy="crosshairPosition.y"
+                    r="4"
+                    fill="rgba(0, 0, 0, 0.8)"
+                  />
+
+                  <!-- Kropki MilDot na linii poziomej (prawa strona) -->
+                  <circle
+                    v-for="i in 5"
+                    :key="`right-${i}`"
+                    :cx="crosshairPosition.x + (i * Math.min(imageWidth, imageHeight) * 0.06)"
+                    :cy="crosshairPosition.y"
+                    r="4"
+                    fill="rgba(0, 0, 0, 0.8)"
+                  />
+
+                  <!-- Kropki MilDot na linii pionowej (góra) -->
+                  <circle
+                    v-for="i in 5"
+                    :key="`top-${i}`"
+                    :cx="crosshairPosition.x"
+                    :cy="crosshairPosition.y - (i * Math.min(imageWidth, imageHeight) * 0.06)"
+                    r="4"
+                    fill="rgba(0, 0, 0, 0.8)"
+                  />
+
+                  <!-- Kropki MilDot na linii pionowej (dół) -->
+                  <circle
+                    v-for="i in 5"
+                    :key="`bottom-${i}`"
+                    :cx="crosshairPosition.x"
+                    :cy="crosshairPosition.y + (i * Math.min(imageWidth, imageHeight) * 0.06)"
+                    r="4"
+                    fill="rgba(0, 0, 0, 0.8)"
+                  />
+
+                  <!-- Punkt centralny -->
+                  <circle
+                    :cx="crosshairPosition.x"
+                    :cy="crosshairPosition.y"
+                    r="1.5"
+                    fill="rgba(0, 0, 0, 0.9)"
                   />
                 </svg>
 
@@ -261,7 +292,7 @@
                 <div
                   v-for="(shot, index) in shots"
                   :key="`shot-${index}`"
-                  class="shot-marker"
+                  :class="['shot-marker', shot.type === 'control' ? 'shot-marker-control' : 'shot-marker-normal']"
                   :style="{
                     left: shot.x + 'px',
                     top: shot.y + 'px'
@@ -316,6 +347,9 @@ const windEnabled = ref(false)
 const windDirection = ref('left')
 const windSpeed = ref({ label: '2 m/s', value: 2 })
 
+// Correction type
+const correctionType = ref('turrets')
+
 // Options
 const systemOptions = [
   { label: 'Mils', value: 'mils' },
@@ -367,6 +401,11 @@ const windSpeedOptions = [
   { label: '10 m/s', value: 10 }
 ]
 
+const correctionTypeOptions = [
+  { label: 'Korekta na bębnach', value: 'turrets' },
+  { label: 'Korekta na krzyżu', value: 'crosshair' }
+]
+
 // Computed corrections
 const horizontalCorrection = computed(() => {
   return horizontalClicks.value * clickValue.value
@@ -376,34 +415,31 @@ const verticalCorrection = computed(() => {
   return verticalClicks.value * clickValue.value
 })
 
-// Grid calculations
-const gridLines = computed(() => {
-  const spacing = 40 // pixels between grid lines
-  const vertical = []
-  const horizontal = []
+// Crosshair position based on correction type
+const crosshairPosition = computed(() => {
+  const centerX = imageWidth.value / 2
+  const centerY = imageHeight.value / 2
 
-  for (let x = spacing; x < imageWidth.value; x += spacing) {
-    vertical.push(x)
-  }
+  if (correctionType.value === 'crosshair') {
+    // Move crosshair - corrections move the crosshair
+    // Use same scale as MilDot spacing
+    const targetSize = Math.min(imageWidth.value, imageHeight.value)
+    const pixelsPerUnit = targetSize * 0.06 // 1 mil/MOA = 6% rozmiaru tarczy
 
-  for (let y = spacing; y < imageHeight.value; y += spacing) {
-    horizontal.push(y)
-  }
+    const offsetX = horizontalCorrection.value * pixelsPerUnit
+    const offsetY = -verticalCorrection.value * pixelsPerUnit // negative because screen Y is inverted
 
-  return { vertical, horizontal }
-})
-
-const milDots = computed(() => {
-  const dots = []
-  const spacing = 40
-
-  for (let x = spacing; x < imageWidth.value; x += spacing) {
-    for (let y = spacing; y < imageHeight.value; y += spacing) {
-      dots.push({ x, y })
+    return {
+      x: centerX + offsetX,
+      y: centerY + offsetY
+    }
+  } else {
+    // Turret corrections - crosshair stays centered
+    return {
+      x: centerX,
+      y: centerY
     }
   }
-
-  return dots
 })
 
 // Methods
@@ -423,23 +459,33 @@ const calculateShotPosition = () => {
   const centerX = imageWidth.value / 2
   const centerY = imageHeight.value / 2
 
-  // Convert corrections to pixel offset
-  // Assuming 1 mil ≈ 20 pixels at this scale
-  const pixelsPerMil = 20
-  const pixelsPerMOA = 15
+  // Calculate scale based on actual MilDot spacing
+  // Kropki są rozmieszczone co 6% rozmiaru tarczy
+  const targetSize = Math.min(imageWidth.value, imageHeight.value)
+  const pixelsPerUnit = targetSize * 0.06 // 1 mil/MOA = 6% rozmiaru tarczy
 
-  const scale = measurementSystem.value === 'mils' ? pixelsPerMil : pixelsPerMOA
+  let offsetX = 0
+  let offsetY = 0
 
-  let offsetX = horizontalCorrection.value * scale
-  const offsetY = -verticalCorrection.value * scale // negative because screen Y is inverted
+  if (correctionType.value === 'turrets') {
+    // Turret corrections: apply corrections to shot position
+    offsetX = horizontalCorrection.value * pixelsPerUnit
+    offsetY = -verticalCorrection.value * pixelsPerUnit // negative because screen Y is inverted
+  } else {
+    // Crosshair corrections: shot compensates for crosshair displacement
+    // If crosshair is moved right, shot hits left of crosshair (back to center)
+    offsetX = -horizontalCorrection.value * pixelsPerUnit // OPPOSITE to crosshair movement
+    offsetY = verticalCorrection.value * pixelsPerUnit // OPPOSITE to crosshair movement
+  }
 
-  // Apply wind effect if enabled
+  // Apply wind effect if enabled (affects both correction types)
   if (windEnabled.value) {
     const windDeflection = calculateWindDeflection()
+    const windOffsetX = windDeflection * pixelsPerUnit
     if (windDirection.value === 'left') {
-      offsetX -= windDeflection * scale
+      offsetX -= windOffsetX
     } else {
-      offsetX += windDeflection * scale
+      offsetX += windOffsetX
     }
   }
 
@@ -452,7 +498,7 @@ const calculateShotPosition = () => {
 // Calculate wind deflection based on McCoy's equations from the article
 const calculateWindDeflection = () => {
   const distanceMeters = distance.value.value
-  const windSpeedMs = windSpeed.value
+  const windSpeedMs = windSpeed.value.value // Get the numeric value from the object
 
   // Simplified wind influence calculation based on the article
   // Using approximate formula for .308 ammunition
@@ -499,19 +545,17 @@ const takeControlShot = () => {
   const x = Math.max(5, Math.min(imageWidth.value - 5, randomX))
   const y = Math.max(5, Math.min(imageHeight.value - 5, randomY))
 
-  shots.value.push({ x, y })
+  shots.value.push({ x, y, type: 'control' })
 }
 
 const takeShot = () => {
   const position = calculateShotPosition()
 
-  // Add some random dispersion (±5 pixels)
-  const dispersionX = (Math.random() - 0.5) * 10
-  const dispersionY = (Math.random() - 0.5) * 10
-
+  // Use precision mode by default - no dispersion for accurate training
   shots.value.push({
-    x: Math.max(5, Math.min(imageWidth.value - 5, position.x + dispersionX)),
-    y: Math.max(5, Math.min(imageHeight.value - 5, position.y + dispersionY))
+    x: Math.max(5, Math.min(imageWidth.value - 5, position.x)),
+    y: Math.max(5, Math.min(imageHeight.value - 5, position.y)),
+    type: 'normal'
   })
 }
 
@@ -630,10 +674,17 @@ onUnmounted(() => {
   position: absolute;
   width: 8px;
   height: 8px;
-  background-color: #000;
   border-radius: 50%;
   transform: translate(-50%, -50%);
   z-index: 3;
+}
+
+.shot-marker-normal {
+  background-color: #d32f2f; /* Red for normal shots */
+}
+
+.shot-marker-control {
+  background-color: #1976d2; /* Blue for control shots */
 }
 
 .crosshair {
