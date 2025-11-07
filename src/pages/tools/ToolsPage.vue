@@ -55,6 +55,21 @@
             <div class="text-caption text-grey-4">Komunikacja fonetyczna</div>
           </q-card-section>
         </q-card>
+
+        <!-- Kalkulator nastaw -->
+        <q-card
+          class="tool-card military-dark-card"
+          clickable
+          @click="navigateTo('/tools/settings')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="tune" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Kalkulator nastaw</div>
+            <div class="text-caption text-grey-4">Obliczenia balistyczne</div>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </q-page>
@@ -129,6 +144,11 @@ const navigateTo = (path) => {
 
 .military-green-card {
   background: linear-gradient(135deg, #556B2F 0%, #3A4A20 100%);
+  color: white;
+}
+
+.military-dark-card {
+  background: linear-gradient(135deg, #2C3E50 0%, #1A252F 100%);
   color: white;
 }
 
