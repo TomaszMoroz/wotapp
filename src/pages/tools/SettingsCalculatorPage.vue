@@ -98,59 +98,133 @@
               <div class="text-subtitle2 q-mb-sm">Korekty nastaw</div>
 
               <!-- Up/Down -->
-              <div class="row items-center q-mb-md">
-                <div class="col-3 text-caption">Góra/Dół:</div>
-                <div class="col-9">
-                  <div class="row items-center">
-                    <q-btn
-                      flat
-                      round
-                      icon="keyboard_arrow_down"
-                      color="negative"
-                      @click="adjustVertical(-1)"
-                      size="sm"
-                    />
-                    <div class="text-center q-mx-md" style="min-width: 60px;">
-                      {{ verticalClicks > 0 ? '+' : '' }}{{ verticalClicks }}
-                    </div>
-                    <q-btn
-                      flat
-                      round
-                      icon="keyboard_arrow_up"
-                      color="positive"
-                      @click="adjustVertical(1)"
-                      size="sm"
-                    />
+              <div class="correction-control q-mb-lg">
+                <div class="text-caption q-mb-sm">Góra/Dół:</div>
+                <!-- Przyciski -->
+                <div class="row items-center q-mb-sm">
+                  <q-btn
+                    flat
+                    round
+                    icon="keyboard_arrow_down"
+                    color="negative"
+                    @click="adjustVertical(-10)"
+                    size="md"
+                    class="correction-btn"
+                  >
+                    <q-tooltip>-10 klików</q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    flat
+                    round
+                    icon="remove"
+                    color="negative"
+                    @click="adjustVertical(-1)"
+                    size="lg"
+                    class="correction-btn q-mx-sm"
+                  >
+                    <q-tooltip>-1 klik</q-tooltip>
+                  </q-btn>
+                  <div class="text-center correction-value">
+                    {{ verticalClicks > 0 ? '+' : '' }}{{ verticalClicks }}
                   </div>
+                  <q-btn
+                    flat
+                    round
+                    icon="add"
+                    color="positive"
+                    @click="adjustVertical(1)"
+                    size="lg"
+                    class="correction-btn q-mx-sm"
+                  >
+                    <q-tooltip>+1 klik</q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    flat
+                    round
+                    icon="keyboard_arrow_up"
+                    color="positive"
+                    @click="adjustVertical(10)"
+                    size="md"
+                    class="correction-btn"
+                  >
+                    <q-tooltip>+10 klików</q-tooltip>
+                  </q-btn>
                 </div>
+                <!-- Suwak -->
+                <q-slider
+                  v-model="verticalClicks"
+                  :min="-80"
+                  :max="80"
+                  :step="1"
+                  label
+                  color="primary"
+                  class="q-mt-sm"
+                />
               </div>
 
               <!-- Left/Right -->
-              <div class="row items-center q-mb-md">
-                <div class="col-3 text-caption">Lewo/Prawo:</div>
-                <div class="col-9">
-                  <div class="row items-center">
-                    <q-btn
-                      flat
-                      round
-                      icon="keyboard_arrow_left"
-                      color="negative"
-                      @click="adjustHorizontal(-1)"
-                      size="sm"
-                    />
-                    <div class="text-center q-mx-md" style="min-width: 60px;">
-                      {{ horizontalClicks > 0 ? '+' : '' }}{{ horizontalClicks }}
-                    </div>
-                    <q-btn
-                      flat
-                      round
-                      icon="keyboard_arrow_right"
-                      color="positive"
-                      @click="adjustHorizontal(1)"
-                      size="sm"
-                    />
+              <div class="correction-control q-mb-lg">
+                <div class="text-caption q-mb-sm">Lewo/Prawo:</div>
+                <!-- Przyciski -->
+                <div class="row items-center q-mb-sm">
+                  <q-btn
+                    flat
+                    round
+                    icon="keyboard_arrow_left"
+                    color="negative"
+                    @click="adjustHorizontal(-10)"
+                    size="md"
+                    class="correction-btn"
+                  >
+                    <q-tooltip>-10 klików</q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    flat
+                    round
+                    icon="remove"
+                    color="negative"
+                    @click="adjustHorizontal(-1)"
+                    size="lg"
+                    class="correction-btn q-mx-sm"
+                  >
+                    <q-tooltip>-1 klik</q-tooltip>
+                  </q-btn>
+                  <div class="text-center correction-value">
+                    {{ horizontalClicks > 0 ? '+' : '' }}{{ horizontalClicks }}
                   </div>
+                  <q-btn
+                    flat
+                    round
+                    icon="add"
+                    color="positive"
+                    @click="adjustHorizontal(1)"
+                    size="lg"
+                    class="correction-btn q-mx-sm"
+                  >
+                    <q-tooltip>+1 klik</q-tooltip>
+                  </q-btn>
+                  <q-btn
+                    flat
+                    round
+                    icon="keyboard_arrow_right"
+                    color="positive"
+                    @click="adjustHorizontal(10)"
+                    size="md"
+                    class="correction-btn"
+                  >
+                    <q-tooltip>+10 klików</q-tooltip>
+                  </q-btn>
                 </div>
+                <!-- Suwak -->
+                <q-slider
+                  v-model="horizontalClicks"
+                  :min="-80"
+                  :max="80"
+                  :step="1"
+                  label
+                  color="primary"
+                  class="q-mt-sm"
+                />
               </div>
 
               <!-- Strzał kontrolny -->
@@ -799,6 +873,28 @@ onUnmounted(() => {
 .crosshair-line {
   stroke: red;
   stroke-width: 2;
+}
+
+/* Correction controls styling */
+.correction-control {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.correction-btn {
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.correction-value {
+  min-width: 60px;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  margin: 0 8px;
 }
 
 /* Responsive adjustments */
