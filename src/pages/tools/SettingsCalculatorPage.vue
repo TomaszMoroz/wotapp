@@ -420,7 +420,7 @@ const verticalClicks = ref(0)
 const horizontalClicks = ref(0)
 const showGrid = ref(true)
 const shots = ref([])
-const lastControlShot = ref(null) // Store last control shot position for zeroing reference
+const lastControlShot = ref(null)
 const imageWidth = ref(400)
 const imageHeight = ref(400)
 const targetContainer = ref(null)
@@ -514,21 +514,50 @@ const cmPerClick = computed(() => {
   }
 })
 
+// *** UNIFIED SCALE: All functions use real centimeters on 50cm target ***
+const TARGET_SIZE_CM = 50
+
+// Convert correction in mils/MOA to centimeters on target
+const getCorrectionInCm = (correctionValue) => {
+  const distanceMeters = distance.value.value
+
+  if (measurementSystem.value === 'mils') {
+    // For mils: 1 mil at distance = distance/1000 meters = distance mm
+    const milToCmAtDistance = distanceMeters / 10 // convert mm to cm
+    return correctionValue * milToCmAtDistance
+  } else {
+    // For MOA: 1 MOA at distance ≈ distance * 0.29 cm
+    const moaToCmAtDistance = distanceMeters * 0.29
+    return correctionValue * moaToCmAtDistance
+  }
+}
+
+// Convert centimeters to pixels on 50cm target
+const cmToPixels = (cm) => {
+  const targetSizePixels = Math.min(imageWidth.value, imageHeight.value)
+  const pixelsPerCm = targetSizePixels / TARGET_SIZE_CM
+  return cm * pixelsPerCm
+}
+
+// Convert pixels to centimeters on 50cm target
+const pixelsToCm = (pixels) => {
+  const targetSizePixels = Math.min(imageWidth.value, imageHeight.value)
+  const pixelsPerCm = targetSizePixels / TARGET_SIZE_CM
+  return pixels / pixelsPerCm
+}
+
 // Crosshair position based on correction type
 const crosshairPosition = computed(() => {
   const centerX = imageWidth.value / 2
   const centerY = imageHeight.value / 2
 
   if (correctionType.value === 'crosshair') {
-    // Move crosshair - corrections move the crosshair
-    // Use same scale as MilDot spacing so 1 mil/MOA = distance between dots
-    const targetSize = Math.min(imageWidth.value, imageHeight.value)
-    const milDotSpacing = targetSize * 0.06 // Distance between dots in pixels
+    // Move crosshair based on correction in centimeters
+    const correctionCmX = getCorrectionInCm(horizontalCorrection.value)
+    const correctionCmY = -getCorrectionInCm(verticalCorrection.value) // negative for screen Y
 
-    // Calculate crosshair offset in mils/MOA units (not cm)
-    // This ensures 1 mil/MOA correction = 1 dot spacing on crosshair
-    const offsetX = horizontalCorrection.value * milDotSpacing
-    const offsetY = -verticalCorrection.value * milDotSpacing // negative because screen Y is inverted
+    const offsetX = cmToPixels(correctionCmX)
+    const offsetY = cmToPixels(correctionCmY)
 
     return {
       x: centerX + offsetX,
@@ -554,25 +583,19 @@ const controlShotInfo = computed(() => {
   const offsetX = lastControlShot.value.x - centerX
   const offsetY = centerY - lastControlShot.value.y // inverted for screen coordinates
 
-  // Convert pixels to centimeters using 50cm target
-  const targetSizeCm = 50
-  const targetSizePixels = Math.min(imageWidth.value, imageHeight.value)
-  const pixelsPerCm = targetSizePixels / targetSizeCm
-
-  const horizontalCm = offsetX / pixelsPerCm
-  const verticalCm = offsetY / pixelsPerCm
+  // Convert pixels to centimeters using unified scale
+  const horizontalCm = pixelsToCm(offsetX)
+  const verticalCm = pixelsToCm(offsetY)
 
   // Convert centimeters to mils/MOA for display
   const distanceMeters = distance.value.value
   let horizontalMils, verticalMils
 
   if (measurementSystem.value === 'mils') {
-    // For mils: 1 mil at distance = distance/1000 meters = distance mm
     const milToCmAtDistance = distanceMeters / 10
     horizontalMils = horizontalCm / milToCmAtDistance
     verticalMils = verticalCm / milToCmAtDistance
   } else {
-    // For MOA: 1 MOA at distance ≈ distance * 0.29 cm
     const moaToCmAtDistance = distanceMeters * 0.29
     horizontalMils = horizontalCm / moaToCmAtDistance
     verticalMils = verticalCm / moaToCmAtDistance
@@ -623,13 +646,12 @@ const calculateShotPosition = () => {
     baseY = centerY
   }
 
-  // Apply corrections relative to base position
-  // Use same scale as MilDot spacing to match crosshair behavior
-  const targetSize = Math.min(imageWidth.value, imageHeight.value)
-  const milDotSpacing = targetSize * 0.06 // Distance between dots in pixels
+  // Apply corrections in centimeters (unified scale)
+  const correctionCmX = getCorrectionInCm(horizontalCorrection.value)
+  const correctionCmY = -getCorrectionInCm(verticalCorrection.value) // negative for screen Y
 
-  const correctionPixelsX = horizontalCorrection.value * milDotSpacing
-  const correctionPixelsY = -verticalCorrection.value * milDotSpacing // negative for screen Y
+  const correctionPixelsX = cmToPixels(correctionCmX)
+  const correctionPixelsY = cmToPixels(correctionCmY)
 
   let shotX = baseX + correctionPixelsX
   const shotY = baseY + correctionPixelsY
@@ -637,8 +659,9 @@ const calculateShotPosition = () => {
   // Apply wind effect if enabled
   if (windEnabled.value) {
     const windDeflection = calculateWindDeflection()
-    // Wind deflection is already in mils/MOA, use same scale as corrections
-    const windPixelsX = windDeflection * milDotSpacing
+    const windCmX = getCorrectionInCm(windDeflection)
+    const windPixelsX = cmToPixels(windCmX)
+
     if (windDirection.value === 'left') {
       shotX += windPixelsX // Wind from left pushes projectile right
     } else {
@@ -652,20 +675,16 @@ const calculateShotPosition = () => {
   }
 }
 
-// Calculate wind deflection based on McCoy's equations from the article
+// Calculate wind deflection based on McCoy's equations
 const calculateWindDeflection = () => {
   const distanceMeters = distance.value.value
-  const windSpeedMs = windSpeed.value.value // Get the numeric value from the object
+  const windSpeedMs = windSpeed.value.value
 
-  // Simplified wind influence calculation based on the article
-  // Using approximate formula for .308 ammunition
-  // Wind influence = T - R/MV (time lag in seconds)
-
+  // Simplified wind influence calculation
   const muzzleVelocity = 830 // m/s for .308 175gr SMK
   const vacuumTime = distanceMeters / muzzleVelocity
 
   // Approximate actual flight time (accounting for drag)
-  // Using simplified ballistic coefficient
   const actualTime = vacuumTime * (1 + (distanceMeters / 1000) * 0.15)
 
   // Time lag (wind influence in seconds)
@@ -700,15 +719,14 @@ const takeControlShot = () => {
 
   // Apply wind effect to control shot if enabled
   if (windEnabled.value) {
-    const targetSize = Math.min(imageWidth.value, imageHeight.value)
-    const pixelsPerUnit = targetSize * 0.06
     const windDeflection = calculateWindDeflection()
-    const windOffsetX = windDeflection * pixelsPerUnit
+    const windCmX = getCorrectionInCm(windDeflection)
+    const windPixelsX = cmToPixels(windCmX)
 
     if (windDirection.value === 'left') {
-      randomX += windOffsetX // Wind from left pushes shot right
+      randomX += windPixelsX // Wind from left pushes shot right
     } else {
-      randomX -= windOffsetX // Wind from right pushes shot left
+      randomX -= windPixelsX // Wind from right pushes shot left
     }
   }
 
@@ -737,7 +755,7 @@ const resetSimulation = () => {
   shots.value = []
   verticalClicks.value = 0
   horizontalClicks.value = 0
-  lastControlShot.value = null // Reset control shot reference
+  lastControlShot.value = null
 }
 
 const onImageLoad = () => {
@@ -803,7 +821,7 @@ onUnmounted(() => {
   border: 1px solid rgba(25, 118, 210, 0.1);
 }
 
-.content-card {
+.controls-card {
   background: rgba(255, 255, 255, 0.95);
   border-radius: 16px;
   backdrop-filter: blur(10px);
@@ -860,19 +878,6 @@ onUnmounted(() => {
 
 .shot-marker-control {
   background-color: #1976d2; /* Blue for control shots */
-}
-
-.crosshair {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 4;
-}
-
-.crosshair-line {
-  stroke: red;
-  stroke-width: 2;
 }
 
 /* Correction controls styling */
