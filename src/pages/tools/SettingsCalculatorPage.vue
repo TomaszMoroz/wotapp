@@ -187,6 +187,7 @@
                 <div class="text-caption">
                   <div>Korekta pozioma: {{ horizontalCorrection.toFixed(2) }} {{ measurementSystem === 'mils' ? 'mil' : 'MOA' }}</div>
                   <div>Korekta pionowa: {{ verticalCorrection.toFixed(2) }} {{ measurementSystem === 'mils' ? 'mil' : 'MOA' }}</div>
+                  <div>Centymetrów per klik: {{ cmPerClick }} cm</div>
                   <div>Ilość strzałów: {{ shots.length }}</div>
 
                   <!-- Control shot info -->
@@ -424,6 +425,21 @@ const verticalCorrection = computed(() => {
   return verticalClicks.value * clickValue.value
 })
 
+// Calculate centimeters per click at current distance
+const cmPerClick = computed(() => {
+  const distanceMeters = distance.value.value
+
+  if (measurementSystem.value === 'mils') {
+    // For mils: 1 mil at distance = distance/1000 meters = distance mm
+    const milToCmAtDistance = distanceMeters / 10 // convert mm to cm
+    return (clickValue.value * milToCmAtDistance).toFixed(2)
+  } else {
+    // For MOA: 1 MOA at distance ≈ distance * 0.29 cm
+    const moaToCmAtDistance = distanceMeters * 0.29
+    return (clickValue.value * moaToCmAtDistance).toFixed(2)
+  }
+})
+
 // Crosshair position based on correction type
 const crosshairPosition = computed(() => {
   const centerX = imageWidth.value / 2
@@ -431,12 +447,14 @@ const crosshairPosition = computed(() => {
 
   if (correctionType.value === 'crosshair') {
     // Move crosshair - corrections move the crosshair
-    // Use same scale as MilDot spacing
+    // Use same scale as MilDot spacing so 1 mil/MOA = distance between dots
     const targetSize = Math.min(imageWidth.value, imageHeight.value)
-    const pixelsPerUnit = targetSize * 0.06 // 1 mil/MOA = 6% rozmiaru tarczy
+    const milDotSpacing = targetSize * 0.06 // Distance between dots in pixels
 
-    const offsetX = horizontalCorrection.value * pixelsPerUnit
-    const offsetY = -verticalCorrection.value * pixelsPerUnit // negative because screen Y is inverted
+    // Calculate crosshair offset in mils/MOA units (not cm)
+    // This ensures 1 mil/MOA correction = 1 dot spacing on crosshair
+    const offsetX = horizontalCorrection.value * milDotSpacing
+    const offsetY = -verticalCorrection.value * milDotSpacing // negative because screen Y is inverted
 
     return {
       x: centerX + offsetX,
@@ -462,26 +480,28 @@ const controlShotInfo = computed(() => {
   const offsetX = lastControlShot.value.x - centerX
   const offsetY = centerY - lastControlShot.value.y // inverted for screen coordinates
 
-  // Convert pixels to mils/MOA using MilDot spacing
-  const targetSize = Math.min(imageWidth.value, imageHeight.value)
-  const pixelsPerUnit = targetSize * 0.06 // 1 mil/MOA = 6% rozmiaru tarczy
+  // Convert pixels to centimeters using 50cm target
+  const targetSizeCm = 50
+  const targetSizePixels = Math.min(imageWidth.value, imageHeight.value)
+  const pixelsPerCm = targetSizePixels / targetSizeCm
 
-  const horizontalMils = offsetX / pixelsPerUnit
-  const verticalMils = offsetY / pixelsPerUnit
+  const horizontalCm = offsetX / pixelsPerCm
+  const verticalCm = offsetY / pixelsPerCm
 
-  // Convert to centimeters on target at current distance
+  // Convert centimeters to mils/MOA for display
   const distanceMeters = distance.value.value
-
-  // For mils: 1 mil at distance = distance/1000 meters
-  // For MOA: 1 MOA at distance ≈ distance/343 meters (approximately)
-  let horizontalCm, verticalCm
+  let horizontalMils, verticalMils
 
   if (measurementSystem.value === 'mils') {
-    horizontalCm = (horizontalMils * distanceMeters / 1000) * 100 // convert to cm
-    verticalCm = (verticalMils * distanceMeters / 1000) * 100
+    // For mils: 1 mil at distance = distance/1000 meters = distance mm
+    const milToCmAtDistance = distanceMeters / 10
+    horizontalMils = horizontalCm / milToCmAtDistance
+    verticalMils = verticalCm / milToCmAtDistance
   } else {
-    horizontalCm = (horizontalMils * distanceMeters / 343) * 100 // MOA conversion
-    verticalCm = (verticalMils * distanceMeters / 343) * 100
+    // For MOA: 1 MOA at distance ≈ distance * 0.29 cm
+    const moaToCmAtDistance = distanceMeters * 0.29
+    horizontalMils = horizontalCm / moaToCmAtDistance
+    verticalMils = verticalCm / moaToCmAtDistance
   }
 
   return {
@@ -516,10 +536,6 @@ const calculateShotPosition = () => {
   const centerX = imageWidth.value / 2
   const centerY = imageHeight.value / 2
 
-  // Calculate scale based on actual MilDot spacing
-  const targetSize = Math.min(imageWidth.value, imageHeight.value)
-  const pixelsPerUnit = targetSize * 0.06 // 1 mil/MOA = 6% rozmiaru tarczy
-
   let baseX, baseY
 
   // Determine base position and apply corrections
@@ -534,20 +550,25 @@ const calculateShotPosition = () => {
   }
 
   // Apply corrections relative to base position
-  const correctionX = horizontalCorrection.value * pixelsPerUnit
-  const correctionY = -verticalCorrection.value * pixelsPerUnit
+  // Use same scale as MilDot spacing to match crosshair behavior
+  const targetSize = Math.min(imageWidth.value, imageHeight.value)
+  const milDotSpacing = targetSize * 0.06 // Distance between dots in pixels
 
-  let shotX = baseX + correctionX
-  const shotY = baseY + correctionY
+  const correctionPixelsX = horizontalCorrection.value * milDotSpacing
+  const correctionPixelsY = -verticalCorrection.value * milDotSpacing // negative for screen Y
+
+  let shotX = baseX + correctionPixelsX
+  const shotY = baseY + correctionPixelsY
 
   // Apply wind effect if enabled
   if (windEnabled.value) {
     const windDeflection = calculateWindDeflection()
-    const windOffsetX = windDeflection * pixelsPerUnit
+    // Wind deflection is already in mils/MOA, use same scale as corrections
+    const windPixelsX = windDeflection * milDotSpacing
     if (windDirection.value === 'left') {
-      shotX += windOffsetX // Wind from left pushes projectile right
+      shotX += windPixelsX // Wind from left pushes projectile right
     } else {
-      shotX -= windOffsetX // Wind from right pushes projectile left
+      shotX -= windPixelsX // Wind from right pushes projectile left
     }
   }
 
