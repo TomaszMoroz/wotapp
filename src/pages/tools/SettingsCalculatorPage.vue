@@ -188,6 +188,14 @@
                   <div>Korekta pozioma: {{ horizontalCorrection.toFixed(2) }} {{ measurementSystem === 'mils' ? 'mil' : 'MOA' }}</div>
                   <div>Korekta pionowa: {{ verticalCorrection.toFixed(2) }} {{ measurementSystem === 'mils' ? 'mil' : 'MOA' }}</div>
                   <div>Ilość strzałów: {{ shots.length }}</div>
+
+                  <!-- Control shot info -->
+                  <div v-if="controlShotInfo" class="q-mt-md">
+                    <div class="text-weight-medium">Ostatni strzał kontrolny:</div>
+                    <div>{{ Math.abs(controlShotInfo.horizontal.cm).toFixed(1) }} cm {{ controlShotInfo.horizontal.direction }}</div>
+                    <div>{{ Math.abs(controlShotInfo.vertical.cm).toFixed(1) }} cm {{ controlShotInfo.vertical.direction }}</div>
+                    <div class="text-grey">Dystans: {{ controlShotInfo.distance }}m</div>
+                  </div>
                 </div>
               </div>
             </q-card-section>
@@ -306,7 +314,7 @@
               <div class="grid-controls q-pa-md">
                 <q-checkbox
                   v-model="showGrid"
-                  label="Pokaż siatkę mil-dot"
+                  label="Pokaż siatkę celowniczą"
                   color="primary"
                 />
               </div>
@@ -337,6 +345,7 @@ const verticalClicks = ref(0)
 const horizontalClicks = ref(0)
 const showGrid = ref(true)
 const shots = ref([])
+const lastControlShot = ref(null) // Store last control shot position for zeroing reference
 const imageWidth = ref(400)
 const imageHeight = ref(400)
 const targetContainer = ref(null)
@@ -442,6 +451,54 @@ const crosshairPosition = computed(() => {
   }
 })
 
+// Control shot analysis
+const controlShotInfo = computed(() => {
+  if (!lastControlShot.value) return null
+
+  const centerX = imageWidth.value / 2
+  const centerY = imageHeight.value / 2
+
+  // Calculate pixel offset from center
+  const offsetX = lastControlShot.value.x - centerX
+  const offsetY = centerY - lastControlShot.value.y // inverted for screen coordinates
+
+  // Convert pixels to mils/MOA using MilDot spacing
+  const targetSize = Math.min(imageWidth.value, imageHeight.value)
+  const pixelsPerUnit = targetSize * 0.06 // 1 mil/MOA = 6% rozmiaru tarczy
+
+  const horizontalMils = offsetX / pixelsPerUnit
+  const verticalMils = offsetY / pixelsPerUnit
+
+  // Convert to centimeters on target at current distance
+  const distanceMeters = distance.value.value
+
+  // For mils: 1 mil at distance = distance/1000 meters
+  // For MOA: 1 MOA at distance ≈ distance/343 meters (approximately)
+  let horizontalCm, verticalCm
+
+  if (measurementSystem.value === 'mils') {
+    horizontalCm = (horizontalMils * distanceMeters / 1000) * 100 // convert to cm
+    verticalCm = (verticalMils * distanceMeters / 1000) * 100
+  } else {
+    horizontalCm = (horizontalMils * distanceMeters / 343) * 100 // MOA conversion
+    verticalCm = (verticalMils * distanceMeters / 343) * 100
+  }
+
+  return {
+    horizontal: {
+      value: horizontalMils,
+      cm: horizontalCm,
+      direction: horizontalMils > 0 ? 'prawo' : 'lewo'
+    },
+    vertical: {
+      value: verticalMils,
+      cm: verticalCm,
+      direction: verticalMils > 0 ? 'góra' : 'dół'
+    },
+    distance: distanceMeters
+  }
+})
+
 // Methods
 const goBack = () => {
   router.back()
@@ -460,38 +517,43 @@ const calculateShotPosition = () => {
   const centerY = imageHeight.value / 2
 
   // Calculate scale based on actual MilDot spacing
-  // Kropki są rozmieszczone co 6% rozmiaru tarczy
   const targetSize = Math.min(imageWidth.value, imageHeight.value)
   const pixelsPerUnit = targetSize * 0.06 // 1 mil/MOA = 6% rozmiaru tarczy
 
-  let offsetX = 0
-  let offsetY = 0
+  let baseX, baseY
 
-  if (correctionType.value === 'turrets') {
-    // Turret corrections: apply corrections to shot position
-    offsetX = horizontalCorrection.value * pixelsPerUnit
-    offsetY = -verticalCorrection.value * pixelsPerUnit // negative because screen Y is inverted
+  // Determine base position and apply corrections
+  if (lastControlShot.value) {
+    // Use control shot as reference point
+    baseX = lastControlShot.value.x
+    baseY = lastControlShot.value.y
   } else {
-    // Crosshair corrections: shot compensates for crosshair displacement
-    // If crosshair is moved right, shot hits left of crosshair (back to center)
-    offsetX = -horizontalCorrection.value * pixelsPerUnit // OPPOSITE to crosshair movement
-    offsetY = verticalCorrection.value * pixelsPerUnit // OPPOSITE to crosshair movement
+    // No control shot yet, use center as reference
+    baseX = centerX
+    baseY = centerY
   }
 
-  // Apply wind effect if enabled (affects both correction types)
+  // Apply corrections relative to base position
+  const correctionX = horizontalCorrection.value * pixelsPerUnit
+  const correctionY = -verticalCorrection.value * pixelsPerUnit
+
+  let shotX = baseX + correctionX
+  const shotY = baseY + correctionY
+
+  // Apply wind effect if enabled
   if (windEnabled.value) {
     const windDeflection = calculateWindDeflection()
     const windOffsetX = windDeflection * pixelsPerUnit
     if (windDirection.value === 'left') {
-      offsetX -= windOffsetX
+      shotX += windOffsetX // Wind from left pushes projectile right
     } else {
-      offsetX += windOffsetX
+      shotX -= windOffsetX // Wind from right pushes projectile left
     }
   }
 
   return {
-    x: centerX + offsetX,
-    y: centerY + offsetY
+    x: shotX,
+    y: shotY
   }
 }
 
@@ -538,12 +600,29 @@ const takeControlShot = () => {
   const halfAreaY = (imageHeight.value * areaSize) / 2
 
   // Random position within the 75% area
-  const randomX = centerX + (Math.random() - 0.5) * (halfAreaX * 2)
+  let randomX = centerX + (Math.random() - 0.5) * (halfAreaX * 2)
   const randomY = centerY + (Math.random() - 0.5) * (halfAreaY * 2)
+
+  // Apply wind effect to control shot if enabled
+  if (windEnabled.value) {
+    const targetSize = Math.min(imageWidth.value, imageHeight.value)
+    const pixelsPerUnit = targetSize * 0.06
+    const windDeflection = calculateWindDeflection()
+    const windOffsetX = windDeflection * pixelsPerUnit
+
+    if (windDirection.value === 'left') {
+      randomX += windOffsetX // Wind from left pushes shot right
+    } else {
+      randomX -= windOffsetX // Wind from right pushes shot left
+    }
+  }
 
   // Ensure shot is within image bounds
   const x = Math.max(5, Math.min(imageWidth.value - 5, randomX))
   const y = Math.max(5, Math.min(imageHeight.value - 5, randomY))
+
+  // Store this control shot as reference for zeroing
+  lastControlShot.value = { x, y }
 
   shots.value.push({ x, y, type: 'control' })
 }
@@ -563,6 +642,7 @@ const resetSimulation = () => {
   shots.value = []
   verticalClicks.value = 0
   horizontalClicks.value = 0
+  lastControlShot.value = null // Reset control shot reference
 }
 
 const onImageLoad = () => {
