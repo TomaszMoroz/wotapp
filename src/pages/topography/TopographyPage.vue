@@ -406,7 +406,7 @@ const allTopics = computed(() => [
       <h5>1. Analiza OCOKA (Krytyczne Punkty)</h5>
       <p>Przy wyborze trasy, dowódca musi zadać sobie kluczowe pytania:</p>
       <ul>
-        <li><strong>Pola Ostrzału (O):</strong> Czy trasa biegnie wzdłuż grzbietów, po otwartych polach lub wzdłuż linii horyzontu? Unikaj ich.</li>
+        <li><strong>Obserwacja (O):</strong> Czy trasa uwzględnia pola obserwacji, punkty obserwacyjne, czy wytepują ograniczenia widoczności?</li>
         <li><strong>Osłona i Ukrycie (C):</strong> Czy trasa zapewnia stałe schronienie przed obserwacją i ostrzałem? Preferuj zalesione tereny, doliny i zagięcia terenu.</li>
         <li><strong>Przeszkody (O):</strong> Czy trasa wymaga forsowania rzek, bagien, gęstych miast? Zminimalizuj te przeszkody, ponieważ spowalniają i zwiększają ryzyko.</li>
         <li><strong>Teren Kluczowy (K):</strong> Czy trasa pozwala na szybkie zajęcie i wykorzystanie terenu dominującego (np. wzgórza) do obserwacji lub osłony ogniem?</li>

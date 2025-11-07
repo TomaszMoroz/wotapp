@@ -1,7 +1,7 @@
 {
   "name": "wot-pwa",
   "version": "0.0.1",
-  "description": "Progressive Web App dla żołnierzy Wojsk Obrony Terytorialnej",
+  "description": "Materiały szkoleniowe dla żołnierzy WOT",
   "productName": "WOT PWA",
   "author": "TomaszMoroz <tmoroz688@gmail.com>",
   "private": true,
