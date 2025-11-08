@@ -26,8 +26,8 @@
             <div class="row items-center">
               <q-icon name="info" size="2rem" color="blue-6" class="q-mr-md" />
               <div>
-                <div class="text-h5 text-weight-bold text-white">Siatka Mil-Dot</div>
-                <div class="text-subtitle2 text-grey-3">Podstawy systemu mil-dot w lunecie celowniczej</div>
+                <div class="text-h5 text-weight-bold text-white">Mil-Dot (MRAD, MIL) – siatka i jednostka</div>
+                <div class="text-subtitle2 text-grey-3">Podstawy systemu mil-dot (siatka) i miliradianów (MRAD/MIL) w strzelectwie precyzyjnym</div>
               </div>
             </div>
           </q-card-section>
@@ -36,13 +36,14 @@
 
           <q-card-section class="q-pa-lg">
             <div class="text-body1 q-mb-md">
-              Mil-Dot to rodzaj siatki w lunecie celowniczej, gdzie naniesiono kropki na belkach krzyża.
+              <b>Mil-Dot</b> to rodzaj siatki w lunecie celowniczej, gdzie naniesiono kropki na belkach krzyża. <br>
+              <b>MIL/MRAD</b> to jednostka miary kąta (mili-radian). W strzelectwie przyjmuje się uproszczenie: 1 MIL = 10 cm na 100 m (tzw. "Shooter's Mil"), choć geometrycznie to 9,817 cm.
             </div>
 
             <div class="definition-box q-mb-lg">
               <q-icon name="info" color="blue-6" size="1.5rem" class="q-mr-sm" />
               <div class="text-body2">
-                <strong>Definicja:</strong> Pierwszy człon słowa pochodzi od miliradiana, czyli 1/1000 rad.
+                <strong>Definicja:</strong> Pierwszy człon słowa pochodzi od miliradiana, czyli 1/1000 rad. W praktyce strzeleckiej 1 MIL = 10 cm na 100 m (zaokrąglenie branżowe).
               </div>
             </div>
 
@@ -135,7 +136,10 @@
               <div class="formula-section q-mb-lg">
                 <div class="text-h6 text-weight-bold text-white q-mb-sm">Wzór ogólny (z korektą zoom)</div>
                 <div class="formula-box-main">
-                  <strong>odległość [m] = (wielkość celu [m] × 1000 × (zoom / true mil-dot)) / liczba kropek [mil-dot]</strong>
+                  <strong>odległość [m] = (wielkość celu [m] × 1000 × (Powiększenie Aktualne / Powiększenie Kalibracyjne)) / liczba kropek [mil-dot]</strong>
+                </div>
+                <div class="text-body2 q-mt-xs">
+                  <b>Uwaga:</b> "Powiększenie Kalibracyjne" to wartość, dla której siatka jest zgodna z MIL (np. 10x, podane przez producenta, zwykle oznaczone na lunecie). Dotyczy lunet SFP (drugi plan).
                 </div>
 
                 <div class="example-calculation q-mt-md">
@@ -151,7 +155,10 @@
               <div class="formula-section">
                 <div class="text-h6 text-weight-bold text-white q-mb-sm">Wzór uproszczony (true mil-dot)</div>
                 <div class="formula-box-simple">
-                  <strong>odległość [m] = (wielkość celu [m] × 1000) / liczba kropek [mil-dot]</strong>
+                  <strong>odległość [m] = (wielkość celu [m] × 1000) / liczba MIL</strong>
+                </div>
+                <div class="text-body2 q-mt-xs">
+                  <b>FFP (pierwszy plan):</b> W lunetach FFP siatka zmienia rozmiar wraz z powiększeniem, więc wzór jest zawsze prosty jak powyżej.
                 </div>
 
                 <div class="example-calculation q-mt-md">
@@ -258,7 +265,10 @@
               <div class="mil-moa-relation">
                 <div class="text-h6 text-weight-bold text-white q-mb-sm">Powiązanie Mil-Dot i MOA</div>
                 <div class="relation-formula">
-                  <strong>1 Mil-Dot = 0,05729° = 3,4374 MOA</strong>
+                  <strong>1 MIL ≈ 3,44 MOA</strong>
+                </div>
+                <div class="text-body2 q-mt-xs">
+                  <b>Wyjaśnienie:</b> Wartość geometryczna to 3,4377 MOA, ale w strzelectwie przyjmuje się uproszczenie 3,44 MOA.
                 </div>
               </div>
             </div>

@@ -155,8 +155,9 @@
                     Informacje dodatkowe
                   </div>
                   <div class="text-caption text-grey-7">
-                    <div>• 1 MIL = {{ MIL_TO_MOA.toFixed(4) }} MOA</div>
-                    <div>• 1 MOA = {{ MOA_TO_MIL.toFixed(4) }} MIL</div>
+                    <div>• 1 MIL ≈ 3,44 MOA (wartość uproszczona, praktyka strzelecka)</div>
+                    <div>• 1 MOA ≈ 0,2907 MIL</div>
+                    <div class="text-caption text-grey-6 q-mt-xs">Wyjaśnienie: Wartość geometryczna to 3,4377 MOA, ale w strzelectwie przyjmuje się uproszczenie 3,44 MOA.</div>
                     <div v-if="conversionDirection === 'mils-to-moa'">
                       • {{ inputValue }} MIL pokrywa {{ cmResult.toFixed(1) }}cm na {{ distance }}m
                     </div>
@@ -184,8 +185,8 @@ const inputValue = ref(1) // wartość do przeliczenia
 const conversionDirection = ref('mils-to-moa') // kierunek konwersji
 
 // Stałe konwersji
-const MIL_TO_MOA = 3.4377
-const MOA_TO_MIL = 0.2909
+const MIL_TO_MOA = 3.44 // 1 MIL ≈ 3,44 MOA
+const MOA_TO_MIL = 1 / 3.44 // ≈ 0,2907
 
 // Computed properties for labels
 const inputLabel = computed(() => {
