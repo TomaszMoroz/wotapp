@@ -4,7 +4,8 @@
       flat
       round
       icon="arrow_back"
-      color="primary"
+      :color="navBtnColor"
+      :text-color="navBtnTextColor"
       size="md"
       @click="goBack"
       aria-label="Powrót poziom wyżej"
@@ -13,7 +14,8 @@
       flat
       round
       icon="home"
-      color="primary"
+      :color="navBtnColor"
+      :text-color="navBtnTextColor"
       size="md"
       @click="goDashboard"
       aria-label="Powrót do dashboardu"
@@ -23,8 +25,16 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
+import { useQuasar } from 'quasar'
+import { computed } from 'vue'
 const router = useRouter()
 const route = useRoute()
+const $q = useQuasar()
+
+// Dynamiczne kolory przycisków w zależności od trybu
+const isDark = computed(() => $q.dark.isActive)
+const navBtnColor = computed(() => isDark.value ? 'white' : 'primary')
+const navBtnTextColor = computed(() => isDark.value ? 'primary' : 'white')
 
 // Mapowanie ścieżek do sekcji nadrzędnych
 const parentMap = {

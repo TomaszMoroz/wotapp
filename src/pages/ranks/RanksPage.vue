@@ -33,51 +33,70 @@
 
 <script setup>
 import BackNav from 'components/BackNav.vue'
-import szerImg from 'assets/szer.jpg'
-import kaprImg from 'assets/kapr.jpg'
-import seirImg from 'assets/seir.jpg'
-import porImg from 'assets/por.jpg'
-import pulkImg from 'assets/pulk.jpg'
-import genImg from 'assets/gen.jpg'
+// Korpus szeregowych
+import szeregowy from 'assets/ranks/szeregowy.jpg'
+import stSzer from 'assets/ranks/st_szer.jpg'
+import stSzerSpec from 'assets/ranks/st_szer_spec.jpg'
+// Podoficerowie młodsi
+import kapral from 'assets/ranks/kapral.jpg'
+import stKapral from 'assets/ranks/st_kapral.jpg'
+import plutonowy from 'assets/ranks/plutonowy.jpg'
+// Podoficerowie starsi
+import sierzant from 'assets/ranks/sierzant.jpg'
+import stSierz from 'assets/ranks/st_sierz.jpg'
+import mlChor from 'assets/ranks/ml_chor.jpg'
+// Oficerowie młodsi
+import podporucznik from 'assets/ranks/podporucznik.jpg'
+import porucznik from 'assets/ranks/porucznik.jpg'
+import kapitan from 'assets/ranks/kapitan.jpg'
+// Oficerowie starsi
+import major from 'assets/ranks/major.jpg'
+import podpulkownik from 'assets/ranks/podpulkownik.jpg'
+import pulkownik from 'assets/ranks/pulkownik.jpg'
+// Generałowie
+import genBrygady from 'assets/ranks/gen_brygady.jpg'
+import genDywizji from 'assets/ranks/gen_dywizji.jpg'
+import genBroni from 'assets/ranks/gen_broni.jpg'
+import general from 'assets/ranks/general.jpg'
 
 const sections = [
   {
     title: 'KORPUS SZEREGOWYCH',
     groups: [
-      {
-        title: 'Szeregowi',
-        image: szerImg
-      }
+      { title: 'Szeregowy', image: szeregowy },
+      { title: 'Starszy szeregowy', image: stSzer },
+      { title: 'Starszy szeregowy specjalista', image: stSzerSpec }
     ]
   },
   {
     title: 'KORPUS PODOFICERÓW',
     groups: [
-      {
-        title: 'Podoficerowie młodsi',
-        image: kaprImg
-      },
-      {
-        title: 'Podoficerowie starsi',
-        image: seirImg
-      }
+      { title: 'Kapral', image: kapral },
+      { title: 'Starszy kapral', image: stKapral },
+      { title: 'Plutonowy', image: plutonowy },
+      { title: 'Sierżant', image: sierzant },
+      { title: 'Starszy sierżant', image: stSierz },
+      { title: 'Młodszy chorąży', image: mlChor }
     ]
   },
   {
     title: 'KORPUS OFICERÓW',
     groups: [
-      {
-        title: 'Oficerowie młodsi',
-        image: porImg
-      },
-      {
-        title: 'Oficerowie starsi',
-        image: pulkImg
-      },
-      {
-        title: 'Generałowie',
-        image: genImg
-      }
+      { title: 'Podporucznik', image: podporucznik },
+      { title: 'Porucznik', image: porucznik },
+      { title: 'Kapitan', image: kapitan },
+      { title: 'Major', image: major },
+      { title: 'Podpułkownik', image: podpulkownik },
+      { title: 'Pułkownik', image: pulkownik }
+    ]
+  },
+  {
+    title: 'GENERAŁOWIE',
+    groups: [
+      { title: 'Generał brygady', image: genBrygady },
+      { title: 'Generał dywizji', image: genDywizji },
+      { title: 'Generał broni', image: genBroni },
+      { title: 'Generał', image: general }
     ]
   }
 ]
