@@ -1,7 +1,7 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
 
       <!-- Header z tytułem -->
       <div class="page-header q-mb-lg">

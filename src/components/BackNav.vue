@@ -74,7 +74,7 @@ const parentMap = {
   '/reports': '/',
   '/nato': '/',
   '/ranks': '/',
-  '/regulations': '/',
+  '/regulations': '/ranks',
   '/emergency': '/',
   '/communication': '/',
   '/map': '/'

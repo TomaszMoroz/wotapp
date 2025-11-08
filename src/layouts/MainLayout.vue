@@ -17,7 +17,7 @@
             <q-icon name="shield" class="q-mr-sm" size="sm" color="white" />
           </div>
         </q-toolbar-title>
-        {{ 'v.t.2.0 WERSJA TESTOWA' }}
+        {{ 'v.t.2.1 WERSJA TESTOWA' }}
       </q-toolbar>
     </q-header>
 
