@@ -1,11 +1,23 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
+      <!-- Powrót do narzędzi -->
+      <div class="q-mb-md">
+        <q-btn
+          flat
+          round
+          icon="arrow_back"
+          color="primary"
+          size="md"
+          @click="$router.push({ name: 'tools' })"
+          aria-label="Powrót do narzędzi"
+        />
+      </div>
       <!-- Header Section -->
       <div class="text-center q-mb-xl">
         <div class="hero-section q-pa-lg rounded-borders">
           <div class="text-h3 text-weight-bold text-grey-4 q-mb-sm">Kalkulator odległości</div>
-          <div class="text-body1 text-grey-6">Obliczanie odległości metodą "DWK1000"</div>
+          <div class="text-body1 text-grey-6">Obliczanie odległości metodą \"DWK1000\"</div>
         </div>
       </div>
 

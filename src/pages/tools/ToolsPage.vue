@@ -56,7 +56,7 @@
           </q-card-section>
         </q-card>
 
-        <!-- Kalkulator nastaw -->
+        <!-- Trening korekty celowania -->
         <q-card
           class="tool-card military-dark-card"
           clickable
@@ -66,8 +66,8 @@
             <div class="card-icon-wrapper">
               <q-icon name="tune" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Kalkulator nastaw</div>
-            <div class="text-caption text-grey-4">Obliczenia balistyczne</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Trening korekty celowania</div>
+            <div class="text-caption text-grey-4">Symulacja nastaw</div>
           </q-card-section>
         </q-card>
 
@@ -116,10 +116,17 @@ const navigateTo = (path) => {
 }
 
 .hero-section {
-  background: white;
-  border: 1px solid rgba(139, 69, 19, 0.3);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  background: #232b23;
+  border: 1px solid #384c38;
+  color: #f5f7fa;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 16px rgba(44,62,47,0.13);
+}
+.hero-section .text-h3,
+.hero-section .text-h4,
+.hero-section .text-h5,
+.hero-section .text-h6 {
+  color: #f5f7fa !important;
 }
 
 .tools-grid {

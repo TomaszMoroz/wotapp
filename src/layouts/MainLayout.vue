@@ -96,8 +96,8 @@
               <q-icon name="tune" :color="isActiveRoute('/tools/settings') ? 'white' : 'military-brown'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label class="text-weight-medium">Trening korekty nastaw</q-item-label>
-              <q-item-label caption>Symulacja korekty celowania</q-item-label>
+              <q-item-label class="text-weight-medium">Trening korekty celowania</q-item-label>
+              <q-item-label caption>Symulacja nastaw</q-item-label>
             </q-item-section>
           </q-item>
 

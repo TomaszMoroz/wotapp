@@ -1,18 +1,21 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
-      <!-- Header z przyciskiem powrotu -->
+      <!-- Powrót do narzędzi -->
+      <div class="q-mb-md">
+        <q-btn
+          flat
+          round
+          icon="arrow_back"
+          color="primary"
+          size="md"
+          @click="$router.push({ name: 'tools' })"
+          aria-label="Powrót do narzędzi"
+        />
+      </div>
+      <!-- Header z tytułem -->
       <div class="page-header q-mb-lg">
         <div class="row items-center">
-          <q-btn
-            flat
-            round
-            icon="arrow_back"
-            color="primary"
-            size="lg"
-            @click="goBack"
-            class="q-mr-md"
-          />
           <div>
             <div class="text-h4 text-weight-bold text-primary">Kalkulator nastaw</div>
             <div class="text-subtitle1 text-grey-7">Symulacja korekty celowania</div>
@@ -403,14 +406,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import { useRouter } from 'vue-router'
 import targetImg from '../../assets/target.jpg'
-
-defineOptions({
-  name: 'SettingsCalculatorPage'
-})
-
-const router = useRouter()
 
 // Reactive data
 const measurementSystem = ref('mils')
@@ -617,9 +613,6 @@ const controlShotInfo = computed(() => {
 })
 
 // Methods
-const goBack = () => {
-  router.back()
-}
 
 const adjustVertical = (direction) => {
   verticalClicks.value += direction

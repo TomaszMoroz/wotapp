@@ -194,12 +194,19 @@ const navigateTo = (path) => {
   margin: 0 auto;
 }
 
-.hero-section {
-  background: white;
-  border: 1px solid rgba(139, 69, 19, 0.3);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
+  .hero-section {
+    background: #232b23;
+    border: 1px solid #384c38;
+    color: #f5f7fa;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 16px rgba(44,62,47,0.13);
+  }
+  .hero-section .text-h3,
+  .hero-section .text-h4,
+  .hero-section .text-h5,
+  .hero-section .text-h6 {
+    color: #f5f7fa !important;
+  }
 
 .logo-wrapper {
   display: flex;

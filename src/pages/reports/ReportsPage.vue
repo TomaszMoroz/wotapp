@@ -480,6 +480,27 @@ onMounted(() => {
 </script>
 
 <style scoped>
+  .hero-section, .page-header {
+    background: #232b23;
+    border: 1px solid #384c38;
+    color: #f5f7fa;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 16px rgba(44,62,47,0.13);
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+  .hero-section .text-h3,
+  .hero-section .text-h4,
+  .hero-section .text-h5,
+  .hero-section .text-h6,
+  .page-header .text-h3,
+  .page-header .text-h4,
+  .page-header .text-h5,
+  .page-header .text-h6 {
+    color: #f5f7fa !important;
+  }
 /* Nowoczesne style dla tekstu meldunku */
 
 .modern-report-container {

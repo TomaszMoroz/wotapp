@@ -97,9 +97,17 @@ export default defineComponent({
   text-align: center;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
+  background: #232b23;
+  border: 1px solid #384c38;
+  color: #f5f7fa;
   border-radius: 12px;
-  color: white;
+  box-shadow: 0 4px 16px rgba(44,62,47,0.13);
+}
+.page-header .text-h3,
+.page-header .text-h4,
+.page-header .text-h5,
+.page-header .text-h6 {
+  color: #f5f7fa !important;
 }
 
 .page-title {
