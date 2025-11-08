@@ -235,7 +235,7 @@
                 color="orange"
                 icon="center_focus_strong"
                 label="Strzał kontrolny"
-                @click="takeControlShot"
+                @click="handleControlShot"
                 class="full-width q-mb-md"
               />
 
@@ -244,7 +244,7 @@
                 color="primary"
                 icon="gps_fixed"
                 label="Oddaj strzał"
-                @click="takeShot"
+                @click="handleShot"
                 class="full-width q-mb-md"
               />
 
@@ -284,12 +284,12 @@
         <div class="col-12 col-md-8">
           <q-card class="target-card">
             <q-card-section class="q-pa-none">
-              <div class="target-container" ref="targetContainer">
+              <div class="target-container fixed-size" ref="targetContainer">
                 <!-- Obraz tarczy -->
                 <img
                   :src="targetImage"
                   alt="Target"
-                  class="target-image"
+                  class="target-image fixed-size"
                   @load="onImageLoad"
                 />
 
@@ -410,15 +410,15 @@ import targetImg from '../../assets/target.jpg'
 
 // Reactive data
 const measurementSystem = ref('mils')
-const clickValue = ref(0.1)
+const clickValue = ref(0.1) // domyślnie 0.1 mil lub 0.25 MOA
 const distance = ref({ label: '300m', value: 300 })
 const verticalClicks = ref(0)
 const horizontalClicks = ref(0)
 const showGrid = ref(true)
 const shots = ref([])
 const lastControlShot = ref(null)
-const imageWidth = ref(400)
-const imageHeight = ref(400)
+const imageWidth = ref(500)
+const imageHeight = ref(500)
 const targetContainer = ref(null)
 const targetImage = targetImg
 
@@ -439,7 +439,8 @@ const systemOptions = [
 const clickOptions = computed(() => {
   if (measurementSystem.value === 'mils') {
     return [
-      { label: '0.1 mil', value: 0.1 }
+      { label: '0.1 mil', value: 0.1 },
+      { label: '1 mil', value: 1.0 }
     ]
   } else {
     return [
@@ -448,6 +449,15 @@ const clickOptions = computed(() => {
       { label: '1/2 MOA', value: 0.5 },
       { label: '1 MOA', value: 1.0 }
     ]
+  }
+})
+
+// Watcher: ustaw domyślny klik przy zmianie systemu
+watch(measurementSystem, (val) => {
+  if (val === 'mils') {
+    clickValue.value = 0.1
+  } else {
+    clickValue.value = 0.25
   }
 })
 
@@ -510,9 +520,6 @@ const cmPerClick = computed(() => {
   }
 })
 
-// *** UNIFIED SCALE: All functions use real centimeters on 50cm target ***
-const TARGET_SIZE_CM = 50
-
 // Convert correction in mils/MOA to centimeters on target
 const getCorrectionInCm = (correctionValue) => {
   const distanceMeters = distance.value.value
@@ -528,18 +535,21 @@ const getCorrectionInCm = (correctionValue) => {
   }
 }
 
-// Convert centimeters to pixels on 50cm target
+// Convert centimeters to pixels on 50cm target (dynamic RWD)
 const cmToPixels = (cm) => {
-  const targetSizePixels = Math.min(imageWidth.value, imageHeight.value)
-  const pixelsPerCm = targetSizePixels / TARGET_SIZE_CM
-  return cm * pixelsPerCm
+  // 50cm = aktualna szerokość/height kontenera
+  const container = targetContainer.value
+  if (!container) return cm * 10 // fallback
+  const sizePx = Math.min(container.offsetWidth, container.offsetHeight)
+  return (cm / 50) * sizePx
 }
 
-// Convert pixels to centimeters on 50cm target
+// Convert pixels to centimeters on 50cm target (dynamic RWD)
 const pixelsToCm = (pixels) => {
-  const targetSizePixels = Math.min(imageWidth.value, imageHeight.value)
-  const pixelsPerCm = targetSizePixels / TARGET_SIZE_CM
-  return pixels / pixelsPerCm
+  const container = targetContainer.value
+  if (!container) return pixels / 10 // fallback
+  const sizePx = Math.min(container.offsetWidth, container.offsetHeight)
+  return (pixels / sizePx) * 50
 }
 
 // Crosshair position based on correction type
@@ -547,24 +557,23 @@ const crosshairPosition = computed(() => {
   const centerX = imageWidth.value / 2
   const centerY = imageHeight.value / 2
 
+  let baseX, baseY
   if (correctionType.value === 'crosshair') {
     // Move crosshair based on correction in centimeters
     const correctionCmX = getCorrectionInCm(horizontalCorrection.value)
     const correctionCmY = -getCorrectionInCm(verticalCorrection.value) // negative for screen Y
-
     const offsetX = cmToPixels(correctionCmX)
     const offsetY = cmToPixels(correctionCmY)
-
-    return {
-      x: centerX + offsetX,
-      y: centerY + offsetY
-    }
+    baseX = centerX + offsetX
+    baseY = centerY + offsetY
   } else {
-    // Turret corrections - crosshair stays centered
-    return {
-      x: centerX,
-      y: centerY
-    }
+    baseX = centerX
+    baseY = centerY
+  }
+  // Dodaj odrzut jeśli aktywny
+  return {
+    x: baseX + recoilOffset.value.x,
+    y: baseY + recoilOffset.value.y
   }
 })
 
@@ -694,6 +703,49 @@ const calculateWindDeflection = () => {
     // 1 MOA at distance ≈ distance/343 meters
     return (deflectionMeters * 343) / distanceMeters // MOA
   }
+}
+
+// --- ANIMACJA ODRZUTU ---
+const recoilOffset = ref({ x: 0, y: 0 })
+const isRecoiling = ref(false)
+
+function animateRecoil () {
+  isRecoiling.value = true
+  let t = 0
+  const duration = 200 // ms
+  const frames = 12
+  const shake = () => {
+    if (t >= duration) {
+      recoilOffset.value = { x: 0, y: 0 }
+      isRecoiling.value = false
+      return
+    }
+    recoilOffset.value = {
+      x: (Math.random() - 0.5) * 16,
+      y: -Math.abs(Math.random() * 12 + 8)
+    }
+    t += duration / frames
+    requestAnimationFrame(shake)
+  }
+  shake()
+}
+
+function handleShot () {
+  animateRecoil()
+  setTimeout(() => {
+    recoilOffset.value = { x: 0, y: 0 }
+    isRecoiling.value = false
+    takeShot()
+  }, 220)
+}
+
+function handleControlShot () {
+  animateRecoil()
+  setTimeout(() => {
+    recoilOffset.value = { x: 0, y: 0 }
+    isRecoiling.value = false
+    takeControlShot()
+  }, 220)
 }
 
 const takeControlShot = () => {
@@ -826,16 +878,23 @@ onUnmounted(() => {
   height: fit-content;
 }
 
-.target-container {
+/* Stały rozmiar 500x500px = 50x50cm wirtualnie */
+.target-container.fixed-size {
   position: relative;
-  width: 100%;
-  max-width: 500px;
+  width: 500px;
+  height: 500px;
   margin: 0 auto;
-  aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: hidden;
+}
+.target-image.fixed-size {
+  width: 500px;
+  height: 500px;
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .target-image {
