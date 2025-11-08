@@ -5,13 +5,6 @@
 
       <!-- Header -->
       <div class="header-section q-mb-lg">
-        <q-btn
-          flat
-          icon="arrow_back"
-          label="Powrót"
-          @click="goBack"
-          class="text-white q-mb-md"
-        />
         <div class="hero-section q-pa-lg rounded-borders">
           <div class="text-h4 text-weight-bold text-primary q-mb-sm">Taktyka</div>
           <div class="text-body1 text-grey-6">Manewry i formacje wojskowe</div>
@@ -274,7 +267,6 @@
 <script setup>
 import BackNav from 'components/BackNav.vue'
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 
 // Import images
 import okrImg from 'assets/okr.png'
@@ -285,11 +277,6 @@ import sier3Img from 'assets/sier3.png'
 import zas1Img from 'assets/zas1.png'
 import zas2Img from 'assets/zas2.png'
 
-defineOptions({
-  name: 'TacticsManeuversPage'
-})
-
-const router = useRouter()
 const searchQuery = ref('')
 const selectedManeuver = ref(null)
 
@@ -327,10 +314,6 @@ const filteredManeuvers = computed(() => {
 
 const selectManeuver = (maneuver) => {
   selectedManeuver.value = maneuver
-}
-
-const goBack = () => {
-  router.push('/tactics')
 }
 </script>
 

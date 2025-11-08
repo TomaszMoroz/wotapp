@@ -6,15 +6,6 @@
       <!-- Header z przyciskiem powrotu -->
       <div class="page-header q-mb-lg">
         <div class="row items-center">
-          <q-btn
-            flat
-            round
-            icon="arrow_back"
-            color="primary"
-            size="lg"
-            @click="goBack"
-            class="q-mr-md"
-          />
           <div>
             <div class="text-h4 text-weight-bold text-primary">Konwerter MILS - MOA</div>
             <div class="text-subtitle1 text-grey-7">Przelicznik jednostek pomiarowych celowników</div>
@@ -186,13 +177,6 @@
 <script setup>
 import BackNav from 'components/BackNav.vue'
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-
-defineOptions({
-  name: 'MilsMoaConverterPage'
-})
-
-const router = useRouter()
 
 // Reactive data
 const distance = ref(100) // dystans w metrach
@@ -255,11 +239,6 @@ const cmResult = computed(() => {
     return value * dist * 0.02909
   }
 })
-
-// Methods
-const goBack = () => {
-  router.back()
-}
 
 const resetValues = () => {
   distance.value = 100

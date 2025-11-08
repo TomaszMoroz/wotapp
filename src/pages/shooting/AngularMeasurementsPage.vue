@@ -15,16 +15,6 @@
               MOA, MIL/MRAD i systemy miary w strzelectwie precyzyjnym
             </div>
           </div>
-          <div class="col-auto">
-            <q-btn
-              flat
-              round
-              icon="arrow_back"
-              color="brown-6"
-              size="lg"
-              @click="goBack"
-            />
-          </div>
         </div>
       </div>
 
@@ -280,18 +270,7 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
 import BackNav from 'components/BackNav.vue'
-
-defineOptions({
-  name: 'AngularMeasurementsPage'
-})
-
-const router = useRouter()
-
-const goBack = () => {
-  router.push('/shooting')
-}
 </script>
 
 <style scoped>

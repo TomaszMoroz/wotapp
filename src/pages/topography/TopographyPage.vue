@@ -1,7 +1,7 @@
 <template>
   <q-page class="topography-page">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
       <!-- Header -->
       <div class="page-header q-mb-xl">
         <div class="row items-center q-gutter-md">

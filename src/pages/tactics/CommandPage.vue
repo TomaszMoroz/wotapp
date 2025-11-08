@@ -15,16 +15,6 @@
               Metody i procedury dowodzenia w jednostkach WOT
             </div>
           </div>
-          <div class="col-auto">
-            <q-btn
-              flat
-              round
-              icon="arrow_back"
-              color="brown-6"
-              size="lg"
-              @click="goBack"
-            />
-          </div>
         </div>
       </div>
 
@@ -626,13 +616,7 @@
 <script setup>
 import BackNav from 'components/BackNav.vue'
 import { ref } from 'vue'
-import { useRouter } from 'vue-router'
 
-defineOptions({
-  name: 'CommandPage'
-})
-
-const router = useRouter()
 const showTopicDetails = ref(false)
 const selectedTopic = ref(null)
 
@@ -674,10 +658,6 @@ const commandTopics = ref([
     icon: 'account_tree'
   }
 ])
-
-const goBack = () => {
-  router.push('/tactics')
-}
 
 const selectTopic = (topic) => {
   selectedTopic.value = topic

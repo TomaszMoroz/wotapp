@@ -3,7 +3,7 @@
     <div class="container q-pa-md">
       <BackNav />
 
-      <div class="text-h4 q-mb-md">💬 Komunikacja</div>
+      <div class="text-h4 q-mb-md">Komunikacja</div>
 
       <!-- Kategorie komunikacji -->
       <div class="q-mb-lg">

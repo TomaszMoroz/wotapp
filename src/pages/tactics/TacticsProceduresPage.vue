@@ -5,13 +5,6 @@
 
       <!-- Header -->
       <div class="header-section q-mb-lg">
-        <q-btn
-          flat
-          icon="arrow_back"
-          label="Powrót"
-          @click="goBack"
-          class="text-white q-mb-md"
-        />
         <div class="hero-section q-pa-lg rounded-borders">
           <div class="text-h4 text-weight-bold text-primary q-mb-sm">Procedury</div>
           <div class="text-body1 text-grey-6">Protokoły medyczne i procedury wojskowe</div>
@@ -86,14 +79,8 @@
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
 import BackNav from 'components/BackNav.vue'
 
-defineOptions({
-  name: 'TacticsProceduresPage'
-})
-
-const router = useRouter()
 const searchQuery = ref('')
 const selectedProcedure = ref(null)
 
@@ -367,10 +354,6 @@ const filteredProcedures = computed(() => {
 
 const selectProcedure = (procedure) => {
   selectedProcedure.value = procedure
-}
-
-const goBack = () => {
-  router.push('/tactics')
 }
 </script>
 

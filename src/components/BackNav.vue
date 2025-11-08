@@ -25,16 +25,22 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
-import { useQuasar } from 'quasar'
+// import { useQuasar } from 'quasar'
 import { computed } from 'vue'
 const router = useRouter()
 const route = useRoute()
-const $q = useQuasar()
+// const $q = useQuasar()
+const props = defineProps({
+  color: {
+    type: String,
+    default: null
+  }
+})
 
 // Dynamiczne kolory przycisków w zależności od trybu
-const isDark = computed(() => $q.dark.isActive)
-const navBtnColor = computed(() => isDark.value ? 'white' : 'primary')
-const navBtnTextColor = computed(() => isDark.value ? 'primary' : 'white')
+// const isDark = computed(() => $q.dark.isActive)
+const navBtnColor = computed(() => props.color === 'black' ? 'black' : 'white')
+const navBtnTextColor = computed(() => props.color === 'black' ? 'black' : 'white')
 
 // Mapowanie ścieżek do sekcji nadrzędnych
 const parentMap = {

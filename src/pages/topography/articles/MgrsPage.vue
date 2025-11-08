@@ -5,14 +5,6 @@
       <!-- Header -->
       <div class="page-header q-mb-xl">
         <div class="row items-center q-gutter-md">
-          <q-btn
-            flat
-            round
-            icon="arrow_back"
-            color="primary"
-            @click="goBack"
-            class="q-mr-md"
-          />
           <q-icon name="grid_3x3" size="3rem" color="primary" />
           <div>
             <div class="text-h4 text-weight-bold text-primary">Współrzędne MGRS</div>
@@ -73,21 +65,10 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
 import BackNav from 'components/BackNav.vue'
 
 // Import image from assets
 import mgrsImg from '../../../assets/mgrs.png'
-
-defineOptions({
-  name: 'MgrsPage'
-})
-
-const router = useRouter()
-
-const goBack = () => {
-  router.push('/topography')
-}
 </script>
 
 <style scoped>

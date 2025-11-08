@@ -17,16 +17,6 @@
               Szt. Gen. 1427/94 | Warszawa 1994
             </div>
           </div>
-          <div class="col-auto">
-            <q-btn
-              flat
-              round
-              icon="arrow_back"
-              color="brown-6"
-              size="lg"
-              @click="goBack"
-            />
-          </div>
         </div>
       </div>
 
@@ -425,18 +415,6 @@
 
 <script setup>
 import BackNav from 'components/BackNav.vue'
-import { defineComponent } from 'vue'
-import { useRouter } from 'vue-router'
-
-defineComponent({
-  name: 'DrillPage'
-})
-
-const router = useRouter()
-
-const goBack = () => {
-  router.push('/emergency')
-}
 
 const scrollToSection = (sectionId) => {
   const element = document.getElementById(sectionId)

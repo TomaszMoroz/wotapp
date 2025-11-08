@@ -3,18 +3,6 @@
     <div class="container q-pa-md">
       <BackNav />
 
-      <!-- Powrót do narzędzi -->
-      <div class="q-mb-md">
-        <q-btn
-          flat
-          round
-          icon="arrow_back"
-          color="primary"
-          size="md"
-          @click="$router.push({ name: 'tools' })"
-          aria-label="Powrót do narzędzi"
-        />
-      </div>
       <!-- Header z tytułem -->
       <div class="page-header q-mb-lg">
         <div class="row items-center">

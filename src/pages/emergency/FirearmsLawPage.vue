@@ -5,13 +5,6 @@
 
       <!-- Header -->
       <div class="header-section q-mb-lg">
-        <q-btn
-          flat
-          icon="arrow_back"
-          label="Powrót"
-          @click="goBack"
-          class="text-white q-mb-md"
-        />
         <div class="hero-section q-pa-lg rounded-borders">
           <div class="text-h4 text-weight-bold text-primary q-mb-sm">Warunki użycia broni palnej</div>
           <div class="text-body1 text-grey-6">Art. 45 - Środki przymusu bezpośredniego i broń palna</div>
@@ -128,18 +121,8 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
 import BackNav from 'components/BackNav.vue'
 
-defineOptions({
-  name: 'FirearmsLawPage'
-})
-
-const router = useRouter()
-
-const goBack = () => {
-  router.push('/emergency')
-}
 </script>
 
 <style scoped>

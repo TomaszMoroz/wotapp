@@ -3,18 +3,6 @@
     <div class="container q-pa-md">
       <BackNav />
 
-      <!-- Powrót do narzędzi -->
-      <div class="q-mb-md">
-        <q-btn
-          flat
-          round
-          icon="arrow_back"
-          color="primary"
-          size="md"
-          @click="$router.push({ name: 'tools' })"
-          aria-label="Powrót do narzędzi"
-        />
-      </div>
       <!-- Header Section -->
       <div class="text-center q-mb-xl">
         <div class="hero-section q-pa-lg rounded-borders">
@@ -170,10 +158,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 import BackNav from 'components/BackNav.vue'
-
-defineOptions({
-  name: 'DistanceCalculatorPage'
-})
 
 // Distance Calculator
 const objectHeight = ref(null)

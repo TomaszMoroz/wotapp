@@ -1,7 +1,7 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
 
       <div class="row justify-center">
         <div class="col-12 col-md-8 col-lg-6">

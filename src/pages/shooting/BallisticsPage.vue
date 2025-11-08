@@ -14,16 +14,6 @@
               Balistyka naboju 5,56x45 mm NATO w karabinku GROT
             </div>
           </div>
-          <div class="col-auto">
-            <q-btn
-              flat
-              round
-              icon="arrow_back"
-              color="white"
-              size="lg"
-              @click="goBack"
-            />
-          </div>
         </div>
       </div>
 
@@ -287,18 +277,8 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
 import BackNav from 'components/BackNav.vue'
 
-defineOptions({
-  name: 'BallisticsPage'
-})
-
-const router = useRouter()
-
-const goBack = () => {
-  router.push('/shooting')
-}
 </script>
 
 <style scoped>
