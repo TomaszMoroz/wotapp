@@ -1,6 +1,7 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
       <!-- Header Section -->
       <div class="text-center q-mb-xl">
         <div class="hero-section q-pa-lg rounded-borders">
@@ -77,6 +78,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import BackNav from 'components/BackNav.vue'
 
 defineOptions({
   name: 'ShootingPage'

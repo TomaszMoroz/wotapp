@@ -1,6 +1,8 @@
 <template>
-  <q-page class="grot-page">
-    <div class="container">
+  <q-page class="page-background">
+    <div class="container q-pa-md">
+      <BackNav />
+
       <!-- Modern Header -->
       <div class="modern-header">
         <div class="header-content">
@@ -260,6 +262,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import BackNav from 'components/BackNav.vue'
 
 defineOptions({
   name: 'TrainingPage'

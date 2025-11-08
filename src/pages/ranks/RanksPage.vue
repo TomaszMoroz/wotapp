@@ -1,24 +1,27 @@
 <template>
-  <q-page padding>
-    <div class="page-container">
-      <div class="page-header">
-        <h1 class="page-title">
-          Stopnie wojskowe w Polsce
-        </h1>
-        <p class="page-subtitle">Wojska lądowe</p>
-      </div>
+  <q-page class="page-background">
+    <div class="container q-pa-md">
+      <BackNav />
+      <div class="page-container">
+        <div class="page-header">
+          <h1 class="page-title">
+            Stopnie wojskowe w Polsce
+          </h1>
+          <p class="page-subtitle">Wojska lądowe</p>
+        </div>
 
-      <div class="ranks-sections">
-        <div class="rank-section" v-for="section in sections" :key="section.title">
-          <h2 class="section-title">{{ section.title }}</h2>
-          <div class="ranks-grid">
-            <div class="rank-card" v-for="group in section.groups" :key="group.title" :class="{ 'generals-card': group.title === 'Generałowie' }">
-              <div class="rank-insignia" :class="{ 'generals-insignia': group.title === 'Generałowie' }">
-                <img :src="group.image" :alt="group.title" />
-              </div>
-              <div class="rank-info">
-                <h3 class="rank-name">{{ group.title }}</h3>
-                <p class="rank-category">{{ group.subtitle }}</p>
+        <div class="ranks-sections">
+          <div class="rank-section" v-for="section in sections" :key="section.title">
+            <h2 class="section-title">{{ section.title }}</h2>
+            <div class="ranks-grid">
+              <div class="rank-card" v-for="group in section.groups" :key="group.title" :class="{ 'generals-card': group.title === 'Generałowie' }">
+                <div class="rank-insignia" :class="{ 'generals-insignia': group.title === 'Generałowie' }">
+                  <img :src="group.image" :alt="group.title" />
+                </div>
+                <div class="rank-info">
+                  <h3 class="rank-name">{{ group.title }}</h3>
+                  <p class="rank-category">{{ group.subtitle }}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -28,8 +31,8 @@
   </q-page>
 </template>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import BackNav from 'components/BackNav.vue'
 import szerImg from 'assets/szer.jpg'
 import kaprImg from 'assets/kapr.jpg'
 import seirImg from 'assets/seir.jpg'
@@ -37,54 +40,47 @@ import porImg from 'assets/por.jpg'
 import pulkImg from 'assets/pulk.jpg'
 import genImg from 'assets/gen.jpg'
 
-export default defineComponent({
-  name: 'RanksPage',
-  setup () {
-    const sections = [
+const sections = [
+  {
+    title: 'KORPUS SZEREGOWYCH',
+    groups: [
       {
-        title: 'KORPUS SZEREGOWYCH',
-        groups: [
-          {
-            title: 'Szeregowi',
-            image: szerImg
-          }
-        ]
-      },
-      {
-        title: 'KORPUS PODOFICERÓW',
-        groups: [
-          {
-            title: 'Podoficerowie młodsi',
-            image: kaprImg
-          },
-          {
-            title: 'Podoficerowie starsi',
-            image: seirImg
-          }
-        ]
-      },
-      {
-        title: 'KORPUS OFICERÓW',
-        groups: [
-          {
-            title: 'Oficerowie młodsi',
-            image: porImg
-          },
-          {
-            title: 'Oficerowie starsi',
-            image: pulkImg
-          },
-          {
-            title: 'Generałowie',
-            image: genImg
-          }
-        ]
+        title: 'Szeregowi',
+        image: szerImg
       }
     ]
-
-    return { sections }
+  },
+  {
+    title: 'KORPUS PODOFICERÓW',
+    groups: [
+      {
+        title: 'Podoficerowie młodsi',
+        image: kaprImg
+      },
+      {
+        title: 'Podoficerowie starsi',
+        image: seirImg
+      }
+    ]
+  },
+  {
+    title: 'KORPUS OFICERÓW',
+    groups: [
+      {
+        title: 'Oficerowie młodsi',
+        image: porImg
+      },
+      {
+        title: 'Oficerowie starsi',
+        image: pulkImg
+      },
+      {
+        title: 'Generałowie',
+        image: genImg
+      }
+    ]
   }
-})
+]
 </script>
 
 <style lang="scss" scoped>

@@ -1,6 +1,8 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
+
       <!-- Powrót do narzędzi -->
       <div class="q-mb-md">
         <q-btn
@@ -405,6 +407,7 @@
 </template>
 
 <script setup>
+import BackNav from 'components/BackNav.vue'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import targetImg from '../../assets/target.jpg'
 

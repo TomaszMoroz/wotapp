@@ -1,6 +1,8 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
+
       <div class="hero-section q-pa-lg q-mb-lg">
         <div class="row items-center">
           <div class="col">
@@ -422,6 +424,7 @@
 </template>
 
 <script setup>
+import BackNav from 'components/BackNav.vue'
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
 

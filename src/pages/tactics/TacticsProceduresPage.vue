@@ -1,6 +1,8 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
+
       <!-- Header -->
       <div class="header-section q-mb-lg">
         <q-btn
@@ -85,6 +87,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
+import BackNav from 'components/BackNav.vue'
 
 defineOptions({
   name: 'TacticsProceduresPage'
@@ -283,7 +286,7 @@ const procedures = [
         <li><strong>Call:</strong> Zgłoś incydent do przełożonych</li>
         <li><strong>Cordon:</strong> Ustanów kordon bezpieczeństwa</li>
         <li><strong>Control:</strong> Kontroluj dostęp do strefy</li>
-      </ol>
+      </ul>
 
       <h5>Strefa bezpieczeństwa:</h5>
       <ul>

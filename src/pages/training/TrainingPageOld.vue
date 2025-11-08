@@ -1,6 +1,7 @@
 <template>
-  <q-page class="grot-page">
+  <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
       <!-- Header -->
       <div class="page-header q-mb-xl">
         <div class="row items-center q-gutter-md">
@@ -214,11 +215,13 @@
           </q-card-section>
                 </q-card>
       </div>
+      </div>
     </div>
   </q-page>
 </template>
 
 <script setup>
+import BackNav from 'components/BackNav.vue'
 import { ref, computed, onMounted } from 'vue'
 
 defineOptions({

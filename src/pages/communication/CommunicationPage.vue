@@ -1,312 +1,317 @@
 <template>
-  <q-page class="q-pa-lg">
-    <div class="text-h4 q-mb-md">💬 Komunikacja</div>
+  <q-page class="page-background">
+    <div class="container q-pa-md">
+      <BackNav />
 
-    <!-- Kategorie komunikacji -->
-    <div class="q-mb-lg">
-      <q-tabs v-model="activeCategory" class="text-grey" active-color="primary" indicator-color="primary" align="justify">
-        <q-tab name="teoria" icon="book" label="TEORIA" />
-        <q-tab name="signal" icon="cell_tower" label="Signal" />
-        <q-tab name="atak" icon="warning" label="Atak" />
-        <q-tab name="radio" icon="radio" label="Radio" />
-      </q-tabs>
+      <div class="text-h4 q-mb-md">💬 Komunikacja</div>
 
-      <q-separator />
+      <!-- Kategorie komunikacji -->
+      <div class="q-mb-lg">
+        <q-tabs v-model="activeCategory" class="text-grey" active-color="primary" indicator-color="primary" align="justify">
+          <q-tab name="teoria" icon="book" label="TEORIA" />
+          <q-tab name="signal" icon="cell_tower" label="Signal" />
+          <q-tab name="atak" icon="warning" label="Atak" />
+          <q-tab name="radio" icon="radio" label="Radio" />
+        </q-tabs>
 
-      <q-tab-panels v-model="activeCategory" animated>
-        <q-tab-panel name="teoria">
-          <div class="text-h6 q-mb-md">Teoria Łączności Radiowej WOT</div>
+        <q-separator />
 
-          <!-- Wyszukiwarka -->
-          <q-input
-            v-model="searchQuery"
-            outlined
-            placeholder="Wyszukaj frazę w teorii..."
-            class="q-mb-md"
-            clearable
-          >
-            <template v-slot:prepend>
-              <q-icon name="search" />
-            </template>
-          </q-input>
+        <q-tab-panels v-model="activeCategory" animated>
+          <q-tab-panel name="teoria">
+            <div class="text-h6 q-mb-md">Teoria Łączności Radiowej WOT</div>
 
-          <!-- Filtry kategorii -->
-          <div class="q-mb-md">
-            <q-btn-toggle
-              v-model="categoryFilter"
-              toggle-color="primary"
-              :options="categoryOptions"
-              class="q-mb-sm"
-            />
-          </div>
-
-          <!-- Wyniki wyszukiwania -->
-          <div v-if="searchQuery && filteredContent.length > 0" class="q-mb-md">
-            <q-banner class="bg-positive text-white">
-              <q-icon name="info" class="q-mr-sm" />
-              Znaleziono {{ filteredContent.length }} wyników dla "{{ searchQuery }}"
-            </q-banner>
-          </div>
-
-          <!-- Ekspandery z teorią -->
-          <div class="theory-content">
-            <q-expansion-item
-              v-for="(section, index) in visibleSections"
-              :key="index"
-              :label="section.title"
-              :caption="section.description"
-              icon="book"
-              class="q-mb-sm"
-              :default-opened="searchQuery && section.matches"
+            <!-- Wyszukiwarka -->
+            <q-input
+              v-model="searchQuery"
+              outlined
+              placeholder="Wyszukaj frazę w teorii..."
+              class="q-mb-md"
+              clearable
             >
-              <div class="q-pa-md" v-html="section.content"></div>
-            </q-expansion-item>
-          </div>
-        </q-tab-panel>
+              <template v-slot:prepend>
+                <q-icon name="search" />
+              </template>
+            </q-input>
 
-        <q-tab-panel name="signal">
-          <div class="text-h6 q-mb-md">Signal - Komunikator Szyfrowany</div>
-          <q-list separator>
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-avatar color="green" text-color="white" icon="verified" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>Grupa WOT Secure</q-item-label>
-                <q-item-label caption>5 nowych wiadomości</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-chip color="green" text-color="white" size="sm">🔒</q-chip>
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-avatar color="blue" text-color="white" icon="security" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>Dowództwo</q-item-label>
-                <q-item-label caption>Rozkazy dzienne</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-chip color="blue" text-color="white" size="sm">VIP</q-chip>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-tab-panel>
-
-        <q-tab-panel name="atak">
-          <div class="text-h6 q-mb-md">⚠️ Komunikacja Ataku</div>
-          <q-banner class="bg-negative text-white q-mb-md">
-            <template v-slot:avatar>
-              <q-icon name="warning" />
-            </template>
-            Używaj tylko w sytuacjach bojowych!
-          </q-banner>
-          <q-list separator>
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-avatar color="red" text-color="white" icon="emergency" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>Kanał Taktyczny Alpha</q-item-label>
-                <q-item-label caption>Częstotliwość: 146.520 MHz</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-btn color="red" icon="mic" size="sm" />
-              </q-item-section>
-            </q-item>
-            <q-item clickable v-ripple>
-              <q-item-section avatar>
-                <q-avatar color="orange" text-color="white" icon="support_agent" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>Wsparcie Ogniowe</q-item-label>
-                <q-item-label caption>Częstotliwość: 146.540 MHz</q-item-label>
-              </q-item-section>
-              <q-item-section side>
-                <q-btn color="orange" icon="mic" size="sm" />
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-tab-panel>
-
-        <q-tab-panel name="radio">
-          <div class="text-h6 q-mb-md">📻 Komunikacja Radiowa</div>
-          <div class="row q-gutter-md">
-            <div class="col-12 col-md-6">
-              <q-card>
-                <q-card-section>
-                  <div class="text-subtitle1">Częstotliwości</div>
-                </q-card-section>
-                <q-card-section>
-                  <q-list dense>
-                    <q-item>
-                      <q-item-section>
-                        <q-item-label>Kanał 1 - Dowództwo</q-item-label>
-                        <q-item-label caption>146.500 MHz</q-item-label>
-                      </q-item-section>
-                      <q-item-section side>
-                        <q-btn color="primary" icon="play_arrow" size="sm" />
-                      </q-item-section>
-                    </q-item>
-                    <q-item>
-                      <q-item-section>
-                        <q-item-label>Kanał 2 - Logistyka</q-item-label>
-                        <q-item-label caption>146.510 MHz</q-item-label>
-                      </q-item-section>
-                      <q-item-section side>
-                        <q-btn color="secondary" icon="play_arrow" size="sm" />
-                      </q-item-section>
-                    </q-item>
-                    <q-item>
-                      <q-item-section>
-                        <q-item-label>Kanał 3 - Medyczny</q-item-label>
-                        <q-item-label caption>146.530 MHz</q-item-label>
-                      </q-item-section>
-                      <q-item-section side>
-                        <q-btn color="positive" icon="play_arrow" size="sm" />
-                      </q-item-section>
-                    </q-item>
-                  </q-list>
-                </q-card-section>
-              </q-card>
+            <!-- Filtry kategorii -->
+            <div class="q-mb-md">
+              <q-btn-toggle
+                v-model="categoryFilter"
+                toggle-color="primary"
+                :options="categoryOptions"
+                class="q-mb-sm"
+              />
             </div>
-            <div class="col-12 col-md-6">
-              <q-card>
-                <q-card-section>
-                  <div class="text-subtitle1">Status radia</div>
-                </q-card-section>
-                <q-card-section>
-                  <div class="text-center">
-                    <q-circular-progress
-                      show-value
-                      font-size="12px"
-                      :value="radioSignal"
-                      size="80px"
-                      :thickness="0.2"
-                      color="positive"
-                      track-color="grey-3"
-                      class="q-ma-md"
-                    >
-                      {{ radioSignal }}%
-                    </q-circular-progress>
-                    <div>Siła sygnału</div>
-                  </div>
-                </q-card-section>
-              </q-card>
-            </div>
-          </div>
-        </q-tab-panel>
-      </q-tab-panels>
-    </div>
 
-    <div class="row q-gutter-md">
-      <div class="col-12 col-md-6">
-        <q-card>
-          <q-card-section>
-            <div class="text-h6">Wiadomości</div>
-          </q-card-section>
-          <q-separator />
-          <q-card-section>
+            <!-- Wyniki wyszukiwania -->
+            <div v-if="searchQuery && filteredContent.length > 0" class="q-mb-md">
+              <q-banner class="bg-positive text-white">
+                <q-icon name="info" class="q-mr-sm" />
+                Znaleziono {{ filteredContent.length }} wyników dla "{{ searchQuery }}"
+              </q-banner>
+            </div>
+
+            <!-- Ekspandery z teorią -->
+            <div class="theory-content">
+              <q-expansion-item
+                v-for="(section, index) in visibleSections"
+                :key="index"
+                :label="section.title"
+                :caption="section.description"
+                icon="book"
+                class="q-mb-sm"
+                :default-opened="searchQuery && section.matches"
+              >
+                <div class="q-pa-md" v-html="section.content"></div>
+              </q-expansion-item>
+            </div>
+          </q-tab-panel>
+
+          <q-tab-panel name="signal">
+            <div class="text-h6 q-mb-md">Signal - Komunikator Szyfrowany</div>
             <q-list separator>
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-avatar color="primary" text-color="white">K</q-avatar>
+                  <q-avatar color="green" text-color="white" icon="verified" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>Komendant Jednostki</q-item-label>
-                  <q-item-label caption>Ćwiczenia w piątek o 18:00</q-item-label>
+                  <q-item-label>Grupa WOT Secure</q-item-label>
+                  <q-item-label caption>5 nowych wiadomości</q-item-label>
                 </q-item-section>
                 <q-item-section side>
-                  <q-item-label caption>10:30</q-item-label>
+                  <q-chip color="green" text-color="white" size="sm">🔒</q-chip>
                 </q-item-section>
               </q-item>
-
               <q-item clickable v-ripple>
                 <q-item-section avatar>
-                  <q-avatar color="secondary" text-color="white">D</q-avatar>
+                  <q-avatar color="blue" text-color="white" icon="security" />
                 </q-item-section>
                 <q-item-section>
-                  <q-item-label>Dowódca Drużyny</q-item-label>
-                  <q-item-label caption>Sprawdź wyposażenie</q-item-label>
+                  <q-item-label>Dowództwo</q-item-label>
+                  <q-item-label caption>Rozkazy dzienne</q-item-label>
                 </q-item-section>
                 <q-item-section side>
-                  <q-item-label caption>9:15</q-item-label>
+                  <q-chip color="blue" text-color="white" size="sm">VIP</q-chip>
                 </q-item-section>
               </q-item>
             </q-list>
-          </q-card-section>
-        </q-card>
+          </q-tab-panel>
+
+          <q-tab-panel name="atak">
+            <div class="text-h6 q-mb-md">⚠️ Komunikacja Ataku</div>
+            <q-banner class="bg-negative text-white q-mb-md">
+              <template v-slot:avatar>
+                <q-icon name="warning" />
+              </template>
+              Używaj tylko w sytuacjach bojowych!
+            </q-banner>
+            <q-list separator>
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-avatar color="red" text-color="white" icon="emergency" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Kanał Taktyczny Alpha</q-item-label>
+                  <q-item-label caption>Częstotliwość: 146.520 MHz</q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  <q-btn color="red" icon="mic" size="sm" />
+                </q-item-section>
+              </q-item>
+              <q-item clickable v-ripple>
+                <q-item-section avatar>
+                  <q-avatar color="orange" text-color="white" icon="support_agent" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Wsparcie Ogniowe</q-item-label>
+                  <q-item-label caption>Częstotliwość: 146.540 MHz</q-item-label>
+                </q-item-section>
+                <q-item-section side>
+                  <q-btn color="orange" icon="mic" size="sm" />
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-tab-panel>
+
+          <q-tab-panel name="radio">
+            <div class="text-h6 q-mb-md">📻 Komunikacja Radiowa</div>
+            <div class="row q-gutter-md">
+              <div class="col-12 col-md-6">
+                <q-card>
+                  <q-card-section>
+                    <div class="text-subtitle1">Częstotliwości</div>
+                  </q-card-section>
+                  <q-card-section>
+                    <q-list dense>
+                      <q-item>
+                        <q-item-section>
+                          <q-item-label>Kanał 1 - Dowództwo</q-item-label>
+                          <q-item-label caption>146.500 MHz</q-item-label>
+                        </q-item-section>
+                        <q-item-section side>
+                          <q-btn color="primary" icon="play_arrow" size="sm" />
+                        </q-item-section>
+                      </q-item>
+                      <q-item>
+                        <q-item-section>
+                          <q-item-label>Kanał 2 - Logistyka</q-item-label>
+                          <q-item-label caption>146.510 MHz</q-item-label>
+                        </q-item-section>
+                        <q-item-section side>
+                          <q-btn color="secondary" icon="play_arrow" size="sm" />
+                        </q-item-section>
+                      </q-item>
+                      <q-item>
+                        <q-item-section>
+                          <q-item-label>Kanał 3 - Medyczny</q-item-label>
+                          <q-item-label caption>146.530 MHz</q-item-label>
+                        </q-item-section>
+                        <q-item-section side>
+                          <q-btn color="positive" icon="play_arrow" size="sm" />
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-card-section>
+                </q-card>
+              </div>
+              <div class="col-12 col-md-6">
+                <q-card>
+                  <q-card-section>
+                    <div class="text-subtitle1">Status radia</div>
+                  </q-card-section>
+                  <q-card-section>
+                    <div class="text-center">
+                      <q-circular-progress
+                        show-value
+                        font-size="12px"
+                        :value="radioSignal"
+                        size="80px"
+                        :thickness="0.2"
+                        color="positive"
+                        track-color="grey-3"
+                        class="q-ma-md"
+                      >
+                        {{ radioSignal }}%
+                      </q-circular-progress>
+                      <div>Siła sygnału</div>
+                    </div>
+                  </q-card-section>
+                </q-card>
+              </div>
+            </div>
+          </q-tab-panel>
+        </q-tab-panels>
       </div>
 
-      <div class="col-12 col-md-6">
+      <div class="row q-gutter-md">
+        <div class="col-12 col-md-6">
+          <q-card>
+            <q-card-section>
+              <div class="text-h6">Wiadomości</div>
+            </q-card-section>
+            <q-separator />
+            <q-card-section>
+              <q-list separator>
+                <q-item clickable v-ripple>
+                  <q-item-section avatar>
+                    <q-avatar color="primary" text-color="white">K</q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Komendant Jednostki</q-item-label>
+                    <q-item-label caption>Ćwiczenia w piątek o 18:00</q-item-label>
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-item-label caption>10:30</q-item-label>
+                  </q-item-section>
+                </q-item>
+
+                <q-item clickable v-ripple>
+                  <q-item-section avatar>
+                    <q-avatar color="secondary" text-color="white">D</q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Dowódca Drużyny</q-item-label>
+                    <q-item-label caption>Sprawdź wyposażenie</q-item-label>
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-item-label caption>9:15</q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-card-section>
+          </q-card>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <q-card>
+            <q-card-section>
+              <div class="text-h6">Kontakty awaryjne</div>
+            </q-card-section>
+            <q-separator />
+            <q-card-section>
+              <q-list>
+                <q-item>
+                  <q-item-section avatar>
+                    <q-icon name="phone" color="negative" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Numer alarmowy</q-item-label>
+                    <q-item-label caption>112</q-item-label>
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-btn flat icon="call" color="negative" />
+                  </q-item-section>
+                </q-item>
+
+                <q-item>
+                  <q-item-section avatar>
+                    <q-icon name="security" color="primary" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>Dyżurny jednostki</q-item-label>
+                    <q-item-label caption>+48 xxx xxx xxx</q-item-label>
+                  </q-item-section>
+                  <q-item-section side>
+                    <q-btn flat icon="call" color="primary" />
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+
+      <div class="q-mt-md">
         <q-card>
           <q-card-section>
-            <div class="text-h6">Kontakty awaryjne</div>
+            <div class="text-h6">Nowa wiadomość</div>
           </q-card-section>
-          <q-separator />
           <q-card-section>
-            <q-list>
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon name="phone" color="negative" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Numer alarmowy</q-item-label>
-                  <q-item-label caption>112</q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <q-btn flat icon="call" color="negative" />
-                </q-item-section>
-              </q-item>
-
-              <q-item>
-                <q-item-section avatar>
-                  <q-icon name="security" color="primary" />
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Dyżurny jednostki</q-item-label>
-                  <q-item-label caption>+48 xxx xxx xxx</q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <q-btn flat icon="call" color="primary" />
-                </q-item-section>
-              </q-item>
-            </q-list>
+            <q-form>
+              <q-select
+                v-model="recipient"
+                :options="contacts"
+                label="Odbiorca"
+                class="q-mb-md"
+              />
+              <q-input
+                v-model="message"
+                type="textarea"
+                label="Wiadomość"
+                rows="3"
+                class="q-mb-md"
+              />
+              <q-btn color="primary" label="Wyślij" icon="send" />
+            </q-form>
           </q-card-section>
         </q-card>
       </div>
-    </div>
-
-    <div class="q-mt-md">
-      <q-card>
-        <q-card-section>
-          <div class="text-h6">Nowa wiadomość</div>
-        </q-card-section>
-        <q-card-section>
-          <q-form>
-            <q-select
-              v-model="recipient"
-              :options="contacts"
-              label="Odbiorca"
-              class="q-mb-md"
-            />
-            <q-input
-              v-model="message"
-              type="textarea"
-              label="Wiadomość"
-              rows="3"
-              class="q-mb-md"
-            />
-            <q-btn color="primary" label="Wyślij" icon="send" />
-          </q-form>
-        </q-card-section>
-      </q-card>
     </div>
   </q-page>
 </template>
 
 <script setup>
+import BackNav from 'components/BackNav.vue'
 import { ref, computed } from 'vue'
 
 defineOptions({
@@ -560,3 +565,48 @@ const message = ref('')
 const radioSignal = ref(85)
 const contacts = ['Komendant Jednostki', 'Dowódca Drużyny', 'Wszyscy żołnierze']
 </script>
+
+<style scoped>
+.page-background {
+  background-color: #f4f7fa;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.q-card {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.q-card-section {
+  padding: 16px;
+}
+
+.q-separator {
+  margin: 8px 0;
+}
+
+.q-btn {
+  min-width: 120px;
+}
+
+.q-input {
+  max-width: 400px;
+}
+
+.q-select {
+  max-width: 300px;
+}
+
+.q-table {
+  width: 100%;
+}
+
+.q-table-container {
+  max-width: 100%;
+  overflow-x: auto;
+}
+</style>

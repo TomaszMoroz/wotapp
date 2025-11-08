@@ -1,6 +1,8 @@
 <template>
-  <q-page class="nato-page">
+  <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
+
       <!-- Header -->
       <div class="page-header q-mb-xl">
         <div class="row items-center q-gutter-md">
@@ -35,6 +37,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import BackNav from 'components/BackNav.vue'
 
 defineOptions({
   name: 'NatoAlphabetPage'

@@ -1,6 +1,8 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
+
       <!-- Header Section -->
       <div class="hero-section q-pa-lg q-mb-lg">
         <div class="row items-center">
@@ -279,6 +281,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import BackNav from 'components/BackNav.vue'
 
 defineOptions({
   name: 'AngularMeasurementsPage'

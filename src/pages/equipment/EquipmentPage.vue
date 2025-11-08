@@ -1,102 +1,106 @@
 <template>
-  <q-page class="q-pa-lg">
-    <!-- Header with navigation -->
-    <div class="text-h4 q-mb-md">Wyposażenie</div>
+  <q-page class="page-background">
+    <div class="container q-pa-md">
+      <BackNav />
 
-    <!-- Breadcrumb navigation -->
-    <div v-if="currentView !== 'weapons'" class="q-mb-md">
-      <q-btn
-        flat
-        icon="arrow_back"
-        label="Powrót"
-        @click="goBack"
-        color="primary"
-      />
-    </div>
+      <!-- Header with navigation -->
+      <div class="text-h4 q-mb-md">Wyposażenie</div>
 
-    <!-- Main weapons view -->
-    <div v-if="currentView === 'weapons'" class="weapons-grid">
-      <q-card
-        v-for="weapon in weapons"
-        :key="weapon.id"
-        class="weapon-card cursor-pointer"
-        @click="showWeaponDetails(weapon.id)"
-      >
-        <q-card-section class="text-center">
-          <div class="text-h6 q-mt-md">{{ weapon.name }}</div>
-          <div class="text-caption text-grey">{{ weapon.category }}</div>
-        </q-card-section>
-      </q-card>
-    </div>
+      <!-- Breadcrumb navigation -->
+      <div v-if="currentView !== 'weapons'" class="q-mb-md">
+        <q-btn
+          flat
+          icon="arrow_back"
+          label="Powrót"
+          @click="goBack"
+          color="primary"
+        />
+      </div>
 
-    <!-- Weapon details view -->
-    <div v-if="currentView === 'details'" class="weapon-details">
-      <q-card>
-        <q-card-section>
-          <div class="row q-gutter-md">
-            <div class="col-12 col-md-8">
-              <div class="text-h5 q-mb-md">{{ selectedWeapon.name }}</div>
-              <div class="text-subtitle1 text-grey q-mb-md">{{ selectedWeapon.fullName }}</div>
+      <!-- Main weapons view -->
+      <div v-if="currentView === 'weapons'" class="weapons-grid">
+        <q-card
+          v-for="weapon in weapons"
+          :key="weapon.id"
+          class="weapon-card cursor-pointer"
+          @click="showWeaponDetails(weapon.id)"
+        >
+          <q-card-section class="text-center">
+            <div class="text-h6 q-mt-md">{{ weapon.name }}</div>
+            <div class="text-caption text-grey">{{ weapon.category }}</div>
+          </q-card-section>
+        </q-card>
+      </div>
+
+      <!-- Weapon details view -->
+      <div v-if="currentView === 'details'" class="weapon-details">
+        <q-card>
+          <q-card-section>
+            <div class="row q-gutter-md">
+              <div class="col-12 col-md-8">
+                <div class="text-h5 q-mb-md">{{ selectedWeapon.name }}</div>
+                <div class="text-subtitle1 text-grey q-mb-md">{{ selectedWeapon.fullName }}</div>
+              </div>
             </div>
-          </div>
 
-          <!-- Technical specifications - responsive layout -->
-          <div class="specs-container">
-            <!-- Desktop table view -->
-            <q-table
-              :rows="selectedWeapon.specs"
-              :columns="specColumns"
-              row-key="parameter"
-              flat
-              bordered
-              separator="cell"
-              no-data-label="Brak danych technicznych"
-              :rows-per-page-options="[0]"
-              rows-per-page="0"
-              class="gt-sm"
-            >
-              <template v-slot:body-cell-parameter="props">
-                <q-td :props="props" class="text-weight-medium">
-                  {{ props.value }}
-                </q-td>
-              </template>
-              <template v-slot:body-cell-value="props">
-                <q-td :props="props">
-                  {{ props.value }}
-                </q-td>
-              </template>
-            </q-table>
-
-            <!-- Mobile card view -->
-            <div class="lt-md">
-              <q-card
-                v-for="spec in selectedWeapon.specs"
-                :key="spec.parameter"
-                class="spec-card q-mb-sm"
+            <!-- Technical specifications - responsive layout -->
+            <div class="specs-container">
+              <!-- Desktop table view -->
+              <q-table
+                :rows="selectedWeapon.specs"
+                :columns="specColumns"
+                row-key="parameter"
                 flat
                 bordered
+                separator="cell"
+                no-data-label="Brak danych technicznych"
+                :rows-per-page-options="[0]"
+                rows-per-page="0"
+                class="gt-sm"
               >
-                <q-card-section class="row items-center no-wrap">
-                  <div class="col">
-                    <div class="text-weight-medium text-primary q-mb-xs">
-                      {{ spec.parameter }}
+                <template v-slot:body-cell-parameter="props">
+                  <q-td :props="props" class="text-weight-medium">
+                    {{ props.value }}
+                  </q-td>
+                </template>
+                <template v-slot:body-cell-value="props">
+                  <q-td :props="props">
+                    {{ props.value }}
+                  </q-td>
+                </template>
+              </q-table>
+
+              <!-- Mobile card view -->
+              <div class="lt-md">
+                <q-card
+                  v-for="spec in selectedWeapon.specs"
+                  :key="spec.parameter"
+                  class="spec-card q-mb-sm"
+                  flat
+                  bordered
+                >
+                  <q-card-section class="row items-center no-wrap">
+                    <div class="col">
+                      <div class="text-weight-medium text-primary q-mb-xs">
+                        {{ spec.parameter }}
+                      </div>
+                      <div class="text-body2">
+                        {{ spec.value }}
+                      </div>
                     </div>
-                    <div class="text-body2">
-                      {{ spec.value }}
-                    </div>
-                  </div>
-                </q-card-section>
-              </q-card>
+                  </q-card-section>
+                </q-card>
+              </div>
             </div>
-          </div>
                         <img
                 v-if="selectedWeapon.image"
                 :src="selectedWeapon.image"
                 :alt="selectedWeapon.name"
                 class="weapon-detail-image"
               />
-        </q-card-section>
-      </q-card>
+          </q-card-section>
+        </q-card>
+      </div>
     </div>
   </q-page>
 </template>
@@ -104,6 +108,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import visImg from 'assets/vis.png'
+import BackNav from 'components/BackNav.vue'
 
 defineOptions({
   name: 'EquipmentPage'

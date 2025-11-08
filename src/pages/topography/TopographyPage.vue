@@ -1,6 +1,7 @@
 <template>
   <q-page class="topography-page">
     <div class="container q-pa-md">
+      <BackNav />
       <!-- Header -->
       <div class="page-header q-mb-xl">
         <div class="row items-center q-gutter-md">
@@ -74,6 +75,7 @@
 </template>
 
 <script setup>
+import BackNav from 'components/BackNav.vue'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -501,7 +503,7 @@ const allTopics = computed(() => [
       <h4>I. Mierzenie Dystansu Metodą Parokroków</h4>
       <p>Metoda parokroków (ang. pace count) jest najczęściej stosowanym sposobem mierzenia dystansu w terenie, zwłaszcza przy słabej widoczności.</p>
 
-      <h5>1. Kalibracja Własnego Kroku (Krokomierz)</h5>
+      <h5>1. Kalibracja Własnego Kroku (Krocomierz)</h5>
       <ul>
         <li><strong>Definicja Parokroku:</strong> Parokrok to dwa kroki – liczysz tylko wtedy, gdy ta sama stopa (np. lewa) dotyka ziemi.</li>
         <li><strong>Kalibracja:</strong> Nawigator musi znać swoją średnią liczbę parokroków na standardowy dystans (zwykle 100 metrów).</li>

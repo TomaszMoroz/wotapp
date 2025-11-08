@@ -1,6 +1,8 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
+
       <!-- Header -->
       <div class="header-section q-mb-lg">
         <q-btn
@@ -270,6 +272,7 @@
 </template>
 
 <script setup>
+import BackNav from 'components/BackNav.vue'
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 

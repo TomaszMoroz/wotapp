@@ -1,6 +1,7 @@
 <template>
   <q-page class="mgrs-page">
     <div class="container q-pa-md">
+      <BackNav />
       <!-- Header -->
       <div class="page-header q-mb-xl">
         <div class="row items-center q-gutter-md">
@@ -73,6 +74,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import BackNav from 'components/BackNav.vue'
 
 // Import image from assets
 import mgrsImg from '../../../assets/mgrs.png'

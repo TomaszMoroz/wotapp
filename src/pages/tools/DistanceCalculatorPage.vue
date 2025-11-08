@@ -1,6 +1,8 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
+      <BackNav />
+
       <!-- Powrót do narzędzi -->
       <div class="q-mb-md">
         <q-btn
@@ -167,6 +169,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import BackNav from 'components/BackNav.vue'
 
 defineOptions({
   name: 'DistanceCalculatorPage'
