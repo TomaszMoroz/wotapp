@@ -151,68 +151,26 @@
 
               <!-- DRAW-D -->
               <div v-else-if="selectedTopic?.id === 2">
-                <h4>DRAW-D - Model procesu dowodzenia</h4>
-                <p>Cykliczny proces planowania i prowadzenia operacji wojskowych.</p>
-
-                <div class="draw-d-flow q-mb-lg">
-                  <div class="draw-step">
-                    <h6><strong>D - Detect (Wykrywanie)</strong></h6>
-                    <ul>
-                      <li>Rozpoznanie sytuacji</li>
-                      <li>Zbieranie informacji</li>
-                      <li>Identyfikacja zagrożeń</li>
-                      <li>Monitorowanie zmian</li>
-                    </ul>
+                <div class="drawd-section q-pa-lg q-mb-xl">
+                  <div class="drawd-header row items-center q-mb-md">
+                    <q-icon name="shield" color="primary" size="md" class="q-mr-md" />
+                    <span class="text-h5 text-weight-bold">DRAW-D</span>
+                  </div>
+                  <div class="text-body1 q-mb-md">
+                    Akronim używany do opisu potencjału przeciwnika:
+                  </div>
+                  <ul class="drawd-list q-mb-lg">
+                    <li><span class="drawd-letter">D</span> <b>(DEFEND)</b> – potencjał i ograniczenia przeciwnika w zakresie obrony</li>
+                    <li><span class="drawd-letter">R</span> <b>(REINFORCE)</b> – potencjał i ograniczenia w zakresie posiłków</li>
+                    <li><span class="drawd-letter">A</span> <b>(ATTACK)</b> – potencjał i ograniczenia w zakresie ataku</li>
+                    <li><span class="drawd-letter">W</span> <b>(WITHDRAW)</b> – potencjał i ograniczenia w zakresie odwrotu</li>
+                    <li><span class="drawd-letter">D</span> <b>(DELAY)</b> – potencjał i ograniczenia w zakresie spowalniania</li>
+                  </ul>
+                  <div class="drawd-img-wrap q-mb-lg flex flex-center">
+                    <q-img src="/src/assets/drawd.png" alt="DRAW-D schemat" style="max-width:700px;min-height:260px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e0e0e0; background:#fff;" />
                   </div>
 
-                  <div class="draw-step">
-                    <h6><strong>R - Respond (Reagowanie)</strong></h6>
-                    <ul>
-                      <li>Analiza zebranych danych</li>
-                      <li>Ocena opcji działania</li>
-                      <li>Opracowanie planów</li>
-                      <li>Wybór najlepszego rozwiązania</li>
-                    </ul>
-                  </div>
-
-                  <div class="draw-step">
-                    <h6><strong>A - Act (Działanie)</strong></h6>
-                    <ul>
-                      <li>Wykonanie zaplanowanych działań</li>
-                      <li>Koordynacja sił</li>
-                      <li>Nadzór nad realizacją</li>
-                      <li>Adaptacja do sytuacji</li>
-                    </ul>
-                  </div>
-
-                  <div class="draw-step">
-                    <h6><strong>W - Wait (Oczekiwanie)</strong></h6>
-                    <ul>
-                      <li>Obserwacja rezultatów</li>
-                      <li>Ocena skuteczności</li>
-                      <li>Przygotowanie kolejnych kroków</li>
-                      <li>Monitorowanie sytuacji</li>
-                    </ul>
-                  </div>
-
-                  <div class="draw-step">
-                    <h6><strong>D - Decide (Decydowanie)</strong></h6>
-                    <ul>
-                      <li>Analiza wyników</li>
-                      <li>Podjęcie kolejnych decyzji</li>
-                      <li>Modyfikacja planów</li>
-                      <li>Rozpoczęcie nowego cyklu</li>
-                    </ul>
-                  </div>
                 </div>
-
-                <h5>Charakterystyka procesu:</h5>
-                <ul>
-                  <li><strong>Cykliczność:</strong> Proces powtarza się kontinuum</li>
-                  <li><strong>Elastyczność:</strong> Możliwość przeskakiwania etapów</li>
-                  <li><strong>Adaptacyjność:</strong> Dostosowanie do sytuacji</li>
-                  <li><strong>Szybkość:</strong> Skrócenie czasu reakcji</li>
-                </ul>
               </div>
 
               <!-- OCOKA -->
@@ -1008,6 +966,118 @@ const selectTopic = (topic) => {
 
 .topic-dialog .q-dialog__inner {
   padding: 0;
+}
+
+/* DRAW-D Specific Styles */
+.drawd-section {
+  background: #fff;
+  border-radius: 18px;
+  border: 1.5px solid #cfd8dc;
+  box-shadow: 0 4px 24px rgba(44,62,47,0.07);
+  max-width: 720px;
+  margin: 0 auto 40px auto;
+  padding: 32px 24px 32px 24px;
+  transition: box-shadow 0.2s;
+}
+
+.drawd-section:hover {
+  box-shadow: 0 8px 32px rgba(44,62,47,0.13);
+}
+
+.drawd-header {
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.drawd-header .text-h5 {
+  letter-spacing: 2px;
+  color: #2D3E2F;
+  text-shadow: 0 1px 0 #e0e0e0;
+}
+
+.drawd-list {
+  font-size: 1.13rem;
+  line-height: 1.8;
+  padding-left: 0;
+  list-style: none;
+  margin-bottom: 32px;
+}
+
+.drawd-list li {
+  margin-bottom: 14px;
+  padding-left: 0;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  padding: 10px 16px;
+  border-left: 4px solid #4A5D31;
+  box-shadow: 0 1px 4px rgba(44,62,47,0.04);
+}
+
+.drawd-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #4A5D31;
+  color: #fff;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 1.18rem;
+  margin-right: 12px;
+  box-shadow: 0 2px 8px rgba(44,62,47,0.08);
+  border: 2px solid #2D3E2F;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+.drawd-list b {
+  color: #2D3E2F;
+  font-weight: 600;
+  margin-left: 2px;
+  margin-right: 6px;
+  letter-spacing: 1px;
+}
+
+.drawd-img-wrap {
+  width: 100%;
+  min-height: 260px;
+  max-width: 700px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  margin-bottom: 32px;
+}
+
+.drawd-scenario {
+  background: #f5f7fa;
+  border-radius: 10px;
+  border: 1.5px solid #cfd8dc;
+  box-shadow: 0 1px 6px rgba(44,62,47,0.04);
+  text-align: center;
+  padding: 18px 10px;
+  font-size: 1.08rem;
+  color: #2D3E2F;
+  font-weight: 500;
+  margin-top: 12px;
+}
+
+@media (max-width: 900px) {
+  .drawd-section { padding: 18px 4vw 18px 4vw; }
+  .drawd-img-wrap { max-width: 98vw; }
+}
+
+@media (max-width: 600px) {
+  .drawd-section { padding: 10px 0 10px 0; }
+  .drawd-list li { font-size: 1rem; padding: 8px 6px; }
+  .drawd-letter { width: 26px; height: 26px; font-size: 1rem; }
 }
 
 /* Mobile responsiveness */

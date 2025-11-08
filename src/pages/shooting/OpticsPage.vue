@@ -104,10 +104,7 @@
 
                   <span class="text-body1"><strong>Szybkie nabywanie celu:</strong> Natychmiastowe celowanie bez konieczności ustawiania oka</span>
                 </div>
-                <div class="feature-item q-mb-sm">
 
-                  <span class="text-body1"><strong>Brak paralaksy:</strong> Celownik pozostaje dokładny niezależnie od pozycji oka</span>
-                </div>
                 <div class="feature-item q-mb-sm">
 
                   <span class="text-body1"><strong>Uniwersalność oświetlenia:</strong> Działanie w jasnym świetle dziennym i przy słabym oświetleniu</span>
