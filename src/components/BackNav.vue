@@ -47,7 +47,7 @@ const parentMap = {
   '/tools/distance': '/tools',
   '/tools/settings': '/tools',
   '/tools/mils-moa': '/tools',
-  '/equipment': '/tools',
+  '/equipment': '/',
   '/training/old': '/tools',
 
   '/shooting/basics': '/shooting',
