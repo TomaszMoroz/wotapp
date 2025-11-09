@@ -247,25 +247,6 @@
                 class="full-width q-mb-md"
                 outline
               />
-
-              <!-- Informacje -->
-              <div class="info-section">
-                <div class="text-subtitle2 q-mb-sm">Informacje</div>
-                <div class="text-caption">
-                  <div>Korekta pozioma: {{ horizontalCorrection.toFixed(2) }} {{ measurementSystem === 'mils' ? 'mil' : 'MOA' }}</div>
-                  <div>Korekta pionowa: {{ verticalCorrection.toFixed(2) }} {{ measurementSystem === 'mils' ? 'mil' : 'MOA' }}</div>
-                  <div>Centymetrów per klik: {{ cmPerClick }} cm</div>
-                  <div>Ilość strzałów: {{ shots.length }}</div>
-
-                  <!-- Control shot info -->
-                  <div v-if="controlShotInfo" class="q-mt-md">
-                    <div class="text-weight-medium">Ostatni strzał kontrolny:</div>
-                    <div>{{ Math.abs(controlShotInfo.horizontal.cm).toFixed(1) }} cm {{ controlShotInfo.horizontal.direction }}</div>
-                    <div>{{ Math.abs(controlShotInfo.vertical.cm).toFixed(1) }} cm {{ controlShotInfo.vertical.direction }}</div>
-                    <div class="text-grey">Dystans: {{ controlShotInfo.distance }}m</div>
-                  </div>
-                </div>
-              </div>
             </q-card-section>
           </q-card>
         </div>
@@ -387,6 +368,25 @@
                 />
               </div>
             </q-card-section>
+            <!-- Informacje i ostatni strzał kontrolny przeniesione pod tarczę -->
+            <q-card-section>
+              <div class="info-section">
+                <div class="text-subtitle2 q-mb-sm">Informacje</div>
+                <div class="text-caption">
+                  <div>Korekta pozioma: {{ horizontalCorrection.toFixed(2) }} {{ measurementSystem === 'mils' ? 'mil' : 'MOA' }}</div>
+                  <div>Korekta pionowa: {{ verticalCorrection.toFixed(2) }} {{ measurementSystem === 'mils' ? 'mil' : 'MOA' }}</div>
+                  <div>Centymetrów per klik: {{ cmPerClick }} cm</div>
+                  <div>Ilość strzałów: {{ shots.length }}</div>
+                  <!-- Control shot info -->
+                  <div v-if="controlShotInfo" class="q-mt-md">
+                    <div class="text-weight-medium">Ostatni strzał kontrolny:</div>
+                    <div>{{ Math.abs(controlShotInfo.horizontal.cm).toFixed(1) }} cm {{ controlShotInfo.horizontal.direction }}</div>
+                    <div>{{ Math.abs(controlShotInfo.vertical.cm).toFixed(1) }} cm {{ controlShotInfo.vertical.direction }}</div>
+                    <div class="text-grey">Dystans: {{ controlShotInfo.distance }}m</div>
+                  </div>
+                </div>
+              </div>
+            </q-card-section>
           </q-card>
         </div>
       </div>
@@ -505,8 +505,8 @@ const cmPerClick = computed(() => {
     const milToCmAtDistance = distanceMeters / 10 // convert mm to cm
     return (clickValue.value * milToCmAtDistance).toFixed(2)
   } else {
-    // For MOA: 1 MOA at distance ≈ distance * 0.29 cm
-    const moaToCmAtDistance = distanceMeters * 0.29
+    // For MOA: 1 MOA na 100m = 2.91cm, więc na X m = 2.91 * (distance/100)
+    const moaToCmAtDistance = 2.91 * (distanceMeters / 100)
     return (clickValue.value * moaToCmAtDistance).toFixed(2)
   }
 })
@@ -520,8 +520,8 @@ const getCorrectionInCm = (correctionValue) => {
     const milToCmAtDistance = distanceMeters / 10 // convert mm to cm
     return correctionValue * milToCmAtDistance
   } else {
-    // For MOA: 1 MOA at distance ≈ distance * 0.29 cm
-    const moaToCmAtDistance = distanceMeters * 0.29
+    // For MOA: 1 MOA na 100m = 2.91cm, więc na X m = 2.91 * (distance/100)
+    const moaToCmAtDistance = 2.91 * (distanceMeters / 100)
     return correctionValue * moaToCmAtDistance
   }
 }
@@ -807,14 +807,28 @@ const onImageLoad = () => {
   }
 }
 
-// Watch for measurement system changes
-watch(measurementSystem, (newSystem) => {
-  // Reset click value to default for new system
-  if (newSystem === 'mils') {
+// Watchers: każda zmiana danych wejściowych przelicza i odświeża wyniki oraz pozycję celownika
+watch([
+  measurementSystem,
+  clickValue,
+  distance,
+  verticalClicks,
+  horizontalClicks,
+  windEnabled,
+  windDirection,
+  windSpeed,
+  correctionType
+], () => {
+  // Wymuś odświeżenie computedów i pozycji celownika
+  // (w Vue 3 z ref/computed nie trzeba ręcznie przeliczać, ale można dodać dodatkowe akcje jeśli potrzeba)
+  // Przykład: jeśli po zmianie measurementSystem chcesz zresetować klik
+  if (measurementSystem.value === 'mils') {
     clickValue.value = 0.1
   } else {
     clickValue.value = 0.25
   }
+  // Odświeżenie obrazu/celownika jeśli potrzeba
+  onImageLoad()
 })
 
 // Handle window resize
