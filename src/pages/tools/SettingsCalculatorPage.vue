@@ -355,6 +355,11 @@
                     top: shot.y + 'px'
                   }"
                 >
+                  <!-- SVG z większym okręgiem i kropką -->
+                  <svg width="22" height="22" style="position: absolute; left: -11px; top: -11px; pointer-events: none;">
+                    <circle cx="11" cy="11" r="9" fill="rgba(255,255,255,0.5)" stroke="rgba(0,0,0,0.5)" stroke-width="2" />
+                    <circle cx="11" cy="11" r="4" fill="rgba(0,0,0,0.9)" />
+                  </svg>
                   <div class="shot-number">{{ index + 1 }}</div>
                 </div>
               </div>
