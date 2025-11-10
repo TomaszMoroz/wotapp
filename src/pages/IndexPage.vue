@@ -15,38 +15,7 @@
 
       <!-- Cards Grid -->
       <div class="cards-grid q-mb-xl">
-        <q-card
-          class="dashboard-card military-tccc-card"
-          clickable
-          @click="navigateTo('/tccc')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="medical_services" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">TCCC</div>
-            <div class="text-caption text-grey-4 mobile-caption">Taktyczna pomoc poszkodowanym</div>
-          </q-card-section>
-        </q-card>
-        <q-card
-          class="dashboard-card military-primary-card"
-          clickable
-          @click="navigateTo('/equipment')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="inventory" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Wyposażenie</div>
-            <div class="text-caption text-grey-4 mobile-caption">Sprzęt wojskowy</div>
-          </q-card-section>
-          <!-- <q-card-section class="card-footer">
-            <q-chip size="sm" color="rgba(255,255,255,0.7)" text-color="white" icon="volume_up">
-              Wymowa
-            </q-chip>
-          </q-card-section> -->
-        </q-card>
-
+        <!-- Najpierw Narzędzia -->
         <q-card
           class="dashboard-card military-brown-card"
           clickable
@@ -59,43 +28,48 @@
             <div class="text-h6 q-mt-md text-weight-bold">Narzędzia</div>
             <div class="text-caption text-grey-4 mobile-caption">Pomoce, kalkulatory</div>
           </q-card-section>
-          <!-- <q-card-section class="card-footer">
-            <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="calculate">
-              Kalkulator
-            </q-chip>
-          </q-card-section> -->
         </q-card>
 
+        <!-- Pozostałe sekcje alfabetycznie -->
         <q-card
-          class="dashboard-card military-green-card"
+          class="dashboard-card military-accent-card"
           clickable
-          @click="navigateTo('/tactics')"
+          @click="navigateTo('/emergency')"
         >
           <q-card-section class="text-center">
             <div class="card-icon-wrapper">
-              <q-icon name="school" size="3rem" color="white" />
+              <q-icon name="military_tech" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Taktyka, dowodzenie i procedury</div>
-            <div class="text-caption text-grey-4 mobile-caption">Materiały szkoleniowe</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Stopnie, regulaminy, prawo</div>
+            <div class="text-caption text-grey-4 mobile-caption">Informacje</div>
           </q-card-section>
-          <!-- <q-card-section class="card-footer">
-            <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="menu_book">
-              Szkolenia
-            </q-chip>
-          </q-card-section> -->
         </q-card>
 
         <q-card
-          class="dashboard-card military-secondary-card"
+          class="dashboard-card military-primary-card"
           clickable
-          @click="navigateTo('/topography')"
+          @click="navigateTo('/equipment')"
         >
           <q-card-section class="text-center">
             <div class="card-icon-wrapper">
-              <q-icon name="map" size="3rem" color="white" />
+              <q-icon name="inventory" size="3rem" color="white" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
-            <div class="text-caption text-grey-4 mobile-caption">Mapy i nawigacja</div>
+            <div class="text-h6 q-mt-md text-weight-bold">Wyposażenie</div>
+            <div class="text-caption text-grey-4 mobile-caption">Sprzęt wojskowy</div>
+          </q-card-section>
+        </q-card>
+
+        <q-card
+          class="dashboard-card military-dark-card"
+          clickable
+          @click="navigateTo('/reports')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="description" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Meldunki</div>
+            <div class="text-caption text-grey-4 mobile-caption">Raporty wojskowe</div>
           </q-card-section>
         </q-card>
 
@@ -113,56 +87,46 @@
           </q-card-section>
         </q-card>
 
-        <!-- <q-card
+        <q-card
+          class="dashboard-card military-tccc-card"
+          clickable
+          @click="navigateTo('/tccc')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="medical_services" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">TCCC</div>
+            <div class="text-caption text-grey-4 mobile-caption">Taktyczna pomoc poszkodowanym</div>
+          </q-card-section>
+        </q-card>
+
+        <q-card
+          class="dashboard-card military-green-card"
+          clickable
+          @click="navigateTo('/tactics')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="school" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Taktyka, dowodzenie i procedury</div>
+            <div class="text-caption text-grey-4 mobile-caption">Materiały szkoleniowe</div>
+          </q-card-section>
+        </q-card>
+
+        <q-card
           class="dashboard-card military-secondary-card"
           clickable
-          @click="navigateTo('/map')"
+          @click="navigateTo('/topography')"
         >
           <q-card-section class="text-center">
             <div class="card-icon-wrapper">
               <q-icon name="map" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
-            <div class="text-caption text-grey-4">Mapy i orientacja</div>
+            <div class="text-caption text-grey-4 mobile-caption">Mapy i nawigacja</div>
           </q-card-section>
-        </q-card> -->
-
-        <q-card
-          class="dashboard-card military-dark-card"
-          clickable
-          @click="navigateTo('/reports')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="description" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Meldunki</div>
-            <div class="text-caption text-grey-4 mobile-caption">Raporty wojskowe</div>
-          </q-card-section>
-          <!-- <q-card-section class="card-footer">
-            <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="assignment">
-              Formularze
-            </q-chip>
-          </q-card-section> -->
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-accent-card"
-          clickable
-          @click="navigateTo('/emergency')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="military_tech" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Stopnie, regulaminy, prawo</div>
-            <div class="text-caption text-grey-4 mobile-caption">Informacje</div>
-          </q-card-section>
-          <!-- <q-card-section class="card-footer">
-            <q-chip size="sm" color="rgba(255,255,255,0.2)" text-color="white" icon="emergency">
-              Alerty
-            </q-chip>
-          </q-card-section> -->
         </q-card>
       </div>
 

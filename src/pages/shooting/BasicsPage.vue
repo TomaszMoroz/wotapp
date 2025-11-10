@@ -17,99 +17,23 @@
         </div>
       </div>
 
-      <!-- Content Cards -->
+  <!-- Content Cards -->
       <div class="content-grid q-gutter-lg">
-        <!-- Działanie karabinka Grot -->
+        <!-- Bezpieczeństwo strzelania - BLOS (przeniesione na początek) -->
         <q-card class="content-card">
           <q-card-section class="card-header">
             <div class="row items-center">
-
-              <div>
-                <div class="text-h5 text-weight-bold text-white">Działanie karabinka Grot</div>
-                <div class="text-subtitle2 text-grey-3">System gazowy krótkiego skoku</div>
-              </div>
-            </div>
-          </q-card-section>
-
-          <q-separator />
-
-          <q-card-section class="q-pa-lg">
-            <div class="text-body1 q-mb-md">
-              Zasada działania karabinka Grot opiera się na systemie odprowadzania części gazów prochowych przez boczny otwór w lufie i wykorzystaniu krótkiego skoku tłoka gazowego.
-            </div>
-
-            <div class="mechanism-steps">
-              <div class="step-item q-mb-lg">
-                <div class="step-header">
-
-                  <span class="text-h6 text-weight-bold text-white">1. Strzał i Uwolnienie Gazów</span>
-                </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
-                  Po naciśnięciu spustu i odpaleniu naboju, pocisk jest wypychany przez lufę. Gdy minie on specjalny otwór gazowy w ściance lufy, część gazów prochowych o bardzo wysokim ciśnieniu jest kierowana do komory gazowej.
-                </div>
-              </div>
-
-              <div class="step-item q-mb-lg">
-                <div class="step-header">
-
-                  <span class="text-h6 text-weight-bold text-white">2. Ruch Tłoka i Automatyka</span>
-                </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
-                  Gazy uderzają w czoło tłoka gazowego, przesuwając go na krótki dystans do tyłu. Tłok, za pośrednictwem popychacza, przekazuje energię na suwadło z zamkiem.
-                </div>
-              </div>
-
-              <div class="step-item q-mb-lg">
-                <div class="step-header">
-
-                  <span class="text-h6 text-weight-bold text-white">3. Odryglowanie i Wyrzut</span>
-                </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
-                  Ruch suwadła do tyłu powoduje odryglowanie zamka (poprzez jego obrót), wyciągnięcie pustej łuski z komory nabojowej i wyrzucenie jej na zewnątrz karabinka. Jednocześnie napinany jest kurek i ściskana sprężyna powrotna.
-                </div>
-              </div>
-
-              <div class="step-item q-mb-lg">
-                <div class="step-header">
-                  <span class="text-h6 text-weight-bold text-white">4. Powrót i Ryglowanie</span>
-                </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
-                  Po osiągnięciu skrajnego tylnego położenia, suwadło pod wpływem sprężyny powrotnej zaczyna ruch do przodu. Zamek pobiera kolejny nabój z magazynka i dosyła go do komory nabojowej. W końcowej fazie ruchu następuje zaryglowanie zamka przez jego obrót.
-                </div>
-              </div>
-
-              <div class="step-item">
-                <div class="step-header">
-
-                  <span class="text-h6 text-weight-bold text-white">5. Kolejny Strzał</span>
-                </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
-                  Broń jest gotowa do oddania kolejnego strzału, kontynuując cykl automatyki (w przypadku ognia ciągłego) lub oczekując na ponowne naciśnięcie spustu (w przypadku ognia pojedynczego).
-                </div>
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Bezpieczeństwo strzelania - BLOS -->
-        <q-card class="content-card">
-          <q-card-section class="card-header">
-            <div class="row items-center">
-
               <div>
                 <div class="text-h5 text-weight-bold text-white">Zasady bezpieczeństwa - BLOS</div>
                 <div class="text-subtitle2 text-grey-3">Podstawowe zasady BHP na strzelnicy</div>
               </div>
             </div>
           </q-card-section>
-
           <q-separator />
-
           <q-card-section class="q-pa-lg">
             <div class="text-body1 q-mb-lg text-center">
               <strong>BLOS</strong> - cztery fundamentalne zasady bezpieczeństwa w obchodzeniu się z bronią palną
             </div>
-
             <div class="blos-rules">
               <div class="blos-item q-mb-lg">
                 <div class="blos-header q-mb-sm">
@@ -120,7 +44,6 @@
                   Traktuj każdą broń tak, jakby była załadowana. Nigdy nie wkładaj żadnej części ciała przed lufę i nie machaj nią.
                 </div>
               </div>
-
               <div class="blos-item q-mb-lg">
                 <div class="blos-header q-mb-sm">
                   <div class="blos-letter blos-letter-l">L</div>
@@ -130,7 +53,6 @@
                   Wylot lufy powinien być zawsze skierowany w bezpiecznym kierunku, np. w stronę kulochwytu, ziemi lub pod kątem 45 stopni.
                 </div>
               </div>
-
               <div class="blos-item q-mb-lg">
                 <div class="blos-header q-mb-sm">
                   <div class="blos-letter blos-letter-o">O</div>
@@ -140,7 +62,6 @@
                   Upewnij się, co znajduje się w linii strzału, a także za celem, aby uniknąć rykoszetu lub postrzelenia osób postronnych.
                 </div>
               </div>
-
               <div class="blos-item">
                 <div class="blos-header q-mb-sm">
                   <div class="blos-letter blos-letter-s">S</div>
@@ -151,11 +72,69 @@
                 </div>
               </div>
             </div>
-
             <div class="blos-reminder q-mt-lg">
-
               <div class="text-body2 text-weight-bold text-red-8">
                 PAMIĘTAJ: Przestrzeganie zasad BLOS to podstawa bezpiecznego obchodzenia się z bronią palną!
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+
+        <!-- Działanie karabinka Grot -->
+        <q-card class="content-card">
+          <q-card-section class="card-header">
+            <div class="row items-center">
+              <div>
+                <div class="text-h5 text-weight-bold text-white">Działanie karabinka Grot</div>
+                <div class="text-subtitle2 text-grey-3">System gazowy krótkiego skoku</div>
+              </div>
+            </div>
+          </q-card-section>
+          <q-separator />
+          <q-card-section class="q-pa-lg">
+            <div class="text-body1 q-mb-md">
+              Zasada działania karabinka Grot opiera się na systemie odprowadzania części gazów prochowych przez boczny otwór w lufie i wykorzystaniu krótkiego skoku tłoka gazowego.
+            </div>
+            <div class="mechanism-steps">
+              <div class="step-item q-mb-lg">
+                <div class="step-header">
+                  <span class="text-h6 text-weight-bold text-white">1. Strzał i Uwolnienie Gazów</span>
+                </div>
+                <div class="text-body1 q-mt-sm q-ml-xl">
+                  Po naciśnięciu spustu i odpaleniu naboju, pocisk jest wypychany przez lufę. Gdy minie on specjalny otwór gazowy w ściance lufy, część gazów prochowych o bardzo wysokim ciśnieniu jest kierowana do komory gazowej.
+                </div>
+              </div>
+              <div class="step-item q-mb-lg">
+                <div class="step-header">
+                  <span class="text-h6 text-weight-bold text-white">2. Ruch Tłoka i Automatyka</span>
+                </div>
+                <div class="text-body1 q-mt-sm q-ml-xl">
+                  Gazy uderzają w czoło tłoka gazowego, przesuwając go na krótki dystans do tyłu. Tłok, za pośrednictwem popychacza, przekazuje energię na suwadło z zamkiem.
+                </div>
+              </div>
+              <div class="step-item q-mb-lg">
+                <div class="step-header">
+                  <span class="text-h6 text-weight-bold text-white">3. Odryglowanie i Wyrzut</span>
+                </div>
+                <div class="text-body1 q-mt-sm q-ml-xl">
+                  Ruch suwadła do tyłu powoduje odryglowanie zamka (poprzez jego obrót), wyciągnięcie pustej łuski z komory nabojowej i wyrzucenie jej na zewnątrz karabinka. Jednocześnie napinany jest kurek i ściskana sprężyna powrotna.
+                </div>
+              </div>
+              <div class="step-item q-mb-lg">
+                <div class="step-header">
+                  <span class="text-h6 text-weight-bold text-white">4. Powrót i Ryglowanie</span>
+                </div>
+                <div class="text-body1 q-mt-sm q-ml-xl">
+                  Po osiągnięciu skrajnego tylnego położenia, suwadło pod wpływem sprężyny powrotnej zaczyna ruch do przodu. Zamek pobiera kolejny nabój z magazynka i dosyła go do komory nabojowej. W końcowej fazie ruchu następuje zaryglowanie zamka przez jego obrót.
+                </div>
+              </div>
+              <div class="step-item">
+                <div class="step-header">
+                  <span class="text-h6 text-weight-bold text-white">5. Kolejny Strzał</span>
+                </div>
+                <div class="text-body1 q-mt-sm q-ml-xl">
+                  Broń jest gotowa do oddania kolejnego strzału, kontynuując cykl automatyki (w przypadku ognia ciągłego) lub oczekując na ponowne naciśnięcie spustu (w przypadku ognia pojedynczego).
+                </div>
               </div>
             </div>
           </q-card-section>
