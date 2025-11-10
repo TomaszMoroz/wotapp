@@ -16,6 +16,19 @@
       <!-- Cards Grid -->
       <div class="cards-grid q-mb-xl">
         <q-card
+          class="dashboard-card military-tccc-card"
+          clickable
+          @click="navigateTo('/tccc')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="medical_services" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">TCCC</div>
+            <div class="text-caption text-grey-4 mobile-caption">Taktyczna pomoc poszkodowanym</div>
+          </q-card-section>
+        </q-card>
+        <q-card
           class="dashboard-card military-primary-card"
           clickable
           @click="navigateTo('/equipment')"
@@ -184,6 +197,10 @@ const navigateTo = (path) => {
 </script>
 
 <style scoped>
+.military-tccc-card {
+  background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
+  color: white;
+}
 .page-background {
   background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
   min-height: 100vh;

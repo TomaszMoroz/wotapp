@@ -29,7 +29,10 @@ const routes = [
       { path: '/ranks', component: () => import('pages/ranks/RanksPage.vue') },
       { path: '/regulations', component: () => import('pages/regulations/RegulationsPage.vue') },
       { path: '/firearms-law', component: () => import('pages/emergency/FirearmsLawPage.vue') },
-      { path: '/drill', component: () => import('pages/emergency/DrillPage.vue') }
+      { path: '/drill', component: () => import('pages/emergency/DrillPage.vue') },
+      // TCCC
+      { path: '/tccc', component: () => import('pages/tccc/TcccPage.vue') },
+      { path: '/tccc/:nr', component: () => import('pages/tccc/TcccChapterPage.vue') }
     ]
   },
 
