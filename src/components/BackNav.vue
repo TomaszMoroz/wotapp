@@ -33,6 +33,10 @@ const props = defineProps({
   color: {
     type: String,
     default: null
+  },
+  showBack: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -41,6 +45,7 @@ const navBtnTextColor = computed(() => props.color === 'black' ? 'black' : 'whit
 
 // Określ, czy można wrócić o jeden poziom wyżej (czyli nie jesteśmy na dashboardzie ani na głównej sekcji)
 const canGoBack = computed(() => {
+  if (!props.showBack) return false
   // Dashboard
   if (route.path === '/') return false
   // Jeśli jest parent w matched i nie jest to root

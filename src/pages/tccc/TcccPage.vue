@@ -1,6 +1,7 @@
 <template>
   <q-page class="q-pa-md">
-    <div class="text-h4 text-weight-bold q-mb-md">TCCC – Taktyczna Pomoc Poszkodowanym na Polu Walki</div>
+  <BackNav color="black" :showBack="false"/>
+  <div class="text-h4 text-weight-bold q-mb-md">TCCC – Taktyczna Pomoc Poszkodowanym na Polu Walki</div>
     <div class="text-subtitle1 text-grey-7 q-mb-xs">Wytyczne dla personelu medycznego (2024)</div>
     <div class="text-body2 text-grey-8 q-mb-lg">
       <strong>Podręcznik:</strong> TAKTYCZNA POMOC POSZKODOWANYM NA POLU WALKI (TCCC)<br>
@@ -21,6 +22,7 @@
 </template>
 
 <script setup>
+import BackNav from 'components/BackNav.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const tcccChapters = [
@@ -54,9 +56,12 @@ function goToTcccChapter (nr) {
   margin-top: 8px;
 }
 .tccc-chapter-tile {
-  min-width: 220px;
-  max-width: 320px;
-  flex: 1 1 220px;
+  width: 240px;
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
   transition: box-shadow 0.2s;
 }
