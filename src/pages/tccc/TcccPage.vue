@@ -26,7 +26,7 @@ import BackNav from 'components/BackNav.vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const tcccChapters = [
-  { nr: 1, title: 'Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji', short: 'Plan zarządzania ewakuacją TACEVAC' },
+  { nr: 1, title: 'Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji' },
   { nr: 2, title: 'Pomoc pod ostrzałem', short: 'Care Under Fire – działania pod ostrzałem' },
   { nr: 3, title: 'Taktyczna pomoc polowa', short: 'Tactical Field Care – ogólne zasady' },
   { nr: 4, title: 'Masywny krwotok', short: 'Tamowanie masywnych krwotoków' },

@@ -25,6 +25,7 @@
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 
+// Tu będzie pełny obiekt chapters z rozdziałami
 const chapters = {
   1: {
     title: 'Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji',
@@ -584,13 +585,13 @@ const chapters = {
 }
 
 const route = useRoute()
+const router = useRouter()
 const chapterId = computed(() => Number(route.params.nr))
 const chapter = computed(() => chapters[chapterId.value] || { title: 'Nieznany rozdział', content: '' })
-const router = useRouter()
-function goBack () {
-  router.push('/tccc')
-}
 
+function goBack () {
+  router.back()
+}
 </script>
 
 <style scoped>
@@ -605,10 +606,6 @@ function goBack () {
   border-radius: 18px;
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
   display: flex;
-  flex-direction: column;
-}
-.tccc-header {
-  position: sticky;
   top: 0;
   z-index: 2;
   background: #fff;
@@ -633,19 +630,6 @@ function goBack () {
   max-height: 75vh;
   min-height: 40vh;
 }
-.tccc-content-section {
-  padding: 24px 24px 32px 24px;
-  min-height: 200px;
-}
-/* Nowoczesne, czytelne style dla artykułów TCCC */
-.tccc-content {
-  font-size: 1.15rem;
-  line-height: 1.85;
-  color: #1a1a1a;
-  font-weight: 400;
-  word-break: break-word;
-  padding: 0 2px;
-}
 .tccc-content section.tccc-section {
   margin-bottom: 2.2em;
   padding-bottom: 0.5em;
@@ -658,11 +642,6 @@ function goBack () {
 .tccc-content li {
   margin-bottom: 0.55em;
   font-size: 1.08em;
-  line-height: 1.7;
-}
-.tccc-content strong {
-  color: #1976d2;
-  font-weight: 600;
 }
 .tccc-content h3, .tccc-content h4 {
   margin: 1.3em 0 0.6em 0;
@@ -672,10 +651,6 @@ function goBack () {
 }
 .tccc-content em {
   color: #607d8b;
-}
-.tccc-content ul ul, .tccc-content ol ol, .tccc-content ul ol, .tccc-content ol ul {
-  margin-bottom: 0.2em;
-  margin-top: 0.2em;
 }
 .tccc-content li:last-child {
   margin-bottom: 0;
@@ -692,20 +667,15 @@ function goBack () {
     font-size: 1.01rem;
     padding: 0 1px;
   }
-  .tccc-content-section {
-    padding: 12px 2px 18px 2px;
-  }
-}
-@media (max-width: 600px) {
   .tccc-chapter-card {
     max-width: 100vw;
     border-radius: 0;
   }
-  .tccc-header {
-    border-radius: 0;
-  }
-  .tccc-content-section {
-    padding: 16px 6px 24px 6px;
-  }
+}
+.tccc-header {
+  border-radius: 0;
+}
+.tccc-content-section {
+  padding: 16px 6px 24px 6px;
 }
 </style>
