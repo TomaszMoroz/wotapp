@@ -1,14 +1,14 @@
 <template>
   <q-page class="q-pa-md flex flex-center bg-grey-2">
     <q-card class="tccc-chapter-card column q-pa-none" flat bordered>
-      <q-card-section class="tccc-header q-pa-md bg-primary text-white shadow-2 rounded-borders">
+      <q-card-section class="tccc-header q-pa-md bg-green-10 text-white shadow-2 rounded-borders">
         <div class="row items-center no-wrap">
           <q-btn
             class="tccc-back-btn q-mr-md"
             flat
             round
             color="white"
-            text-color="primary"
+            text-color="white"
             icon="arrow_back"
             @click="goBack"
             aria-label="Powrót"
