@@ -1,31 +1,30 @@
 <template>
   <q-page class="q-pa-md flex flex-center bg-grey-2">
-    <q-card class="tccc-chapter-card" flat bordered>
-      <div class="tccc-header row items-center no-wrap q-px-md q-pt-md q-pb-sm shadow-2">
-        <q-btn
-          class="tccc-back-btn q-mr-md"
-          flat
-          round
-          icon="arrow_back"
-          @click="goBack"
-          aria-label="Powrót"
-        />
-        <div class="tccc-title q-mb-xs">{{ chapter.title }}</div>
-      </div>
-      <q-scroll-area class="tccc-scroll-area">
-        <div class="tccc-content-section">
-          <div class="tccc-content" v-html="chapter.content"></div>
+    <q-card class="tccc-chapter-card column" flat bordered>
+      <div class="tccc-header column q-px-md q-pt-md q-pb-sm shadow-2">
+        <div class="row items-center no-wrap">
+          <q-btn
+            class="tccc-back-btn q-mr-md"
+            flat
+            round
+            icon="arrow_back"
+            @click="goBack"
+            aria-label="Powrót"
+          />
+          <div class="tccc-title q-mb-xs">{{ chapter.title }}</div>
         </div>
-      </q-scroll-area>
+      </div>
+      <div class="tccc-content-section">
+        <div class="tccc-content" v-html="chapter.content"></div>
+      </div>
     </q-card>
   </q-page>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 
-// Tu będzie pełny obiekt chapters z rozdziałami
 const chapters = {
   1: {
     title: 'Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji',
