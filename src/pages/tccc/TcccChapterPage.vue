@@ -1,23 +1,26 @@
 <template>
   <q-page class="q-pa-md flex flex-center bg-grey-2">
-    <q-card class="tccc-chapter-card column" flat bordered>
-      <div class="tccc-header column q-px-md q-pt-md q-pb-sm shadow-2">
+    <q-card class="tccc-chapter-card column q-pa-none" flat bordered>
+      <q-card-section class="tccc-header q-pa-md bg-primary text-white shadow-2 rounded-borders">
         <div class="row items-center no-wrap">
           <q-btn
             class="tccc-back-btn q-mr-md"
             flat
             round
+            color="white"
+            text-color="primary"
             icon="arrow_back"
             @click="goBack"
             aria-label="Powrót"
           />
-          <div class="tccc-title q-mb-xs">{{ chapter.title }}</div>
+          <div class="tccc-title text-h5 text-weight-bold q-mb-xs">{{ chapter.title }}</div>
         </div>
-      </div>
-      <div class="tccc-content-section">
-        <div class="tccc-content" v-html="chapter.content"></div>
-      </div>
-    </q-card>
+      </q-card-section>
+      <q-separator color="grey-3" />
+      <q-card-section class="tccc-content-section bg-grey-1 q-pa-lg">
+        <div class="tccc-content q-mx-auto" style="max-width: 720px;" v-html="chapter.content"></div>
+      </q-card-section>
+  </q-card>
   </q-page>
 </template>
 
@@ -597,42 +600,37 @@ function goBack () {
 .q-page.bg-grey-2 {
   min-height: 100vh;
 }
+/* --- TCCC Article Professional Styles --- */
 .tccc-chapter-card {
   max-width: 820px;
   width: 100%;
   min-height: 60vh;
-  background: #fff;
   border-radius: 18px;
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10);
-  display: flex;
-  top: 0;
-  z-index: 2;
-  background: #fff;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.tccc-header {
+  border-radius: 0;
   border-top-left-radius: 18px;
   border-top-right-radius: 18px;
-  min-height: 56px;
-  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
 }
 .tccc-title {
-  font-size: 1.35rem;
-  letter-spacing: 0.01em;
-  color: #1a1a1a;
   flex: 1 1 auto;
+  word-break: break-word;
 }
-.tccc-back-btn {
-  transition: background 0.2s;
+.tccc-content-section {
+  padding: 0;
 }
-.tccc-back-btn:hover {
-  background: #e3f2fd;
-}
-.tccc-scroll-area {
-  max-height: 75vh;
-  min-height: 40vh;
+.tccc-content {
+  font-size: 1.13rem;
+  line-height: 1.7;
+  color: #222;
 }
 .tccc-content section.tccc-section {
   margin-bottom: 2.2em;
   padding-bottom: 0.5em;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid #e0e0e0;
 }
 .tccc-content ol, .tccc-content ul {
   margin: 0 0 1.2em 1.5em;
@@ -670,11 +668,8 @@ function goBack () {
     max-width: 100vw;
     border-radius: 0;
   }
-}
-.tccc-header {
-  border-radius: 0;
-}
-.tccc-content-section {
-  padding: 16px 6px 24px 6px;
+  .tccc-header {
+    border-radius: 0;
+  }
 }
 </style>
