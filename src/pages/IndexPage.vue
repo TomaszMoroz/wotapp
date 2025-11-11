@@ -11,123 +11,19 @@
           <!-- <div class="text-subtitle1 text-grey-7 q-mb-md">aplikacja wewnętrzna</div> -->
           <div class="text-body1 text-grey-6">Wybierz sekcję aby rozpocząć pracę</div>
         </div>
+  <!-- Kafelek wyszukiwarki zostanie przeniesiony na koniec .cards-grid -->
       </div>
 
-      <!-- Cards Grid -->
-      <div class="cards-grid q-mb-xl">
-        <!-- Najpierw Narzędzia -->
-        <q-card
-          class="dashboard-card military-brown-card"
-          clickable
-          @click="navigateTo('/tools')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="build" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Narzędzia</div>
-            <div class="text-caption text-grey-4 mobile-caption">Pomoce, kalkulatory</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Pozostałe sekcje alfabetycznie -->
-        <q-card
-          class="dashboard-card military-accent-card"
-          clickable
-          @click="navigateTo('/emergency')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="military_tech" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Stopnie, regulaminy, prawo</div>
-            <div class="text-caption text-grey-4 mobile-caption">Informacje</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-primary-card"
-          clickable
-          @click="navigateTo('/equipment')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="inventory" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Wyposażenie</div>
-            <div class="text-caption text-grey-4 mobile-caption">Sprzęt wojskowy</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-dark-card"
-          clickable
-          @click="navigateTo('/reports')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="description" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Meldunki</div>
-            <div class="text-caption text-grey-4 mobile-caption">Raporty wojskowe</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-shooting-card"
-          clickable
-          @click="navigateTo('/shooting')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="gps_fixed" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Strzelectwo</div>
-            <div class="text-caption text-grey-4 mobile-caption">Balistyka, teoria, technika</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-tccc-card"
-          clickable
-          @click="navigateTo('/tccc')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="medical_services" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">TCCC</div>
-            <div class="text-caption text-grey-4 mobile-caption">Taktyczna pomoc poszkodowanym</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-green-card"
-          clickable
-          @click="navigateTo('/tactics')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="school" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Taktyka, dowodzenie i procedury</div>
-            <div class="text-caption text-grey-4 mobile-caption">Materiały szkoleniowe</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-secondary-card"
-          clickable
-          @click="navigateTo('/topography')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="map" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
-            <div class="text-caption text-grey-4 mobile-caption">Mapy i nawigacja</div>
-          </q-card-section>
-        </q-card>
+      <!-- Lista tytułów kafelków dashboardu -->
+      <div class="dashboard-titles-list q-mb-xl">
+        <q-list bordered separator>
+          <q-item v-for="card in dashboardCards" :key="card.path" clickable @click="navigateTo(card.path)">
+            <q-item-section>
+              <span class="text-h6 text-weight-bold">{{ card.label }}</span>
+              <span v-if="card.description" class="text-caption text-grey-5 q-ml-sm">{{ card.description }}</span>
+            </q-item-section>
+          </q-item>
+        </q-list>
       </div>
 
       <!-- Status Bar -->
@@ -152,13 +48,20 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import { useSearchIndex } from 'src/composables/useSearchIndex'
 
 const router = useRouter()
+const { dashboardCards } = useSearchIndex()
 
 const navigateTo = (path) => {
   router.push(path)
 }
 </script>
+/* Dashboard titles list styling */
+.dashboard-titles-list {
+  max-width: 600px;
+  margin: 0 auto 32px auto;
+}
 
 <style scoped>
 .military-tccc-card {

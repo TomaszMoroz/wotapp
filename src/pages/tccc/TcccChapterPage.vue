@@ -3,23 +3,20 @@
     <q-card class="tccc-chapter-card" flat bordered>
       <div class="tccc-header row items-center no-wrap q-px-md q-pt-md q-pb-sm shadow-2">
         <q-btn
+          class="tccc-back-btn q-mr-md"
           flat
           round
-          color="primary"
           icon="arrow_back"
-          size="md"
-          class="q-mr-sm tccc-back-btn"
           @click="goBack"
-          aria-label="Powrót do rozdziałów"
+          aria-label="Powrót"
         />
-        <div class="text-h5 text-weight-bold ellipsis tccc-title">{{ chapter.title }}</div>
+        <div class="tccc-title q-mb-xs">{{ chapter.title }}</div>
       </div>
-      <q-separator color="grey-4" />
-      <q-card-section class="tccc-content-section">
-        <div class="tccc-content">
-          <div v-html="chapter.content"></div>
+      <q-scroll-area class="tccc-scroll-area">
+        <div class="tccc-content-section">
+          <div class="tccc-content" v-html="chapter.content"></div>
         </div>
-      </q-card-section>
+      </q-scroll-area>
     </q-card>
   </q-page>
 </template>
@@ -30,6 +27,75 @@ import { computed } from 'vue'
 
 const chapters = {
   1: {
+    title: 'Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji',
+    content: `<section class="tccc-section">
+<h4>Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji</h4>
+<ol>
+  <li>Przekazanie poszkodowanych następnemu poziomowi pomocy.
+    <ol type="a">
+      <li>Personel taktyczny powinien zabezpieczyć punkt ewakuacyjny i przygotować poszkodowanych do transportu.</li>
+      <li>Personel taktyczny lub medyczny powinien przekazać personelowi TACEVAC informacje o poszkodowanych i ich stanie w możliwie jak najbardziej zrozumiały sposób. Personelowi TACEVAC należy co najmniej przekazać informacje o tym, czy poszkodowani są stabilni czy nie, o znalezionych u nich obrażeniach i udzielonej pomocy.</li>
+      <li>Personel TACEVAC powinien w niezbędnym zakresie przygotować poszkodowanych na platformach ewakuacyjnych.</li>
+      <li>Poszkodowanych znajdujących się na platformach ewakuacyjnych należy zabezpieczyć zgodnie z instrukcjami jednostki, układem platform i wymogami ds. bezpieczeństwa.</li>
+      <li>Personel medyczny TACEVAC powinien wykonać ponowną ocenę poszkodowanych, wszystkich występujących u nich obrażeń i udzielonej dotychczas pomocy.</li>
+    </ol>
+  </li>
+  <li>Masywny krwotok (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Udrożnienie dróg oddechowych.<br>Zamiast konikotomii można rozważyć intubację dotchawiczą jeśli personel został przeszkolony w tym zakresie.</li>
+  <li>Wentylacja/Oddychanie.<br>Większość poszkodowanych w warunkach pola walki nie wymaga podawania tlenu, ale jego podanie może być korzystne w poniższych przypadkach:
+    <ul>
+      <li>Niski poziom saturacji na odczycie pulsoksymetru.</li>
+      <li>Urazy powodujące niewydolność oddechową.</li>
+      <li>Poszkodowany jest nieprzytomny.</li>
+      <li>Poszkodowany z urazem czaszkowo mózgowym [TBI] (utrzymanie saturacji &gt; 90%).</li>
+      <li>Poszkodowany we wstrząsie.</li>
+      <li>Poszkodowany znajdujący się na dużej wysokości.</li>
+      <li>Poszkodowany wdychał dym lub jest podejrzenie, że mógł go wdychać.</li>
+    </ul>
+  </li>
+  <li>Krążenie (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Umiarkowany lub poważny uraz czaszkowo-mózgowy (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Zapobieganie wychłodzeniu (hipotermii) (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Drążący uraz oka (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Monitorowanie poszkodowanego (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Analgezja (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Antybiotyki (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Ponownie sprawdź i opatrz wcześniej znalezione rany (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Sprawdź czy nie ma innych ran (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Oparzenia (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Ponownie oceń złamania i ponownie sprawdź tętna (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+  <li>Resuscytacja krążeniowo-oddechowa (RKO, ang. CPR) podczas fazy taktycznej ewakuacji poszkodowanego (TACEVAC).
+    <ol type="a">
+      <li>Poszkodowani z urazem tułowia lub urazami wielonarządowymi, u których nie ma wyczuwalnego tętna i nie oddychają podczas TACEVAC powinni być poddani obustronnemu zabiegowi torakopunkcji w celu wykluczenia odmy prężnej. Niniejsza procedura jest identyczna z procedurą opisaną w ww. sekcji 4a.</li>
+      <li>Resuscytacja krążeniowo-oddechowa może być wykonywana w tej fazie pomocy medycznej, o ile poszkodowany nie odniósł śmiertelnych ran, oraz zostanie on szybko przewieziony do placówki medycznej, w której można przeprowadzić zabieg chirurgiczny. Resuscytacja krążeniowo-oddechowa nie powinna być wykonywana kosztem misji lub zaniechania czynności ratujących życie innych poszkodowanych.</li>
+    </ol>
+  </li>
+  <li>Komunikacja/łączność:
+    <ol type="a">
+      <li>Utrzymuj kontakt z poszkodowanym jeśli to możliwe. Podtrzymuj na duchu i uspakajaj, poinformuj poszkodowanego o przeprowadzonych działaniach medycznych.</li>
+      <li>Kontaktuj się z personelem medycznym z następnego poziomu pomocy i w miarę możliwości przekazuj informacje o mechanizmie urazu, odniesionych przez poszkodowanego obrażeniach, występujących parametrach/objawach, oraz wykonanych procedurach medycznych. W odpowiednich przypadkach przekaż dodatkowe informacje.</li>
+    </ol>
+  </li>
+  <li>Dokumentacja przebiegu pomocy udzielonej poszkodowanym (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
+</ol>
+</section>`
+  },
+  17: {
+    title: 'Przygotuj poszkodowanego do ewakuacji',
+    content: `<section class="tccc-section">
+<h4>Przygotuj poszkodowanego do ewakuacji.</h4>
+<ol type="a">
+  <li>Wypełnij kartę TCCC Poszkodowanego (DD 1380) i umieść ją na poszkodowanym.</li>
+  <li>Zabezpiecz wszystkie luźne końcówki bandaży i ochraniaczy.</li>
+  <li>Zabezpiecz środki zapobiegające hipotermii tzn. ochraniacze/koce/taśmy.</li>
+  <li>Zabezpiecz taśmy noszy w niezbędnym zakresie. Jeżeli ewakuacja będzie trwała długo rozważ ułożenie dodatkowych podkładek pod ciałem poszkodowanego.</li>
+  <li>W razie potrzeby przekaż instrukcje poszkodowanym chodzącym.</li>
+  <li>Zorganizuj ewakuację poszkodowanych zgodnie ze standardowymi procedurami operacyjnymi [SOP] jednostki.</li>
+  <li>Utrzymuj bezpieczeństwo punktu ewakuacyjnego zgodnie ze standardowymi procedurami operacyjnymi jednostki.</li>
+</ol>
+</section>`
+  },
+  2: {
     title: 'Pomoc pod ostrzałem',
     content: `<section class="tccc-section">
 <ol>
@@ -46,15 +112,6 @@ const chapters = {
     </ul>
   </li>
   <li>Udrożnienie dróg oddechowych jest zazwyczaj prowadzone podczas fazy Taktycznej Pomocy Polowej.</li>
-</ol>
-</section>`
-  },
-  2: {
-    title: 'Taktyczna pomoc polowa',
-    content: `<section class="tccc-section">
-<ol>
-  <li>Określ strefę bezpieczeństwa zgodnie ze standardowymi procedurami operacyjnymi [SOP] jednostki i/lub schematami postępowania w warunkach pola walki. Cały czas sprawdzaj sytuację taktyczną.</li>
-  <li>Przeprowadź segregację poszkodowanych w niezbędnym zakresie. Poszkodowanych z zaburzeniami świadomości należy natychmiast rozbroić oraz pozbawić urządzeń łączności.</li>
 </ol>
 </section>`
   },
@@ -178,28 +235,96 @@ const chapters = {
     title: 'Krążenie',
     content: `<section class="tccc-section">
 <ol>
-  <li>Jeżeli podejrzewasz złamanie miednicy, należy zastosować stabilizator miednicy.</li>
-  <li>Dokonaj ponownej oceny zastosowanej uprzednio stazy. Odsłoń ranę i zdecyduj czy staza jest potrzebna. Jeśli jest potrzebna, zastąp stazę założoną na mundur drugą stazą umieszczając ją bezpośrednio na skórze 5 – 7.5 cm powyżej miejsca krwawienia [załóż nową stazę ZANIM zdejmiesz pierwszą. Nigdy nie zdejmuj pierwszej stazy zanim prawidłowo – tzn. odpowiednio mocno i stabilnie - nie założysz drugiej]. Upewnij się, że rana przestała krwawić. Jeżeli nie doszło do amputacji urazowej, należy sprawdzić tętno na odcinku dystalnym kończyny. Jeśli rana nadal krwawi lub nadal obecne jest tętno na odcinku dystalnym, należy mocniej zacisnąć stazę lub użyć kolejnej, zakładając ją powyżej pierwszej, aby wyeliminować krwawienie i tętno na odcinku dystalnym. Jeżeli w ramach ponownej oceny ustaliłeś, że założona wcześniej staza była niepotrzebna, usuń ją i zapisz godzinę jej usunięcia w Karcie TCCC Poszkodowanego.</li>
-  <li>Gdy tylko jest to możliwe stazy taktyczne [zakładane na kończyny - limb tourniquet] i urządzenia służące do tamowania krwawienia w trudno dostępnych miejscach, np. w pachwinach lub dołach pachowych [junctional tourniquet], należy zastąpić środkami hemostatycznymi lub opatrunkami uciskowymi pod warunkiem, że spełnione są trzy następujące kryteria: poszkodowany nie jest we wstrząsie; można dokładnie obserwować ranę pod kątem krwawienia; staza nie została zastosowana w celu kontroli krwawienia z amputowanej kończyny. Należy podjąć wszelkie starania, aby w czasie nieprzekraczającym 2 godzin stazy/urządzenia zastąpić innymi środkami pod warunkiem, że będą one skutecznie kontrolować krwawienie. Stazy/urządzenia nie wolno zdejmować, jeżeli była/o na ciele poszkodowanego przez okres dłuższy niż 6 godzin, chyba, że jest możliwość dokładnego monitorowania poszkodowanego oraz dostęp do diagnostyki laboratoryjnej.</li>
-  <li>Odsłoń wszystkie miejsca, w których założono stazy i wyraźnie oznacz je tak, aby było widać informację o godzinie ich założenia. W karcie TCCC poszkodowanego wpisz informacje o zastosowanych stazach i godzinach ich założenia; o godzinach powtórnego założenia; o godzinach zastąpienia staz innymi środkami; i o godzinach ich usunięcia. Informacje na stazach i w karcie poszkodowanego zapisz niezmywalnym markerem.</li>
+  <li>Krwawienie.
+    <ol type="a">
+      <li>Jeżeli podejrzewasz złamanie miednicy, należy zastosować stabilizator miednicy:
+        <ul>
+          <li>Do takiego złamania może dojść u poszkodowanego, który doznał poważnego urazu tępego lub urazu spowodowanego wybuchem i u którego wystąpiło jedno lub więcej z następujących wskazań:
+            <ul>
+              <li>Ból w okolicach miednicy.</li>
+              <li>Amputacja dolnej kończyny lub uraz graniczący z amputacją.</li>
+              <li>Badanie przedmiotowe wskazuje na wystąpienie złamania miednicy.</li>
+              <li>Utrata przytomności.</li>
+              <li>Wstrząs.</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>Dokonaj ponownej oceny zastosowanej uprzednio stazy. Odsłoń ranę i zdecyduj czy staza jest potrzebna. Jeśli jest potrzebna, zastąp stazę założoną na mundur drugą stazą umieszczając ją bezpośrednio na skórze 5 – 7.5 cm powyżej miejsca krwawienia [załóż nową stazę ZANIM zdejmiesz pierwszą. Nigdy nie zdejmuj pierwszej stazy zanim prawidłowo – tzn. odpowiednio mocno i stabilnie - nie założysz drugiej]. Upewnij się, że rana przestała krwawić. Jeżeli nie doszło do amputacji urazowej, należy sprawdzić tętno na odcinku dystalnym kończyny. Jeśli rana nadal krwawi lub nadal obecne jest tętno na odcinku dystalnym, należy mocniej zacisnąć stazę lub użyć kolejnej, zakładając ją powyżej pierwszej, aby wyeliminować krwawienie i tętno na odcinku dystalnym. Jeżeli w ramach ponownej oceny ustaliłeś, że założona wcześniej staza była niepotrzebna, usuń ją i zapisz godzinę jej usunięcia w Karcie TCCC Poszkodowanego.</li>
+      <li>Gdy tylko jest to możliwe stazy taktyczne [zakładane na kończyny - limb tourniquet] i urządzenia służące do tamowania krwawienia w trudno dostępnych miejscach, np. w pachwinach lub dołach pachowych [junctional tourniquet], należy zastąpić środkami hemostatycznymi lub opatrunkami uciskowymi pod warunkiem, że spełnione są trzy następujące kryteria: poszkodowany nie jest we wstrząsie; można dokładnie obserwować ranę pod kątem krwawienia; staza nie została zastosowana w celu kontroli krwawienia z amputowanej kończyny. Należy podjąć wszelkie starania, aby w czasie nieprzekraczającym 2 godzin stazy/urządzenia zastąpić innymi środkami pod warunkiem, że będą one skutecznie kontrolować krwawienie. Stazy/urządzenia nie wolno zdejmować, jeżeli była/o na ciele poszkodowanego przez okres dłuższy niż 6 godzin, chyba, że jest możliwość dokładnego monitorowania poszkodowanego oraz dostęp do diagnostyki laboratoryjnej.</li>
+      <li>Odsłoń wszystkie miejsca, w których założono stazy i wyraźnie oznacz je tak, aby było widać informację o godzinie ich założenia. W karcie TCCC poszkodowanego wpisz informacje o zastosowanych stazach i godzinach ich założenia; o godzinach powtórnego założenia; o godzinach zastąpienia staz innymi środkami; i o godzinach ich usunięcia. Informacje na stazach i w karcie poszkodowanego zapisz niezmywalnym markerem.</li>
+    </ol>
+  </li>
   <li>Sprawdź czy poszkodowany nie jest we wstrząsie hipowolemicznym (głównymi objawami wstrząsu są zaburzenia stanu świadomości – po wykluczeniu urazu głowy - i/lub słabo wyczuwalne albo nieobecne tętno na tętnicy promieniowej).</li>
-  <li>Dostęp dożylny/doszpikowy (IV/IO) – preferowaną metodą jest wkłucie dożylne kaniulą 18G. Jeżeli wskazany jest dostęp naczyniowy, ale nie można szybko go uzyskać przy pomocy wkłucia dożylnego, użyj wkłucia doszpikowego.</li>
-  <li>Kwas traneksamowy (TXA) – podaj 2 g kwasu traneksamowego, podając go powoli dożylnie lub doszpikowo możliwie jak najszybciej, ale NIE później niż 3 godziny po urazie.</li>
-  <li>Resuscytacja płynowa – oceń czy poszkodowany jest we wstrząsie hipowolemicznym. Wykaz produktów zalecanych w resuscytacji płynowej z wyboru od najbardziej do najmniej zalecanych dla poszkodowanych we wstrząsie hipowolemicznym: (1) Krew pełna grupy O o niskim mianie przechowywana w niskiej temperaturze. (2) Przebadana świeża krew pełna grupy O o niskim mianie. (3) Osocze, koncentrat krwinek czerwonych (RBC) i płytki w stosunku 1:1:1. (4) Osocze i koncentrat krwinek czerwonych w stosunku 1:1. (5) Osocze albo koncentrat krwinek czerwonych.</li>
-  <li>Jeśli poszkodowany nie jest we wstrząsie – nie ma wskazań do natychmiastowej płynoterapii podawanej drogą dożylną. Płyny podawane doustnie są dopuszczalne, jeśli poszkodowany jest przytomny i może przełykać.</li>
-  <li>Jeśli poszkodowany jest we wstrząsie i dostępne są preparaty krwiopochodne, po otrzymaniu zgody dowódcy lub w ramach specjalnego protokołu ds. postępowania na polu walki stosowanego w przypadku użycia preparatów krwiopochodnych: przeprowadź resuscytację stosując pełną krew grupy O o niskim mianie przechowywaną w niskiej temperaturze, a jeśli nie jest dostępna, przebadaną świeżą krew pełną grupy O o niskim mianie, a jeśli nie jest dostępna, osocze, koncentrat krwinek czerwonych i płytki w stosunku 1:1:1, a jeśli nie są dostępne, osocze i koncentrat krwinek czerwonych w stosunku 1:1, a jeśli nie są dostępne, osocze liofilizowane, osocze płynne, osocze świeże mrożone (po rozmrożeniu) lub koncentrat krwinek czerwonych. Oceniaj stan poszkodowanego po podaniu każdej jednostki. Prowadź resuscytację płynową do uzyskania wyczuwalnego tętna na tętnicy promieniowej, poprawy stanu świadomości lub uzyskania ciśnienia skurczowego na poziomie 100 mmHg. Przerwij płynoterapię jeżeli uzyskałeś jeden lub więcej z wyżej wymienionych docelowych parametrów. Jeśli poszkodowanemu przetoczono preparaty krwiopochodne, podaj domięśniowo/doszpikowo jeden gram wapnia (30 ml glukonianu wapnia o stężeniu 10% lub 10 ml chlorku wapnia o stężeniu 10%) po pierwszym przetoczeniu preparatu.</li>
-  <li>Ze względu na podwyższone ryzyko zgonu spowodowanego reakcją hemolityczną, zabieg przetoczenia nieprzebadanej świeżej krwi pełnej grupy O o niskim mianie lub świeżej krwi pełnej określonej grupy powinien być przeprowadzony wyłącznie pod właściwym nadzorem medycznym przeszkolonego personelu.</li>
-  <li>Aby uratować życie poszkodowanego, zabieg przetoczenia powinien być wykonany możliwie jak najszybciej po wystąpieniu zagrażającego życiu krwotoku. Jeśli jednostka nie dysponuje preparatami krwiopochodnymi grupy Rh minus, w przypadku wstrząsu hipowolemicznego należy użyć preparatów krwiopochodnych grupy Rh plus.</li>
-  <li>Jeśli poszkodowany z zaburzeniami stanu psychicznego w związku z podejrzeniem wystąpienia urazu mózgowo-czaszkowego ma słabo wyczuwalne lub nieobecne tętno obwodowe, należy wdrożyć resuscytację płynową jeśli jest to konieczne w celu uzyskania lub podtrzymania normalnego tętna na tętnicy promieniowej. Jeżeli jest możliwość monitorowania ciśnienia krwi, należy utrzymać ciśnienie skurczowe w granicach 100-110 mmHg.</li>
-  <li>Regularnie oceniaj stan poszkodowanego w celu wykluczenia wstrząsu. Jeżeli poszkodowany znowu jest we wstrząsie, sprawdź czy wszystkie zewnętrznie zastosowane środki kontroli krwotoku nadal skutecznie działają i powtórz resuscytację płynową zgodnie z wyżej opisaną procedurą.</li>
-  <li>Wstrząs oporny na leczenie – jeśli poszkodowany we wstrząsie nie reaguje na resuscytację płynową, rozważ czy możliwą przyczyną wstrząsu opornego na leczenie może być nieodbarczona odma prężna. Za takim rozpoznaniem przemawiają uraz klatki piersiowej, przedłużająca się niewydolność oddechowa, brak odgłosu oddechu oraz wysycenie hemoglobiny tlenem &lt; 90%. Ponownie odbarcz odmę zgodnie z ww. zaleceniami lub wykonaj torakostomię prostą (tzn. wprowadzając rurkę „po palcu” korzystając z wcześniej wykonanego nacięcia)/drenaż klatki piersiowej w 5 przestrzeni międzyżebrowej w linii pachowej przedniej, zgodnie z umiejętnościami, doświadczeniem osoby udzielającej pomocy medycznej oraz pozwoleniami wydanymi tej osobie. Uwaga: jeśli wykonasz torakostomię prostą, niewydolność oddechowa może powrócić i może wystąpić konieczność ponownego odbarczenia odmy polegającego na wprowadzeniu palca przez wcześniej wykonane nacięcie. W oparciu o mechanizm urazu i wyniki badania przedmiotowego rozważ odbarczenie odmy po drugiej stronie klatki piersiowej.</li>
+  <li>Dostęp dożylny/doszpikowy (IV/IO).
+    <ol type="a">
+      <li>Dostęp dożylny (IV) lub doszpikowy (IO) jest wskazany jeżeli poszkodowany jest we wstrząsie hipowolemicznym albo występuje u niego wysokie ryzyko wystąpienia takiego wstrząsu (i z tego względu może wymagać resuscytacji płynowej), lub trzeba podać mu leki i doustna droga ich podania jest niedostępna.
+        <ul>
+          <li>Preferowaną metodą jest wkłucie dożylne kaniulą 18G.</li>
+          <li>Jeżeli wskazany jest dostęp naczyniowy, ale nie można szybko go uzyskać przy pomocy wkłucia dożylnego, użyj wkłucia doszpikowego.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>Kwas traneksamowy (TXA).
+    <ol type="a">
+      <li>Jeśli przewidujesz, że poszkodowany najprawdopodobniej będzie wymagać przetoczenia dużej ilości krwi (na przykład wystąpił u niego wstrząs hipowolemiczny, jedna lub więcej amputacji, drążąca rana klatki piersiowej, lub poszkodowany manifestuje objawy rozległego krwotoku) ALBO</li>
+      <li>Jeśli u poszkodowanego występują oznaki lub objawy wskazujące na poważny uraz czaszkowo-mózgowy lub zaburzenia świadomości w wyniku urazu spowodowanego wybuchem lub urazu tępego:
+        <ul>
+          <li>Podaj mu 2 g kwasu traneksamowego, podając go powoli dożylnie lub doszpikowo możliwie jak najszybciej, ale NIE później niż 3 godziny po urazie.</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>Resuscytacja płynowa.
+    <ol type="a">
+      <li>Oceń czy poszkodowany jest we wstrząsie hipowolemicznym: (Głównymi objawami wstrząsu są zaburzenia stanu świadomości – po wykluczeniu urazu głowy - i/lub słabo wyczuwalne albo nieobecne tętno na tętnicy promieniowej).</li>
+      <li>Wykaz produktów zalecanych w resuscytacji płynowej z wyboru od najbardziej do najmniej zalecanych dla poszkodowanych we wstrząsie hipowolemicznym:
+        <ol type="i">
+          <li>Krew pełna grupy O o niskim mianie przechowywana w niskiej temperaturze.</li>
+          <li>Przebadana świeża krew pełna grupy O o niskim mianie.</li>
+          <li>Osocze, koncentrat krwinek czerwonych (RBC) i płytki w stosunku 1:1:1.</li>
+          <li>Osocze i koncentrat krwinek czerwonych w stosunku 1:1.</li>
+          <li>Osocze albo koncentrat krwinek czerwonych.</li>
+        </ol>
+        <p><strong>UWAGA:</strong> Po wdrożeniu resuscytacji płynowej zastosuj środki zapobiegające hipotermii [Część 7].</p>
+      </li>
+      <li>Jeśli poszkodowany nie jest we wstrząsie:
+        <ul>
+          <li>Nie ma wskazań do natychmiastowej płynoterapii podawanej drogą dożylną.</li>
+          <li>Płyny podawane doustnie są dopuszczalne, jeśli poszkodowany jest przytomny i może przełykać.</li>
+        </ul>
+      </li>
+      <li>Jeśli poszkodowany jest we wstrząsie i dostępne są preparaty krwiopochodne, po otrzymaniu zgody dowódcy lub w ramach specjalnego protokołu ds. postępowania na polu walki stosowanego w przypadku użycia preparatów krwiopochodnych:
+        <ul>
+          <li>Przeprowadź resuscytację stosując pełną krew grupy O o niskim mianie przechowywaną w niskiej temperaturze, a jeśli nie jest dostępna.</li>
+          <li>Przebadaną świeżą krew pełną grupy O o niskim mianie, a jeśli nie jest dostępna.</li>
+          <li>Osocze, koncentrat krwinek czerwonych i płytki w stosunku 1:1:1, a jeśli nie są dostępne.</li>
+          <li>Osocze i koncentrat krwinek czerwonych w stosunku 1:1, a jeśli nie są dostępne.</li>
+          <li>Osocze liofilizowane, osocze płynne, osocze świeże mrożone (po rozmrożeniu) lub koncentrat krwinek czerwonych.</li>
+        </ul>
+        <p>Oceniaj stan poszkodowanego po podaniu każdej jednostki. Prowadź resuscytację płynową do uzyskania wyczuwalnego tętna na tętnicy promieniowej, poprawy stanu świadomości lub uzyskania ciśnienia skurczowego na poziomie 100 mmHg.</p>
+        <p>Przerwij płynoterapię jeżeli uzyskałeś jeden lub więcej z wyżej wymienionych docelowych parametrów.</p>
+        <p>Jeśli poszkodowanemu przetoczono preparaty krwiopochodne, podaj domięśniowo/doszpikowo jeden gram wapnia (30 ml glukonianu wapnia o stężeniu 10% lub 10 ml chlorku wapnia o stężeniu 10%) po pierwszym przetoczeniu preparatu.</p>
+      </li>
+      <li>Ze względu na podwyższone ryzyko zgonu spowodowanego reakcją hemolityczną, zabieg przetoczenia nieprzebadanej świeżej krwi pełnej grupy O o niskim mianie lub świeżej krwi pełnej określonej grupy powinien być przeprowadzony wyłącznie pod właściwym nadzorem medycznym przeszkolonego personelu.</li>
+      <li>Aby uratować życie poszkodowanego, zabieg przetoczenia powinien być wykonany możliwie jak najszybciej po wystąpieniu zagrażającego życiu krwotoku. Jeśli jednostka nie dysponuje preparatami krwiopochodnymi grupy Rh minus, w przypadku wstrząsu hipowolemicznego należy użyć preparatów krwiopochodnych grupy Rh plus.</li>
+      <li>Jeśli poszkodowany z zaburzeniami stanu psychicznego w związku z podejrzeniem wystąpienia urazu mózgowo-czaszkowego ma słabo wyczuwalne lub nieobecne tętno obwodowe, należy wdrożyć resuscytację płynową jeśli jest to konieczne w celu uzyskania lub podtrzymania normalnego tętna na tętnicy promieniowej. Jeżeli jest możliwość monitorowania ciśnienia krwi, należy utrzymać ciśnienie skurczowe w granicach 100-110 mmHg.</li>
+      <li>Regularnie oceniaj stan poszkodowanego w celu wykluczenia wstrząsu. Jeżeli poszkodowany znowu jest we wstrząsie, sprawdź czy wszystkie zewnętrznie zastosowane środki kontroli krwotoku nadal skutecznie działają i powtórz resuscytację płynową zgodnie z wyżej opisaną procedurą.</li>
+    </ol>
+  </li>
+  <li>Wstrząs oporny na leczenie.
+    <ol type="a">
+      <li>Jeśli poszkodowany we wstrząsie nie reaguje na resuscytację płynową, rozważ czy możliwą przyczyną wstrząsu opornego na leczenie może być nieodbarczona odma prężna. Za takim rozpoznaniem przemawiają uraz klatki piersiowej, przedłużająca się niewydolność oddechowa, brak odgłosu oddechu oraz wysycenie hemoglobiny tlenem &lt; 90%. Ponownie odbarcz odmę zgodnie z ww. zaleceniami lub wykonaj torakostomię prostą (tzn. wprowadzając rurkę „po palcu” korzystając z wcześniej wykonanego nacięcia)/drenaż klatki piersiowej w 5 przestrzeni międzyżebrowej w linii pachowej przedniej, zgodnie z umiejętnościami, doświadczeniem osoby udzielającej pomocy medycznej oraz pozwoleniami wydanymi tej osobie. Uwaga: jeśli wykonasz torakostomię prostą, niewydolność oddechowa może powrócić i może wystąpić konieczność ponownego odbarczenia odmy polegającego na wprowadzeniu palca przez wcześniej wykonane nacięcie. W oparciu o mechanizm urazu i wyniki badania przedmiotowego rozważ odbarczenie odmy po drugiej stronie klatki piersiowej.</li>
+    </ol>
+  </li>
 </ol>
 </section>`
   },
   7: {
     title: 'Zapobieganie wychłodzeniu (hipotermii)',
     content: `<section class="tccc-section">
-<ol>
+<ol type="a">
   <li>Szybko i zdecydowanie działaj, aby zapobiec dalszemu spadkowi temperatury ciała i użyj dodatkowych zewnętrznych źródeł ciepła, jeśli to możliwe, u poszkodowanych urazowych i z poważnymi oparzeniami.</li>
   <li>Ogranicz narażenie poszkodowanego na wychłodzenie powodowane przez niską temperaturę gruntu, wiatru i powietrza. Połóż poszkodowanego na powierzchni izolowanej możliwie jak najszybciej, aby oddzielić go od zimnych powierzchni. Jeżeli jest to możliwe, nie zdejmuj z poszkodowanego wyposażenia ochronnego.</li>
   <li>Jeśli jest to możliwe, zmień mokre ubrania na suche i chroń poszkodowanego przed dalszym spadkiem temperatury ciała.</li>
@@ -216,21 +341,22 @@ const chapters = {
     title: 'Umiarkowany lub poważny uraz czaszkowo-mózgowy (TBI)',
     content: `<section class="tccc-section">
 <ol>
-  <li>Zapobiegaj hipoksemii (cel leczenia SpO2 >90-95%).
-    <ul>
-      <li>Jeśli podstawowe rękoczyny udrożnienia dróg oddechowych nie utrzymują poziomu saturacji powyżej 90% (SpO2 >90%) albo nie można ich wykonać ze względów taktycznych, sprawdź czy niski poziom saturacji nie jest wynikiem odmy prężnej lub krwotoku.</li>
-      <li>Rozważ chirurgiczne udrożnienie dróg oddechowych jeśli poziom saturacji jest poniżej 90% (SpO2 <90%).</li>
-    </ul>
+  <li>Zapobiegaj hipoksemii (cel leczenia SpO2 &gt;90-95%).
+    <ol type="a">
+      <li>Jeśli podstawowe rękoczyny udrożnienia dróg oddechowych nie utrzymują poziomu saturacji powyżej 90% (SpO2 &gt;90%) albo nie można ich wykonać ze względów taktycznych, sprawdź czy niski poziom saturacji nie jest wynikiem odmy prężnej lub krwotoku.</li>
+      <li>Rozważ chirurgiczne udrożnienie dróg oddechowych jeśli poziom saturacji jest poniżej 90% (SpO2 &lt;90%).</li>
+    </ol>
   </li>
   <li>Zapobiegaj hipotensji (niskie ciśnienie tętnicze krwi) – celem leczenia jest utrzymanie ciśnienia skurczowego SBP na poziomie 100-110 mmHg. Jeśli poszkodowany jest we wstrząsie hipowolemicznym przetocz mu pełną krew lub osocze jeśli są dostępne. Jeśli u poszkodowanego nie ma oznak krwotoku lub wstrząsu hipowolemicznego podaj mu 1-2 L krystaloidów w bolusie.</li>
   <li>Sprawdź czy nie doszło do wklinowania mózgu i rozpocznij leczenie jeśli rozpoznałeś taki przypadek (pogarszający się stan neurologiczny, asymetryczne lub niereagujące na światło/rozszerzone źrenice, albo reakcja zgięciowa lub wyprostna).
-    <ul>
+    <ol type="a">
+      <li>Czynności podejmowane w przypadku objawów zagrożenia wklinowania mózgu należy prowadzić nie dłużej niż 20 minut, a jeśli poszkodowany jest w trakcie ewakuacji, do czasu zabiegu operacyjnego.</li>
       <li>POWOLI przez ponad 10 minut podawaj dożylnie lub doszpikowo 250 ml 3% lub 5% ALBO 30 ml 23.4% hipertonicznego roztworu NaCl w bolusie i następnie przepłucz drogi podania solą fizjologiczną. Jeśli poszkodowany nie reaguje na leczenie, po 20 minutach podaj kolejną dawkę (maks. możesz podać 2 dawki).</li>
       <li>Monitoruj miejsce wkłucia dożylnego/doszpikowego i przerwij zabieg, jeśli wystąpią objawy wynaczynienia.</li>
       <li>Unieś głowę poszkodowanego do kąta 30 stopni pod warunkiem, że poszkodowany nie jest we wstrząsie i że jest to możliwe pod względem taktycznym.</li>
       <li>Jeśli poszkodowany ma założony kołnierz ortopedyczny, poluzuj go i ustaw głowę poszkodowanego tak, aby była skierowana do przodu.</li>
       <li>Prowadź hiperwentylację poszkodowanego i cały czas monitoruj wyniki kapnografii (cel leczenia: EtCO2 32-38 mmHg).</li>
-    </ul>
+    </ol>
   </li>
 </ol>
 </section>`
@@ -239,7 +365,7 @@ const chapters = {
     title: 'Drążący uraz oka',
     content: `<section class="tccc-section">
 <ul>
-  <li>Jeśli u poszkodowanego wystąpił drążący urazu oka lub podejrzewasz, że taki uraz mógł wystąpić:
+  <li>Jeśli u poszkodowanego wystąpił drążący uraz oka lub podejrzewasz, że taki uraz mógł wystąpić:
     <ul>
       <li>Wykonaj szybkie polowe badanie wzroku i zapisz jego wynik.</li>
       <li>Przykryj oko sztywnym opatrunkiem (BEZ podkładki uciskowej).</li>
@@ -260,25 +386,31 @@ const chapters = {
   11: {
     title: 'Analgezja',
     content: `<section class="tccc-section">
-<ol>
+<ol type="a">
   <li>Ratownicy bez wykształcenia medycznego przeszkoleni pod kątem TCCC (TCCC non-medical first responders) powinni wykonywać analgezję w warunkach pola walki korzystając z następującej metody:
     <ul>
-      <li>Ból w stopniu od łagodnego do umiarkowanego. Poszkodowany nadal jest zdolny do walki.</li>
-      <li>Bojowy zestaw z lekami (TCCC Combat Wound Medication Pack – CWMP):
+      <li>Ból w stopniu od łagodnego do umiarkowanego. Poszkodowany nadal jest zdolny do walki.
         <ul>
-          <li>Acetaminofen – 500 mg tabletka, 2 x doustnie (PO) co 8 godzin.</li>
-          <li>Meloksykam – 15 mg doustnie raz dziennie.</li>
+          <li>Bojowy zestaw z lekami (TCCC Combat Wound Medication Pack – CWMP):
+            <ul>
+              <li>Acetaminofen – 500 mg tabletka, 2 x doustnie (PO) co 8 godzin.</li>
+              <li>Meloksykam – 15 mg doustnie raz dziennie.</li>
+            </ul>
+          </li>
         </ul>
       </li>
     </ul>
   </li>
   <li>Personel medyczny przeszkolony pod kątem TCCC – TCCC Medical Personnel:
-    <ul>
-      <li>Ból w stopniu od łagodnego do umiarkowanego. Poszkodowany nadal jest zdolny do walki.</li>
-      <li>Bojowy zestaw z lekami (TCCC Combat Wound Medication Pack - CWMP):
+    <ol>
+      <li>Ból w stopniu od łagodnego do umiarkowanego. Poszkodowany nadal jest zdolny do walki.
         <ul>
-          <li>Acetaminofen – 500 mg tabletka, 2 x doustnie (PO) co 8 godzin.</li>
-          <li>Meloksykam – 15 mg doustnie raz dziennie.</li>
+          <li>Bojowy zestaw z lekami (TCCC Combat Wound Medication Pack - CWMP):
+            <ul>
+              <li>Acetaminofen – 500 mg tabletka, 2 x doustnie (PO) co 8 godzin.</li>
+              <li>Meloksykam – 15 mg doustnie raz dziennie.</li>
+            </ul>
+          </li>
         </ul>
       </li>
       <li>Ból w stopniu od łagodnego do umiarkowanego. Poszkodowany NIE jest we wstrząsie ani nie ma zaburzeń oddychania I u poszkodowanego NIE WYSTĘPUJE duże ryzyko wystąpienia któregoś z tych stanów.
@@ -303,29 +435,61 @@ const chapters = {
           <li>Jeśli wymagane jest znieczulenie na dłuższy okres: Ketamina podawana powoli dożylnie lub doszpikowo – 0,3 mg/kg w 100 ml 0,9% roztworu chlorku sodu przez 5 - 15 minut. Powtórz dawki co 45 min w razie potrzeby stosując wkłucie dożylne lub doszpikowe IV lub IO. Moment zakończenia: ból ustąpił lub u poszkodowanego wystąpił oczopląs (rytmiczne oscylacje gałek).</li>
         </ul>
       </li>
+    </ol>
+  </li>
+</ol>
+<h4>Uwagi dotyczące analgezji i sedacji:</h4>
+<ol>
+  <li>Poszkodowanych, którym podano OTFC, dożylnie lub doszpikowo fentanyl, ketaminę lub midazolam należy rozbroić.</li>
+  <li>Celem znieczulenia jest zmniejszenie bólu do stopnia znośnego przy jednoczesnym utrzymaniu ochrony dróg oddechowych i stanu psychicznego.</li>
+  <li>Celem sedacji jest zahamowanie świadomości w zakresie bolesnych zabiegów.</li>
+  <li>Dokumentuj badanie stanu przytomności stosując skalę Glasgow (AVPU) przed podaniem opioidów i ketaminy.</li>
+  <li>Wszyscy poszkodowani, którym podano opioidy, ketaminę lub benzodiazepiny muszą mieć dokładnie monitorowane drogi oddechowe, oddychanie i krążenie.</li>
+  <li>Wytyczne dotyczące podania OTFC:
+    <ul>
+      <li>Lizak należy umieścić pomiędzy policzkiem i dziąsłem.</li>
+      <li>Lizaka nie wolno gryźć.</li>
+      <li>Ze względów bezpieczeństwa zaleca się przyklejenie lizaka plastrem do palca poszkodowanego ALBO użycie agrafki i gumki (gumka musi być napięta), którymi należy umocować lizak na mundurze poszkodowanego lub na kieszeni kamizelki kuloodpornej, w której znajduje się płyta ochronna.</li>
+      <li>Oceń stan poszkodowanego po 15 minutach.</li>
+      <li>Dodaj drugiego lizaka, w drugi policzek, jeśli jest to konieczne do uśmierzenia silnego bólu.</li>
+      <li>Obserwuj czy nie występują zaburzenia oddychania.</li>
     </ul>
   </li>
+  <li>Ketamina jest dostępna w różnych stężeniach; jeżeli drogą podania jest nos [IN] zaleca się podanie leku w wyższym stężeniu (100 mg/ml) w celu zmniejszenia jego objętości podawanej donosowo.</li>
+  <li>Podając opioidy zawsze miej pod ręką Nalokson (0,4 mg dożylnie, doszpikowo, domięśniowo lub do nosa).</li>
+  <li>Uraz czaszkowo-mózgowy (TBI) i/lub uraz oka nie wyklucza możliwości zastosowania ketaminy. Natomiast u pacjentów z urazem czaszkowo-mózgowym trzeba zachować ostrożność w zakresie użycia OTFC, dożylnie lub doszpikowo podawanego fentanylu, ketaminy i midazolamu ponieważ działanie tych leków może utrudnić przeprowadzenie badania neurologicznego lub stwierdzenie czy u pacjenta nie dochodzi do dekompensacji.</li>
+  <li>Ketamina może być przydatnym środkiem stosowanym w celu zmniejszenia ilości opioidów niezbędnych do skutecznego ograniczania bólu. Podanie ketaminy poszkodowanemu, który wcześniej otrzymał substancję narkotyczną nie stanowi zagrożenia. Ketaminę podawaną dożylnie należy podawać powoli przez ponad minutę.</li>
+  <li>Jeżeli stwierdzisz, że po podaniu opioidów lub ketaminy doszło do niewydolności oddechowej, ułóż poszkodowanego w „pozycji węszącej”. Jeśli jego stan nie poprawi się, w celu podtrzymania oddechu, prowadź wentylację zastępczą z użyciem maski z workiem samorozprężalnym z zastawką lub maski twarzowej.</li>
+  <li>Ondansetron, 4 mg podane w postaci ODT [tabletek ulegających rozpadowi w jamie ustnej] /IV [dożylnie]/IO [doszpikowo]/IM [domięśniowo], co 8 godzin w przypadku wystąpienia nudności lub wymiotów. Jeżeli nudności i wymioty nie ustępują, dawkę tę można powtórzyć po 15 minutach – dozwolone jest tylko jedno powtórzenie. Dawka podawana w ośmiogodzinnych odstępach nie może przekroczyć 8 mg. Ondasetronu w postaci tabletek ulegających rozpadowi w jamie ustnej [ODT] NIE wolno zastępować tabletkami przeznaczonymi do połknięcia w całości.</li>
+  <li>W ramach analgezji NIE zaleca się rutynowego podawania benzodiazepin, np. midazolamu. Wykonując sedację, można rozważyć użycie benzodiazepin w celu leczenia zaburzeń behawioralnych lub niepożądanych (nagłych) reakcji. Benzodiazepin nie należy stosować profilaktycznie i zazwyczaj są zbędne jeśli użyto ketaminy w prawidłowej dawce zapewniającej działanie przeciwbólowe lub sedacyjne.</li>
+  <li>Nie zaleca się polipragmazji; benzodiazepin NIE należy stosować łącznie z opioidowymi lekami przeciwbólowymi.</li>
+  <li>Jeżeli poszkodowany jest w stanie częściowej dysocjacji, bezpieczniej jest podać kolejną dawkę ketaminy niż użyć benzodiazepin.</li>
 </ol>
 </section>`
   },
   12: {
     title: 'Antybiotyki',
     content: `<section class="tccc-section">
-<ul>
+<ol type="a">
   <li>Antybiotyki są zalecane przy wszystkich ranach otwartych odniesionych na polu walki.</li>
   <li>Jeżeli poszkodowany jest w stanie przyjąć lek doustnie:
-    <ul><li>Moksyfloksacyna (z zestawu z lekami - CWMP), 400mg, doustnie, raz dziennie.</li></ul>
+    <ul>
+      <li>Moksyfloksacyna (z zestawu z lekami - CWMP), 400mg, doustnie, raz dziennie.</li>
+    </ul>
   </li>
   <li>Jeżeli poszkodowany nie jest w stanie przyjąć leku doustnie (jest we wstrząsie lub jest nieprzytomny):
-    <ul><li>Ertapenem, 1g dożylnie/ doszpikowo/ domięśniowo, raz dziennie.</li></ul>
+    <ul>
+      <li>Ertapenem, 1g dożylnie/ doszpikowo/ domięśniowo, raz dziennie.</li>
+    </ul>
   </li>
-</ul>
+</ol>
 </section>`
   },
   13: {
-    title: 'Sprawdzenie i opatrzenie wcześniej znalezionych ran',
+    title: 'Wytrzewienie jamy brzusznej',
+    short: 'Postepowanie przy wytrzewieniu',
     content: `<section class="tccc-section">
-<ul>
+<ol type="a">
   <li>Sprawdź i opatrz wcześniej znalezione rany.</li>
   <li>Wytrzewienie jamy brzusznej – [Kontrola krwawienia]; miejsce wytrzewienia przepłucz czystym (i ciepłym, jeśli to możliwe) płynem, aby zmniejszyć całkowite zanieczyszczenie. Tamowanie krwotoków – aby zatamować krwawienie użyj opatrunku combat gauze lub opatrunku hemostatycznego zatwierdzonego przez Komitet CoTCCC. Przykryj wytrzewione jelito wilgotnym jałowym opatrunkiem lub jałowym wodoodpornym materiałem.</li>
   <li>Zmniejszanie wytrzewienia: nie podejmuj próby zmniejszania wytrzewienia, jeśli występują oznaki pęknięcia jelita (wyciek płynu żołądkowego/jelitowego lub stolca) lub występuje aktywne krwawienie.</li>
@@ -333,47 +497,28 @@ const chapters = {
   <li>Jeśli wytrzewienia nie można zmniejszyć; przykryj wytrzewione narządy wodoodpornym nieprzylepnym materiałem (materiał powinien być przezroczysty, aby można było regularnie sprawdzać czy rana nie zaczyna krwawić); takim materiałem może być worek kolostomijny, worek na płyn dożylny, przezroczysta folia do pakowania żywności, itp. i przyklej taki wodoodporny opatrunek na ciele pacjenta używając przylepnego opatrunku (np. obłożenie chirurgiczne typu ioban, opatrunek klatki piersiowej - chest seal).</li>
   <li>NIE używaj SIŁY wkładając pętle jelitowe do jamy brzusznej ani manipulując aktywnie krwawiącymi jelitami.</li>
   <li>Poszkodowanemu nie należy podawać nic doustnie.</li>
-</ul>
+</ol>
 </section>`
   },
   14: {
-    title: 'Sprawdzenie czy nie ma innych ran',
+    title: 'RKO',
+    short: 'Resucucytacja krazeniowo oddechowa',
     content: `<section class="tccc-section">
-<ul>
-  <li>Sprawdź czy nie ma innych ran.</li>
-</ul>
-</section>`
-  },
-  15: {
-    title: 'Oparzenia',
-    content: `<section class="tccc-section">
-<ol>
-  <li>Oceniaj i traktuj takiego poszkodowanego jako poszkodowanego pourazowego z oparzeniami a nie oparzonego poszkodowanego z urazami.</li>
-  <li>Oparzenia twarzy, szczególnie te, do których doszło w pomieszczeniach zamkniętych, mogą być powiązane z uszkodzeniem dróg oddechowych. Zalecana jest wnikliwa obserwacja stanu dróg oddechowych i saturacji u takich pacjentów oraz rozważenie wczesnego chirurgicznego udrożnienia dróg oddechowych lub desaturacji.</li>
-  <li>Oszacuj całkowitą powierzchnię ciała /TBSA/ dotkniętą oparzeniami zaokrąglając do 10 % stosując Regułę Dziewiątek.</li>
-  <li>Opatrz oparzenia suchym, jałowym opatrunkiem. W przypadku rozległych oparzeń (ponad 20%), należy rozważyć umieszczenie poszkodowanego w ochraniaczu [HRS - Heat-Reflective Shell] lub kocu [BSB - Blizzard Survival Blanket], które znajdują się w zestawie do zapobiegania hipotermii [Hypothermia Prevention Kit], w celu zasłonięcia oparzonych powierzchni ciała i uniknięcia hipotermii.</li>
-  <li>Resuscytacja płynowa /uzupełnianie płynów/ (USAISR zgodnie z Regułą Dziesiątek). Jeśli oparzenia są większe niż 20% całkowitej powierzchni ciała, uzupełnianie płynów należy rozpocząć niezwłocznie po uzyskaniu dostępu dożylnego lub doszpikowego. Resuscytację należy rozpocząć od podania mleczanu Ringera, roztworu soli fizjologicznej lub Hextendu po uzyskaniu dostępu dożylnego lub doszpikowego. W przypadku użycia Hextendu, nie należy podać więcej niż 1000 ml, a następnie można w miarę potrzeby uzupełnić poziom płynów mleczanem Ringera i solą fizjologiczną. Wstępna objętość płynu podawanego dożylnie lub doszpikowo jest obliczana jako procent powierzchni oparzeń (%TBSA) X 10 ml/godz. dla dorosłych ważących w przedziale od 40-80 kg. Na każde 10 kg POWYŻEJ 80 kg, należy zwiększyć dawkę o 100 ml/godz. Jeśli występuje również wstrząs hipowolemiczny, standard resuscytacji płynowej stosowany w takim przypadku ma priorytet nad stosowanym wyłącznie przy oparzeniach. Należy podawać płyny dożylnie lub doszpikowo wg wytycznych TCCC wymienionych w sekcji (6). Rozważ doustne podanie płynów w przypadku oparzeń do 30% całkowitej powierzchni ciała, jeśli poszkodowany jest przytomny i może przełykać.</li>
-  <li>W celu znieczulenia bólu powodowanego przez oparzenia można zastosować środki przeciwbólowe wg Wytycznych TCCC wymienionych w sekcji (10).</li>
-  <li>Terapia antybiotykowa w leczeniu przedszpitalnym nie jest zasadnicza dla samych oparzeń, ale antybiotyki powinny być podane wg Wytycznych TCCC wymienionych w sekcji (11), aby zapobiec infekcjom ran drążących.</li>
-  <li>Wszystkie zabiegi medyczne z zakresu TCCC mogą być wykonywane na lub przez poparzoną skórę poszkodowanego.</li>
-  <li>Poszkodowani z poparzeniami są szczególnie narażeni na hipotermię. Szczególny nacisk należy położyć na stosowanie barierowych metod zapobiegających utracie ciepła.</li>
+<h4>Resuscytacja krążeniowo-oddechowa (RKO, ang. CPR).</h4>
+<ol type="a">
+  <li>Resuscytacja na polu walki, poszkodowanych, którzy doznali obrażeń po wybuchu lub z obrażeniami drążącymi, u których nie ma wyczuwalnego tętna, oddechu i innych parametrów życiowych, będzie nieskuteczna i nie powinna być stosowana.</li>
+  <li>Jednakże poszkodowani z urazem tułowia lub urazami wielonarządowymi, u których nie ma wyczuwalnego tętna i nie oddychają podczas fazy TFC powinni być poddani obustronnemu zabiegowi torakopunkcji w celu wykluczenia odmy prężnej przed zaniechaniem udzielania dalszej pomocy należy zastosować procedurę opisaną w wyżej wymienionej sekcji "Wentylacja/Oddychanie".</li>
 </ol>
 </section>`
   },
   16: {
-    title: 'Zabezpieczenie złamań i ponowne sprawdzenie tętna',
+    title: 'Komunikacja/łączność',
     content: `<section class="tccc-section">
-<ul>
-  <li>Zabezpiecz złamania i ponownie sprawdź tętna.</li>
-</ul>
-</section>`
-  },
-  17: {
-    title: 'Resuscytacja krążeniowo-oddechowa (CPR)',
-    content: `<section class="tccc-section">
-<ol>
-  <li>Resuscytacja na polu walki, poszkodowanych, którzy doznali obrażeń po wybuchu lub z obrażeniami drążącymi, u których nie ma wyczuwalnego tętna, oddechu i innych parametrów życiowych, będzie nieskuteczna i nie powinna być stosowana.</li>
-  <li>Jednakże poszkodowani z urazem tułowia lub urazami wielonarządowymi, u których nie ma wyczuwalnego tętna i nie oddychają podczas fazy TFC powinni być poddani obustronnemu zabiegowi torakopunkcji w celu wykluczenia odmy prężnej przed zaniechaniem udzielania dalszej pomocy należy zastosować procedurę opisaną w wyżej wymienionej sekcji 5a.</li>
+<h4>Komunikacja/łączność.</h4>
+<ol type="a">
+  <li>Utrzymuj kontakt z poszkodowanym jeśli jest to możliwe. Podtrzymuj na duchu i uspakajaj, poinformuj poszkodowanego o przeprowadzonych działaniach medycznych.</li>
+  <li>Jak najszybciej skontaktuj się z dowództwem szczebla taktycznego i utrzymuj z nim łączność podczas udzielania rannemu niezbędnej pomocy. Poinformuj dowództwo o stanie poszkodowanego i potrzebach ewakuacyjnych. Dzięki tym informacjom pomożesz koordynować zasoby niezbędne do ewakuacji.</li>
+  <li>Skontaktuj się z komponentami systemu ewakuacyjnego (Komórka koordynująca ewakuację poszkodowanych - Patient Evacuation Coordination Cell), aby zorganizować TACEVAC. Jeśli to możliwe, informuj personel medyczny o potrzebach ewakuacyjnych, przekaż informacje o mechanizmie urazu, odniesionych przez poszkodowanego obrażeniach, występujących parametrach/objawach, oraz wykonanych procedurach medycznych. W odpowiednich przypadkach przekaż dodatkowe informacje.</li>
 </ol>
 </section>`
   },
@@ -387,10 +532,11 @@ const chapters = {
 </ol>
 </section>`
   },
-  19: {
+  15: {
     title: 'Dokumentacja medyczna',
     content: `<section class="tccc-section">
-<ol>
+<h4>Dokumentacja medyczna.</h4>
+<ol type="a">
   <li>Dokumentuj ocenę kliniczną, wykonane zabiegi i zmiany w stanie poszkodowanego w Polowej Karcie TCCC Poszkodowanego (DD Form 1380).</li>
   <li>Przekaż te informacje wraz z poszkodowanym kolejnej grupie medycznej.</li>
 </ol>
@@ -444,6 +590,7 @@ const router = useRouter()
 function goBack () {
   router.push('/tccc')
 }
+
 </script>
 
 <style scoped>
