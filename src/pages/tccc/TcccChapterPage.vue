@@ -55,17 +55,6 @@ const chapters = {
 <ol>
   <li>Określ strefę bezpieczeństwa zgodnie ze standardowymi procedurami operacyjnymi [SOP] jednostki i/lub schematami postępowania w warunkach pola walki. Cały czas sprawdzaj sytuację taktyczną.</li>
   <li>Przeprowadź segregację poszkodowanych w niezbędnym zakresie. Poszkodowanych z zaburzeniami świadomości należy natychmiast rozbroić oraz pozbawić urządzeń łączności.</li>
-  <li>Masywny krwotok:
-    <ul>
-      <li>Sprawdź poszkodowanego w celu wykluczenia niezdiagnozowanych krwawień i zabezpiecz wszystkie ich źródła. Jeżeli wcześniej nie założono stazy taktycznej [zakładanej na kończyny – limb tourniquet], należy to zrobić teraz korzystając ze stazy zalecanej przez Komitet CoTCCC w celu zatamowania zagrażającego życiu krwotoku zewnętrznego, jednak tylko w sytuacji, gdy występuje anatomiczne uwarunkowanie do zastosowania stazy lub w celu zabezpieczenia amputacji urazowych. Stazę należy założyć bezpośrednio na skórę, 5 – 7,5 cm powyżej miejsca krwawienia. Jeżeli rana nadal krwawi, obok pierwszej stazy należy założyć drugą.</li>
-      <li>Na krwotoki (zewnętrzne), na które nie można zastosować stazy taktycznej [zakładanej na kończyny - limb tourniquet] lub zalecane jest zdjęcie takiej stazy, użyj opatrunku Combat Gauze jako czynnika hemostatycznego z wyboru, zalecanego przez Komitet CoTCCC.</li>
-      <li>Opatrunki hemostatyczne należy zastosować z bezpośrednim uciskiem trwającym co najmniej 3 minuty (niewymagane w przypadku XStat). Każdy opatrunek ma inny sposób działania, zatem jeżeli dany opatrunek nie zatamuje krwawienia, można go zdjąć i zastąpić nowym opatrunkiem tego samego lub innego typu.</li>
-      <li>Jeżeli w miejscu krwawienia można założyć urządzenie służące do tamowania krwawienia w trudno dostępnych miejscach, np. w pachwinach lub dołach pachowych [junctional tourniquet], natychmiast należy je założyć. Po przygotowaniu urządzenia nie zwlekaj z jego założeniem. Jeżeli urządzenie nie jest dostępne lub jest przygotowywane do użycia, należy zastosować opatrunki hemostatyczne z bezpośrednim uciskiem.</li>
-      <li>W przypadku krwotoku zewnętrznego z głowy lub szyi, jeżeli krawędzie rany można łatwo przybliżyć, urządzenie iTClamp może być użyte jako pierwszy z wyboru środek do tamowania krwotoku. Przed założeniem iTClamp, jeżeli jest to właściwe, rany należy wypełnić opatrunkiem hemostatycznym lub XStat.</li>
-    </ul>
-  </li>
-  <li>Przeprowadź wstępną ocenę, aby sprawdzić czy poszkodowany nie jest we wstrząsie hipowolemicznym (Głównymi objawami wstrząsu są zaburzenia stanu świadomości – po wykluczeniu urazu głowy - i/lub słabo wyczuwalne albo nieobecne tętno na tętnicy promieniowej) i rozważ natychmiastowe wykonanie resuscytacji zalecanej u poszkodowanych we wstrząsie.</li>
-  <li>Dalsze postępowanie zgodnie z wytycznymi TCCC (patrz kolejne rozdziały).</li>
 </ol>
 </section>`
   },
@@ -74,10 +63,31 @@ const chapters = {
     content: `<section class="tccc-section">
 <ol>
   <li>Sprawdź poszkodowanego w celu wykluczenia niezdiagnozowanych krwawień i zabezpiecz wszystkie ich źródła. Jeżeli wcześniej nie założono stazy taktycznej [zakładanej na kończyny – limb tourniquet], należy to zrobić teraz korzystając ze stazy zalecanej przez Komitet CoTCCC w celu zatamowania zagrażającego życiu krwotoku zewnętrznego, jednak tylko w sytuacji, gdy występuje anatomiczne uwarunkowanie do zastosowania stazy lub w celu zabezpieczenia amputacji urazowych. Stazę należy założyć bezpośrednio na skórę, 5 – 7,5 cm powyżej miejsca krwawienia. Jeżeli rana nadal krwawi, obok pierwszej stazy należy założyć drugą.</li>
-  <li>Na krwotoki (zewnętrzne), na które nie można zastosować stazy taktycznej [zakładanej na kończyny - limb tourniquet] lub zalecane jest zdjęcie takiej stazy, użyj opatrunku Combat Gauze jako czynnika hemostatycznego z wyboru, zalecanego przez Komitet CoTCCC.</li>
-  <li>Opatrunki hemostatyczne należy zastosować z bezpośrednim uciskiem trwającym co najmniej 3 minuty (niewymagane w przypadku XStat). Każdy opatrunek ma inny sposób działania, zatem jeżeli dany opatrunek nie zatamuje krwawienia, można go zdjąć i zastąpić nowym opatrunkiem tego samego lub innego typu.</li>
-  <li>Jeżeli w miejscu krwawienia można założyć urządzenie służące do tamowania krwawienia w trudno dostępnych miejscach, np. w pachwinach lub dołach pachowych [junctional tourniquet], natychmiast należy je założyć. Po przygotowaniu urządzenia nie zwlekaj z jego założeniem. Jeżeli urządzenie nie jest dostępne lub jest przygotowywane do użycia, należy zastosować opatrunki hemostatyczne z bezpośrednim uciskiem.</li>
-  <li>W przypadku krwotoku zewnętrznego z głowy lub szyi, jeżeli krawędzie rany można łatwo przybliżyć, urządzenie iTClamp może być użyte jako pierwszy z wyboru środek do tamowania krwotoku. Przed założeniem iTClamp, jeżeli jest to właściwe, rany należy wypełnić opatrunkiem hemostatycznym lub XStat.</li>
+  <li>Na krwotoki (zewnętrzne), na które nie można zastosować stazy taktycznej [zakładanej na kończyny - limb tourniquet] lub zalecane jest zdjęcie takiej stazy, użyj opatrunku Combat Gauze jako czynnika hemostatycznego z wyboru, zalecanego przez Komitet CoTCCC.
+    <ul>
+      <li>Inne zalecane czynniki hemostatyczne do użycia zamiast Combat Gauze:
+        <ul>
+          <li>Celox Gauze albo</li>
+          <li>ChitoGauze lub</li>
+          <li>XStat (najlepiej działa w przypadku głębokich ran o długim kanale występujących w trudno dostępnych miejscach, np. w pachwinach lub dołach pachowych).</li>
+          <li>iTClamp (może być jedynym użytym środkiem albo może być użyte łącznie z opatrunkiem hemostatycznym lub z XStat).</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Opatrunki hemostatyczne należy zastosować z bezpośrednim uciskiem trwającym co najmniej 3 minuty (niewymagane w przypadku XStat). Każdy opatrunek ma inny sposób działania, zatem jeżeli dany opatrunek nie zatamuje krwawienia, można go zdjąć i zastąpić nowym opatrunkiem tego samego lub innego typu. (Uwaga: Opatrunek XStat nie wolno zdejmować w warunkach polowych, natomiast można na nim założyć kolejny opatrunek XStat lub inne czynniki hemostatyczne albo opatrunki taktyczne.)
+    <ul>
+      <li>Jeżeli w miejscu krwawienia można założyć urządzenie służące do tamowania krwawienia w trudno dostępnych miejscach, np. w pachwinach lub dołach pachowych [junctional tourniquet], natychmiast należy je założyć. Po przygotowaniu urządzenia nie zwlekaj z jego założeniem. Jeżeli urządzenie nie jest dostępne lub jest przygotowywane do użycia, należy zastosować opatrunki hemostatyczne z bezpośrednim uciskiem.</li>
+    </ul>
+  </li>
+  <li>W przypadku krwotoku zewnętrznego z głowy lub szyi, jeżeli krawędzie rany można łatwo przybliżyć, urządzenie iTClamp może być użyte jako pierwszy z wyboru środek do tamowania krwotoku. Przed założeniem iTClamp, jeżeli jest to właściwe, rany należy wypełnić opatrunkiem hemostatycznym lub XStat.
+    <ul>
+      <li>iTClamp nie wymaga dodatkowego bezpośredniego ucisku, bez względu na to czy jest jedynym użytym środkiem czy jest stosowane łącznie z innymi pomocniczymi środkami hemostatycznymi.</li>
+      <li>Jeżeli iTClamp jest założone na szyję, często monitoruj drogi oddechowe i sprawdzaj czy nie rozwija się krwiak, który może doprowadzić do ich niedrożności. Rozważ założenie definitywnych dróg oddechowych, jeżeli są dowody wskazujące na rozwój krwiaka.</li>
+      <li>NIE ZAKŁADAJ iTClamp na oko, blisko oka, ani na powiekę (w odległości 1 cm od oczodołu).</li>
+    </ul>
+  </li>
+  <li>Przeprowadź wstępną ocenę, aby sprawdzić czy poszkodowany nie jest we wstrząsie hipowolemicznym (Głównymi objawami wstrząsu są zaburzenia stanu świadomości – po wykluczeniu urazu głowy - i/lub słabo wyczuwalne albo nieobecne tętno na tętnicy promieniowej) i rozważ natychmiastowe wykonanie resuscytacji zalecanej u poszkodowanych we wstrząsie.</li>
 </ol>
 </section>`
   },
@@ -107,15 +117,19 @@ const chapters = {
     title: 'Wentylacja/Oddychanie',
     content: `<section class="tccc-section">
 <ol>
-  <li>Oceń poszkodowanego pod względem wystąpienia odmy prężnej, odbarcz ją, jeśli to konieczne.</li>
-  <li>Załóż, że wystąpiła odma prężna i odbarcz ją jeżeli poszkodowany ma rozległy uraz tułowia lub rozległy uraz spowodowany wybuchem oraz występuje/ą u niego jeden lub więcej następujących objawów:
+  <li>Oceń poszkodowanego pod względem wystąpienia odmy prężnej, odbarcz ją, jeśli to konieczne.
     <ul>
-      <li>Ciężka lub postępująca niewydolność oddechowa.</li>
-      <li>Znaczne lub postępujące przyspieszenie oddechu.</li>
-      <li>Brak lub znaczne ściszenie szmeru pęcherzykowego po jednej stronie klatki piersiowej.</li>
-      <li>Poziom saturacji sprawdzany pulsoksymetrem wykazuje wysycenie hemoglobiny tlenem &lt; 90%.</li>
-      <li>Wstrząs.</li>
-      <li>Pourazowe zatrzymanie krążenia u poszkodowanego bez obrażeń, które mogłyby prowadzić do śmierci.</li>
+      <li>Załóż, że wystąpiła odma prężna i odbarcz ją jeżeli poszkodowany ma rozległy uraz tułowia lub rozległy uraz spowodowany wybuchem oraz występuje/ą u niego jeden lub więcej następujących objawów:
+        <ul>
+          <li>Ciężka lub postępująca niewydolność oddechowa.</li>
+          <li>Znaczne lub postępujące przyspieszenie oddechu.</li>
+          <li>Brak lub znaczne ściszenie szmeru pęcherzykowego po jednej stronie klatki piersiowej.</li>
+          <li>Poziom saturacji sprawdzany pulsoksymetrem wykazuje wysycenie hemoglobiny tlenem &lt; 90%.</li>
+          <li>Wstrząs.</li>
+          <li>Pourazowe zatrzymanie krążenia u poszkodowanego bez obrażeń, które mogłyby prowadzić do śmierci.</li>
+        </ul>
+      </li>
+      <li>Jeżeli odma nie zostanie szybko odbarczona, stan niewydolności oddechowej może doprowadzić do wstrząsu i pourazowego zatrzymania krążenia.</li>
     </ul>
   </li>
   <li>Początkowe leczenie podejrzewanej odmy prężnej:
