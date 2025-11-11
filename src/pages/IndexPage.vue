@@ -48,21 +48,15 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { useSearchIndex } from 'src/composables/useSearchIndex'
+// import { useSearchIndex } from 'src/composables/useSearchIndex'
 
 const router = useRouter()
-const { dashboardCards } = useSearchIndex()
+// const { dashboardCards } = useSearchIndex()
 
 const navigateTo = (path) => {
   router.push(path)
 }
 </script>
-/* Dashboard titles list styling */
-.dashboard-titles-list {
-  max-width: 600px;
-  margin: 0 auto 32px auto;
-}
-
 <style scoped>
 .military-tccc-card {
   background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
