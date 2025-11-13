@@ -682,22 +682,18 @@ const calculateWindDeflection = () => {
   const muzzleVelocity = 830 // m/s for .308 175gr SMK
   const vacuumTime = distanceMeters / muzzleVelocity
 
-  // Approximate actual flight time (accounting for drag)
-  const actualTime = vacuumTime * (1 + (distanceMeters / 1000) * 0.15)
+  // Bardziej realistyczny model: większy wpływ oporu powietrza
+  const actualTime = vacuumTime * (1 + (distanceMeters / 1000) * 0.3)
 
-  // Time lag (wind influence in seconds)
-  const timeLag = actualTime - vacuumTime
+  // Wind drift: uproszczony model empiryczny
+  // Znos = prędkość wiatru * czas lotu * 0.8 (empiryczny mnożnik)
+  const windDriftMeters = windSpeedMs * actualTime * 0.8
 
-  // Wind deflection in meters
-  const deflectionMeters = timeLag * windSpeedMs
-
-  // Convert to corrections in mils or MOA
+  // Przelicz na mil/MOA
   if (measurementSystem.value === 'mils') {
-    // 1 mil at distance = distance/1000 meters
-    return (deflectionMeters * 1000) / distanceMeters // mils
+    return (windDriftMeters * 1000) / distanceMeters // mils
   } else {
-    // 1 MOA at distance ≈ distance/343 meters
-    return (deflectionMeters * 343) / distanceMeters // MOA
+    return (windDriftMeters * 343) / distanceMeters // MOA
   }
 }
 
