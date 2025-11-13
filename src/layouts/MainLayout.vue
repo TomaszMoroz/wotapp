@@ -51,22 +51,6 @@
           </q-item-section>
         </q-item>
 
-        <!-- ABC - nowa sekcja -->
-        <q-item
-          clickable
-          @click="$router.push('/abc')"
-          :class="isActiveRoute('/abc') ? 'bg-military-active text-white' : ''"
-          class="q-my-xs q-mx-sm rounded-borders"
-        >
-          <q-item-section avatar>
-            <q-icon name="info" :color="isActiveRoute('/abc') ? 'white' : 'military-accent'" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-weight-medium">ABC</q-item-label>
-            <q-item-label caption>Podstawowe informacje dla nowo wcielonych</q-item-label>
-          </q-item-section>
-        </q-item>
-
         <!-- Menu dla sekcji Narzędzia -->
         <template v-if="isInToolsSection">
           <q-separator class="q-my-md" />
@@ -282,6 +266,22 @@
             <q-item-section>
               <q-item-label class="text-weight-medium">Stopnie</q-item-label>
               <q-item-label caption>Regulaminy wojskowe</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <!-- ABC na końcu -->
+          <q-item
+            clickable
+            @click="$router.push('/abc')"
+            :class="isActiveRoute('/abc') ? 'bg-military-active text-white' : ''"
+            class="q-my-xs q-mx-sm rounded-borders"
+          >
+            <q-item-section avatar>
+              <q-icon name="info" :color="isActiveRoute('/abc') ? 'white' : 'military-accent'" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-weight-medium">ABC</q-item-label>
+              <q-item-label caption>Podstawowe informacje dla nowo wcielonych</q-item-label>
             </q-item-section>
           </q-item>
         </template>

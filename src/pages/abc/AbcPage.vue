@@ -1,16 +1,10 @@
 <template>
   <q-page class="q-pa-md">
-  <BackNav :showBack="false" color="black"/>
+    <BackNav color="black"/>
     <div class="text-h4 text-weight-bold q-mb-md">ABC</div>
     <div class="text-subtitle1 text-grey-7 q-mb-lg">Podstawowe informacje dla nowo wcielonych</div>
-    <q-card class="q-mb-lg">
-      <q-card-section>
-        <h5>ABC – Podstawowe informacje dla nowo wcielonych</h5>
-        <p>Ta sekcja zawiera kluczowe zasady bezpieczeństwa, organizacji i pierwszych kroków dla nowych żołnierzy Wojsk Obrony Terytorialnej. Zapoznaj się z procedurami, zasadami meldowania, podstawami udzielania pierwszej pomocy oraz strukturą jednostki.</p>
-      </q-card-section>
-    </q-card>
 
-    <div class="abc-cards-grid q-gutter-md q-mb-xl">
+    <div class="abc-cards-row q-mb-xl">
       <q-card class="abc-card" clickable @click="goToRotation">
         <q-card-section class="text-center">
           <q-icon name="backpack" size="2.5rem" color="primary" class="q-mb-sm" />
@@ -44,7 +38,7 @@
 </template>
 
 <script setup>
-
+import BackNav from 'components/BackNav.vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
@@ -67,4 +61,44 @@ function goToCyber () {
 </script>
 
 <style scoped>
+.abc-cards-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+}
+.abc-card {
+  width: 260px;
+  min-width: 220px;
+  max-width: 100%;
+  flex: 0 1 260px;
+  border-radius: 16px;
+  transition: box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+.abc-card:hover {
+  box-shadow: 0 8px 24px rgba(0,0,0,0.13);
+}
+@media (max-width: 900px) {
+  .abc-cards-row {
+    gap: 16px;
+  }
+  .abc-card {
+    width: 48vw;
+    min-width: 160px;
+    max-width: 100%;
+  }
+}
+@media (max-width: 600px) {
+  .abc-cards-row {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .abc-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
 </style>
