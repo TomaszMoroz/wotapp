@@ -25,14 +25,14 @@
           <div class="text-caption text-grey-7">Praktyczne wskazówki</div>
         </q-card-section>
       </q-card>
-      <q-card class="abc-card" clickable>
+      <q-card class="abc-card" clickable @click="goToChain">
         <q-card-section class="text-center">
           <q-icon name="alt_route" size="2.5rem" color="primary" class="q-mb-sm" />
           <div class="text-h6 text-weight-bold">Droga służbowa</div>
           <div class="text-caption text-grey-7">Zasady komunikacji i meldowania</div>
         </q-card-section>
       </q-card>
-      <q-card class="abc-card" clickable>
+      <q-card class="abc-card" clickable @click="goToCyber">
         <q-card-section class="text-center">
           <q-icon name="security" size="2.5rem" color="primary" class="q-mb-sm" />
           <div class="text-h6 text-weight-bold">Bezpieczeństwo w sieci</div>
@@ -55,6 +55,14 @@ function goToRotation () {
 
 function goToBackpack () {
   router.push({ name: 'abc-backpack' })
+}
+
+function goToChain () {
+  router.push({ name: 'abc-chain' })
+}
+
+function goToCyber () {
+  router.push({ name: 'abc-cyber' })
 }
 </script>
 

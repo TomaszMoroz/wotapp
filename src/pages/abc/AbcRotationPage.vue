@@ -40,6 +40,17 @@
         <p><strong>Praktyczna Zasada:</strong> Jeśli Twoje działanie jest zaplanowane na 24 godziny lub krócej, większość wyposażenia z III Linii powinna zostać w pojeździe lub w punkcie zbornym. Bierz tylko to, co jest niezbędne do przetrwania i wykonania misji w danym czasie. Zawsze zadaj sobie pytanie: "Czy jest to absolutnie kluczowe dla misji?" Jeśli odpowiedź brzmi "nie", zostaw to.</p>
       </q-card-section>
     </q-card>
+
+    <q-card class="q-mb-lg">
+      <q-card-section>
+        <h5>4. Linie wyposażenia – co i gdzie nosić?</h5>
+        <p><strong>Linia 1</strong> to sprzęt przenoszony na sobie w kieszeniach munduru. Wyposażenie które jest potrzebne do przetrwania żołnierzowi w razie wielkiej awarii lub do wykorzystywania na bieżąco podczas wykonywania różnych zadań bojowych czy też obozowych. W kieszeniach munduru żołnierza znajdziesz m.in. krzesiwo, scyzoryk czy awaryjny zestaw przetrwania.</p>
+        <p><strong>Linia 2</strong> to wyposażenie przeznaczone do walki. Przenoszone jest w oporządzaniu taktycznym, np. w kamizelce lub szelkach oporządzeniowych.</p>
+        <p>W kamizelce taktycznej, jaką nosi żołnierz, znajdują się przede wszystkim magazynki do etatowej broni, granaty i parę innych bardzo przydatnych drobiazgów.</p>
+        <p><strong>Linia 3</strong> to sprzęt szturmowy lub sprzęt marszowy, przenoszony w plecaku na „garbie”. Główną różnicą między tymi sprzętami jest pojemność plecaka.</p>
+        <p>Gdy żołnierz zabiera sprzęt <strong>MARSZOWY</strong> pakuje go w duży zasobnik piechoty ok. 80-90l. Dlaczego taki duży? Dlatego żeby zawsze mógł coś dorzucić, czy to rgrure i pociski do niej, minę przeciwpancerną, dodatkową wodę, radiostację czy siatkę maskującą. Gdy żołnierz zabiera sprzęt <strong>SZTURMOWY</strong> pakuje się w mniejszy plecak patrolowy około 30 litrowy. Wszystko jest uzależnione od tego: na ile idzie; gdzie idzie i po co idzie. To kilka czynników które decydują jaki sprzęt zabieramy.</p>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 
