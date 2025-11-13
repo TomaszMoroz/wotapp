@@ -34,6 +34,7 @@
       </div>
 
       <q-list class="q-mt-sm">
+
         <!-- Dashboard - zawsze widoczny -->
         <q-item
           clickable
@@ -47,6 +48,22 @@
           <q-item-section>
             <q-item-label class="text-weight-medium">Dashboard</q-item-label>
             <q-item-label caption>Strona główna</q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <!-- ABC - nowa sekcja -->
+        <q-item
+          clickable
+          @click="$router.push('/abc')"
+          :class="isActiveRoute('/abc') ? 'bg-military-active text-white' : ''"
+          class="q-my-xs q-mx-sm rounded-borders"
+        >
+          <q-item-section avatar>
+            <q-icon name="info" :color="isActiveRoute('/abc') ? 'white' : 'military-accent'" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-weight-medium">ABC</q-item-label>
+            <q-item-label caption>Podstawowe informacje dla nowo wcielonych</q-item-label>
           </q-item-section>
         </q-item>
 

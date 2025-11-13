@@ -102,6 +102,20 @@
         </q-card>
 
         <q-card
+          class="dashboard-card military-accent-card"
+          clickable
+          @click="navigateTo('/abc')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="info" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">ABC</div>
+            <div class="text-caption text-grey-4 mobile-caption">Podstawowe informacje dla nowo wcielonych</div>
+          </q-card-section>
+        </q-card>
+
+        <q-card
           class="dashboard-card military-green-card"
           clickable
           @click="navigateTo('/tactics')"

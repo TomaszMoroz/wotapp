@@ -29,6 +29,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 
 const chapters = {
+  22: {
+    title: 'ABC',
+    short: 'Podstawowe informacje dla nowo wcielonych',
+    content: `<section class="tccc-section">
+<h4>ABC – Podstawowe informacje dla nowo wcielonych</h4>
+<p>Ta sekcja zawiera kluczowe zasady bezpieczeństwa, organizacji i pierwszych kroków dla nowych żołnierzy Wojsk Obrony Terytorialnej. Zapoznaj się z procedurami, zasadami meldowania, podstawami udzielania pierwszej pomocy oraz strukturą jednostki.</p>
+</section>`
+  },
   1: {
     title: 'Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji',
     content: `<section class="tccc-section">
