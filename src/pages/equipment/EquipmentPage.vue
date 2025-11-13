@@ -1,10 +1,10 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
-      <BackNav color="black"/>
+      <BackNav />
 
       <!-- Header with navigation -->
-      <div class="text-h4 q-mb-md">Wyposażenie</div>
+      <div class="text-h4 q-mb-md text-grey-3">Wyposażenie</div>
 
       <!-- Breadcrumb navigation -->
       <div v-if="currentView !== 'weapons'" class="q-mb-md">
@@ -22,12 +22,12 @@
         <q-card
           v-for="weapon in weapons"
           :key="weapon.id"
-          class="weapon-card cursor-pointer"
+          class="weapon-card bg-grey-4 cursor-pointer"
           @click="showWeaponDetails(weapon.id)"
         >
           <q-card-section class="text-center">
-            <div class="text-h6 q-mt-md">{{ weapon.name }}</div>
-            <div class="text-caption text-grey">{{ weapon.category }}</div>
+            <div class="text-h4 text-bold q-mt-md">{{ weapon.name }}</div>
+            <div class="text-caption text-black">{{ weapon.category }}</div>
           </q-card-section>
         </q-card>
       </div>
@@ -358,6 +358,16 @@ const goBack = () => {
 </script>
 
 <style scoped>
+.page-background {
+  background: #232b23;
+  min-height: 100vh;
+}
+@media (prefers-color-scheme: light) {
+  .page-background {
+    background: #f5f5f5;
+  }
+}
+
 .weapons-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

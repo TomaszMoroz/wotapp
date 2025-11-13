@@ -78,20 +78,18 @@
                   <q-icon name="description" color="grey-6" size="20px" class="q-mr-sm" />
                   <div class="text-h6 text-grey-8">Treść meldunku</div>
                   <q-space />
-                  <q-chip size="sm" color="green-1" text-color="green-8" icon="verified">
-                    Format NATO
-                  </q-chip>
+
                 </div>
 
-                <q-card class="modern-report-container" bordered>
-                  <q-card-section class="report-header">
-                    <div class="row items-center">
+                <q-card class="modern-report-container bg-grey-4" bordered>
+                  <q-card-section>
+                    <div class="row items-center bg-grey-3">
                       <q-icon name="military_tech" color="primary" size="18px" class="q-mr-sm" />
                       <span class="text-caption text-primary font-weight-medium">
                         DOKUMENT SŁUŻBOWY
                       </span>
                       <q-space />
-                      <q-chip size="xs" color="orange-1" text-color="orange-8" icon="schedule">
+                      <q-chip size="xs" color="black" text-color="white" icon="schedule">
                         Wzór
                       </q-chip>
                     </div>
@@ -113,7 +111,6 @@
                       Wypełnij pola oznaczone [NAWIASAMI KWADRATOWYMI]
                       <q-space />
                       <q-icon name="security" size="14px" class="q-mr-xs" />
-                      Niejawne
                     </div>
                   </q-card-section>
                 </q-card>
@@ -122,10 +119,6 @@
               <q-separator />
 
               <q-card-actions align="between" class="q-pa-md">
-                <q-chip icon="schedule" color="grey-4" text-color="grey-8" size="sm">
-                  Wzór NATO
-                </q-chip>
-
                 <div class="row q-gutter-sm">
                   <q-btn
                     unelevated
@@ -243,7 +236,7 @@ T: Opatrunek uciskowy, podano morfina 10mg`
     name: 'MELDUNEK MEDEVAC',
     category: 'Meldunki medyczne',
     icon: 'emergency',
-    color: 'red',
+    color: 'red-4',
     content: `MELDUNEK MEDEVAC - EWAKUACJA MEDYCZNA
 
 1. WSPÓŁRZĘDNE PUNKTU PODJĘCIA:
@@ -485,11 +478,10 @@ onMounted(() => {
 
 <style scoped>
   .hero-section, .page-header {
-    background: #232b23;
-    border: 1px solid #384c38;
-    color: #f5f7fa;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 4px 16px rgba(44,62,47,0.13);
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    color: #232b23;
+    box-shadow: 0 4px 16px rgba(44,62,47,0.07);
     border-radius: 12px;
     margin-bottom: 2rem;
     padding: 1.5rem;
@@ -503,53 +495,73 @@ onMounted(() => {
   .page-header .text-h4,
   .page-header .text-h5,
   .page-header .text-h6 {
-    color: #f5f7fa !important;
+    color: #232b23 !important;
   }
-/* Nowoczesne style dla tekstu meldunku */
 
 .modern-report-container {
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e1f5fe;
+  box-shadow: 0 4px 24px rgba(185, 188, 185, 0.08);
+  border: 1.5px solid #bdbdbd;
+  background: #f7f7f9;
+  transition: box-shadow 0.3s, background 0.3s;
+}
+@media (prefers-color-scheme: dark) {
+  .modern-report-container {
+    background: #232b23;
+    border: 1.5px solid #bdbdbd;
+    box-shadow: 0 8px 32px rgba(44,62,47,0.18);
+  }
 }
 
 .report-header {
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #f8f9fa;
   padding: 12px 16px;
-  border-bottom: 1px solid #dee2e6;
+  border-bottom: 1px solid #e0e0e0;
+  font-weight: 600;
+  font-size: 1.1rem;
+  letter-spacing: 0.2px;
+  color: #232b23;
+}
+@media (prefers-color-scheme: dark) {
+  .report-header {
+    background: #232b23;
+    border-bottom: 1px solid #384c38;
+    color: #f5f7fa;
+  }
 }
 
 .report-content-modern {
-  background: #ffffff;
+  background: transparent;
   padding: 0;
   position: relative;
 }
 
 .report-text-wrapper {
-  background: linear-gradient(145deg, #fafbfc 0%, #ffffff 100%);
-  border: 1px solid #f1f3f4;
+  background: #f7f7f9;
+  border: 1px solid #e0e0e0;
   border-radius: 8px;
   margin: 16px;
   position: relative;
   overflow: hidden;
+  box-shadow: none;
+}
+@media (prefers-color-scheme: dark) {
+  .report-text-wrapper {
+    background: #f7f7f9;
+    border-color: #e0e0e0;
+  }
 }
 
 .report-text-wrapper::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #1976d2, #42a5f5, #1976d2);
+  display: none;
 }
 
 .report-text {
   font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', 'Monaco', monospace;
   font-size: 13px;
   line-height: 1.6;
-  color: #2c3e50;
+  color: #070907;
   margin: 0;
   padding: 20px;
   white-space: pre-wrap;
@@ -559,79 +571,48 @@ onMounted(() => {
   letter-spacing: 0.25px;
   text-rendering: optimizeLegibility;
 }
+@media (prefers-color-scheme: dark) {
+  .report-text {
+    color: #232b23;
+  }
+}
 
 .report-footer {
   background: #f8f9fa;
   padding: 8px 16px;
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.98rem;
+  color: #232b23;
+  font-weight: 500;
 }
-
-/* Wyróżnienie pól do wypełnienia */
-.report-text-wrapper {
-  position: relative;
-}
-
-.report-text-wrapper::after {
-  content: "";
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 8px;
-  height: 8px;
-  background: #4caf50;
-  border-radius: 50%;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7);
-  }
-  70% {
-    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
-  }
-  100% {
-    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+@media (prefers-color-scheme: dark) {
+  .report-footer {
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+    color: #232b23;
   }
 }
 
-/* Hover effect dla całego kontenera */
 .modern-report-container:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 8px 30px rgba(44,62,47,0.13);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Responsywność */
 @media (max-width: 768px) {
   .report-text {
     font-size: 12px;
     padding: 16px;
     letter-spacing: 0.1px;
   }
-
   .report-text-wrapper {
     margin: 12px;
   }
-
   .modern-report-container {
     border-radius: 8px;
   }
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .report-text {
-    color: #ecf0f1;
-  }
-
-  .report-text-wrapper {
-    background: linear-gradient(145deg, #34495e 0%, #2c3e50 100%);
-    border-color: #7f8c8d;
-  }
-}
-
-/* Smooth transitions */
 .q-card {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -640,7 +621,6 @@ onMounted(() => {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Typography enhancements */
 .text-caption {
   font-weight: 500;
 }

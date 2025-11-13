@@ -460,7 +460,7 @@ defineComponent({
   text-align: center;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+  background: linear-gradient(135deg, #463c01 0%, #072008 100%);
   border-radius: 12px;
   color: white;
 }
