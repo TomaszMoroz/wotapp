@@ -47,8 +47,29 @@
             :disable="!selectedType"
             @click="selectedType ? cameraDialog = true : null"
           />
+          <q-btn
+            label="Dodaj zdjęcie SN"
+            color="secondary"
+            icon="image"
+            class="q-ml-sm"
+            :disable="!selectedType"
+            @click="() => $refs.snFileInput.click()"
+          />
+          <input ref="snFileInput" type="file" accept="image/*" style="display:none" @change="onSNFileChange" />
           <div v-if="serialNumber" class="q-mt-sm text-grey-4">SN: {{ serialNumber }}</div>
         </div>
+// Dodawanie zdjęcia SN z pliku
+function onSNFileChange(e) {
+  const file = e.target.files && e.target.files[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = function(evt) {
+    cropPreviewUrl.value = evt.target.result
+    ocrText.value = ''
+    serialNumber.value = ''
+  }
+  reader.readAsDataURL(file)
+}
         <q-btn
           label="Dodaj sprzęt"
           color="primary"
@@ -66,6 +87,9 @@
         <q-item-section>
           <div class="text-weight-bold">{{ item.type }}</div>
           <div class="text-caption">SN: {{ item.sn }}</div>
+          <div v-if="item.snImage" class="q-mt-xs">
+            <img :src="item.snImage" alt="Podgląd SN" style="max-width:120px; max-height:40px; border:1px solid #21c521; background:#222;" />
+          </div>
         </q-item-section>
         <q-item-section side>
           <q-btn flat icon="edit" color="primary" @click="editItem(idx)" />
