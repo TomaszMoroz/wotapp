@@ -120,14 +120,9 @@
           </div>
         </q-card-section>
         <q-card-section v-if="ocrText" class="q-mt-md">
-            <div class="text-caption text-grey-4">Rozpoznany tekst:</div>
-            <div class="text-body2 text-white bg-grey-8 q-pa-sm rounded-borders q-mt-xs">{{ ocrText }}</div>
-          </q-card-section>
-          <q-card-actions align="right">
-            <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
-            <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
-            <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" @click="acceptOCRText" />
-          </q-card-actions>
+          <div class="text-caption text-grey-4">Rozpoznany tekst:</div>
+          <div class="text-body2 text-white bg-grey-8 q-pa-sm rounded-borders q-mt-xs">{{ ocrText }}</div>
+        </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
           <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" @click="acceptOCRText" />
@@ -289,11 +284,6 @@ watch(cameraDialog, (val) => {
     ocrText.value = ''
   }
 })
-
-async function captureSN () {
-  // niepotrzebne w trybie live, ale zostawiamy dla zgodności
-  // można ewentualnie usunąć ten przycisk
-}
 
 function acceptOCRText () {
   serialNumber.value = ocrText.value
