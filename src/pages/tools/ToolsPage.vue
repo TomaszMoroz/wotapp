@@ -23,7 +23,7 @@
               <q-icon name="straighten" size="3rem" color="white" />
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Kalkulator odległości</div>
-            <div class="text-caption text-grey-4">Pomiar przez tysiączne</div>
+            <div class="text-caption text-grey-4">Pomiar przez tysiące</div>
           </q-card-section>
         </q-card>
 
@@ -84,6 +84,21 @@
             </div>
             <div class="text-h6 q-mt-md text-weight-bold">Konwerter MILS - MOA</div>
             <div class="text-caption text-grey-4">Przelicznik jednostek</div>
+          </q-card-section>
+        </q-card>
+
+        <!-- Pobrany sprzęt -->
+        <q-card
+          class="tool-card military-primary-card"
+          clickable
+          @click="navigateTo('/tools/equipment')"
+        >
+          <q-card-section class="text-center">
+            <div class="card-icon-wrapper">
+              <q-icon name="inventory_2" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold">Pobrany sprzęt</div>
+            <div class="text-caption text-grey-4">Lista wydanego wyposażenia</div>
           </q-card-section>
         </q-card>
       </div>

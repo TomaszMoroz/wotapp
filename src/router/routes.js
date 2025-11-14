@@ -26,6 +26,7 @@ const routes = [
       { path: '/tools/distance', component: () => import('pages/tools/DistanceCalculatorPage.vue') },
       { path: '/tools/settings', component: () => import('pages/tools/SettingsCalculatorPage.vue') },
       { path: '/tools/mils-moa', component: () => import('pages/tools/MilsMoaConverterPage.vue') },
+      { path: '/tools/equipment', component: () => import('pages/tools/ToolsEquipmentPage.vue') },
       { path: '/abc', component: () => import('pages/abc/AbcPage.vue') },
       { path: '/abc/rotation', name: 'abc-rotation', component: () => import('pages/abc/AbcRotationPage.vue') },
       { path: '/abc/backpack', name: 'abc-backpack', component: () => import('pages/abc/AbcBackpackPage.vue') },
