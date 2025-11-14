@@ -100,9 +100,20 @@
         <q-card-section>
           <div class="text-h6">Skanuj numer seryjny</div>
         </q-card-section>
-        <q-card-section>
-          <video ref="video" autoplay playsinline width="100%" style="max-width:320px;" />
-        </q-card-section>
+<q-card-section>
+  <div style="position:relative; width:100%; max-width:320px;">
+    <video ref="video" autoplay playsinline width="100%" style="display:block;" />
+    <div
+      style="position:absolute; border:2px solid #00e676; box-sizing:border-box; pointer-events:none; z-index:2;"
+      :style="{
+        left: (0.2 * 100) + '%',
+        top: (0.35 * 100) + '%',
+        width: (0.6 * 100) + '%',
+        height: (0.3 * 100) + '%'
+      }"
+    ></div>
+  </div>
+</q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
           <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
@@ -230,10 +241,16 @@ async function startLiveOCR () {
   }
   ocrInterval = setInterval(async () => {
     if (!video.value || video.value.readyState !== 4) return
+    const vw = video.value.videoWidth
+    const vh = video.value.videoHeight
+    const cropX = Math.floor(0.2 * vw)
+    const cropY = Math.floor(0.35 * vh)
+    const cropW = Math.floor(0.6 * vw)
+    const cropH = Math.floor(0.3 * vh)
     const canvas = document.createElement('canvas')
-    canvas.width = video.value.videoWidth
-    canvas.height = video.value.videoHeight
-    canvas.getContext('2d').drawImage(video.value, 0, 0)
+    canvas.width = cropW
+    canvas.height = cropH
+    canvas.getContext('2d').drawImage(video.value, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH)
     try {
       const { data: { text } } = await ocrWorker.recognize(canvas)
       const filtered = (text || '').toUpperCase().replace(/[^A-Z0-9]/g, '')
