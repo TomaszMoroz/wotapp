@@ -62,8 +62,25 @@ const editSNImage = ref('')
       </q-form>
     </div>
 
+    <div v-if="equipmentList.length > 0" class="text-center q-mb-sm">
+      <div class="text-caption text-grey-5">Data utworzenia listy: {{ equipmentListDate }}</div>
+    </div>
     <q-list bordered separator class="bg-grey-10 text-white" style="max-width: 520px; margin: 0 auto;">
       <q-item-label header class="text-grey-4">Lista pobranego sprzętu</q-item-label>
+import { ref, onMounted, watch, computed } from 'vue'
+// Data utworzenia listy
+const equipmentListDate = ref('')
+
+function updateEquipmentListDate () {
+  if (equipmentList.value.length > 0 && !equipmentListDate.value) {
+    const now = new Date()
+    equipmentListDate.value = now.toLocaleDateString('pl-PL', { year: 'numeric', month: '2-digit', day: '2-digit' })
+  } else if (equipmentList.value.length === 0) {
+    equipmentListDate.value = ''
+  }
+}
+
+watch(equipmentList, updateEquipmentListDate, { deep: true })
       <q-item v-for="(item, idx) in equipmentList" :key="item.id">
         <q-item-section>
           <div class="text-weight-bold">{{ item.type }}</div>
