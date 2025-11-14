@@ -1,3 +1,9 @@
+function acceptCropOnly () {
+  serialNumber.value = ''
+  cameraDialog.value = false
+  stopCamera()
+  ocrText.value = ''
+}
 <template>
   <q-page class="equipment-bg q-pa-md">
     <BackNav color="black" />
@@ -148,6 +154,8 @@ function onSNFileChange(e) {
           <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
           <q-btn flat label="Przechwyć" color="primary" @click="captureSN" :disable="!video" />
           <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" v-show="ocrText" @click="acceptOCRText" />
+          <q-btn flat label="Użyj wycinka" color="secondary" :disable="!cropPreviewUrl" v-show="cropPreviewUrl && !ocrText" @click="acceptCropOnly" />
+
         </q-card-actions>
       </q-card>
     </q-dialog>
