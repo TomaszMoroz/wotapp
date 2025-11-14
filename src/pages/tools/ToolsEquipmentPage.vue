@@ -101,14 +101,21 @@
           <div class="text-h6">Skanuj numer seryjny</div>
         </q-card-section>
         <q-card-section>
-          <video ref="video" autoplay playsinline width="100%" style="max-width:320px;" />
+          <div style="position: relative; display: flex; justify-content: center;">
+            <video ref="video" autoplay playsinline width="100%" style="max-width:320px; display:block;" />
+            <div
+              class="scan-rect"
+              v-bind:style="scanRectStyle"
+            ></div>
+          </div>
           <div class="q-mt-md text-caption text-grey-7">
-            Ustaw numer w centrum kadru i kliknij „Przechwyć”.<br>
+            Ustaw numer w zielonym prostokącie i kliknij „Przechwyć”.<br>
             <b>Dbaj o ostrość i dobre oświetlenie.</b> Unikaj cieni i odblasków.<br>
             Numer powinien być na jasnym, jednolitym tle.<br>
             System automatycznie poprawia kontrast i jasność przed rozpoznaniem.<br>
             Jeśli rozpoznanie się nie uda, spróbuj ponownie lub wpisz numer ręcznie.
           </div>
+
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
@@ -130,7 +137,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
+// Prostokąt do wizualizacji obszaru skanowania (cała szerokość, 80px wysokości, wyśrodkowany)
+const scanRectHeight = 80
+const scanRectStyle = computed(() => {
+  const h = video.value?.videoHeight || 240
+  const top = (h - scanRectHeight) / 2
+  return {
+    top: top + 'px',
+    height: scanRectHeight + 'px',
+    width: '100%',
+    left: 0,
+    right: 0,
+    border: '2px solid #21c521',
+    position: 'absolute',
+    boxSizing: 'border-box',
+    pointerEvents: 'none',
+    zIndex: 2
+  }
+})
 import BackNav from 'components/BackNav.vue'
 
 const equipmentOptions = [
@@ -218,11 +243,26 @@ async function startCamera () {
 }
 
 async function captureSN () {
+  // Parametry wycinka (środek kadru, szerokość 320, wysokość 80)
+  const cropWidth = 320
+  const cropHeight = 80
+  const cropX = Math.max(0, (video.value.videoWidth - cropWidth) / 2)
+  const cropY = Math.max(0, (video.value.videoHeight - cropHeight) / 2)
   const canvas = document.createElement('canvas')
-  canvas.width = video.value.videoWidth
-  canvas.height = video.value.videoHeight
+  canvas.width = cropWidth
+  canvas.height = cropHeight
   const ctx = canvas.getContext('2d')
-  ctx.drawImage(video.value, 0, 0)
+  ctx.drawImage(
+    video.value,
+    cropX,
+    cropY,
+    cropWidth,
+    cropHeight,
+    0,
+    0,
+    cropWidth,
+    cropHeight
+  )
   // Popraw kontrast, jasność i konwertuj do szarości
   try {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
