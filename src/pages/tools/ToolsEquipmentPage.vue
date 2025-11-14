@@ -227,11 +227,13 @@ async function captureSN () {
   const worker = await window.Tesseract.createWorker('eng')
   const { data: { text } } = await worker.recognize(canvas)
   await worker.terminate()
-  ocrText.value = text.trim()
+  // Filtrowanie: tylko A-Z, 0-9, bez spacji, wielkie litery
+  const filtered = (text || '').toUpperCase().replace(/[^A-Z0-9]/g, '')
+  ocrText.value = filtered
 }
 
 function acceptOCRText () {
-  serialNumber.value = ocrText.value.replace(/\s/g, '')
+  serialNumber.value = ocrText.value
   cameraDialog.value = false
   stopCamera()
   ocrText.value = ''
