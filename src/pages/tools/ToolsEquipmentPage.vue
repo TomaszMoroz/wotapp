@@ -22,15 +22,10 @@
           color="white"
           borderless
         />
-        <q-option-group
-          v-model="snMode"
-          :options="snModeOptions"
-          type="toggle"
-          color="white"
-          text-color="white"
-          inline
-          class="q-mb-md"
-        />
+        <div class="q-mb-md row items-center q-gutter-x-md">
+          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" />
+          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="white" />
+        </div>
         <q-input
           v-if="snMode === 'manual'"
           v-model="serialNumber"
@@ -46,14 +41,22 @@
         />
         <div v-else class="q-mb-md">
           <q-btn
-            label="Skanuj SN kamery"
+            label="Skanuj SN kamerą"
+            color="primary"
+            icon="photo_camera"
+            :disable="!selectedType"
+            @click="selectedType ? cameraDialog = true : null"
+          />
+          <div v-if="serialNumber" class="q-mt-sm text-grey-4">SN: {{ serialNumber }}</div>
+        </div>
+        <q-btn
+          label="Dodaj sprzęt"
           color="primary"
           icon="add"
           type="submit"
           :disable="!selectedType || !serialNumber"
           class="full-width"
         />
-        </div>
       </q-form>
     </div>
 
@@ -81,8 +84,8 @@
           <div class="text-h6">Edytuj sprzęt</div>
         </q-card-section>
         <q-card-section>
-          <q-select v-model="editType" :options="equipmentOptions" label="Sprzęt" outlined dense />
-          <q-input v-model="editSN" label="Numer seryjny" outlined dense class="q-mt-md" />
+          <q-select v-model="editType" :options="equipmentOptions" label="Sprzęt" outlined dense class="text-white bg-transparent border-white" input-class="text-white" label-color="white" color="white" borderless />
+          <q-input v-model="editSN" label="Numer seryjny" outlined dense class="q-mt-md text-white bg-transparent border-white" input-class="text-white" label-color="white" color="white" borderless />
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup />
@@ -115,11 +118,6 @@ import BackNav from 'components/BackNav.vue'
 
 const equipmentOptions = [
   'Grot', 'Bor', 'Tor', 'Vis', 'Rubin', 'Brom', 'Gryf', 'Maska p-gaz', 'FOO'
-]
-
-const snModeOptions = [
-  { label: 'Wpisz SN', value: 'manual' },
-  { label: 'Skanuj SN', value: 'scan' }
 ]
 
 const selectedType = ref(null)
@@ -187,6 +185,21 @@ function stopCamera () {
     stream = null
   }
 }
+
+async function startCamera () {
+  stopCamera()
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
+    if (video.value) {
+      video.value.srcObject = stream
+      await video.value.play()
+    }
+  } catch (e) {
+    // Możesz dodać obsługę błędu (np. powiadomienie)
+    stopCamera()
+  }
+}
+
 async function captureSN () {
   const canvas = document.createElement('canvas')
   canvas.width = video.value.videoWidth
@@ -208,6 +221,14 @@ async function captureSN () {
   await worker.terminate()
   serialNumber.value = text.replace(/\s/g, '')
 }
+
+watch(cameraDialog, (val) => {
+  if (val) {
+    startCamera()
+  } else {
+    stopCamera()
+  }
+})
 
 onMounted(() => {
   loadEquipment()

@@ -27,6 +27,7 @@
                   :options="systemOptions"
                   color="primary"
                   inline
+                  type="radio"
                 />
               </q-field>
 
@@ -64,6 +65,7 @@
                     :options="windDirectionOptions"
                     color="primary"
                     inline
+                    type="radio"
                   />
                 </q-field>
 
@@ -84,6 +86,7 @@
                   :options="correctionTypeOptions"
                   color="primary"
                   inline
+                  type="radio"
                 />
               </q-field>
 
