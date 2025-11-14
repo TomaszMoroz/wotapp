@@ -23,8 +23,8 @@
           borderless
         />
         <div class="q-mb-md row items-center q-gutter-x-md">
-          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" />
-          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="white" />
+          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" class="text-white" label-color="white" />
+          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="white" class="text-white" label-color="white" />
         </div>
         <q-input
           v-if="snMode === 'manual'"
@@ -47,15 +47,6 @@
             :disable="!selectedType"
             @click="selectedType ? cameraDialog = true : null"
           />
-          <q-btn
-            label="Dodaj zdjęcie SN"
-            color="secondary"
-            icon="image"
-            class="q-ml-sm"
-            :disable="!selectedType"
-            @click="() => $refs.snFileInput.click()"
-          />
-          <input ref="snFileInput" type="file" accept="image/*" style="display:none" @change="onSNFileChange" />
           <div v-if="serialNumber" class="q-mt-sm text-grey-4">SN: {{ serialNumber }}</div>
         </div>
 
@@ -76,13 +67,13 @@
         <q-item-section>
           <div class="text-weight-bold">{{ item.type }}</div>
           <div class="text-caption">SN: {{ item.sn }}</div>
-          <div v-if="item.snImage" class="q-mt-xs">
-            <img :src="item.snImage" alt="Podgląd SN" style="max-width:120px; max-height:40px; border:1px solid #21c521; background:#222;" />
+          <div v-if="item.snImage" class="q-mt-sm">
+            <img :src="item.snImage" alt="Podgląd SN" style="width:100%; max-width:480px; max-height:120px; border:1.5px solid #21c521; background:#222; object-fit:contain; display:block;" />
           </div>
         </q-item-section>
-        <q-item-section side>
+        <q-item-section side top>
           <q-btn flat icon="edit" color="primary" @click="editItem(idx)" />
-          <q-btn flat icon="delete" color="negative" @click="removeItem(idx)" />
+          <q-btn flat icon="delete" color="red-5" @click="removeItem(idx)" />
         </q-item-section>
       </q-item>
       <q-item v-if="equipmentList.length === 0">
@@ -358,18 +349,6 @@ function acceptCropOnly () {
   cameraDialog.value = false
   stopCamera()
   ocrText.value = ''
-}
-// Dodawanie zdjęcia SN z pliku
-function onSNFileChange (e) {
-  const file = e.target.files && e.target.files[0]
-  if (!file) return
-  const reader = new FileReader()
-  reader.onload = function (evt) {
-    cropPreviewUrl.value = evt.target.result
-    ocrText.value = ''
-    serialNumber.value = ''
-  }
-  reader.readAsDataURL(file)
 }
 
 watch(cameraDialog, (val) => {
