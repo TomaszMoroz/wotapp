@@ -113,8 +113,8 @@
         </q-card-section>
         <q-card-section>
           <div style="position:relative; width:100%; max-width:320px;">
-            <video v-if="!cameraError" ref="video" autoplay playsinline width="100%" style="display:block;" />
-            <div v-if="!cameraError"
+            <video ref="video" autoplay playsinline width="100%" style="display:block; background:#000;" />
+            <div
               style="position:absolute; border:2px solid #00e676; box-sizing:border-box; pointer-events:none; z-index:2;"
               :style="{
                 left: (cropRect.relX * 100) + '%',
@@ -123,13 +123,16 @@
                 height: (cropRect.relH * 100) + '%'
               }"
             ></div>
-            <div v-if="!cameraError" style="position:absolute; left:0; right:0; bottom:8px; text-align:center; z-index:3;">
+            <div style="position:absolute; left:0; right:0; bottom:8px; text-align:center; z-index:3;">
               <span class="text-caption bg-grey-9 text-white q-pa-xs rounded-borders">
                 Ustaw numer seryjny w zielonej ramce, zadbaj o ostrość i światło
               </span>
             </div>
             <div v-if="cameraError" style="position:absolute; left:0; right:0; top:40%; text-align:center; z-index:4;">
-              <span class="text-negative bg-grey-10 q-pa-md rounded-borders">{{ cameraError }}</span>
+              <span class="text-negative bg-grey-10 q-pa-md rounded-borders">cameraError: {{ cameraError }}</span>
+            </div>
+            <div v-if="dialogOpenError" style="position:absolute; left:0; right:0; top:60%; text-align:center; z-index:4;">
+              <span class="text-negative bg-grey-10 q-pa-md rounded-borders">dialogOpenError: true</span>
             </div>
           </div>
         </q-card-section>
