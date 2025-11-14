@@ -193,9 +193,16 @@ async function captureSN () {
   canvas.getContext('2d').drawImage(video.value, 0, 0)
   stopCamera()
   cameraDialog.value = false
-  // Dynamiczny import tesseract.js
-  const { createWorker } = await import('tesseract.js')
-  const worker = await createWorker('eng')
+  // Dynamiczne ładowanie Tesseract.js z CDN jeśli nie ma w window
+  if (!window.Tesseract) {
+    await new Promise(resolve => {
+      const script = document.createElement('script')
+      script.src = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.0.1/dist/tesseract.min.js'
+      script.onload = resolve
+      document.body.appendChild(script)
+    })
+  }
+  const worker = await window.Tesseract.createWorker('eng')
   const { data: { text } } = await worker.recognize(canvas)
   await worker.terminate()
   serialNumber.value = text.replace(/\s/g, '')
