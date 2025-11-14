@@ -112,7 +112,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import BackNav from 'components/BackNav.vue'
-import { createWorker } from 'tesseract.js'
+import { createWorker } from 'tesseract.js/dist/tesseract.min.js'
 
 const equipmentOptions = [
   'Grot', 'Bor', 'Tor', 'Vis', 'Rubin', 'Brom', 'Gryf', 'Maska p-gaz', 'FOO'
