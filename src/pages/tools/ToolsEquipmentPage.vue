@@ -112,7 +112,6 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import BackNav from 'components/BackNav.vue'
-import { createWorker } from 'tesseract.js'
 
 const equipmentOptions = [
   'Grot', 'Bor', 'Tor', 'Vis', 'Rubin', 'Brom', 'Gryf', 'Maska p-gaz', 'FOO'
@@ -194,11 +193,10 @@ async function captureSN () {
   canvas.getContext('2d').drawImage(video.value, 0, 0)
   stopCamera()
   cameraDialog.value = false
-  // OCR przez tesseract.js
+  // Dynamiczny import tesseract.js
+  const { createWorker } = await import('tesseract.js')
   const worker = await createWorker('eng')
-  const {
-    data: { text }
-  } = await worker.recognize(canvas)
+  const { data: { text } } = await worker.recognize(canvas)
   await worker.terminate()
   serialNumber.value = text.replace(/\s/g, '')
 }
