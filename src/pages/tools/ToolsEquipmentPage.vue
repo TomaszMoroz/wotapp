@@ -102,18 +102,11 @@
         </q-card-section>
         <q-card-section>
           <div style="position: relative; display: flex; justify-content: center;">
-            <video ref="video" autoplay playsinline width="100%" style="max-width:320px; display:block;" />
+            <video ref="video" autoplay playsinline width="320" height="240" style="max-width:320px; display:block; background:#111;" />
             <div
               class="scan-rect"
-              v-bind:style="scanRectStyle"
+              style="position:absolute; left:0; right:0; width:320px; height:80px; top:80px; border:2px solid #21c521; box-sizing:border-box; pointer-events:none; z-index:2;"
             ></div>
-          </div>
-          <div class="q-mt-md text-caption text-grey-7">
-            Ustaw numer w zielonym prostokącie i kliknij „Przechwyć”.<br>
-            <b>Dbaj o ostrość i dobre oświetlenie.</b> Unikaj cieni i odblasków.<br>
-            Numer powinien być na jasnym, jednolitym tle.<br>
-            System automatycznie poprawia kontrast i jasność przed rozpoznaniem.<br>
-            Jeśli rozpoznanie się nie uda, spróbuj ponownie lub wpisz numer ręcznie.
           </div>
 
           <div v-if="cropPreviewUrl" class="q-mt-md flex flex-center column items-center">
@@ -129,8 +122,8 @@
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
-          <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
-          <q-btn flat label="Zaakceptuj" color="green" v-if="ocrText" @click="acceptOCRText" />
+          <q-btn flat label="Przechwyć" color="primary" @click="captureSN" :disable="!video" />
+          <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" v-show="ocrText" @click="acceptOCRText" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -147,25 +140,25 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch, computed } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 // Prostokąt do wizualizacji obszaru skanowania (cała szerokość, 80px wysokości, wyśrodkowany)
-const scanRectHeight = 80
-const scanRectStyle = computed(() => {
-  const h = video.value?.videoHeight || 240
-  const top = (h - scanRectHeight) / 2
-  return {
-    top: top + 'px',
-    height: scanRectHeight + 'px',
-    width: '100%',
-    left: 0,
-    right: 0,
-    border: '2px solid #21c521',
-    position: 'absolute',
-    boxSizing: 'border-box',
-    pointerEvents: 'none',
-    zIndex: 2
-  }
-})
+// const scanRectHeight = 80
+// const scanRectStyle = computed(() => {
+//   const h = video.value?.videoHeight || 240
+//   const top = (h - scanRectHeight) / 2
+//   return {
+//     top: top + 'px',
+//     height: scanRectHeight + 'px',
+//     width: '100%',
+//     left: 0,
+//     right: 0,
+//     border: '2px solid #21c521',
+//     position: 'absolute',
+//     boxSizing: 'border-box',
+//     pointerEvents: 'none',
+//     zIndex: 2
+//   }
+// })
 import BackNav from 'components/BackNav.vue'
 
 const equipmentOptions = [
