@@ -1,5 +1,15 @@
 function acceptCropOnly () {
+  // Dodaj sprzęt z samym wycinkiem (bez SN)
+  equipmentList.value.push({
+    id: Date.now(),
+    type: selectedType.value,
+    sn: '',
+    snImage: cropPreviewUrl.value || null
+  })
+  saveEquipment()
+  selectedType.value = null
   serialNumber.value = ''
+  cropPreviewUrl.value = ''
   cameraDialog.value = false
   stopCamera()
   ocrText.value = ''
