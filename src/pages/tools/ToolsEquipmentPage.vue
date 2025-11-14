@@ -263,6 +263,7 @@ async function captureSN () {
   canvas.width = cropWidth
   canvas.height = cropHeight
   const ctx = canvas.getContext('2d')
+  // Wytnij tylko obszar zielonego prostokąta
   ctx.drawImage(
     video.value,
     cropX,
@@ -274,6 +275,8 @@ async function captureSN () {
     cropWidth,
     cropHeight
   )
+  // Podgląd wycinka do OCR
+  cropPreviewUrl.value = canvas.toDataURL('image/png')
   // Popraw kontrast, jasność i konwertuj do szarości
   try {
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
