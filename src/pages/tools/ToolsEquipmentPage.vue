@@ -1,3 +1,4 @@
+const editSNImage = ref('')
 <template>
   <q-page class="equipment-bg q-pa-md">
     <BackNav color="black" />
@@ -73,7 +74,20 @@
         </q-item-section>
         <q-item-section side top>
           <q-btn flat icon="edit" color="primary" @click="editItem(idx)" />
-          <q-btn flat icon="delete" color="red-5" @click="removeItem(idx)" />
+          <q-btn flat icon="delete" color="red-5" @click="confirmRemoveItem(idx)" />
+    <!-- Potwierdzenie usuwania -->
+    <q-dialog v-model="confirmDialog">
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-icon name="warning" color="red-5" size="md" class="q-mr-md" />
+          <div class="text-h6">Czy na pewno usunąć ten sprzęt?</div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Anuluj" color="grey" @click="cancelRemoveItem" />
+          <q-btn flat label="Usuń" color="red-5" @click="doRemoveItem" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
         </q-item-section>
       </q-item>
       <q-item v-if="equipmentList.length === 0">
@@ -89,8 +103,9 @@
         </q-card-section>
         <q-card-section>
           <q-select v-model="editType" :options="equipmentOptions" label="Sprzęt" outlined dense class="text-white bg-transparent border-white" input-class="text-white" label-color="white" color="white" borderless />
-          <q-input v-model="editSN" label="Numer seryjny" outlined dense class="q-mt-md text-white bg-transparent border-white" input-class="text-white" label-color="white" color="white" borderless />
+          <q-input v-model="editSN" :key="editDialog + '-' + editIdx" label="Numer seryjny" outlined dense class="q-mt-md text-white bg-transparent border-white" input-class="text-white" label-color="white" color="white" borderless />
         </q-card-section>
+
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup />
           <q-btn flat label="Zapisz" color="primary" @click="saveEdit" />
@@ -182,6 +197,27 @@ const editIdx = ref(-1)
 const editType = ref('')
 const editSN = ref('')
 
+// Potwierdzenie usuwania
+const confirmDialog = ref(false)
+const removeIdx = ref(-1)
+
+function confirmRemoveItem (idx) {
+  removeIdx.value = idx
+  confirmDialog.value = true
+}
+function doRemoveItem () {
+  if (removeIdx.value >= 0) {
+    equipmentList.value.splice(removeIdx.value, 1)
+    saveEquipment()
+  }
+  confirmDialog.value = false
+  removeIdx.value = -1
+}
+function cancelRemoveItem () {
+  confirmDialog.value = false
+  removeIdx.value = -1
+}
+
 // Kamera
 const cameraDialog = ref(false)
 const video = ref(null)
@@ -211,11 +247,6 @@ function addEquipment () {
   selectedType.value = null
   serialNumber.value = ''
   cropPreviewUrl.value = ''
-}
-
-function removeItem (idx) {
-  equipmentList.value.splice(idx, 1)
-  saveEquipment()
 }
 
 function editItem (idx) {
