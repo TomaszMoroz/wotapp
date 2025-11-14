@@ -1,19 +1,3 @@
-function acceptCropOnly () {
-  // Dodaj sprzęt z samym wycinkiem (bez SN)
-  equipmentList.value.push({
-    id: Date.now(),
-    type: selectedType.value,
-    sn: '',
-    snImage: cropPreviewUrl.value || null
-  })
-  saveEquipment()
-  selectedType.value = null
-  serialNumber.value = ''
-  cropPreviewUrl.value = ''
-  cameraDialog.value = false
-  stopCamera()
-  ocrText.value = ''
-}
 <template>
   <q-page class="equipment-bg q-pa-md">
     <BackNav color="black" />
@@ -74,18 +58,7 @@ function acceptCropOnly () {
           <input ref="snFileInput" type="file" accept="image/*" style="display:none" @change="onSNFileChange" />
           <div v-if="serialNumber" class="q-mt-sm text-grey-4">SN: {{ serialNumber }}</div>
         </div>
-// Dodawanie zdjęcia SN z pliku
-function onSNFileChange(e) {
-  const file = e.target.files && e.target.files[0]
-  if (!file) return
-  const reader = new FileReader()
-  reader.onload = function(evt) {
-    cropPreviewUrl.value = evt.target.result
-    ocrText.value = ''
-    serialNumber.value = ''
-  }
-  reader.readAsDataURL(file)
-}
+
         <q-btn
           label="Dodaj sprzęt"
           color="primary"
@@ -368,6 +341,35 @@ function acceptOCRText () {
   cameraDialog.value = false
   stopCamera()
   ocrText.value = ''
+}
+
+function acceptCropOnly () {
+  // Dodaj sprzęt z samym wycinkiem (bez SN)
+  equipmentList.value.push({
+    id: Date.now(),
+    type: selectedType.value,
+    sn: '',
+    snImage: cropPreviewUrl.value || null
+  })
+  saveEquipment()
+  selectedType.value = null
+  serialNumber.value = ''
+  cropPreviewUrl.value = ''
+  cameraDialog.value = false
+  stopCamera()
+  ocrText.value = ''
+}
+// Dodawanie zdjęcia SN z pliku
+function onSNFileChange (e) {
+  const file = e.target.files && e.target.files[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = function (evt) {
+    cropPreviewUrl.value = evt.target.result
+    ocrText.value = ''
+    serialNumber.value = ''
+  }
+  reader.readAsDataURL(file)
 }
 
 watch(cameraDialog, (val) => {
