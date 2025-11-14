@@ -116,6 +116,16 @@
             Jeśli rozpoznanie się nie uda, spróbuj ponownie lub wpisz numer ręcznie.
           </div>
 
+          <div v-if="cropPreviewUrl" class="q-mt-md flex flex-center column items-center">
+            <div class="text-caption text-grey-6">Podgląd wycinka do OCR:</div>
+            <img :src="cropPreviewUrl" alt="Podgląd wycinka" style="border:1px solid #21c521; max-width:320px; max-height:80px; margin-top:4px; background:#222;" />
+          </div>
+
+          <div v-if="ocrText" class="q-mt-md flex flex-center column items-center">
+            <div class="text-caption text-grey-4">Rozpoznany tekst (na żywo):</div>
+            <div class="text-body2 text-white bg-grey-8 q-pa-sm rounded-borders q-mt-xs">{{ ocrText }}</div>
+          </div>
+
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
@@ -124,7 +134,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-          <q-card-section v-if="ocrText" class="q-mt-md">
+          <!-- <q-card-section v-if="ocrText" class="q-mt-md">
             <div class="text-caption text-grey-4">Rozpoznany tekst:</div>
             <div class="text-body2 text-white bg-grey-8 q-pa-sm rounded-borders q-mt-xs">{{ ocrText }}</div>
           </q-card-section>
@@ -132,7 +142,7 @@
             <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
             <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
             <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" @click="acceptOCRText" />
-          </q-card-actions>
+          </q-card-actions> -->
   </q-page>
 </template>
 
@@ -178,6 +188,7 @@ const cameraDialog = ref(false)
 const video = ref(null)
 let stream = null
 const ocrText = ref('')
+const cropPreviewUrl = ref('')
 
 // LocalStorage obsługa
 const STORAGE_KEY = 'equipmentList-v1'
@@ -312,9 +323,11 @@ watch(cameraDialog, (val) => {
   if (val) {
     startCamera()
     ocrText.value = ''
+    cropPreviewUrl.value = ''
   } else {
     stopCamera()
     ocrText.value = ''
+    cropPreviewUrl.value = ''
   }
 })
 
