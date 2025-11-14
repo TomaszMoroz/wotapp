@@ -106,9 +106,19 @@
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
           <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
+          <q-btn flat label="Zaakceptuj" color="green" v-if="ocrText" @click="acceptOCRText" />
         </q-card-actions>
       </q-card>
     </q-dialog>
+          <q-card-section v-if="ocrText" class="q-mt-md">
+            <div class="text-caption text-grey-4">Rozpoznany tekst:</div>
+            <div class="text-body2 text-white bg-grey-8 q-pa-sm rounded-borders q-mt-xs">{{ ocrText }}</div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
+            <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
+            <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" @click="acceptOCRText" />
+          </q-card-actions>
   </q-page>
 </template>
 
@@ -135,6 +145,7 @@ const editSN = ref('')
 const cameraDialog = ref(false)
 const video = ref(null)
 let stream = null
+const ocrText = ref('')
 
 // LocalStorage obsługa
 const STORAGE_KEY = 'equipmentList-v1'
@@ -195,7 +206,6 @@ async function startCamera () {
       await video.value.play()
     }
   } catch (e) {
-    // Możesz dodać obsługę błędu (np. powiadomienie)
     stopCamera()
   }
 }
@@ -205,8 +215,6 @@ async function captureSN () {
   canvas.width = video.value.videoWidth
   canvas.height = video.value.videoHeight
   canvas.getContext('2d').drawImage(video.value, 0, 0)
-  stopCamera()
-  cameraDialog.value = false
   // Dynamiczne ładowanie Tesseract.js z CDN jeśli nie ma w window
   if (!window.Tesseract) {
     await new Promise(resolve => {
@@ -219,14 +227,23 @@ async function captureSN () {
   const worker = await window.Tesseract.createWorker('eng')
   const { data: { text } } = await worker.recognize(canvas)
   await worker.terminate()
-  serialNumber.value = text.replace(/\s/g, '')
+  ocrText.value = text.trim()
+}
+
+function acceptOCRText () {
+  serialNumber.value = ocrText.value.replace(/\s/g, '')
+  cameraDialog.value = false
+  stopCamera()
+  ocrText.value = ''
 }
 
 watch(cameraDialog, (val) => {
   if (val) {
     startCamera()
+    ocrText.value = ''
   } else {
     stopCamera()
+    ocrText.value = ''
   }
 })
 
