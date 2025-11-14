@@ -146,6 +146,8 @@ const cameraDialog = ref(false)
 const video = ref(null)
 let stream = null
 const ocrText = ref('')
+let ocrInterval = null
+let ocrWorker = null
 
 // LocalStorage obsługa
 const STORAGE_KEY = 'equipmentList-v1'
@@ -210,12 +212,7 @@ async function startCamera () {
   }
 }
 
-async function captureSN () {
-  const canvas = document.createElement('canvas')
-  canvas.width = video.value.videoWidth
-  canvas.height = video.value.videoHeight
-  canvas.getContext('2d').drawImage(video.value, 0, 0)
-  // Dynamiczne ładowanie Tesseract.js z CDN jeśli nie ma w window
+async function ensureTesseractLoaded () {
   if (!window.Tesseract) {
     await new Promise(resolve => {
       const script = document.createElement('script')
@@ -224,30 +221,62 @@ async function captureSN () {
       document.body.appendChild(script)
     })
   }
-  const worker = await window.Tesseract.createWorker('eng')
-  const { data: { text } } = await worker.recognize(canvas)
-  await worker.terminate()
-  // Filtrowanie: tylko A-Z, 0-9, bez spacji, wielkie litery
-  const filtered = (text || '').toUpperCase().replace(/[^A-Z0-9]/g, '')
-  ocrText.value = filtered
 }
 
-function acceptOCRText () {
-  serialNumber.value = ocrText.value
-  cameraDialog.value = false
-  stopCamera()
-  ocrText.value = ''
+async function startLiveOCR () {
+  await ensureTesseractLoaded()
+  if (!ocrWorker) {
+    ocrWorker = await window.Tesseract.createWorker('eng')
+  }
+  ocrInterval = setInterval(async () => {
+    if (!video.value || video.value.readyState !== 4) return
+    const canvas = document.createElement('canvas')
+    canvas.width = video.value.videoWidth
+    canvas.height = video.value.videoHeight
+    canvas.getContext('2d').drawImage(video.value, 0, 0)
+    try {
+      const { data: { text } } = await ocrWorker.recognize(canvas)
+      const filtered = (text || '').toUpperCase().replace(/[^A-Z0-9]/g, '')
+      ocrText.value = filtered
+    } catch (e) {}
+  }, 2000) // co 2 sekundy
+}
+
+function stopLiveOCR () {
+  if (ocrInterval) {
+    clearInterval(ocrInterval)
+    ocrInterval = null
+  }
+  if (ocrWorker) {
+    ocrWorker.terminate()
+    ocrWorker = null
+  }
 }
 
 watch(cameraDialog, (val) => {
   if (val) {
     startCamera()
     ocrText.value = ''
+    startLiveOCR()
   } else {
     stopCamera()
+    stopLiveOCR()
     ocrText.value = ''
   }
 })
+
+async function captureSN () {
+  // niepotrzebne w trybie live, ale zostawiamy dla zgodności
+  // można ewentualnie usunąć ten przycisk
+}
+
+function acceptOCRText () {
+  serialNumber.value = ocrText.value
+  cameraDialog.value = false
+  stopCamera()
+  stopLiveOCR()
+  ocrText.value = ''
+}
 
 onMounted(() => {
   loadEquipment()
