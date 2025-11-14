@@ -306,8 +306,19 @@ async function captureSN () {
       document.body.appendChild(script)
     })
   }
-  const worker = await window.Tesseract.createWorker('eng')
-  const { data: { text } } = await worker.recognize(canvas)
+  const worker = await window.Tesseract.createWorker('eng', {
+    logger: m => console.log(m)
+  })
+  await worker.setParameters({
+    tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/', // typowe znaki SN
+    tessedit_pageseg_mode: '7', // pojedyncza linia
+    preserve_interword_spaces: '1'
+  })
+  const { data: { text } } = await worker.recognize(canvas, 'eng', {
+    tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-/',
+    tessedit_pageseg_mode: '7',
+    preserve_interword_spaces: '1'
+  })
   await worker.terminate()
   ocrText.value = text.trim()
 }
