@@ -23,8 +23,8 @@
           borderless
         />
         <div class="q-mb-md row items-center q-gutter-x-md">
-          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" />
-          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="white" />
+          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" class="text-white"/>
+          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="white" class="text-white"/>
         </div>
         <q-input
           v-if="snMode === 'manual'"
@@ -41,7 +41,7 @@
         />
         <div v-else class="q-mb-md">
           <q-btn
-            label="Skanuj SN kamerą"
+            label="Skanuj SN"
             color="primary"
             icon="photo_camera"
             :disable="!selectedType"
@@ -55,12 +55,12 @@
           icon="add"
           type="submit"
           :disable="!selectedType || !serialNumber"
-          class="full-width"
+          class="full-width q-mx-md"
         />
       </q-form>
     </div>
 
-    <q-list bordered separator class="bg-grey-10 text-white" style="max-width: 520px; margin: 0 auto;">
+    <q-list bordered separator class="bg-grey-10 text-white q-mt-md" style="max-width: 520px; margin: 0 auto;">
       <q-item-label header class="text-grey-4">Lista pobranego sprzętu</q-item-label>
       <q-item v-for="(item, idx) in equipmentList" :key="item.id">
         <q-item-section>
@@ -100,28 +100,26 @@
         <q-card-section>
           <div class="text-h6">Skanuj numer seryjny</div>
         </q-card-section>
-<q-card-section>
-  <div style="position:relative; width:100%; max-width:320px;">
-    <video ref="video" autoplay playsinline width="100%" style="display:block;" />
-    <div
-      style="position:absolute; border:2px solid #00e676; box-sizing:border-box; pointer-events:none; z-index:2;"
-      :style="{
-        left: (0.2 * 100) + '%',
-        top: (0.35 * 100) + '%',
-        width: (0.6 * 100) + '%',
-        height: (0.3 * 100) + '%'
-      }"
-    ></div>
-  </div>
-</q-card-section>
-        <q-card-actions align="right">
-          <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
-          <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
-          <q-btn flat label="Zaakceptuj" color="green" v-if="ocrText" @click="acceptOCRText" />
-        </q-card-actions>
-      </q-card>
-    </q-dialog>
-          <q-card-section v-if="ocrText" class="q-mt-md">
+        <q-card-section>
+          <div style="position:relative; width:100%; max-width:320px;">
+            <video ref="video" autoplay playsinline width="100%" style="display:block;" />
+            <div
+              style="position:absolute; border:2px solid #00e676; box-sizing:border-box; pointer-events:none; z-index:2;"
+              :style="{
+                left: (cropRect.relX * 100) + '%',
+                top: (cropRect.relY * 100) + '%',
+                width: (cropRect.relW * 100) + '%',
+                height: (cropRect.relH * 100) + '%'
+              }"
+            ></div>
+            <div style="position:absolute; left:0; right:0; bottom:8px; text-align:center; z-index:3;">
+              <span class="text-caption bg-grey-9 text-white q-pa-xs rounded-borders">
+                Ustaw numer seryjny w zielonej ramce, zadbaj o ostrość i światło
+              </span>
+            </div>
+          </div>
+        </q-card-section>
+        <q-card-section v-if="ocrText" class="q-mt-md">
             <div class="text-caption text-grey-4">Rozpoznany tekst:</div>
             <div class="text-body2 text-white bg-grey-8 q-pa-sm rounded-borders q-mt-xs">{{ ocrText }}</div>
           </q-card-section>
@@ -130,6 +128,12 @@
             <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
             <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" @click="acceptOCRText" />
           </q-card-actions>
+        <q-card-actions align="right">
+          <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
+          <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" @click="acceptOCRText" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -252,7 +256,11 @@ async function startLiveOCR () {
     canvas.height = cropH
     canvas.getContext('2d').drawImage(video.value, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH)
     try {
-      const { data: { text } } = await ocrWorker.recognize(canvas)
+      const { data: { text } } = await ocrWorker.recognize(canvas, {
+        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+        preserve_interword_spaces: '0',
+        tessedit_pageseg_mode: 7 // single-line
+      })
       const filtered = (text || '').toUpperCase().replace(/[^A-Z0-9]/g, '')
       ocrText.value = filtered
     } catch (e) {}
