@@ -23,8 +23,8 @@
           borderless
         />
         <div class="q-mb-md row items-center q-gutter-x-md">
-          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" class="text-white"/>
-          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="white" class="text-white"/>
+          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" />
+          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="white" />
         </div>
         <q-input
           v-if="snMode === 'manual'"
@@ -41,23 +41,12 @@
         />
         <div v-else class="q-mb-md">
           <q-btn
-            label="Skanuj SN"
+            label="Skanuj SN kamerą"
             color="primary"
             icon="photo_camera"
             :disable="!selectedType"
-            @click="() => {
-              if (selectedType) {
-                cameraDialog = true
-                dialogOpenError.value = false
-                setTimeout(() => {
-                  if (!cameraDialog) dialogOpenError.value = true
-                }, 2000)
-              }
-            }"
+            @click="selectedType ? cameraDialog = true : null"
           />
-          <div v-if="dialogOpenError" class="text-negative q-mt-sm">
-            Nie udało się otworzyć skanera. Spróbuj ponownie lub sprawdź uprawnienia.
-          </div>
           <div v-if="serialNumber" class="q-mt-sm text-grey-4">SN: {{ serialNumber }}</div>
         </div>
         <q-btn
@@ -66,12 +55,12 @@
           icon="add"
           type="submit"
           :disable="!selectedType || !serialNumber"
-          class="full-width q-mx-md"
+          class="full-width"
         />
       </q-form>
     </div>
 
-    <q-list bordered separator class="bg-grey-10 text-white q-mt-md" style="max-width: 520px; margin: 0 auto;">
+    <q-list bordered separator class="bg-grey-10 text-white" style="max-width: 520px; margin: 0 auto;">
       <q-item-label header class="text-grey-4">Lista pobranego sprzętu</q-item-label>
       <q-item v-for="(item, idx) in equipmentList" :key="item.id">
         <q-item-section>
@@ -112,40 +101,31 @@
           <div class="text-h6">Skanuj numer seryjny</div>
         </q-card-section>
         <q-card-section>
-          <div style="position:relative; width:100%; max-width:320px;">
-            <video ref="video" autoplay playsinline width="100%" style="display:block; background:#000;" />
-            <div
-              style="position:absolute; border:2px solid #00e676; box-sizing:border-box; pointer-events:none; z-index:2;"
-              :style="{
-                left: (cropRect.relX * 100) + '%',
-                top: (cropRect.relY * 100) + '%',
-                width: (cropRect.relW * 100) + '%',
-                height: (cropRect.relH * 100) + '%'
-              }"
-            ></div>
-            <div style="position:absolute; left:0; right:0; bottom:8px; text-align:center; z-index:3;">
-              <span class="text-caption bg-grey-9 text-white q-pa-xs rounded-borders">
-                Ustaw numer seryjny w zielonej ramce, zadbaj o ostrość i światło
-              </span>
-            </div>
-            <div v-if="cameraError" style="position:absolute; left:0; right:0; top:40%; text-align:center; z-index:4;">
-              <span class="text-negative bg-grey-10 q-pa-md rounded-borders">cameraError: {{ cameraError }}</span>
-            </div>
-            <div v-if="dialogOpenError" style="position:absolute; left:0; right:0; top:60%; text-align:center; z-index:4;">
-              <span class="text-negative bg-grey-10 q-pa-md rounded-borders">dialogOpenError: true</span>
-            </div>
+          <video ref="video" autoplay playsinline width="100%" style="max-width:320px;" />
+          <div class="q-mt-md text-caption text-grey-7">
+            Ustaw numer w centrum kadru i kliknij „Przechwyć”.<br>
+            <b>Dbaj o ostrość i dobre oświetlenie.</b> Unikaj cieni i odblasków.<br>
+            Numer powinien być na jasnym, jednolitym tle.<br>
+            System automatycznie poprawia kontrast i jasność przed rozpoznaniem.<br>
+            Jeśli rozpoznanie się nie uda, spróbuj ponownie lub wpisz numer ręcznie.
           </div>
-        </q-card-section>
-        <q-card-section v-if="ocrText" class="q-mt-md">
-          <div class="text-caption text-grey-4">Rozpoznany tekst:</div>
-          <div class="text-body2 text-white bg-grey-8 q-pa-sm rounded-borders q-mt-xs">{{ ocrText }}</div>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
-          <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" @click="acceptOCRText" />
+          <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
+          <q-btn flat label="Zaakceptuj" color="green" v-if="ocrText" @click="acceptOCRText" />
         </q-card-actions>
       </q-card>
     </q-dialog>
+          <q-card-section v-if="ocrText" class="q-mt-md">
+            <div class="text-caption text-grey-4">Rozpoznany tekst:</div>
+            <div class="text-body2 text-white bg-grey-8 q-pa-sm rounded-borders q-mt-xs">{{ ocrText }}</div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Anuluj" color="grey" v-close-popup @click="stopCamera" />
+            <q-btn flat label="Przechwyć" color="primary" @click="captureSN" />
+            <q-btn flat label="Użyj numeru" color="positive" :disable="!ocrText" @click="acceptOCRText" />
+          </q-card-actions>
   </q-page>
 </template>
 
@@ -173,12 +153,6 @@ const cameraDialog = ref(false)
 const video = ref(null)
 let stream = null
 const ocrText = ref('')
-let ocrInterval = null
-let ocrWorker = null
-const cameraError = ref('')
-
-// Fallback dialog
-const dialogOpenError = ref(false)
 
 // LocalStorage obsługa
 const STORAGE_KEY = 'equipmentList-v1'
@@ -232,7 +206,6 @@ function stopCamera () {
 
 async function startCamera () {
   stopCamera()
-  cameraError.value = ''
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
     if (video.value) {
@@ -240,12 +213,40 @@ async function startCamera () {
       await video.value.play()
     }
   } catch (e) {
-    cameraError.value = 'Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia przeglądarki.'
     stopCamera()
   }
 }
 
-async function ensureTesseractLoaded () {
+async function captureSN () {
+  const canvas = document.createElement('canvas')
+  canvas.width = video.value.videoWidth
+  canvas.height = video.value.videoHeight
+  const ctx = canvas.getContext('2d')
+  ctx.drawImage(video.value, 0, 0)
+  // Popraw kontrast, jasność i konwertuj do szarości
+  try {
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+    const data = imageData.data
+    const contrast = 1.6 // >1 = większy kontrast
+    const brightness = 32 // 0 = bez zmian
+    for (let i = 0; i < data.length; i += 4) {
+      const r = data[i]
+      const g = data[i + 1]
+      const b = data[i + 2]
+      // Szarość
+      let gray = 0.299 * r + 0.587 * g + 0.114 * b
+      // Kontrast
+      gray = (gray - 128) * contrast + 128
+      // Jasność
+      gray = gray + brightness
+      gray = Math.max(0, Math.min(255, gray))
+      data[i] = data[i + 1] = data[i + 2] = gray
+    }
+    ctx.putImageData(imageData, 0, 0)
+  } catch (e) {
+    // Jeśli przetwarzanie się nie powiedzie, kontynuuj bez niego
+  }
+  // Dynamiczne ładowanie Tesseract.js z CDN jeśli nie ma w window
   if (!window.Tesseract) {
     await new Promise(resolve => {
       const script = document.createElement('script')
@@ -254,67 +255,28 @@ async function ensureTesseractLoaded () {
       document.body.appendChild(script)
     })
   }
+  const worker = await window.Tesseract.createWorker('eng')
+  const { data: { text } } = await worker.recognize(canvas)
+  await worker.terminate()
+  ocrText.value = text.trim()
 }
 
-async function startLiveOCR () {
-  await ensureTesseractLoaded()
-  if (!ocrWorker) {
-    ocrWorker = await window.Tesseract.createWorker('eng')
-  }
-  ocrInterval = setInterval(async () => {
-    if (!video.value || video.value.readyState !== 4) return
-    const vw = video.value.videoWidth
-    const vh = video.value.videoHeight
-    const cropX = Math.floor(0.2 * vw)
-    const cropY = Math.floor(0.35 * vh)
-    const cropW = Math.floor(0.6 * vw)
-    const cropH = Math.floor(0.3 * vh)
-    const canvas = document.createElement('canvas')
-    canvas.width = cropW
-    canvas.height = cropH
-    canvas.getContext('2d').drawImage(video.value, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH)
-    try {
-      const { data: { text } } = await ocrWorker.recognize(canvas, {
-        tessedit_char_whitelist: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-        preserve_interword_spaces: '0',
-        tessedit_pageseg_mode: 7 // single-line
-      })
-      const filtered = (text || '').toUpperCase().replace(/[^A-Z0-9]/g, '')
-      ocrText.value = filtered
-    } catch (e) {}
-  }, 2000) // co 2 sekundy
-}
-
-function stopLiveOCR () {
-  if (ocrInterval) {
-    clearInterval(ocrInterval)
-    ocrInterval = null
-  }
-  if (ocrWorker) {
-    ocrWorker.terminate()
-    ocrWorker = null
-  }
+function acceptOCRText () {
+  serialNumber.value = ocrText.value.replace(/\s/g, '')
+  cameraDialog.value = false
+  stopCamera()
+  ocrText.value = ''
 }
 
 watch(cameraDialog, (val) => {
   if (val) {
     startCamera()
     ocrText.value = ''
-    startLiveOCR()
   } else {
     stopCamera()
-    stopLiveOCR()
     ocrText.value = ''
   }
 })
-
-function acceptOCRText () {
-  serialNumber.value = ocrText.value
-  cameraDialog.value = false
-  stopCamera()
-  stopLiveOCR()
-  ocrText.value = ''
-}
 
 onMounted(() => {
   loadEquipment()
