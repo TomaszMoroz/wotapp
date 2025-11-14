@@ -45,8 +45,19 @@
             color="primary"
             icon="photo_camera"
             :disable="!selectedType"
-            @click="selectedType ? cameraDialog = true : null"
+            @click="() => {
+              if (selectedType) {
+                cameraDialog = true
+                dialogOpenError.value = false
+                setTimeout(() => {
+                  if (!cameraDialog) dialogOpenError.value = true
+                }, 2000)
+              }
+            }"
           />
+          <div v-if="dialogOpenError" class="text-negative q-mt-sm">
+            Nie udało się otworzyć skanera. Spróbuj ponownie lub sprawdź uprawnienia.
+          </div>
           <div v-if="serialNumber" class="q-mt-sm text-grey-4">SN: {{ serialNumber }}</div>
         </div>
         <q-btn
@@ -102,8 +113,8 @@
         </q-card-section>
         <q-card-section>
           <div style="position:relative; width:100%; max-width:320px;">
-            <video ref="video" autoplay playsinline width="100%" style="display:block;" />
-            <div
+            <video v-if="!cameraError" ref="video" autoplay playsinline width="100%" style="display:block;" />
+            <div v-if="!cameraError"
               style="position:absolute; border:2px solid #00e676; box-sizing:border-box; pointer-events:none; z-index:2;"
               :style="{
                 left: (cropRect.relX * 100) + '%',
@@ -112,10 +123,13 @@
                 height: (cropRect.relH * 100) + '%'
               }"
             ></div>
-            <div style="position:absolute; left:0; right:0; bottom:8px; text-align:center; z-index:3;">
+            <div v-if="!cameraError" style="position:absolute; left:0; right:0; bottom:8px; text-align:center; z-index:3;">
               <span class="text-caption bg-grey-9 text-white q-pa-xs rounded-borders">
                 Ustaw numer seryjny w zielonej ramce, zadbaj o ostrość i światło
               </span>
+            </div>
+            <div v-if="cameraError" style="position:absolute; left:0; right:0; top:40%; text-align:center; z-index:4;">
+              <span class="text-negative bg-grey-10 q-pa-md rounded-borders">{{ cameraError }}</span>
             </div>
           </div>
         </q-card-section>
@@ -158,6 +172,10 @@ let stream = null
 const ocrText = ref('')
 let ocrInterval = null
 let ocrWorker = null
+const cameraError = ref('')
+
+// Fallback dialog
+const dialogOpenError = ref(false)
 
 // LocalStorage obsługa
 const STORAGE_KEY = 'equipmentList-v1'
@@ -211,6 +229,7 @@ function stopCamera () {
 
 async function startCamera () {
   stopCamera()
+  cameraError.value = ''
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } })
     if (video.value) {
@@ -218,6 +237,7 @@ async function startCamera () {
       await video.value.play()
     }
   } catch (e) {
+    cameraError.value = 'Nie udało się uzyskać dostępu do kamery. Sprawdź uprawnienia przeglądarki.'
     stopCamera()
   }
 }
