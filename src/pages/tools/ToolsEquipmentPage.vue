@@ -118,7 +118,8 @@ const equipmentOptions = [
 ]
 
 const snModeOptions = [
-  { label: 'Wpisz SN', value: 'manual' }
+  { label: 'Wpisz SN', value: 'manual' },
+  { label: 'Skanuj SN', value: 'scan' }
 ]
 
 const selectedType = ref(null)
