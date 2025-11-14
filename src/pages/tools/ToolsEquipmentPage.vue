@@ -198,11 +198,13 @@ function addEquipment () {
   equipmentList.value.push({
     id: Date.now(),
     type: selectedType.value,
-    sn: serialNumber.value
+    sn: serialNumber.value,
+    snImage: cropPreviewUrl.value || null
   })
   saveEquipment()
   selectedType.value = null
   serialNumber.value = ''
+  cropPreviewUrl.value = ''
 }
 
 function removeItem (idx) {
