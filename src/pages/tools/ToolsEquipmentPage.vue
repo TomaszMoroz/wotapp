@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <div class="q-mb-lg" style="max-width: 420px; margin: 0 auto;">
+    <div class="q-mb-xl" style="max-width: 420px; margin: 0 auto;">
       <q-form @submit.prevent="addEquipment">
         <q-select
           v-model="selectedType"
@@ -16,10 +16,10 @@
           label="Wybierz sprzęt"
           outlined
           dense
-          class="q-mb-md text-white bg-transparent border-white"
-          input-class="text-white"
-          label-color="white"
-          color="white"
+          class="q-mb-md bg-grey-2 text-black"
+          input-class="text-black"
+          label-color="black"
+          color="black"
         />
         <div class="q-mb-md row items-center q-gutter-x-md">
           <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" class="text-white" label-color="white" />
@@ -31,10 +31,10 @@
           label="Numer seryjny"
           outlined
           dense
-          class="q-mb-md text-white bg-transparent border-white"
-          input-class="text-white"
-          label-color="white"
-          color="white"
+          class="q-mb-md bg-grey-2 text-black"
+          input-class="text-black"
+          label-color="black"
+          color="black"
           borderless
           :disable="!selectedType"
         />
@@ -50,27 +50,46 @@
         </div>
 
         <q-btn
+          v-if="selectedType && (serialNumber || cropPreviewUrl)"
           label="Dodaj sprzęt"
           color="primary"
           icon="add"
           type="submit"
-          :disable="!selectedType || !serialNumber"
           class="full-width"
         />
       </q-form>
     </div>
 
-    <q-list bordered separator class="bg-grey-10 text-white q-mt-lg" style="max-width: 520px; margin: 0 auto;">
+    <q-list bordered separator class="bg-grey-10 text-white q-mt-xl" style="max-width: 600px; margin: 50px auto">
       <q-item-label v-if="equipmentList.length > 0" header class="text-h6 flex items-center justify-center q-gutter-x-sm" style="color:#fff;">
         <span style="color:#fff;">{{ todayDate }}</span>
         <span style="color:#fff; font-size:0.95em;">({{ equipmentList.length }} el.)</span>
         <q-btn flat dense round icon="delete" color="red-4" size="sm" @click="showDeleteListDialog = true" />
       </q-item-label>
-      <q-dialog v-model="showDeleteListDialog">
+
+      <q-item v-for="(item, idx) in equipmentList" :key="item.id" class="q-my-md q-py-md">
+        <q-item-section>
+          <div class="text-h6">{{ item.type }}</div>
+          <div class="text-h6">SN: {{ item.sn }}</div>
+          <div v-if="item.snImage" class="q-mt-sm">
+            <img :src="item.snImage" alt="Podgląd SN" style="width:100%; max-width:480px; max-height:120px; border:1.5px solid #21c521; background:#222; object-fit:contain; display:block;" />
+          </div>
+        </q-item-section>
+        <q-item-section side>
+          <q-btn flat icon="edit" color="blue-5" @click="editItem(idx)" />
+          <q-btn flat icon="delete" color="red-5" @click="confirmRemoveItem(idx)" />
+        </q-item-section>
+      </q-item>
+      <q-item v-if="equipmentList.length === 0">
+        <q-item-section class="text-grey-6">Brak sprzętu na liście</q-item-section>
+      </q-item>
+    </q-list>
+
+    <q-dialog v-model="showDeleteListDialog">
         <q-card>
           <q-card-section class="row items-center">
             <q-icon name="warning" color="red-5" size="md" class="q-mr-md" />
-            <div class="text-h6" style="color:#fff;">Czy na pewno usunąć całą listę sprzętu?</div>
+            <div class="text-h6">Czy na pewno usunąć całą listę sprzętu?</div>
           </q-card-section>
           <q-card-actions align="right">
             <q-btn flat label="Anuluj" color="grey" v-close-popup />
@@ -79,18 +98,7 @@
         </q-card>
       </q-dialog>
 
-      <q-item v-for="(item, idx) in equipmentList" :key="item.id">
-        <q-item-section>
-          <div class="text-weight-bold">{{ item.type }}</div>
-          <div class="text-caption">SN: {{ item.sn }}</div>
-          <div v-if="item.snImage" class="q-mt-sm">
-            <img :src="item.snImage" alt="Podgląd SN" style="width:100%; max-width:480px; max-height:120px; border:1.5px solid #21c521; background:#222; object-fit:contain; display:block;" />
-          </div>
-        </q-item-section>
-        <q-item-section side top>
-          <q-btn flat icon="edit" color="primary" @click="editItem(idx)" />
-          <q-btn flat icon="delete" color="red-5" @click="confirmRemoveItem(idx)" />
-    <!-- Potwierdzenie usuwania -->
+        <!-- Potwierdzenie usuwania -->
     <q-dialog v-model="confirmDialog">
       <q-card>
         <q-card-section class="row items-center">
@@ -103,12 +111,6 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-        </q-item-section>
-      </q-item>
-      <q-item v-if="equipmentList.length === 0">
-        <q-item-section class="text-grey-6">Brak sprzętu na liście</q-item-section>
-      </q-item>
-    </q-list>
 
     <!-- Edycja sprzętu dialog -->
     <q-dialog v-model="editDialog" persistent>
@@ -117,8 +119,8 @@
           <div class="text-h6">Edytuj sprzęt</div>
         </q-card-section>
         <q-card-section>
-          <q-select v-model="editType" :options="equipmentOptions" label="Sprzęt" outlined dense />
-          <q-input v-model="editSN" label="Numer seryjny" outlined dense class="q-mt-md" input-class="text-black" />
+          <q-select v-model="editType" :options="equipmentOptions" label="Sprzęt" outlined dense class="bg-grey-2 text-black" input-class="text-black" label-color="black" color="black" />
+          <q-input v-model="editSN" label="Numer seryjny" outlined dense class="q-mt-md bg-grey-2 text-black" input-class="text-black" label-color="black" color="black" borderless />
         </q-card-section>
 
         <q-card-actions align="right">
