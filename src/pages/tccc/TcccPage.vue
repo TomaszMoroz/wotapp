@@ -42,8 +42,7 @@ const tcccChapters = [
   { nr: 14, title: 'Oparzenia', short: 'Postepowanie przy oparzeniach' },
   { nr: 15, title: 'RKO', short: 'Resucucytacja krazeniowo oddechowa' },
   { nr: 16, title: 'Dokumentacja medyczna', short: 'Dokumentowanie zabiegów i stanu poszkodowanego' },
-  { nr: 17, title: 'Komunikacja i łączność', short: 'Łączność z zespołem, dowództwem, ewakuacją' },
-  { nr: 22, title: 'ABC', short: 'Podstawowe informacje dla nowo wcielonych' }
+  { nr: 17, title: 'Komunikacja i łączność', short: 'Łączność z zespołem, dowództwem, ewakuacją' }
 ]
 function goToTcccChapter (nr) {
   router.push(`/tccc/${nr}`)

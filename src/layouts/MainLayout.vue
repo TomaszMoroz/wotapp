@@ -47,7 +47,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label class="text-weight-medium">Dashboard</q-item-label>
-            <q-item-label caption>Strona główna</q-item-label>
+            <q-item-label caption :class="isActiveRoute('/') && 'text-white'">Strona główna</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -69,7 +69,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Wszystkie narzędzia</q-item-label>
-              <q-item-label caption>Przegląd kafelków</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tools') && 'text-white'">Lista</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -84,7 +84,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Kalkulator odległości</q-item-label>
-              <q-item-label caption>Pomiar przez tysiączne</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tools/distance') && 'text-white'">Pomiar przez tysiączne</q-item-label>
             </q-item-section>
           </q-item>
                     <q-item
@@ -98,7 +98,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Trening korekty celowania</q-item-label>
-              <q-item-label caption>Symulacja nastaw</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tools/settings') && 'text-white'">Symulacja nastaw</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -113,7 +113,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Konwerter MILS - MOA</q-item-label>
-              <q-item-label caption>Przelicznik jednostek</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tools/mils-moa') && 'text-white'">Przelicznik jednostek</q-item-label>
             </q-item-section>
           </q-item>
           <q-item
@@ -127,7 +127,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">GROT Offset</q-item-label>
-              <q-item-label caption>Kalkulator balistyczny</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/training') && 'text-white'">Kalkulator balistyczny</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -142,7 +142,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Alfabet NATO</q-item-label>
-              <q-item-label caption>Komunikacja fonetyczna</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/communication') && 'text-white'">Komunikacja fonetyczna</q-item-label>
             </q-item-section>
           </q-item>
         </template>
@@ -160,7 +160,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Wyposażenie</q-item-label>
-              <q-item-label caption>Sprzęt wojskowy</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/equipement') && 'text-white'">Sprzęt wojskowy</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -175,7 +175,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Narzędzia</q-item-label>
-              <q-item-label caption>Kalkulatory wojskowe</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tools') && 'text-white'">Kalkulatory wojskowe</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -190,7 +190,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Taktyka, procedury, dowodzenie</q-item-label>
-              <q-item-label caption>Materiały szkoleniowe</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tactics') && 'text-white'">Materiały szkoleniowe</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -205,7 +205,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Topografia</q-item-label>
-              <q-item-label caption>Mapy i nawigacja</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/topography ') && 'text-white'">Mapy i nawigacja</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -220,7 +220,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Strzelectwo</q-item-label>
-              <q-item-label caption>Balistyka i techniki</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/shooting') && 'text-white'">Balistyka i techniki</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -236,7 +236,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">TCCC</q-item-label>
-              <q-item-label caption>Taktyczna pomoc poszkodowanym</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tccc') && 'text-white'">Taktyczna pomoc poszkodowanym</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -251,7 +251,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Meldunki</q-item-label>
-              <q-item-label caption>Raporty wojskowe</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/reports') && 'text-white'">Raporty wojskowe</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -266,7 +266,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Stopnie</q-item-label>
-              <q-item-label caption>Regulaminy wojskowe</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/emergency') && 'text-white'">Regulaminy wojskowe</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -282,7 +282,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">ABC</q-item-label>
-              <q-item-label caption>Podstawowe informacje dla nowo wcielonych</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/abc') && 'text-white'">Podstawowe informacje dla nowo wcielonych</q-item-label>
             </q-item-section>
           </q-item>
         </template>
