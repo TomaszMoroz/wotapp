@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="tccc-bg q-pa-md">
   <BackNav color="black" :showBack="false"/>
   <div class="text-h4 text-weight-bold q-mb-md">TCCC – Taktyczna Pomoc Poszkodowanym na Polu Walki</div>
     <div class="text-subtitle1 text-grey-7 q-mb-xs">Wytyczne dla personelu medycznego (2024)</div>
@@ -51,6 +51,10 @@ function goToTcccChapter (nr) {
 </script>
 
 <style scoped>
+.tccc-bg {
+  background: #f5f7fa;
+  min-height: 100vh;
+}
 .tccc-chapters-grid {
   display: flex;
   flex-wrap: wrap;

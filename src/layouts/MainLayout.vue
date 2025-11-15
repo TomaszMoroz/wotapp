@@ -224,20 +224,21 @@
             </q-item-section>
           </q-item>
 
-          <!-- <q-item
+          <!-- TCCC -->
+          <q-item
             clickable
-            @click="$router.push('/map')"
-            :class="isActiveRoute('/map') ? 'bg-military-active text-white' : ''"
+            @click="$router.push('/tccc')"
+            :class="isActiveRoute('/tccc') ? 'bg-military-active text-white' : ''"
             class="q-my-xs q-mx-sm rounded-borders"
           >
             <q-item-section avatar>
-              <q-icon name="map" :color="isActiveRoute('/map') ? 'white' : 'military-green'" />
+              <q-icon name="medical_services" :color="isActiveRoute('/tccc') ? 'white' : 'red-5'" />
             </q-item-section>
             <q-item-section>
-              <q-item-label class="text-weight-medium">Topografia</q-item-label>
-              <q-item-label caption>Mapy i orientacja</q-item-label>
+              <q-item-label class="text-weight-medium">TCCC</q-item-label>
+              <q-item-label caption>Taktyczna pomoc poszkodowanym</q-item-label>
             </q-item-section>
-          </q-item> -->
+          </q-item>
 
           <q-item
             clickable
