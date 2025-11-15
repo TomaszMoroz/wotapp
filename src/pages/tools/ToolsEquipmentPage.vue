@@ -1,7 +1,6 @@
-const editSNImage = ref('')
 <template>
   <q-page class="equipment-bg q-pa-md">
-    <BackNav color="black" />
+    <BackNav />
     <div class="text-center q-mb-xl">
       <div class="hero-section q-pa-lg rounded-borders">
         <div class="text-h3 text-weight-bold text-primary q-mb-sm">Pobrany sprzęt</div>
@@ -21,7 +20,6 @@ const editSNImage = ref('')
           input-class="text-white"
           label-color="white"
           color="white"
-          borderless
         />
         <div class="q-mb-md row items-center q-gutter-x-md">
           <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" class="text-white" label-color="white" />
@@ -62,8 +60,24 @@ const editSNImage = ref('')
       </q-form>
     </div>
 
-    <q-list bordered separator class="bg-grey-10 text-white" style="max-width: 520px; margin: 0 auto;">
-      <q-item-label v-if="equipmentList.length > 0" header class="text-h6 text-primary text-center">{{ todayDate }}</q-item-label>
+    <q-list bordered separator class="bg-grey-10 text-white q-mt-lg" style="max-width: 520px; margin: 0 auto;">
+      <q-item-label v-if="equipmentList.length > 0" header class="text-h6 flex items-center justify-center q-gutter-x-sm" style="color:#fff;">
+        <span style="color:#fff;">{{ todayDate }}</span>
+        <span style="color:#fff; font-size:0.95em;">({{ equipmentList.length }} el.)</span>
+        <q-btn flat dense round icon="delete" color="red-4" size="sm" @click="showDeleteListDialog = true" />
+      </q-item-label>
+      <q-dialog v-model="showDeleteListDialog">
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-icon name="warning" color="red-5" size="md" class="q-mr-md" />
+            <div class="text-h6" style="color:#fff;">Czy na pewno usunąć całą listę sprzętu?</div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Anuluj" color="grey" v-close-popup />
+            <q-btn flat label="Usuń listę" color="red-5" @click="deleteEquipmentList" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
 
       <q-item v-for="(item, idx) in equipmentList" :key="item.id">
         <q-item-section>
@@ -97,14 +111,14 @@ const editSNImage = ref('')
     </q-list>
 
     <!-- Edycja sprzętu dialog -->
-    <q-dialog v-model="editDialog">
+    <q-dialog v-model="editDialog" persistent>
       <q-card style="min-width:320px">
         <q-card-section>
           <div class="text-h6">Edytuj sprzęt</div>
         </q-card-section>
         <q-card-section>
-          <q-select v-model="editType" :options="equipmentOptions" label="Sprzęt" outlined dense class="text-white bg-transparent border-white" input-class="text-white" label-color="white" color="white" borderless />
-          <q-input v-model="editSN" :key="editDialog + '-' + editIdx" label="Numer seryjny" outlined dense class="q-mt-md text-white bg-transparent border-white" input-class="text-white" label-color="white" color="white" borderless />
+          <q-select v-model="editType" :options="equipmentOptions" label="Sprzęt" outlined dense />
+          <q-input v-model="editSN" label="Numer seryjny" outlined dense class="q-mt-md" input-class="text-black" />
         </q-card-section>
 
         <q-card-actions align="right">
@@ -163,6 +177,13 @@ const editSNImage = ref('')
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+// Dialog kasowania całej listy
+const showDeleteListDialog = ref(false)
+
+function deleteEquipmentList () {
+  equipmentList.value = []
+  localStorage.removeItem(STORAGE_KEY)
+}
 // Dzisiejsza data jako tytuł listy
 const todayDate = new Date().toLocaleDateString('pl-PL', { year: 'numeric', month: '2-digit', day: '2-digit' })
 // Prostokąt do wizualizacji obszaru skanowania (cała szerokość, 80px wysokości, wyśrodkowany)
