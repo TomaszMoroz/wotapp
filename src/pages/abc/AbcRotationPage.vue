@@ -5,7 +5,7 @@
     <div class="text-subtitle1 text-grey-7 q-mb-lg">Praktyczna lista rzeczy i dokumentów</div>
     <q-card class="q-mb-lg">
       <q-card-section>
-        <h5>1. Dokumenty Obowiązkowe <span aria-label="dokumenty" role="img">📄</span></h5>
+        <h5>1. Dokumenty Obowiązkowe</h5>
         <p>Zadbaj o to, by najważniejsze dokumenty były uporządkowane i zabezpieczone (najlepiej w wodoodpornym etui).</p>
         <ul>
           <li><strong>Dokument finansowy:</strong> dokument wskazany przez kancelarię, wypełniony czytelnie i bez skreśleń</li>
@@ -17,19 +17,19 @@
 
     <q-card class="q-mb-lg">
       <q-card-section>
-        <h5>2. Regulaminowy mundur i odzież <span aria-label="mundur" role="img">🪖</span></h5>
+        <h5>2. Regulaminowy mundur i odzież</h5>
         <ul>
           <li><strong>Mundur polowy:</strong> zgodny z regulaminem, czysty i kompletny.</li>
           <li><strong>Nakrycie głowy:</strong> beret, czapka polowa lub inne wymagane przez jednostkę.</li>
-          <li><strong>Obuwie:</strong> buty wojskowe, wyczyszczone i sprawne.</li>
-          <li><strong>Opcjonalnie odzież niereosrtowa na taktykę:</strong> np. bielizna termoaktywna, rękawiczki taktyczne, chusta, combat-shirt, według potrzeb i warunków pogodowych.</li>
+          <li><strong>Obuwie:</strong> buty wojskowe, wyczyszczone</li>
+          <li><strong>Opcjonalnie odzież niereosrtowa na taktykę:</strong> np. bielizna termoaktywna, rękawiczki taktyczne, chusta, combat-shirt, dodatkowe buty, według potrzeb i warunków pogodowych.</li>
         </ul>
       </q-card-section>
     </q-card>
 
     <q-card class="q-mb-lg">
       <q-card-section>
-        <h5>3. Dostosowanie Sprzętu do Zadania <span aria-label="waga" role="img">⚖️</span></h5>
+        <h5>3. Dostosowanie Sprzętu do Zadania</h5>
         <p><strong>Dlaczego mniej znaczy lepiej?</strong></p>
         <p>W wojsku często istnieje tendencja, by brać "wszystko, co może się przydać". Jest to poważny błąd w kontekście lekkiej piechoty i dynamicznych działań:</p>
         <ul>
