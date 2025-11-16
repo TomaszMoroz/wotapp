@@ -28,21 +28,22 @@ const router = useRouter()
 const tcccChapters = [
   { nr: 1, title: 'Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji' },
   { nr: 2, title: 'Pomoc pod ostrzałem', short: 'Care Under Fire – działania pod ostrzałem' },
-  { nr: 3, title: 'Taktyczna pomoc polowa', short: 'Tactical Field Care – ogólne zasady' },
-  { nr: 4, title: 'Masywny krwotok', short: 'Tamowanie masywnych krwotoków' },
-  { nr: 5, title: 'Udrożnienie dróg oddechowych', short: 'Zapewnienie drożności dróg oddechowych' },
-  { nr: 6, title: 'Wentylacja/Oddychanie', short: 'Postępowanie przy zaburzeniach oddychania' },
-  { nr: 7, title: 'Krążenie i wstrząs', short: 'Zasady postępowania z krążeniem i wstrząsem' },
-  { nr: 8, title: 'Zapobieganie hipotermii', short: 'Ochrona przed wychłodzeniem' },
-  { nr: 9, title: 'Uraz czaszkowo-mózgowy (TBI)', short: 'Postępowanie przy TBI' },
-  { nr: 10, title: 'Drążący uraz oka', short: 'Drążący uraz oka – postępowanie' },
-  { nr: 11, title: 'Analgezja', short: 'Leczenie bólu na polu walki' },
+  { nr: 3, title: 'Masywny krwotok', short: 'Tamowanie masywnych krwotoków' },
+  { nr: 4, title: 'Udrożnienie dróg oddechowych', short: 'Zapewnienie drożności dróg oddechowych' },
+  { nr: 5, title: 'Wentylacja/Oddychanie', short: 'Postępowanie przy zaburzeniach oddychania' },
+  { nr: 6, title: 'Krążenie i wstrząs', short: 'Zasady postępowania z krążeniem i wstrząsem' },
+  { nr: 7, title: 'Zapobieganie hipotermii', short: 'Ochrona przed wychłodzeniem' },
+  { nr: 8, title: 'Uraz czaszkowo-mózgowy (TBI)', short: 'Postępowanie przy TBI' },
+  { nr: 9, title: 'Drążący uraz oka', short: 'Drążący uraz oka – postępowanie' },
+  { nr: 10, title: 'Analgezja', short: 'Leczenie bólu na polu walki' },
+  { nr: 11, title: 'Antybiotykoterapia', short: 'Antybiotyki w ranach bojowych' },
   { nr: 12, title: 'Antybiotykoterapia', short: 'Antybiotyki w ranach bojowych' },
   { nr: 13, title: 'Wytrzewienie jamy brzusznej', short: 'Postepowanie przy wytrzewieniu' },
   { nr: 14, title: 'Oparzenia', short: 'Postepowanie przy oparzeniach' },
   { nr: 15, title: 'RKO', short: 'Resucucytacja krazeniowo oddechowa' },
   { nr: 16, title: 'Dokumentacja medyczna', short: 'Dokumentowanie zabiegów i stanu poszkodowanego' },
-  { nr: 17, title: 'Komunikacja i łączność', short: 'Łączność z zespołem, dowództwem, ewakuacją' }
+  { nr: 17, title: 'Komunikacja i łączność', short: 'Łączność z zespołem, dowództwem, ewakuacją' },
+  { nr: 18, title: 'Przygotowanie poszkodowanego do ewakuacji', short: '' }
 ]
 function goToTcccChapter (nr) {
   router.push(`/tccc/${nr}`)

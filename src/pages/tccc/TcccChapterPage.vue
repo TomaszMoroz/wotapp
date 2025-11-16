@@ -29,14 +29,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { computed } from 'vue'
 
 const chapters = {
-  22: {
-    title: 'ABC',
-    short: 'Podstawowe informacje dla nowo wcielonych',
-    content: `<section class="tccc-section">
-<h4>ABC – Podstawowe informacje dla nowo wcielonych</h4>
-<p>Ta sekcja zawiera kluczowe zasady bezpieczeństwa, organizacji i pierwszych kroków dla nowych żołnierzy Wojsk Obrony Terytorialnej. Zapoznaj się z procedurami, zasadami meldowania, podstawami udzielania pierwszej pomocy oraz strukturą jednostki.</p>
-</section>`
-  },
   1: {
     title: 'Podstawowy plan zarządzania dla taktycznej pomocy poszkodowanym podczas ewakuacji',
     content: `<section class="tccc-section">
@@ -88,21 +80,6 @@ const chapters = {
     </ol>
   </li>
   <li>Dokumentacja przebiegu pomocy udzielonej poszkodowanym (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-</ol>
-</section>`
-  },
-  17: {
-    title: 'Przygotuj poszkodowanego do ewakuacji',
-    content: `<section class="tccc-section">
-<h4>Przygotuj poszkodowanego do ewakuacji.</h4>
-<ol type="a">
-  <li>Wypełnij kartę TCCC Poszkodowanego (DD 1380) i umieść ją na poszkodowanym.</li>
-  <li>Zabezpiecz wszystkie luźne końcówki bandaży i ochraniaczy.</li>
-  <li>Zabezpiecz środki zapobiegające hipotermii tzn. ochraniacze/koce/taśmy.</li>
-  <li>Zabezpiecz taśmy noszy w niezbędnym zakresie. Jeżeli ewakuacja będzie trwała długo rozważ ułożenie dodatkowych podkładek pod ciałem poszkodowanego.</li>
-  <li>W razie potrzeby przekaż instrukcje poszkodowanym chodzącym.</li>
-  <li>Zorganizuj ewakuację poszkodowanych zgodnie ze standardowymi procedurami operacyjnymi [SOP] jednostki.</li>
-  <li>Utrzymuj bezpieczeństwo punktu ewakuacyjnego zgodnie ze standardowymi procedurami operacyjnymi jednostki.</li>
 </ol>
 </section>`
   },
@@ -387,14 +364,6 @@ const chapters = {
 </section>`
   },
   10: {
-    title: 'Monitorowanie poszkodowanego',
-    content: `<section class="tccc-section">
-<ul>
-  <li>Rozpocznij elektroniczne monitorowanie poszkodowanego jeżeli jest to wskazane i jeżeli dysponujesz sprzętem do takiego monitorowania.</li>
-</ul>
-</section>`
-  },
-  11: {
     title: 'Analgezja',
     content: `<section class="tccc-section">
 <ol type="a">
@@ -478,7 +447,7 @@ const chapters = {
 </ol>
 </section>`
   },
-  12: {
+  11: {
     title: 'Antybiotyki',
     content: `<section class="tccc-section">
 <ol type="a">
@@ -512,6 +481,31 @@ const chapters = {
 </section>`
   },
   14: {
+    title: 'Oparzenia',
+    short: '',
+    content: `<section class="tccc-section">
+<ol type="a">
+  <li>Oceniaj i traktuj takiego poszkodowanego jako poszkodowanego pourazowego z oparzeniami a nie oparzonego poszkodowanego z urazami.</li>
+  <li>Oparzenia twarzy, szczególnie te, do których doszło w pomieszczeniach zamkniętych, mogą być powiązane z uszkodzeniem dróg oddechowych. Zalecana jest wnikliwa obserwacja stanu dróg oddechowych i saturacji u takich pacjentów oraz rozważenie wczesnego chirurgicznego udrożnienia dróg oddechowych lub desaturacji.</li>
+  <li>Oszacuj całkowitą powierzchnię ciała (TBSA) dotkniętą oparzeniami zaokrąglając do 10% stosując Regułę Dziewiątek.</li>
+  <li>Opatrz oparzenia suchym, jałowym opatrunkiem. W przypadku rozległych oparzeń (ponad 20%), należy rozważyć umieszczenie poszkodowanego w ochraniaczu [HRS - Heat-Reflective Shell] lub kocu [BSB - Blizzard Survival Blanket], które znajdują się w zestawie do zapobiegania hipotermii [Hypothermia Prevention Kit], w celu zasłonięcia oparzonych powierzchni ciała i uniknięcia hipotermii.</li>
+  <li>Resuscytacja płynowa /uzupełnianie płynów/ (USAISR zgodnie z Regułą Dziesiątek):
+    <ol type="1">
+      <li>Jeśli oparzenia są większe niż 20% całkowitej powierzchni ciała, uzupełnianie płynów należy rozpocząć niezwłocznie po uzyskaniu dostępu dożylnego lub doszpikowego. Resuscytację należy rozpocząć od podania mleczanu Ringera, roztworu soli fizjologicznej lub Hextendu po uzyskaniu dostępu dożylnego lub doszpikowego. W przypadku użycia Hextendu, nie należy podać więcej niż 1000 ml, a następnie można w miarę potrzeby uzupełnić poziom płynów mleczanem Ringera i solą fizjologiczną.</li>
+      <li>Wstępna objętość płynu podawanego dożylnie lub doszpikowo jest obliczana jako procent powierzchni oparzeń (%TBSA) x 10 ml/godz. dla dorosłych ważących w przedziale od 40-80 kg.</li>
+      <li>Na każde 10 kg POWYŻEJ 80 kg, należy zwiększyć dawkę o 100 ml/godz.</li>
+      <li>Jeśli występuje również wstrząs hipowolemiczny, standard resuscytacji płynowej stosowany w takim przypadku ma priorytet nad stosowanym wyłącznie przy oparzeniach. Należy podawać płyny dożylnie lub doszpikowo wg wytycznych TCCC wymienionych w sekcji (6).</li>
+      <li>Rozważ doustne podanie płynów w przypadku oparzeń do 30% całkowitej powierzchni ciała, jeśli poszkodowany jest przytomny i może przełykać.</li>
+    </ol>
+  </li>
+  <li>W celu znieczulenia bólu powodowanego przez oparzenia można zastosować środki przeciwbólowe wg Wytycznych TCCC wymienionych w sekcji (10).</li>
+  <li>Terapia antybiotykowa w leczeniu przedszpitalnym nie jest zasadnicza dla samych oparzeń, ale antybiotyki powinny być podane wg Wytycznych TCCC wymienionych w sekcji (11), aby zapobiec infekcjom ran drążących.</li>
+  <li>Wszystkie zabiegi medyczne z zakresu TCCC mogą być wykonywane na lub przez poparzoną skórę poszkodowanego.</li>
+  <li>Poszkodowani z poparzeniami są szczególnie narażeni na hipotermię. Szczególny nacisk należy położyć na stosowanie barierowych metod zapobiegających utracie ciepła.</li>
+</ol>
+</section>`
+  },
+  15: {
     title: 'RKO',
     short: 'Resucucytacja krazeniowo oddechowa',
     content: `<section class="tccc-section">
@@ -522,7 +516,7 @@ const chapters = {
 </ol>
 </section>`
   },
-  16: {
+  17: {
     title: 'Komunikacja/łączność',
     content: `<section class="tccc-section">
 <h4>Komunikacja/łączność.</h4>
@@ -533,17 +527,7 @@ const chapters = {
 </ol>
 </section>`
   },
-  18: {
-    title: 'Komunikacja/łączność',
-    content: `<section class="tccc-section">
-<ol>
-  <li>Utrzymuj kontakt z poszkodowanym jeśli jest to możliwe. Podtrzymuj na duchu i uspakajaj, poinformuj poszkodowanego o przeprowadzonych działaniach medycznych.</li>
-  <li>Jak najszybciej skontaktuj się z dowództwem szczebla taktycznego i utrzymuj z nim łączność podczas udzielania rannemu niezbędnej pomocy. Poinformuj dowództwo o stanie poszkodowanego i potrzebach ewakuacyjnych. Dzięki tym informacjom pomożesz koordynować zasoby niezbędne do ewakuacji.</li>
-  <li>Skontaktuj się z komponentami systemu ewakuacyjnego (Komórka koordynująca ewakuację poszkodowanych - Patient Evacuation Coordination Cell), aby zorganizować TACEVAC. Jeśli to możliwe, informuj personel medyczny o potrzebach ewakuacyjnych, przekaż informacje o mechanizmie urazu, odniesionych przez poszkodowanego obrażeniach, występujących parametrach/objawach, oraz wykonanych procedurach medycznych. W odpowiednich przypadkach przekaż dodatkowe informacje.</li>
-</ol>
-</section>`
-  },
-  15: {
+  16: {
     title: 'Dokumentacja medyczna',
     content: `<section class="tccc-section">
 <h4>Dokumentacja medyczna.</h4>
@@ -553,7 +537,7 @@ const chapters = {
 </ol>
 </section>`
   },
-  20: {
+  18: {
     title: 'Przygotowanie poszkodowanego do ewakuacji',
     content: `<section class="tccc-section">
 <ol>
@@ -564,31 +548,6 @@ const chapters = {
   <li>W razie potrzeby przekaż instrukcje poszkodowanym chodzącym.</li>
   <li>Zorganizuj ewakuację poszkodowanych zgodnie ze standardowymi procedurami operacyjnymi [SOP] jednostki.</li>
   <li>Utrzymuj bezpieczeństwo punktu ewakuacyjnego zgodnie ze standardowymi procedurami operacyjnymi jednostki.</li>
-</ol>
-</section>`
-  },
-  21: {
-    title: 'Tactical Evacuation Care (TACEVAC)',
-    content: `<section class="tccc-section">
-<ol>
-  <li>Przekazanie poszkodowanych następnemu poziomowi pomocy.</li>
-  <li>Masywny krwotok (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Udrożnienie dróg oddechowych.</li>
-  <li>Wentylacja/Oddychanie.</li>
-  <li>Krążenie (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Umiarkowany lub poważny uraz czaszkowo-mózgowy (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Zapobieganie wychłodzeniu (hipotermii) (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Drążący uraz oka (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Monitorowanie poszkodowanego (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Analgezja (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Antybiotyki (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Ponownie sprawdź i opatrz wcześniej znalezione rany (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Sprawdź czy nie ma innych ran (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Oparzenia (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Ponowna ocena złamań i ponowne sprawdzenie tętna (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
-  <li>Resuscytacja krążeniowo-oddechowa (RKO, ang. CPR) podczas fazy taktycznej ewakuacji poszkodowanego (TACEVAC).</li>
-  <li>Komunikacja/łączność.</li>
-  <li>Dokumentacja przebiegu pomocy udzielonej poszkodowanym (należy stosować te same wytyczne, które opracowano dla fazy Taktycznej Pomocy Polowej).</li>
 </ol>
 </section>`
   }
