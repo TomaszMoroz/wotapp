@@ -60,13 +60,22 @@
       </q-form>
     </div>
 
+    <div v-if="availableDates.length > 1" class="q-mb-md flex flex-center">
+      <q-select
+        v-model="selectedDate"
+        :options="availableDates"
+        label="Wybierz dzień"
+        dense outlined color="primary"
+        style="max-width: 220px;"
+      />
+    </div>
+
     <q-list bordered separator class="bg-grey-10 text-white q-mt-xl" style="max-width: 600px; margin: 50px auto">
       <q-item-label v-if="equipmentList.length > 0" header class="text-h6 flex items-center justify-center q-gutter-x-sm" style="color:#fff;">
-        <span style="color:#fff;">{{ todayDate }}</span>
+        <span style="color:#fff;">{{ selectedDate }}</span>
         <span style="color:#fff; font-size:0.95em;">({{ equipmentList.length }} el.)</span>
         <q-btn flat dense round icon="delete" color="red-4" size="sm" @click="showDeleteListDialog = true" />
       </q-item-label>
-
       <q-item v-for="(item, idx) in equipmentList" :key="item.id" class="q-my-md q-py-md">
         <q-item-section>
           <div class="text-h6">{{ item.type }}</div>
@@ -178,35 +187,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 // Dialog kasowania całej listy
 const showDeleteListDialog = ref(false)
 
-function deleteEquipmentList () {
-  equipmentList.value = []
-  localStorage.removeItem(STORAGE_KEY)
-}
-// Dzisiejsza data jako tytuł listy
+const STORAGE_KEY = 'equipmentList-v2'
 const todayDate = new Date().toLocaleDateString('pl-PL', { year: 'numeric', month: '2-digit', day: '2-digit' })
-// Prostokąt do wizualizacji obszaru skanowania (cała szerokość, 80px wysokości, wyśrodkowany)
-// const scanRectHeight = 80
-// const scanRectStyle = computed(() => {
-//   const h = video.value?.videoHeight || 240
-//   const top = (h - scanRectHeight) / 2
-//   return {
-//     top: top + 'px',
-//     height: scanRectHeight + 'px',
-//     width: '100%',
-//     left: 0,
-//     right: 0,
-//     border: '2px solid #21c521',
-//     position: 'absolute',
-//     boxSizing: 'border-box',
-//     pointerEvents: 'none',
-//     zIndex: 2
-//   }
-// })
-import BackNav from 'components/BackNav.vue'
+const equipmentData = ref({}) // { [data]: [sprzęty] }
+const selectedDate = ref(todayDate)
 
 const equipmentOptions = [
   'Grot', 'Bor', 'Tor', 'Vis', 'Rubin', 'Brom', 'Gryf', 'Maska p-gaz', 'FOO'
@@ -215,7 +203,6 @@ const equipmentOptions = [
 const selectedType = ref(null)
 const serialNumber = ref('')
 const snMode = ref('manual')
-const equipmentList = ref([])
 
 // Edycja
 const editDialog = ref(false)
@@ -226,6 +213,60 @@ const editSN = ref('')
 // Potwierdzenie usuwania
 const confirmDialog = ref(false)
 const removeIdx = ref(-1)
+
+function deleteEquipmentList () {
+  if (equipmentData.value[selectedDate.value]) {
+    delete equipmentData.value[selectedDate.value]
+    saveEquipment()
+    selectedDate.value = availableDates.value[0] || todayDate
+  }
+}
+
+function addEquipment () {
+  if (!equipmentData.value[todayDate]) {
+    equipmentData.value[todayDate] = []
+  }
+  equipmentData.value[todayDate].push({
+    id: Date.now(),
+    type: selectedType.value,
+    sn: serialNumber.value,
+    snImage: cropPreviewUrl.value || null
+  })
+  saveEquipment()
+  selectedType.value = null
+  serialNumber.value = ''
+  cropPreviewUrl.value = ''
+  selectedDate.value = todayDate
+}
+
+function loadEquipment () {
+  const data = localStorage.getItem(STORAGE_KEY)
+  equipmentData.value = data ? JSON.parse(data) : {}
+  if (!equipmentData.value[selectedDate.value]) {
+    selectedDate.value = availableDates.value[0] || todayDate
+  }
+}
+function saveEquipment () {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(equipmentData.value))
+}
+
+const equipmentList = computed(() => equipmentData.value[selectedDate.value] || [])
+const availableDates = computed(() => Object.keys(equipmentData.value).sort((a, b) => b.localeCompare(a)))
+
+function editItem (idx) {
+  editIdx.value = idx
+  editType.value = equipmentList.value[idx].type
+  editSN.value = equipmentList.value[idx].sn
+  editDialog.value = true
+}
+function saveEdit () {
+  if (editIdx.value >= 0) {
+    equipmentList.value[editIdx.value].type = editType.value
+    equipmentList.value[editIdx.value].sn = editSN.value
+    saveEquipment()
+    editDialog.value = false
+  }
+}
 
 function confirmRemoveItem (idx) {
   removeIdx.value = idx
@@ -251,53 +292,6 @@ let stream = null
 const ocrText = ref('')
 const cropPreviewUrl = ref('')
 
-// LocalStorage obsługa
-const STORAGE_KEY = 'equipmentList-v1'
-
-function loadEquipment () {
-  const data = localStorage.getItem(STORAGE_KEY)
-  equipmentList.value = data ? JSON.parse(data) : []
-}
-function saveEquipment () {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(equipmentList.value))
-}
-
-function addEquipment () {
-  equipmentList.value.push({
-    id: Date.now(),
-    type: selectedType.value,
-    sn: serialNumber.value,
-    snImage: cropPreviewUrl.value || null
-  })
-  saveEquipment()
-  selectedType.value = null
-  serialNumber.value = ''
-  cropPreviewUrl.value = ''
-}
-
-function editItem (idx) {
-  editIdx.value = idx
-  editType.value = equipmentList.value[idx].type
-  editSN.value = equipmentList.value[idx].sn
-  editDialog.value = true
-}
-function saveEdit () {
-  if (editIdx.value >= 0) {
-    equipmentList.value[editIdx.value].type = editType.value
-    equipmentList.value[editIdx.value].sn = editSN.value
-    saveEquipment()
-    editDialog.value = false
-  }
-}
-
-// Kamera i skanowanie SN
-function stopCamera () {
-  if (stream) {
-    stream.getTracks().forEach(track => track.stop())
-    stream = null
-  }
-}
-
 async function startCamera () {
   stopCamera()
   try {
@@ -308,6 +302,13 @@ async function startCamera () {
     }
   } catch (e) {
     stopCamera()
+  }
+}
+
+function stopCamera () {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop())
+    stream = null
   }
 }
 
@@ -423,7 +424,7 @@ watch(cameraDialog, (val) => {
 onMounted(() => {
   loadEquipment()
 })
-watch(equipmentList, saveEquipment, { deep: true })
+watch(equipmentData, saveEquipment, { deep: true })
 </script>
 
 <style scoped>
