@@ -60,39 +60,31 @@
       </q-form>
     </div>
 
-    <div v-if="availableDates.length > 1" class="q-mb-md flex flex-center">
-      <q-select
-        v-model="selectedDate"
-        :options="availableDates"
-        label="Wybierz dzień"
-        dense outlined color="primary"
-        style="max-width: 220px;"
-      />
+    <div v-for="date in availableDates" :key="date" class="q-mb-xl">
+      <q-list bordered separator class="bg-grey-10 text-white q-mt-xl" style="max-width: 600px; margin: 50px auto">
+        <q-item-label v-if="equipmentData[date] && equipmentData[date].length > 0" header class="text-h6 flex items-center justify-center q-gutter-x-sm" style="color:#fff;">
+          <span style="color:#fff;">{{ date }}</span>
+          <span style="color:#fff; font-size:0.95em;">({{ equipmentData[date].length }} el.)</span>
+          <q-btn flat dense round icon="delete" color="red-4" size="sm" @click="deleteEquipmentList(date)" />
+        </q-item-label>
+        <q-item v-for="(item, idx) in equipmentData[date]" :key="item.id" class="q-my-md q-py-md">
+          <q-item-section>
+            <div class="text-h6">{{ item.type }}</div>
+            <div class="text-h6">SN: {{ item.sn }}</div>
+            <div v-if="item.snImage" class="q-mt-sm">
+              <img :src="item.snImage" alt="Podgląd SN" style="width:100%; max-width:480px; max-height:120px; border:1.5px solid #21c521; background:#222; object-fit:contain; display:block;" />
+            </div>
+          </q-item-section>
+          <q-item-section side>
+            <q-btn flat icon="edit" color="blue-5" @click="editItemGlobal(date, idx)" />
+            <q-btn flat icon="delete" color="red-5" @click="confirmRemoveItemGlobal(date, idx)" />
+          </q-item-section>
+        </q-item>
+        <q-item v-if="!equipmentData[date] || equipmentData[date].length === 0">
+          <q-item-section class="text-grey-6">Brak sprzętu na liście</q-item-section>
+        </q-item>
+      </q-list>
     </div>
-
-    <q-list bordered separator class="bg-grey-10 text-white q-mt-xl" style="max-width: 600px; margin: 50px auto">
-      <q-item-label v-if="equipmentList.length > 0" header class="text-h6 flex items-center justify-center q-gutter-x-sm" style="color:#fff;">
-        <span style="color:#fff;">{{ selectedDate }}</span>
-        <span style="color:#fff; font-size:0.95em;">({{ equipmentList.length }} el.)</span>
-        <q-btn flat dense round icon="delete" color="red-4" size="sm" @click="showDeleteListDialog = true" />
-      </q-item-label>
-      <q-item v-for="(item, idx) in equipmentList" :key="item.id" class="q-my-md q-py-md">
-        <q-item-section>
-          <div class="text-h6">{{ item.type }}</div>
-          <div class="text-h6">SN: {{ item.sn }}</div>
-          <div v-if="item.snImage" class="q-mt-sm">
-            <img :src="item.snImage" alt="Podgląd SN" style="width:100%; max-width:480px; max-height:120px; border:1.5px solid #21c521; background:#222; object-fit:contain; display:block;" />
-          </div>
-        </q-item-section>
-        <q-item-section side>
-          <q-btn flat icon="edit" color="blue-5" @click="editItem(idx)" />
-          <q-btn flat icon="delete" color="red-5" @click="confirmRemoveItem(idx)" />
-        </q-item-section>
-      </q-item>
-      <q-item v-if="equipmentList.length === 0">
-        <q-item-section class="text-grey-6">Brak sprzętu na liście</q-item-section>
-      </q-item>
-    </q-list>
 
     <q-dialog v-model="showDeleteListDialog">
         <q-card>
@@ -194,7 +186,6 @@ const showDeleteListDialog = ref(false)
 const STORAGE_KEY = 'equipmentList-v2'
 const todayDate = new Date().toLocaleDateString('pl-PL', { year: 'numeric', month: '2-digit', day: '2-digit' })
 const equipmentData = ref({}) // { [data]: [sprzęty] }
-const selectedDate = ref(todayDate)
 
 const equipmentOptions = [
   'Grot', 'Bor', 'Tor', 'Vis', 'Rubin', 'Brom', 'Gryf', 'Maska p-gaz', 'FOO'
@@ -204,85 +195,55 @@ const selectedType = ref(null)
 const serialNumber = ref('')
 const snMode = ref('manual')
 
-// Edycja
+// Usuwanie listy po dacie
+function deleteEquipmentList (date) {
+  if (equipmentData.value[date]) {
+    delete equipmentData.value[date]
+    saveEquipment()
+  }
+}
+// Edycja i usuwanie globalne
 const editDialog = ref(false)
 const editIdx = ref(-1)
 const editType = ref('')
 const editSN = ref('')
-
-// Potwierdzenie usuwania
+const editDate = ref('')
 const confirmDialog = ref(false)
 const removeIdx = ref(-1)
-
-function deleteEquipmentList () {
-  if (equipmentData.value[selectedDate.value]) {
-    delete equipmentData.value[selectedDate.value]
-    saveEquipment()
-    selectedDate.value = availableDates.value[0] || todayDate
-  }
-}
-
-function addEquipment () {
-  if (!equipmentData.value[todayDate]) {
-    equipmentData.value[todayDate] = []
-  }
-  equipmentData.value[todayDate].push({
-    id: Date.now(),
-    type: selectedType.value,
-    sn: serialNumber.value,
-    snImage: cropPreviewUrl.value || null
-  })
-  saveEquipment()
-  selectedType.value = null
-  serialNumber.value = ''
-  cropPreviewUrl.value = ''
-  selectedDate.value = todayDate
-}
-
-function loadEquipment () {
-  const data = localStorage.getItem(STORAGE_KEY)
-  equipmentData.value = data ? JSON.parse(data) : {}
-  if (!equipmentData.value[selectedDate.value]) {
-    selectedDate.value = availableDates.value[0] || todayDate
-  }
-}
-function saveEquipment () {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(equipmentData.value))
-}
-
-const equipmentList = computed(() => equipmentData.value[selectedDate.value] || [])
-const availableDates = computed(() => Object.keys(equipmentData.value).sort((a, b) => b.localeCompare(a)))
-
-function editItem (idx) {
+const removeDate = ref('')
+function editItemGlobal (date, idx) {
+  editDate.value = date
   editIdx.value = idx
-  editType.value = equipmentList.value[idx].type
-  editSN.value = equipmentList.value[idx].sn
+  editType.value = equipmentData.value[date][idx].type
+  editSN.value = equipmentData.value[date][idx].sn
   editDialog.value = true
 }
 function saveEdit () {
-  if (editIdx.value >= 0) {
-    equipmentList.value[editIdx.value].type = editType.value
-    equipmentList.value[editIdx.value].sn = editSN.value
+  if (editIdx.value >= 0 && editDate.value) {
+    equipmentData.value[editDate.value][editIdx.value].type = editType.value
+    equipmentData.value[editDate.value][editIdx.value].sn = editSN.value
     saveEquipment()
     editDialog.value = false
   }
 }
-
-function confirmRemoveItem (idx) {
+function confirmRemoveItemGlobal (date, idx) {
+  removeDate.value = date
   removeIdx.value = idx
   confirmDialog.value = true
 }
 function doRemoveItem () {
-  if (removeIdx.value >= 0) {
-    equipmentList.value.splice(removeIdx.value, 1)
+  if (removeIdx.value >= 0 && removeDate.value) {
+    equipmentData.value[removeDate.value].splice(removeIdx.value, 1)
     saveEquipment()
   }
   confirmDialog.value = false
   removeIdx.value = -1
+  removeDate.value = ''
 }
 function cancelRemoveItem () {
   confirmDialog.value = false
   removeIdx.value = -1
+  removeDate.value = ''
 }
 
 // Kamera
@@ -394,7 +355,11 @@ function acceptOCRText () {
 
 function acceptCropOnly () {
   // Dodaj sprzęt z samym wycinkiem (bez SN)
-  equipmentList.value.push({
+  // Dodaj do dzisiejszej listy
+  if (!equipmentData.value[todayDate]) {
+    equipmentData.value[todayDate] = []
+  }
+  equipmentData.value[todayDate].push({
     id: Date.now(),
     type: selectedType.value,
     sn: '',
@@ -408,6 +373,41 @@ function acceptCropOnly () {
   stopCamera()
   ocrText.value = ''
 }
+
+// --- Persistence ---
+function saveEquipment () {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(equipmentData.value))
+}
+function loadEquipment () {
+  const data = localStorage.getItem(STORAGE_KEY)
+  if (data) {
+    equipmentData.value = JSON.parse(data)
+  }
+}
+
+// --- Add equipment ---
+function addEquipment () {
+  if (!selectedType.value) return
+  if (!equipmentData.value[todayDate]) {
+    equipmentData.value[todayDate] = []
+  }
+  equipmentData.value[todayDate].push({
+    id: Date.now(),
+    type: selectedType.value,
+    sn: serialNumber.value,
+    snImage: cropPreviewUrl.value || null
+  })
+  saveEquipment()
+  selectedType.value = null
+  serialNumber.value = ''
+  cropPreviewUrl.value = ''
+}
+
+// --- Dates for display ---
+const availableDates = computed(() => Object.keys(equipmentData.value).sort((a, b) => {
+  // Sortuj malejąco (najnowsze na górze)
+  return b.localeCompare(a)
+}))
 
 watch(cameraDialog, (val) => {
   if (val) {
