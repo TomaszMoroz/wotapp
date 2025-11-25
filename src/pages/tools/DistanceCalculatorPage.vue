@@ -84,7 +84,6 @@
       <q-card class="object-dialog">
         <q-card-section class="dialog-header">
           <div class="text-h6 text-weight-bold">Wybierz obiekt</div>
-          <div class="text-caption text-grey-6">Sprzęt wojskowy - wymiary orientacyjne</div>
         </q-card-section>
 
         <!-- Filter input -->
@@ -126,16 +125,14 @@
             @click="selectEquipment(equipment)"
           >
             <div class="equipment-info">
-              <div class="equipment-name">{{ equipment.name }}</div>
               <div class="equipment-details">
-                <span class="equipment-type">{{ equipment.type }}</span>
-                <span class="equipment-dimensions">
-                  {{ selectedDimension === 'height' ? 'Wys:' : selectedDimension === 'width' ? 'Szer:' : 'Dł:' }}
-                  {{ selectedDimension === 'height' ? equipment.height : selectedDimension === 'width' ? equipment.width : equipment.length }}m
+                <span class="equipment-type"><q-chip class="text-h6">{{ equipment.name }}{{ selectedDimension === 'height' ? ' Wys:' : selectedDimension === 'width' ? ' Szer:' : ' Dł:' }}
+                  {{ selectedDimension === 'height' ? (equipment.height + 'm') : selectedDimension === 'width' ? (equipment.width + 'm') : (equipment.length + 'm') }}</q-chip>
                 </span>
               </div>
+              <div class="text-left text-body2">{{ equipment.type }}</div>
             </div>
-            <q-icon name="chevron_right" color="grey-5" />
+            <q-separator class="q-my-md"/>
           </div>
         </q-card-section>
 

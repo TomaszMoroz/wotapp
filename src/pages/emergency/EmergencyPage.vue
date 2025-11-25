@@ -1,74 +1,56 @@
 <template>
-  <q-page class="page-background">
-    <div class="container q-pa-md">
-      <BackNav />
-      <!-- Header Section -->
-      <div class="text-center q-mb-xl">
-        <div class="hero-section q-pa-lg rounded-borders">
-          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Stopnie, regulamin, prawo</div>
-          <div class="text-body1 text-grey-6">Wojskowe oznaczenia i przepisy</div>
-        </div>
+  <q-page class="modern-bg q-pa-md">
+    <div class="q-mx-auto" style="width: 80%"><BackNav color="black"/></div>
+    <div class="row items-center justify-between q-mb-xl q-mx-auto" style="width:80%">
+      <div>
+        <div class="text-h4 text-weight-bold modern-title">Stopnie, regulamin, prawo</div>
+        <div class="text-subtitle1 text-grey-7 q-mt-xs">Wojskowe oznaczenia i przepisy</div>
       </div>
-
-      <!-- Cards Grid -->
-      <div class="cards-grid q-mb-xl">
-        <!-- Stopnie Wojskowe -->
-        <q-card
-          class="dashboard-card military-primary-card"
-          clickable
-          @click="navigateTo('/ranks')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="military_tech" size="3rem" color="white" />
+    </div>
+    <div class="dashboard-tiles q-mb-xl">
+      <div class="tiles-grid">
+        <q-card class="modern-tile" @click="navigateTo('/ranks')">
+          <q-card-section class="tile-content">
+            <div class="tile-icon-bg" style="background: #827858;">
+              <q-icon name="military_tech" color="white" size="32px" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Stopnie Wojskowe</div>
-            <div class="text-caption text-grey-4">Oznaczenia i hierarchia WOT</div>
+            <div class="tile-label-row">
+              <span class="tile-label">Stopnie Wojskowe</span>
+            </div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Oznaczenia i hierarchia WOT</q-chip>
           </q-card-section>
         </q-card>
-
-        <!-- Regulaminy -->
-        <q-card
-          class="dashboard-card military-brown-card"
-          clickable
-          @click="navigateTo('/regulations')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="gavel" size="3rem" color="white" />
+        <q-card class="modern-tile" @click="navigateTo('/regulations')">
+          <q-card-section class="tile-content">
+            <div class="tile-icon-bg" style="background: #a2ad59;">
+              <q-icon name="gavel" color="white" size="32px" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Regulaminy</div>
-            <div class="text-caption text-grey-4">Przepisy i procedury WOT</div>
+            <div class="tile-label-row">
+              <span class="tile-label">Regulaminy</span>
+            </div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Przepisy i procedury WOT</q-chip>
           </q-card-section>
         </q-card>
-
-        <!-- Warunki użycia broni palnej -->
-        <q-card
-          class="dashboard-card military-dark-card"
-          clickable
-          @click="navigateTo('/firearms-law')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="security" size="3rem" color="white" />
+        <q-card class="modern-tile" @click="navigateTo('/firearms-law')">
+          <q-card-section class="tile-content">
+            <div class="tile-icon-bg" style="background: #65473f;">
+              <q-icon name="security" color="white" size="32px" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Warunki użycia broni palnej</div>
-            <div class="text-caption text-grey-4">Art. 45 - Ustawa o środkach przymusu</div>
+            <div class="tile-label-row">
+              <span class="tile-label">Warunki użycia broni palnej</span>
+            </div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Art. 45 - Ustawa o ś.p.</q-chip>
           </q-card-section>
         </q-card>
-
-        <!-- Musztra -->
-        <q-card
-          class="dashboard-card military-drill-card"
-          clickable
-          @click="navigateTo('/drill')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="flag" size="3rem" color="white" />
+        <q-card class="modern-tile" @click="navigateTo('/drill')">
+          <q-card-section class="tile-content">
+            <div class="tile-icon-bg" style="background: #8e936d;">
+              <q-icon name="flag" color="white" size="32px" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Musztra</div>
-            <div class="text-caption text-grey-4">Regulamin musztry</div>
+            <div class="tile-label-row">
+              <span class="tile-label">Musztra</span>
+            </div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Regulamin musztry</q-chip>
           </q-card-section>
         </q-card>
       </div>
@@ -79,96 +61,112 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import BackNav from 'components/BackNav.vue'
-
-defineOptions({
-  name: 'EmergencyPage'
-})
-
 const router = useRouter()
-
-const navigateTo = (path) => {
+function navigateTo (path) {
   router.push(path)
 }
 </script>
 
 <style scoped>
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+.modern-bg {
+  background: #f7f8f9;
   min-height: 100vh;
 }
-
-.container {
+.modern-title {
+  color: #0f2c05;
+  letter-spacing: -0.5px;
+}
+.dashboard-tiles {
+  margin-bottom: 32px;
   max-width: 1200px;
-  margin: 0 auto;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10vw;
+  padding-right: 10vw;
 }
-
-.hero-section {
-  background: white;
-  border: 1px solid rgba(139, 69, 19, 0.3);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #333333 0%, #767876 100%);
+  border-radius: 12px;
+  color: white;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 10vw;
+  padding-right: 10vw;
 }
-
-.cards-grid {
+@media (max-width: 900px) {
+  .dashboard-tiles {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .page-header {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+.tiles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  max-width: 1200px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 36px;
+  justify-items: center;
 }
-
-.dashboard-card {
-  height: 180px;
-  border-radius: 16px;
+.modern-tile {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.18s, transform 0.18s;
+  min-height: 170px;
+  width: 100%;
+  max-width: 270px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
   border: none;
-  overflow: hidden;
-  position: relative;
 }
-
-.dashboard-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+.modern-tile:hover {
+  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
+  transform: translateY(-2px) scale(1.03);
 }
-
-.military-primary-card {
-  background: linear-gradient(135deg, #2D3E2F 0%, #1A2A1C 100%);
-  color: white;
+.tile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 38px 0 28px 0;
 }
-
-.military-brown-card {
-  background: linear-gradient(135deg, #8B4513 0%, #5D2F0A 100%);
-  color: white;
-}
-
-.military-dark-card {
-  background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%);
-  color: white;
-}
-
-.military-drill-card {
-  background: linear-gradient(135deg, #556B2F 0%, #3A4A20 100%);
-  color: white;
-}
-
-.card-icon-wrapper {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+.tile-icon-bg {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
 }
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .cards-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
+.tile-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.tile-label {
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #0f2c05;
+}
+.tile-desc-chip-big {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 12px;
+  min-height: 36px;
 }
 </style>

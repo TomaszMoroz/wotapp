@@ -12,19 +12,15 @@
           <p class="page-subtitle">Zarządzenie Nr 7/MON z dnia 28 kwietnia 2023 r.</p>
         </div>
 
-        <!-- Wstęp -->
-        <div v-if="currentView === 'main'" class="navigation-buttons">
-          <q-btn
-            @click="showContent('wstep')"
-            color="primary"
-            class="nav-btn"
-            icon="star"
-            label="WSTĘP"
-          />
-        </div>
-
-        <!-- Rozdziały -->
+        <!-- Wstęp jako kafelek -->
         <div v-if="currentView === 'main'" class="chapters-grid">
+          <div @click="showContent('wstep')" class="chapter-card">
+            <q-icon name="star" class="chapter-icon" />
+            <h3>WSTĘP</h3>
+            <p>Podstawy prawne, wartości i etos służby wojskowej</p>
+          </div>
+
+          <!-- Rozdziały -->
           <div
             v-for="chapter in chapters"
             :key="chapter.id"
@@ -460,7 +456,7 @@ defineComponent({
   text-align: center;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: linear-gradient(135deg, #463c01 0%, #072008 100%);
+  background: linear-gradient(135deg, #333333 0%, #767876 100%);
   border-radius: 12px;
   color: white;
 }

@@ -1,7 +1,7 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
 
       <!-- Header -->
       <div class="header-section q-mb-lg">
@@ -127,7 +127,7 @@ import BackNav from 'components/BackNav.vue'
 
 <style scoped>
 .page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+  background: linear-gradient(135deg, #d3d3d3 0%, #a1a1a1 100%);
   min-height: 100vh;
 }
 

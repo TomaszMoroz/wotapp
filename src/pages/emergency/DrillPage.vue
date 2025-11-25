@@ -1,7 +1,7 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
 
       <div class="hero-section q-pa-lg q-mb-lg">
         <div class="row items-center">
@@ -24,7 +24,7 @@
         <!-- Nawigacja rozdziałów -->
         <div class="controls-section q-mb-md">
           <q-btn-dropdown
-            color="brown-6"
+            color="grey-9"
             icon="list"
             label="Przejdź do rozdziału"
             outlined
@@ -426,7 +426,7 @@ const scrollToSection = (sectionId) => {
 
 <style scoped>
 .page-background {
-  background: linear-gradient(135deg, #263238 0%, #1a1a1a 100%);
+  background: #f7f8f9;
   min-height: 100vh;
 }
 
@@ -436,20 +436,22 @@ const scrollToSection = (sectionId) => {
 }
 
 .hero-section {
-  background: linear-gradient(135deg, #37474f 0%, #263238 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  background: #494747;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(15,44,5,0.07);
+  border: 1px solid #e0e0e0;
 }
 
 .content-card {
-  background: linear-gradient(135deg, #2c2c2c 0%, #1e1e1e 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(15,44,5,0.07);
   min-height: 600px;
+  border: 1px solid #e0e0e0;
 }
 
 .controls-section {
-  border-bottom: 1px solid rgba(139, 69, 19, 0.3);
+  border-bottom: 1px solid #a2ad59;
   padding-bottom: 16px;
 }
 
@@ -464,29 +466,29 @@ const scrollToSection = (sectionId) => {
 }
 
 .regulation-content::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: #f3f4f6;
   border-radius: 4px;
 }
 
 .regulation-content::-webkit-scrollbar-thumb {
-  background: rgba(139, 69, 19, 0.6);
+  background: #a2ad59;
   border-radius: 4px;
 }
 
 .regulation-content::-webkit-scrollbar-thumb:hover {
-  background: rgba(139, 69, 19, 0.8);
+  background: #827858;
 }
 
 .regulation-section {
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: rgba(55, 71, 79, 0.1);
+  background: #fafafa;
   border-radius: 8px;
-  border-left: 4px solid #8b4513;
+  border-left: 4px solid #a2ad59;
 }
 
 .section-header {
-  border-bottom: 2px solid rgba(139, 69, 19, 0.3);
+  border-bottom: 2px solid #a2ad59;
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -494,20 +496,20 @@ const scrollToSection = (sectionId) => {
 .subsection-header {
   margin: 2rem 0 1rem 0;
   padding-bottom: 0.5rem;
-  border-bottom: 1px solid rgba(139, 69, 19, 0.2);
+  border-bottom: 1px solid #a2ad59;
 }
 
 .article {
   display: flex;
   margin-bottom: 1.5rem;
   padding: 1rem;
-  background: rgba(0, 0, 0, 0.2);
+  background: #f3f4f6;
   border-radius: 8px;
-  border-left: 3px solid #607d8b;
+  border-left: 3px solid #65473f;
 }
 
 .article-number {
-  color: #8b4513;
+  color: #65473f;
   font-weight: bold;
   font-size: 1.1rem;
   min-width: 2.5rem;
@@ -516,20 +518,20 @@ const scrollToSection = (sectionId) => {
 }
 
 .article-content {
-  color: #e0e0e0;
+  color: #0f2c05;
   line-height: 1.6;
   flex: 1;
 }
 
 .article-content strong {
-  color: #ffffff;
+  color: #65473f;
   font-weight: 600;
 }
 
 .regulation-list {
   margin: 0.5rem 0;
   padding-left: 1.5rem;
-  color: #e0e0e0;
+  color: #0f2c05;
 }
 
 .regulation-list li {
@@ -565,7 +567,7 @@ html {
 
 /* Hover effects */
 .article:hover {
-  background: rgba(0, 0, 0, 0.3);
+  background: #e0e0e0;
   transform: translateX(4px);
   transition: all 0.2s ease;
 }

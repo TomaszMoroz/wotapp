@@ -7,7 +7,7 @@
           <h1 class="page-title">
             Stopnie wojskowe w Polsce
           </h1>
-          <p class="page-subtitle">Wojska lądowe</p>
+          <p class="page-subtitle">Wojska lądowe i marynarka</p>
         </div>
 
         <div class="ranks-sections">
@@ -112,7 +112,7 @@ const sections = [
   text-align: center;
   margin-bottom: 2rem;
   padding: 1.5rem;
-  background: #232b23;
+  background: #2b2d2b;
   border: 1px solid #384c38;
   color: #f5f7fa;
   border-radius: 12px;

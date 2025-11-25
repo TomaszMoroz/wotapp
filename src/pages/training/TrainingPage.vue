@@ -408,7 +408,7 @@ onMounted(() => {
 
 /* Modern Header */
 .modern-header {
-  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  background: linear-gradient(135deg, #2d3236 0%, #1565c0 100%);
   border-radius: 16px;
   padding: 32px;
   margin-bottom: 32px;
