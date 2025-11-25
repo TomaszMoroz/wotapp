@@ -127,7 +127,7 @@ import BackNav from 'components/BackNav.vue'
 
 <style scoped>
 .page-background {
-  background: linear-gradient(135deg, #d3d3d3 0%, #a1a1a1 100%);
+  background: linear-gradient(135deg, #f1f1f1 0%, #d1d1d1 100%);
   min-height: 100vh;
 }
 

@@ -362,6 +362,16 @@ const goBack = () => {
 </script>
 
 <style scoped>
+.tile-icon-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
+}
 
 .modern-bg {
   background: #f7f8f9;

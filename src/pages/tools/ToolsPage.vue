@@ -1,6 +1,6 @@
 <template>
   <q-page class="modern-bg q-pa-lg">
-    <BackNav />
+    <BackNav color="black"/>
     <div class="row items-center justify-between q-mb-xl">
       <div>
         <div class="text-h3 text-weight-bold modern-title">Narzędzia</div>

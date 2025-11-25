@@ -1,6 +1,6 @@
 <template>
   <q-page class="equipment-bg q-pa-md">
-    <BackNav />
+    <BackNav color="black"/>
     <div class="text-center q-mb-xl">
       <div class="hero-section q-pa-lg rounded-borders">
         <div class="text-h3 text-weight-bold text-primary q-mb-sm">Pobrany sprzęt</div>
@@ -22,8 +22,8 @@
           color="black"
         />
         <div class="q-mb-md row items-center q-gutter-x-md">
-          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="white" class="text-white" label-color="white" />
-          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="white" class="text-white" label-color="white" />
+          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="black" class="text-black" label-color="white" />
+          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="black" class="text-black" label-color="white" />
         </div>
         <q-input
           v-if="snMode === 'manual'"
@@ -180,6 +180,7 @@
 
 <script setup>
 import { ref, onMounted, watch, computed } from 'vue'
+import BackNav from 'components/BackNav.vue'
 // Dialog kasowania całej listy
 const showDeleteListDialog = ref(false)
 
@@ -429,7 +430,7 @@ watch(equipmentData, saveEquipment, { deep: true })
 
 <style scoped>
 .equipment-bg {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+  background: white;
   min-height: 100vh;
 }
 .hero-section {

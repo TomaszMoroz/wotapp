@@ -1,11 +1,13 @@
 <template>
   <q-page class="modern-bg q-pa-lg">
-    <div class="row items-center justify-between q-mb-xl">
-      <div>
-        <div class="text-h3 text-weight-bold modern-title">Kalkulator odległości</div>
-        <div class="text-subtitle1 text-grey-7 q-mt-xs">Obliczanie odległości metodą "DWK1000"</div>
+    <div class="section-header-limited">
+      <BackNav color="black"/>
+      <div class="row items-center justify-between q-mb-xl">
+        <div>
+          <div class="text-h3 text-weight-bold modern-title">Kalkulator odległości</div>
+          <div class="text-subtitle1 text-grey-7 q-mt-xs">Obliczanie odległości metodą \"DWK1000\"</div>
+        </div>
       </div>
-      <BackNav />
     </div>
     <div class="dashboard-tiles q-mb-xl">
       <div class="tiles-grid">
@@ -253,6 +255,20 @@ const calculatedDistance = computed(() => {
 </script>
 
 <style scoped>
+/* Limit section header width on desktop */
+.section-header-limited {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+@media (max-width: 768px) {
+  .section-header-limited {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
 .modern-bg {
   background: #f7f8f9;
   min-height: 100vh;
@@ -456,8 +472,11 @@ const calculatedDistance = computed(() => {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  .section-card, .tile-content {
+  .section-card {
     padding: 24px 0 18px 0;
+  }
+  .tile-content {
+    padding: 38px 24px 28px 24px;
   }
   .result-card {
     min-width: auto;

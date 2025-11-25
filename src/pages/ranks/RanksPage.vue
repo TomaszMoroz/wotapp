@@ -1,8 +1,8 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
-      <BackNav color="black"/>
       <div class="page-container">
+              <BackNav color="black"/>
         <div class="page-header">
           <h1 class="page-title">
             Stopnie wojskowe w Polsce
