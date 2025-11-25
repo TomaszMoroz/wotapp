@@ -17,7 +17,7 @@
             <span class="q-ml-sm">WOT PWA</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v2.3.5 WERSJA TESTOWA</span>
+        <span class="dashboard-version">v2.3.6 WERSJA TESTOWA</span>
       </q-toolbar>
     </q-header>
 
@@ -358,6 +358,13 @@ const isInToolsSection = computed(() => {
 </script>
 
 <style scoped>
+:root {
+  --active-menu-bg: #4A5D31;
+}
+
+.bg-military-active {
+  background-color: var(--active-menu-bg, #4A5D31) !important;
+}
 /* Dashboard Modern Theme */
 .dashboard-bg {
   background: var(--military-light, #F5F5F5);
