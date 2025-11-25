@@ -1,13 +1,10 @@
 <template>
   <q-page class="modern-bg q-pa-lg">
-    <div class="row items-center justify-between q-mb-xl">
-      <div>
+    <div class="dashboard-title-bg q-mb-xl">
+      <div class="dashboard-title-content">
         <div class="text-h3 text-weight-bold modern-title">Dashboard</div>
         <div class="text-subtitle1 text-grey-7 q-mt-xs">Wybierz sekcję aby rozpocząć pracę</div>
       </div>
-      <q-avatar size="56px" class="shadow-2">
-        <img src="/icons/favicon-128x128.png" alt="Profil" />
-      </q-avatar>
     </div>
 
     <div class="dashboard-tiles q-mb-xl">
@@ -55,6 +52,54 @@ function navigateTo (path) {
 </script>
 
 <style scoped>
+
+.dashboard-title-bg {
+  position: relative;
+  min-height: 110px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
+  overflow: hidden;
+}
+.dashboard-title-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/src/assets/721.jpeg');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: right center;
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 1;
+}
+.dashboard-title-content {
+  position: relative;
+  z-index: 2;
+  padding: 32px 32px 24px 32px;
+}
+@media (max-width: 600px) {
+  .dashboard-title-bg {
+    min-height: 90px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .dashboard-title-content {
+    padding: 22px 12px 16px 12px;
+    text-align: center;
+  }
+  .dashboard-title-bg::before {
+    background-size: 210px auto;
+    background-position: center 60%;
+    opacity: 0.16;
+  }
+}
 .modern-bg {
   background: #f7f8f9;
   min-height: 100vh;

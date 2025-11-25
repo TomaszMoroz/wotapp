@@ -13,8 +13,7 @@
         />
         <q-toolbar-title class="text-weight-bold text-white dashboard-title">
           <div class="row items-center no-wrap">
-            <q-icon name="shield" class="q-mr-sm" size="sm" color="white" />
-            <span class="q-ml-sm">Kit Bag App 721 k.l.p.</span>
+            <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
         <span class="dashboard-version">v2.3.6 WERSJA TESTOWA</span>
