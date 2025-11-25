@@ -58,7 +58,7 @@
           <!-- ROZDZIAŁ 1: ZASADY OGÓLNE -->
           <section id="zasady-ogolne" class="regulation-section">
             <div class="section-header">
-              <h2 class="text-h5 text-weight-bold text-white q-mb-md">
+              <h2 class="text-h5 text-weight-bold text-black q-mb-md">
                 ROZDZIAŁ 1 - ZASADY OGÓLNE
               </h2>
             </div>
@@ -158,7 +158,7 @@
           <!-- ROZDZIAŁ 2: MUSZTRA INDYWIDUALNA -->
           <section id="musztra-indywidualna" class="regulation-section">
             <div class="section-header">
-              <h2 class="text-h5 text-weight-bold text-white q-mb-md">
+              <h2 class="text-h5 text-weight-bold text-black q-mb-md">
                 ROZDZIAŁ 2 - MUSZTRA INDYWIDUALNA
               </h2>
               <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
@@ -276,7 +276,7 @@
           <!-- ROZDZIAŁ 3: MUSZTRA ZESPOŁOWA -->
           <section id="musztra-zespolowa" class="regulation-section">
             <div class="section-header">
-              <h2 class="text-h5 text-weight-bold text-white q-mb-md">
+              <h2 class="text-h5 text-weight-bold text-black q-mb-md">
                 ROZDZIAŁ 3 - MUSZTRA ZESPOŁOWA
               </h2>
               <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
@@ -372,7 +372,7 @@
           <!-- ROZDZIAŁ 4: MUSZTRA Z POJAZDAMI -->
           <section id="musztra-pojazdy" class="regulation-section">
             <div class="section-header">
-              <h2 class="text-h5 text-weight-bold text-white q-mb-md">
+              <h2 class="text-h5 text-weight-bold text-black q-mb-md">
                 ROZDZIAŁ 4 - MUSZTRA Z POJAZDAMI
               </h2>
               <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
