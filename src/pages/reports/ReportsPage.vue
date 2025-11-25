@@ -1,10 +1,10 @@
 <template>
   <q-page class="page-background">
     <div class="container q-pa-md">
-      <BackNav color="black"/>
 
       <div class="row justify-center">
         <div class="col-12 col-md-8 col-lg-6">
+          <BackNav color="black"/>
           <q-card>
             <q-card-section>
               <div class="text-h6 q-mb-md">� Wybierz wzór meldunku</div>
@@ -279,7 +279,7 @@ Przykład: 1: GRID 12345 67890  2: 30.000 ALFA21  3: 2A, 1B  4: A  5: 2L, 1A  6:
     name: 'SALUTE - Obserwacja przeciwnika',
     category: 'Meldunki taktyczne',
     icon: 'visibility',
-    color: 'red',
+    color: 'red-4',
     content: `MELDUNEK SALUTE - OBSERWACJA PRZECIWNIKA
 
 S (SIZE) - LICZEBNOŚĆ:
@@ -310,7 +310,7 @@ Przykład: 4 rozbijają obóz GRID 12345 67890 Szwedzkie 1200 4 x AUG, 1 x Carl 
     name: 'SALTR - Kontakt z przeciwnikiem',
     category: 'Meldunki taktyczne',
     icon: 'warning',
-    color: 'red',
+    color: 'red-4',
     content: `MELDUNEK SALTR - KONTAKT Z PRZECIWNIKIEM
 
 S (SITUATION) - SYTUACJA SIŁ WŁASNYCH:
@@ -335,7 +335,7 @@ Przykład: Zostaliśmy zaatakowani przez przeciwnika w sile drużyny. Przeciwnik
     name: 'LACE - Stan gotowości bojowej',
     category: 'Meldunki logistyczne',
     icon: 'inventory_2',
-    color: 'orange',
+    color: 'orange-5',
     content: `MELDUNEK LACE - STAN GOTOWOŚCI BOJOWEJ
 
 L (LIQUIDS) - PŁYNY/WYŻYWIENIE:
@@ -370,7 +370,7 @@ GOTOWOŚĆ OGÓLNA: [ZIELONY/ŻÓŁTY/CZERWONY]`
     name: 'GOTWA - Wydzielenie sił',
     category: 'Meldunki proceduralne',
     icon: 'group_work',
-    color: 'blue',
+    color: 'blue-5',
     content: `MELDUNEK GOTWA - WYDZIELENIE SIŁ
 
 G (GOING) - GDZIE IDZIEMY:
@@ -403,7 +403,7 @@ Przykład: Ramzes, biorę RTO i kaemistę i idziemy sprawdzić teren pod punkt o
     name: 'SITREP - Raport stanu drużyny',
     category: 'Meldunki operacyjne',
     icon: 'fact_check',
-    color: 'teal',
+    color: 'teal-6',
     content: `SITREP - RAPORT DOTYCZĄCY AKTUALNEGO STANU DRUŻYNY
 
 1. DATA/CZAS:

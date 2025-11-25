@@ -1,76 +1,64 @@
 <template>
-  <q-page class="page-background">
-    <div class="container q-pa-md">
-      <BackNav />
-      <!-- Header Section -->
-      <div class="text-center q-mb-xl">
-        <div class="hero-section q-pa-lg rounded-borders">
-          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Strzelectwo</div>
-          <div class="text-body1 text-grey-6">Balistyka, techniki strzelania i szkolenie strzeleckie</div>
+  <q-page class="modern-bg q-pa-lg">
+    <div class="shooting-content-limiter">
+      <div class="row items-center justify-between q-mb-xl">
+        <BackNav color="black"/>
+        <div>
+          <div class="text-h3 text-weight-bold modern-title">Strzelectwo</div>
+          <div class="text-subtitle1 text-grey-7 q-mt-xs">Balistyka, techniki strzelania i szkolenie strzeleckie</div>
         </div>
+        <q-avatar size="56px" class="shadow-2">
+          <q-icon name="gps_fixed" size="32px" color="primary" />
+        </q-avatar>
       </div>
 
-      <!-- Categories Grid -->
-      <div class="categories-grid q-mb-xl">
-        <!-- Podstawy strzelania -->
-        <q-card
-          class="category-card military-primary-card"
-          clickable
-          @click="navigateTo('/shooting/basics')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="gps_fixed" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Podstawy strzelania</div>
-            <div class="text-caption text-grey-4">Postawa, chwyt, celowanie</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Balistyka -->
-        <q-card
-          class="category-card military-brown-card"
-          clickable
-          @click="navigateTo('/shooting/ballistics')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="trending_up" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Balistyka</div>
-            <div class="text-caption text-grey-4">Trajektoria i poprawki</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Miary kątowe -->
-        <q-card
-          class="category-card military-green-card"
-          clickable
-          @click="navigateTo('/shooting/angular-measurements')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="straighten" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Miary kątowe</div>
-            <div class="text-caption text-grey-4">Tysiączne, MOA, mil-dot</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Optyka i celowniki -->
-        <q-card
-          class="category-card military-dark-card"
-          clickable
-          @click="navigateTo('/shooting/optics')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="center_focus_strong" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Optyka i celowniki</div>
-            <div class="text-caption text-grey-4">Lunety, kolimatory</div>
-          </q-card-section>
-        </q-card>
+      <div class="dashboard-tiles q-mb-xl">
+        <div class="tiles-grid">
+          <q-card class="modern-tile" @click="navigateTo('/shooting/basics')">
+            <q-card-section class="tile-content">
+              <div class="tile-icon-bg" style="background: #0f2c05;">
+                <q-icon name="gps_fixed" color="white" size="32px" />
+              </div>
+              <div class="tile-label-row">
+                <span class="tile-label">Podstawy strzelania</span>
+              </div>
+              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Postawa, chwyt, celowanie</q-chip>
+            </q-card-section>
+          </q-card>
+          <q-card class="modern-tile" @click="navigateTo('/shooting/ballistics')">
+            <q-card-section class="tile-content">
+              <div class="tile-icon-bg" style="background: #65473f;">
+                <q-icon name="trending_up" color="white" size="32px" />
+              </div>
+              <div class="tile-label-row">
+                <span class="tile-label">Balistyka</span>
+              </div>
+              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Trajektoria i poprawki</q-chip>
+            </q-card-section>
+          </q-card>
+          <q-card class="modern-tile" @click="navigateTo('/shooting/angular-measurements')">
+            <q-card-section class="tile-content">
+              <div class="tile-icon-bg" style="background: #827858;">
+                <q-icon name="straighten" color="white" size="32px" />
+              </div>
+              <div class="tile-label-row">
+                <span class="tile-label">Miary kątowe</span>
+              </div>
+              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Tysiączne, MOA, mil-dot</q-chip>
+            </q-card-section>
+          </q-card>
+          <q-card class="modern-tile" @click="navigateTo('/shooting/optics')">
+            <q-card-section class="tile-content">
+              <div class="tile-icon-bg" style="background: #8e936d;">
+                <q-icon name="center_focus_strong" color="white" size="32px" />
+              </div>
+              <div class="tile-label-row">
+                <span class="tile-label">Optyka i celowniki</span>
+              </div>
+              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Lunety, kolimatory</q-chip>
+            </q-card-section>
+          </q-card>
+        </div>
       </div>
     </div>
   </q-page>
@@ -92,103 +80,87 @@ const navigateTo = (path) => {
 </script>
 
 <style scoped>
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
-  min-height: 100vh;
-}
-
-.container {
+.shooting-content-limiter {
   max-width: 1200px;
   margin: 0 auto;
 }
-
-.hero-section {
-  background: #232b23;
-  border: 1px solid #384c38;
-  color: #f5f7fa;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 4px 16px rgba(44,62,47,0.13);
+.modern-bg {
+  background: #f7f8f9;
+  min-height: 100vh;
 }
-.hero-section .text-h3,
-.hero-section .text-h4,
-.hero-section .text-h5,
-.hero-section .text-h6 {
-  color: #f5f7fa !important;
+.modern-title {
+  color: #0f2c05;
+  letter-spacing: -0.5px;
 }
-
-.categories-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  justify-content: center;
-  margin: 0 auto;
+.dashboard-tiles {
+  margin-bottom: 32px;
 }
-
-.category-card {
-  flex: 0 0 280px;
-  width: 280px;
-  height: 180px;
-  border-radius: 16px;
+.tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 36px;
+  justify-items: center;
+}
+.modern-tile {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.18s, transform 0.18s;
+  min-height: 170px;
+  width: 100%;
+  max-width: 270px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
   border: none;
-  overflow: hidden;
-  position: relative;
 }
-
-.category-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+.modern-tile:hover {
+  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
+  transform: translateY(-2px) scale(1.03);
 }
-
-.military-primary-card {
-  background: linear-gradient(135deg, #2D3E2F 0%, #1A2A1C 100%);
-  color: white;
+.tile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 38px 0 28px 0;
 }
-
-.military-brown-card {
-  background: linear-gradient(135deg, #8B4513 0%, #5D2F0A 100%);
-  color: white;
-}
-
-.military-green-card {
-  background: linear-gradient(135deg, #556B2F 0%, #3A4A20 100%);
-  color: white;
-}
-
-.military-secondary-card {
-  background: linear-gradient(135deg, #4A5D31 0%, #334021 100%);
-  color: white;
-}
-
-.military-dark-card {
-  background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%);
-  color: white;
-}
-
-.military-accent-card {
-  background: linear-gradient(135deg, #704214 0%, #4A2C0E 100%);
-  color: white;
-}
-
-.card-icon-wrapper {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+.tile-icon-bg {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
 }
-
-/* Mobile responsiveness */
+.tile-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.tile-label {
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #0f2c05;
+}
+.tile-desc-chip-big {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 12px;
+  min-height: 36px;
+}
 @media (max-width: 640px) {
-  .category-card {
-    flex: 0 0 100%;
-    width: 100%;
-    max-width: 320px;
+  .modern-tile {
+    min-width: 90vw;
+    max-width: 98vw;
   }
 }
 </style>

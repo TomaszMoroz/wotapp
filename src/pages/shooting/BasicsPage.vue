@@ -1,92 +1,92 @@
 <template>
-  <q-page class="page-background">
-    <div class="container q-pa-md">
-      <BackNav />
-
+  <q-page class="modern-bg q-pa-lg">
+    <div class="shooting-content-limiter">
+      <BackNav color="black" />
       <!-- Header Section -->
-      <div class="hero-section q-pa-lg q-mb-lg">
-        <div class="row items-center">
-          <div class="col">
-            <div class="text-h4 text-weight-bold text-white q-mb-sm">
-              Podstawy strzelania
-            </div>
-            <div class="text-subtitle1 text-grey-3">
-              Techniki strzelania, bezpieczeństwo i działanie broni
-            </div>
+      <div class="modern-hero-section q-pa-lg q-mb-xl">
+        <div class="row items-center justify-between">
+          <div>
+            <div class="text-h3 text-weight-bold modern-title">Podstawy strzelania</div>
+            <div class="text-subtitle1 text-grey-7 q-mt-xs">Techniki strzelania, bezpieczeństwo i działanie broni</div>
           </div>
+          <q-avatar size="56px" class="shadow-2">
+            <q-icon name="gps_fixed" size="32px" color="primary" />
+          </q-avatar>
         </div>
       </div>
 
-  <!-- Content Cards -->
-      <div class="content-grid q-gutter-lg">
+      <!-- Content Cards -->
+      <div class="modern-content-grid q-gutter-xl">
         <!-- Bezpieczeństwo strzelania - BLOS (przeniesione na początek) -->
-        <q-card class="content-card">
-          <q-card-section class="card-header">
+        <q-card class="modern-content-card">
+          <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold text-white">Zasady bezpieczeństwa - BLOS</div>
-                <div class="text-subtitle2 text-grey-3">Podstawowe zasady BHP na strzelnicy</div>
+                <div class="text-h5 text-weight-bold modern-title">Zasady bezpieczeństwa - BLOS</div>
+                <div class="text-subtitle2 text-grey-7">Podstawowe zasady BHP na strzelnicy</div>
               </div>
             </div>
           </q-card-section>
           <q-separator />
           <q-card-section class="q-pa-lg">
             <div class="text-body1 q-mb-lg text-center">
-              <strong>BLOS</strong> - cztery fundamentalne zasady bezpieczeństwa w obchodzeniu się z bronią palną
+              <q-chip color="red-1" text-color="red-10" icon="warning" class="q-mb-sm" style="font-size:1.1em;">BLOS</q-chip>
+              cztery fundamentalne zasady bezpieczeństwa w obchodzeniu się z bronią palną
             </div>
-            <div class="blos-rules">
-              <div class="blos-item q-mb-lg">
-                <div class="blos-header q-mb-sm">
-                  <div class="blos-letter">B</div>
-                  <span class="text-h6 text-weight-bold text-white">jak Broń</span>
+            <div class="blos-rules-modern">
+              <div class="blos-item-modern q-mb-lg">
+                <div class="blos-header-modern q-mb-sm">
+                  <q-chip color="red-2" text-color="red-10" class="blos-letter-modern">B</q-chip>
+                  <span class="text-h6 text-weight-bold modern-title">jak Broń</span>
                 </div>
-                <div class="text-body1 q-ml-xl">
-                  Traktuj każdą broń tak, jakby była załadowana. Nigdy nie wkładaj żadnej części ciała przed lufę i nie machaj nią.
-                </div>
-              </div>
-              <div class="blos-item q-mb-lg">
-                <div class="blos-header q-mb-sm">
-                  <div class="blos-letter blos-letter-l">L</div>
-                  <span class="text-h6 text-weight-bold text-white">jak Lufa</span>
-                </div>
-                <div class="text-body1 q-ml-xl">
-                  Wylot lufy powinien być zawsze skierowany w bezpiecznym kierunku, np. w stronę kulochwytu, ziemi lub pod kątem 45 stopni.
+                <div class="text-body1 q-ml-xl text-grey-8">
+                  Traktuj każdą broń tak, jakby była załadowana. Gdy ktoś przekauje ci broń ustal jej stan (załadowana/rozładowana) i nigdy nie zakładaj, że jest rozładowana, dopóki sam tego nie sprawdzisz.
                 </div>
               </div>
-              <div class="blos-item q-mb-lg">
-                <div class="blos-header q-mb-sm">
-                  <div class="blos-letter blos-letter-o">O</div>
-                  <span class="text-h6 text-weight-bold text-white">jak Otoczenie</span>
+              <div class="blos-item-modern q-mb-lg">
+                <div class="blos-header-modern q-mb-sm">
+                  <q-chip color="orange-2" text-color="orange-10" class="blos-letter-modern">L</q-chip>
+                  <span class="text-h6 text-weight-bold modern-title">jak Lufa</span>
                 </div>
-                <div class="text-body1 q-ml-xl">
-                  Upewnij się, co znajduje się w linii strzału, a także za celem, aby uniknąć rykoszetu lub postrzelenia osób postronnych.
+                <div class="text-body1 q-ml-xl text-grey-8">
+                  Wylot lufy powinien być zawsze skierowany w kierunku rozpoznanego celu lub w kierunku bezpiecznym. Nie kieruj lufy w strone ludzi, zwierząt ani obiektów, które mogą zostać uszkodzone.
                 </div>
               </div>
-              <div class="blos-item">
-                <div class="blos-header q-mb-sm">
-                  <div class="blos-letter blos-letter-s">S</div>
-                  <span class="text-h6 text-weight-bold text-white">jak Spust</span>
+              <div class="blos-item-modern q-mb-lg">
+                <div class="blos-header-modern q-mb-sm">
+                  <q-chip color="green-2" text-color="green-10" class="blos-letter-modern">O</q-chip>
+                  <span class="text-h6 text-weight-bold modern-title">jak Otoczenie</span>
                 </div>
-                <div class="text-body1 q-ml-xl">
+                <div class="text-body1 q-ml-xl text-grey-8">
+                  Upewnij się, co znajduje się w linii strzału, wokół celu oraz strzelca, aby uniknąć rykoszetu lub postrzelenia osób postronnych a także mieć swiadomość sytuacji.
+                </div>
+              </div>
+              <div class="blos-item-modern">
+                <div class="blos-header-modern q-mb-sm">
+                  <q-chip color="blue-2" text-color="blue-10" class="blos-letter-modern">S</q-chip>
+                  <span class="text-h6 text-weight-bold modern-title">jak Spust</span>
+                </div>
+                <div class="text-body1 q-ml-xl text-grey-8">
                   Palec powinien znajdować się poza osłoną spustu aż do momentu, gdy celujesz i jesteś gotowy do strzału. Nie dotykaj spustu, dopóki nie zamierzasz oddać strzału.
                 </div>
               </div>
             </div>
-            <div class="blos-reminder q-mt-lg">
-              <div class="text-body2 text-weight-bold text-red-8">
+            <div class="blos-reminder-modern q-mt-lg">
+              <q-chip color="red-2" text-color="red-10" icon="priority_high" class="q-mr-sm" />
+              <span class="text-body2 text-weight-bold text-red-10">
                 PAMIĘTAJ: Przestrzeganie zasad BLOS to podstawa bezpiecznego obchodzenia się z bronią palną!
-              </div>
+              </span>
             </div>
           </q-card-section>
         </q-card>
 
         <!-- Działanie karabinka Grot -->
-        <q-card class="content-card">
-          <q-card-section class="card-header">
+        <q-card class="modern-content-card">
+          <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold text-white">Działanie karabinka Grot</div>
-                <div class="text-subtitle2 text-grey-3">System gazowy krótkiego skoku</div>
+                <div class="text-h5 text-weight-bold modern-title">Działanie karabinka Grot</div>
+                <div class="text-subtitle2 text-grey-7">System gazowy krótkiego skoku</div>
               </div>
             </div>
           </q-card-section>
@@ -96,43 +96,43 @@
               Zasada działania karabinka Grot opiera się na systemie odprowadzania części gazów prochowych przez boczny otwór w lufie i wykorzystaniu krótkiego skoku tłoka gazowego.
             </div>
             <div class="mechanism-steps">
-              <div class="step-item q-mb-lg">
-                <div class="step-header">
-                  <span class="text-h6 text-weight-bold text-white">1. Strzał i Uwolnienie Gazów</span>
+              <div class="step-item-modern q-mb-lg">
+                <div class="step-header-modern">
+                  <span class="text-h6 text-weight-bold modern-title">1. Strzał i Uwolnienie Gazów</span>
                 </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
+                <div class="text-body1 q-mt-sm q-ml-xl text-grey-8">
                   Po naciśnięciu spustu i odpaleniu naboju, pocisk jest wypychany przez lufę. Gdy minie on specjalny otwór gazowy w ściance lufy, część gazów prochowych o bardzo wysokim ciśnieniu jest kierowana do komory gazowej.
                 </div>
               </div>
-              <div class="step-item q-mb-lg">
-                <div class="step-header">
-                  <span class="text-h6 text-weight-bold text-white">2. Ruch Tłoka i Automatyka</span>
+              <div class="step-item-modern q-mb-lg">
+                <div class="step-header-modern">
+                  <span class="text-h6 text-weight-bold modern-title">2. Ruch Tłoka i Automatyka</span>
                 </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
+                <div class="text-body1 q-mt-sm q-ml-xl text-grey-8">
                   Gazy uderzają w czoło tłoka gazowego, przesuwając go na krótki dystans do tyłu. Tłok, za pośrednictwem popychacza, przekazuje energię na suwadło z zamkiem.
                 </div>
               </div>
-              <div class="step-item q-mb-lg">
-                <div class="step-header">
-                  <span class="text-h6 text-weight-bold text-white">3. Odryglowanie i Wyrzut</span>
+              <div class="step-item-modern q-mb-lg">
+                <div class="step-header-modern">
+                  <span class="text-h6 text-weight-bold modern-title">3. Odryglowanie i Wyrzut</span>
                 </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
+                <div class="text-body1 q-mt-sm q-ml-xl text-grey-8">
                   Ruch suwadła do tyłu powoduje odryglowanie zamka (poprzez jego obrót), wyciągnięcie pustej łuski z komory nabojowej i wyrzucenie jej na zewnątrz karabinka. Jednocześnie napinany jest kurek i ściskana sprężyna powrotna.
                 </div>
               </div>
-              <div class="step-item q-mb-lg">
-                <div class="step-header">
-                  <span class="text-h6 text-weight-bold text-white">4. Powrót i Ryglowanie</span>
+              <div class="step-item-modern q-mb-lg">
+                <div class="step-header-modern">
+                  <span class="text-h6 text-weight-bold modern-title">4. Powrót i Ryglowanie</span>
                 </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
+                <div class="text-body1 q-mt-sm q-ml-xl text-grey-8">
                   Po osiągnięciu skrajnego tylnego położenia, suwadło pod wpływem sprężyny powrotnej zaczyna ruch do przodu. Zamek pobiera kolejny nabój z magazynka i dosyła go do komory nabojowej. W końcowej fazie ruchu następuje zaryglowanie zamka przez jego obrót.
                 </div>
               </div>
-              <div class="step-item">
-                <div class="step-header">
-                  <span class="text-h6 text-weight-bold text-white">5. Kolejny Strzał</span>
+              <div class="step-item-modern">
+                <div class="step-header-modern">
+                  <span class="text-h6 text-weight-bold modern-title">5. Kolejny Strzał</span>
                 </div>
-                <div class="text-body1 q-mt-sm q-ml-xl">
+                <div class="text-body1 q-mt-sm q-ml-xl text-grey-8">
                   Broń jest gotowa do oddania kolejnego strzału, kontynuując cykl automatyki (w przypadku ognia ciągłego) lub oczekując na ponowne naciśnięcie spustu (w przypadku ognia pojedynczego).
                 </div>
               </div>
@@ -141,19 +141,19 @@
         </q-card>
 
         <!-- Stabilność i Postawa Strzelecka -->
-        <q-card class="content-card">
-          <q-card-section class="card-header">
+        <q-card class="modern-content-card">
+          <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold text-white">Stabilność i Postawa Strzelecka</div>
-                <div class="text-subtitle2 text-grey-3">Fundamenty precyzyjnego strzelania</div>
+                <div class="text-h5 text-weight-bold modern-title">Stabilność i Postawa Strzelecka</div>
+                <div class="text-subtitle2 text-grey-7">Fundamenty precyzyjnego strzelania</div>
               </div>
             </div>
           </q-card-section>
 
           <q-separator />
 
-          <q-card-section class="q-pa-lg">
+          <q-card-section class="q-pa-sm">
             <!-- Wprowadzenie -->
             <div class="intro-section q-mb-lg">
               <div class="text-h6 text-weight-bold text-white q-mb-md">Wprowadzenie: Stabilność to Fundament</div>
@@ -201,7 +201,7 @@
             </div>
 
             <!-- II. Chwyt -->
-            <div class="grip-section q-mb-lg">
+            <div class="grip-section q-mb-md">
               <div class="text-h6 text-weight-bold text-white q-mb-md">II. Chwyt (Grip): Kontrola a Rozluźnienie</div>
               <div class="text-body1 q-mb-md">Wyróżniamy dwa kluczowe chwyty:</div>
 
@@ -315,190 +315,106 @@ import BackNav from 'components/BackNav.vue'
 </script>
 
 <style scoped>
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+
+.modern-bg {
+  background: #f7f8f9;
   min-height: 100vh;
 }
-
-.container {
+.shooting-content-limiter {
   max-width: 1200px;
   margin: 0 auto;
 }
-
-.hero-section {
-  background: linear-gradient(135deg, #263238 0%, #1a1a1a 100%);
-  border: 1px solid rgba(139, 69, 19, 0.5);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  border-radius: 12px;
-  color: white;
+.modern-hero-section {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
+  margin-bottom: 36px;
 }
-
-.content-grid {
+.modern-title {
+  color: #0f2c05;
+  letter-spacing: -0.5px;
+}
+.modern-content-grid {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 36px;
 }
-
-.content-card {
-  background: linear-gradient(135deg, #2e2e2e 0%, #1a1a1a 100%);
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+.modern-content-card {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
   overflow: hidden;
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #232b23;
+  border: none;
 }
-
-.card-header {
-  background: linear-gradient(135deg, #37474f 0%, #1a1a1a 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
+.modern-card-header {
+  background: #f7f8f9;
+  border-bottom: 1px solid #e0e0e0;
+  color: #232b23;
 }
-
-.mechanism-steps {
-  background: #2a2a2a;
-  border-radius: 8px;
+.blos-rules-modern {
+  background: #f7f8f9;
+  border-radius: 12px;
   padding: 20px;
-  color: #e0e0e0;
+  border: 1px solid #e0e0e0;
+  color: #232b23;
 }
-
-.step-item {
+.blos-item-modern {
   padding: 16px;
-  background: #3e3e3e;
-  border-radius: 8px;
-  border-left: 4px solid #8B4513;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  color: #e0e0e0;
-}
-
-.step-header {
-  display: flex;
-  align-items: center;
-}
-
-.safety-rules {
-  background: #2a2a2a;
-  border-radius: 8px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #e0e0e0;
-}
-
-.rule-item {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  background: #3e3e3e;
-  border-radius: 6px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  color: #e0e0e0;
-}
-
-.blos-rules {
-  background: #2a2a2a;
-  border-radius: 8px;
-  padding: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #e0e0e0;
-}
-
-.blos-item {
-  padding: 16px;
-  background: #3e3e3e;
-  border-radius: 8px;
+  background: #fff;
+  border-radius: 12px;
   border-left: 4px solid #f44336;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  color: #e0e0e0;
+  box-shadow: 0 2px 8px rgba(15,44,5,0.07);
+  color: #232b23;
 }
-
-.blos-header {
+.blos-header-modern {
   display: flex;
   align-items: center;
 }
-
-.blos-letter {
-  width: 40px;
-  height: 40px;
-  background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);
-  color: white;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.blos-letter-modern {
   font-weight: bold;
   font-size: 1.2rem;
   margin-right: 16px;
-  box-shadow: 0 2px 8px rgba(244, 67, 54, 0.3);
 }
-
-.blos-letter-l {
-  background: linear-gradient(135deg, #ff9800 0%, #f57c00 100%);
-  box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
-}
-
-.blos-letter-o {
-  background: linear-gradient(135deg, #4caf50 0%, #388e3c 100%);
-  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
-}
-
-.blos-letter-s {
-  background: linear-gradient(135deg, #2196f3 0%, #1976d2 100%);
-  box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
-}
-
-.blos-reminder {
-  background: linear-gradient(135deg, #4a2a2a 0%, #3e1f1f 100%);
+.blos-reminder-modern {
+  background: #fff0f0;
   border-radius: 8px;
   padding: 16px;
   border: 2px solid #f44336;
   display: flex;
-  align-items: flex-start;
-  color: #e0e0e0;
+  align-items: center;
+  color: #d32f2f;
 }
-
-.positions-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
+.step-item-modern {
+  padding: 16px;
+  background: #f7f8f9;
+  border-radius: 12px;
+  border-left: 4px solid #8B4513;
+  box-shadow: 0 2px 8px rgba(15,44,5,0.07);
+  color: #232b23;
 }
-
-.position-item {
-  padding: 20px;
-  background: linear-gradient(135deg, #3e3e3e 0%, #2a2a2a 100%);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #e0e0e0;
+.step-header-modern {
+  display: flex;
+  align-items: center;
 }
-
 @media (max-width: 768px) {
-  .hero-section .text-h4 {
+  .modern-hero-section .text-h3 {
     font-size: 1.5rem;
   }
-
-  .positions-grid {
-    grid-template-columns: 1fr;
+  .modern-content-grid {
+    gap: 18px;
   }
-
-  .step-item {
+  .blos-item-modern {
     padding: 12px;
   }
-
-  .rule-item {
-    padding: 8px;
-  }
-
-  .blos-item {
-    padding: 12px;
-  }
-
-  .blos-letter {
-    width: 32px;
-    height: 32px;
+  .blos-letter-modern {
     font-size: 1rem;
     margin-right: 12px;
   }
-
-  .blos-rules, .blos-reminder {
+  .blos-rules-modern, .blos-reminder-modern {
+    padding: 12px;
+  }
+  .step-item-modern {
     padding: 12px;
   }
 }
