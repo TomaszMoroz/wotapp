@@ -97,6 +97,18 @@ function goToKts () {
 </script>
 
 <style scoped>
+@media (max-width: 600px) {
+  .dashboard-cards {
+    justify-content: center !important;
+    display: flex !important;
+    flex-wrap: wrap;
+  }
+  .dashboard-content-card {
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 90vw;
+  }
+}
 .dashboard-bg {
   background: var(--military-light, #f5f5f5) !important;
   min-height: 100vh;
