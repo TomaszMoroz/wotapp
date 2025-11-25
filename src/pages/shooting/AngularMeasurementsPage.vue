@@ -350,13 +350,14 @@ import BackNav from 'components/BackNav.vue'
 }
 
 .modern-highlight-box {
-  background: #dedede;
+  background: #f0f4f8;
   border-radius: 6px;
   padding: 12px;
-  border-left: 3px solid #ffa000;
+  border-left: 3px solid #1976d2;
   text-align: center;
   margin-top: 8px;
-  color: #222;
+  color: #111;
+  font-weight: 500;
 }
 
 .modern-distance-examples {
@@ -379,44 +380,44 @@ import BackNav from 'components/BackNav.vue'
   color: #222;
 }
 .modern-formula-result {
-  background: #e3f2fd;
+  background: #f0f4f8;
   padding: 12px;
   border-radius: 6px;
   margin-top: 8px;
   text-align: center;
-  border: 1px solid #1976d2;
-  color: #000000;
+  border: 1px solid #009688;
+  color: #111;
   font-weight: 600;
 }
 
 .modern-important-note {
-  background: #e3f2fd;
+  background: #f0f4f8;
   border-radius: 8px;
   padding: 16px;
-  border-left: 4px solid #1976d2;
+  border-left: 4px solid #009688;
   display: flex;
   align-items: flex-start;
-  color: #1976d2;
+  color: #111;
   font-weight: 500;
 }
 .modern-formula-box-main {
-  background: #e0f2f1;
+  background: #f0f4f8;
   border-radius: 8px;
   padding: 16px;
   border: 2px solid #009688;
   text-align: center;
   font-size: 1.1rem;
-  color: #000000;
+  color: #111;
   font-weight: 600;
 }
 .modern-formula-box-simple {
-  background: #e3f2fd;
+  background: #f0f4f8;
   border-radius: 8px;
   padding: 16px;
   border: 2px solid #1976d2;
   text-align: center;
   font-size: 1.1rem;
-  color: #000000;
+  color: #111;
   font-weight: 600;
 }
 .modern-example-calculation {
@@ -427,13 +428,13 @@ import BackNav from 'components/BackNav.vue'
   color: #222;
 }
 .modern-calculation-result {
-  background: #fff8e1;
+  background: #f0f4f8;
   padding: 12px;
   border-radius: 6px;
   margin-top: 8px;
   text-align: center;
-  border: 1px solid #ffa000;
-  color: #000000;
+  border: 1px solid #1976d2;
+  color: #111;
   font-weight: 600;
 }
 .modern-moa-calculation {
@@ -483,12 +484,12 @@ import BackNav from 'components/BackNav.vue'
   gap: 8px;
 }
 .modern-moa-value {
-  background: #e0f2f1;
+  background: #f0f4f8;
   padding: 8px 12px;
   border-radius: 6px;
   text-align: center;
   border: 1px solid #009688;
-  color: #000000;
+  color: #111;
   font-weight: 600;
 }
 .modern-example-scenario {
@@ -506,23 +507,23 @@ import BackNav from 'components/BackNav.vue'
   color: #222;
 }
 .modern-conclusion {
-  background: #e3f2fd;
+  background: #f0f4f8;
   padding: 12px;
   border-radius: 6px;
   margin-top: 8px;
   text-align: center;
-  border: 1px solid #1976d2;
-  color: #1976d2;
+  border: 1px solid #009688;
+  color: #111;
   font-weight: 600;
 }
 .modern-relation-formula {
-  background: #e0f2f1;
+  background: #f0f4f8;
   padding: 16px;
   border-radius: 8px;
   text-align: center;
-  border: 2px solid #009688;
+  border: 2px solid #1976d2;
   font-size: 1.2rem;
-  color: #009688;
+  color: #111;
   font-weight: 600;
 }
 
