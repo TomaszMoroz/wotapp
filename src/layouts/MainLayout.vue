@@ -407,17 +407,27 @@ const isInToolsSection = computed(() => {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: auto;
 }
+/* Always show logo, responsive size */
 .wot-logo-drawer {
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   border: 2px solid #2D3E2F;
   transition: transform 0.2s ease;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 .wot-logo-drawer:hover {
   transform: scale(1.05);
+}
+@media (min-width: 600px) {
+  .wot-logo-drawer {
+    width: 160px;
+    height: 160px;
+  }
 }
 :root {
   --military-primary: #2D3E2F;
