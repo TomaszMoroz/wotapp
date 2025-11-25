@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="lHh Lpr lFf">
-    <q-header elevated class="bg-military-primary">
-      <q-toolbar class="q-px-md">
+  <q-layout view="lHh Lpr lFf" class="dashboard-bg">
+    <q-header elevated class="bg-military-primary dashboard-header">
+      <q-toolbar class="q-px-md dashboard-toolbar">
         <q-btn
           flat
           dense
@@ -11,13 +11,13 @@
           @click="toggleLeftDrawer"
           class="q-mr-sm text-white"
         />
-
-        <q-toolbar-title class="text-weight-bold text-white">
+        <q-toolbar-title class="text-weight-bold text-white dashboard-title">
           <div class="row items-center no-wrap">
             <q-icon name="shield" class="q-mr-sm" size="sm" color="white" />
+            <span class="q-ml-sm">WOT PWA</span>
           </div>
         </q-toolbar-title>
-        {{ 'v2.3.5 WERSJA TESTOWA' }}
+        <span class="dashboard-version">v2.3.5 WERSJA TESTOWA</span>
       </q-toolbar>
     </q-header>
 
@@ -25,10 +25,10 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="bg-military-light"
+      class="dashboard-drawer bg-military-light"
       :width="280"
     >
-      <div class="q-pa-md bg-military-dark text-white">
+      <div class="q-pa-md dashboard-drawer-header text-military-secondary">
         <div class="text-h6 text-weight-bold">Menu Główne</div>
         <div class="text-caption opacity-70">Wybierz sekcję</div>
       </div>
@@ -287,21 +287,6 @@
           </q-item>
 
           <!-- Nowy layout -->
-        <q-separator class="q-my-md" />
-        <q-item
-          clickable
-          @click="$router.push('/new-layout')"
-          :class="isActiveRoute('/new-layout') ? 'bg-military-active text-white' : ''"
-          class="q-my-xs q-mx-sm rounded-borders"
-        >
-          <q-item-section avatar>
-            <q-icon name="auto_awesome" :color="isActiveRoute('/new-layout') ? 'white' : 'military-primary'" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-weight-medium">New Layout</q-item-label>
-            <q-item-label caption :class="isActiveRoute('/new-layout') && 'text-white'">Nowy dashboard</q-item-label>
-          </q-item-section>
-        </q-item>
         </template>
 
         <q-separator class="q-my-md" />
@@ -337,7 +322,9 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <div class="dashboard-content-wrapper">
+        <router-view />
+      </div>
     </q-page-container>
   </q-layout>
 </template>
@@ -371,43 +358,48 @@ const isInToolsSection = computed(() => {
 </script>
 
 <style scoped>
-/* Military Color Palette */
-.bg-military-primary {
-  background-color: #2D3E2F; /* Dark Military Green */
+/* Dashboard Modern Theme */
+.dashboard-bg {
+  background: var(--military-light, #F5F5F5);
+  min-height: 100vh;
 }
-
-.bg-military-dark {
-  background-color: #1A1A1A; /* Military Black */
+.dashboard-header {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
-
-.bg-military-light {
-  background-color: #F5F5F5; /* Off White */
+.dashboard-toolbar {
+  min-height: 64px;
+  background: none;
 }
-
-.bg-military-active {
-  background-color: #4A5D31; /* Active Military Green */
+.dashboard-title {
+  font-size: 1.25rem;
+  letter-spacing: 0.01em;
 }
-
-.q-item {
-  min-height: 56px;
-  transition: all 0.2s ease;
+.dashboard-version {
+  color: #fff;
+  font-size: 0.9rem;
+  margin-left: 1.5rem;
+  opacity: 0.7;
 }
-
-.q-item:hover {
-  background-color: rgba(74, 93, 49, 0.1); /* Light military green hover */
-  transform: translateX(4px);
+.dashboard-drawer {
+  border-right: 1px solid #e0e0e0;
+  background: var(--military-light, #F5F5F5);
 }
-
-.q-item.bg-military-active:hover {
-  background-color: #4A5D31 !important;
-  transform: translateX(0);
+.dashboard-drawer-header {
+  background: #fff;
+  border-bottom: 1px solid #e0e0e0;
+  color: var(--military-secondary, #4A5D31);
 }
-
+.dashboard-content-wrapper {
+  padding: 24px 0 0 0;
+  min-height: 100vh;
+}
+.text-military-secondary {
+  color: var(--military-secondary, #4A5D31) !important;
+}
 .logo-section {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   margin-top: auto;
 }
-
 .wot-logo-drawer {
   width: 160px;
   height: 160px;
@@ -417,15 +409,12 @@ const isInToolsSection = computed(() => {
   border: 2px solid #2D3E2F;
   transition: transform 0.2s ease;
 }
-
 .wot-logo-drawer:hover {
   transform: scale(1.05);
 }
-
-/* Military color definitions for use in templates */
 :root {
   --military-primary: #2D3E2F;
-  --military-secondary: #8B4513;
+  --military-secondary: #4A5D31;
   --military-accent: #556B2F;
   --military-green: #4A5D31;
   --military-brown: #8B4513;

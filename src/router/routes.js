@@ -32,14 +32,14 @@ const routes = [
       { path: '/abc/backpack', name: 'abc-backpack', component: () => import('pages/abc/AbcBackpackPage.vue') },
       { path: '/abc/chain', name: 'abc-chain', component: () => import('pages/abc/AbcChainOfCommandPage.vue') },
       { path: '/abc/cyber', name: 'abc-cyber', component: () => import('pages/abc/AbcCybersecurityPage.vue') },
+      { path: '/abc/kts', name: 'abc-kts', component: () => import('pages/abc/AbcKtsPage.vue') },
       { path: '/ranks', component: () => import('pages/ranks/RanksPage.vue') },
       { path: '/regulations', component: () => import('pages/regulations/RegulationsPage.vue') },
       { path: '/firearms-law', component: () => import('pages/emergency/FirearmsLawPage.vue') },
       { path: '/drill', component: () => import('pages/emergency/DrillPage.vue') },
       // TCCC
       { path: '/tccc', component: () => import('pages/tccc/TcccPage.vue') },
-      { path: '/tccc/:nr', component: () => import('pages/tccc/TcccChapterPage.vue') },
-      { path: '/new-layout', component: () => import('pages/NewLayoutPage.vue') }
+      { path: '/tccc/:nr', component: () => import('pages/tccc/TcccChapterPage.vue') }
     ]
   },
 
