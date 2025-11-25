@@ -23,6 +23,8 @@
                 @filter="filterReports"
                 @update:model-value="onReportSelected"
                 class="q-mb-md"
+                dropdown-auto-width
+                :menu-props="{ maxHeight: 'none' }"
               >
                 <template v-slot:no-option>
                   <q-item>
