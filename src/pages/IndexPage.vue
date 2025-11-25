@@ -47,7 +47,7 @@ const iconColors = [
   '#a2ad59'
 ]
 function navigateTo (path) {
-  router.push(path)
+  router.push(path).catch(() => {})
 }
 </script>
 
