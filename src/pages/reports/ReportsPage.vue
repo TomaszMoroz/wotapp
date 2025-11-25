@@ -397,6 +397,61 @@ RV (PUNKT ZBORNY):
 [LOKALIZACJA ZAPASOWA]
 
 Przykład: Ramzes, biorę RTO i kaemistę i idziemy sprawdzić teren pod punkt obserwacyjny. Wrócimy najpóźniej o 1430. Jeśli nie wrócimy do tego czasu, przejmujesz dowodzenie – skontaktuj się z TOC i raportuj sytuację. Jeśli zostaniecie zaatakowani, wycofajcie się do RV i czekajcie na nas do 1500.`
+  },
+  {
+    id: 11,
+    name: 'SITREP - Raport stanu drużyny',
+    category: 'Meldunki operacyjne',
+    icon: 'fact_check',
+    color: 'teal',
+    content: `SITREP - RAPORT DOTYCZĄCY AKTUALNEGO STANU DRUŻYNY
+
+1. DATA/CZAS:
+   [DATA, GODZINA]
+
+2. POZYCJA:
+   [GRID/WSPÓŁRZĘDNE]
+
+3. STAN OSOBOWY:
+   [LICZBA ŻOŁNIERZY, RANNI, KIA]
+
+4. STAN AMUNICJI:
+   [OPIS, PROCENTY, BRAKI]
+
+5. STAN SPRZĘTU:
+   [SPRAWNY/USZKODZONY, BRAKI]
+
+6. DZIAŁANIA W TOKU:
+   [KRÓTKI OPIS]
+
+7. UWAGI:
+   [DODATKOWE INFORMACJE]`
+  },
+  {
+    id: 12,
+    name: 'UXO/IED SPOTREP - Niewybuch/Ładunek',
+    category: 'Meldunki operacyjne',
+    icon: 'report_problem',
+    color: 'green-6',
+    content: `UXO/IED SPOTREP - RAPORT DOTYCZĄCY ODKRYCIA NIEWYBUCHU / IMPROWIZOWANEGO ŁADUNKU WYBUCHOWEGO
+
+1. WSPÓŁRZĘDNE PUNKTU PODJĘCIA:
+   [GRID/WSPÓŁRZĘDNE]
+
+2. CZ. RADIOWA, KRYPTONIM, CRYPTO/PLAINTEXT:
+   [CZĘSTOTLIWOŚĆ, ZNAK WYWOŁAWCZY]
+
+3. OPIS OBIEKTU:
+   [RODZAJ, KSZTAŁT, WIELKOŚĆ, OZNACZENIA]
+
+4. ZAGROŻENIE:
+   [OPIS ZAGROŻENIA, DYSTANS BEZPIECZEŃSTWA]
+
+5. PODJĘTE DZIAŁANIA:
+   [ZABEZPIECZENIE, OZNACZENIE, EWAKUACJA]
+
+6. UWAGI:
+   [DODATKOWE INFORMACJE]`
   }
 ]
 

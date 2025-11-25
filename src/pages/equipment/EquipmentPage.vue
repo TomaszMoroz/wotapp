@@ -1,10 +1,12 @@
 <template>
-  <q-page class="page-background">
-    <div class="container q-pa-md">
-      <BackNav />
+  <q-page class="modern-bg">
+    <div class="dashboard-container">
+      <BackNav color="black"/>
 
       <!-- Header with navigation -->
-      <div class="text-h4 q-mb-md text-grey-3">Wyposażenie</div>
+      <div class="page-header q-mb-md">
+        <div class="text-h4 text-weight-bold text-dashboard-header">Wyposażenie</div>
+      </div>
 
       <!-- Breadcrumb navigation -->
       <div v-if="currentView !== 'weapons'" class="q-mb-md">
@@ -18,27 +20,29 @@
       </div>
 
       <!-- Main weapons view -->
-      <div v-if="currentView === 'weapons'" class="weapons-grid">
+      <div v-if="currentView === 'weapons'" class="dashboard-tiles tiles-grid">
         <q-card
           v-for="weapon in weapons"
           :key="weapon.id"
-          class="weapon-card bg-grey-4 cursor-pointer"
+          class="modern-tile cursor-pointer"
           @click="showWeaponDetails(weapon.id)"
         >
-          <q-card-section class="text-center">
-            <div class="text-h4 text-bold q-mt-md">{{ weapon.name }}</div>
-            <div class="text-caption text-black">{{ weapon.category }}</div>
+          <q-card-section class="tile-content">
+            <div class="tile-label-row">
+              <span class="tile-label">{{ weapon.name }}</span>
+            </div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ weapon.category }}</q-chip>
           </q-card-section>
         </q-card>
       </div>
 
       <!-- Weapon details view -->
-      <div v-if="currentView === 'details'" class="weapon-details">
-        <q-card>
+      <div v-if="currentView === 'details'" class="weapon-details dashboard-tiles">
+        <q-card class="dashboard-tile q-pa-md">
           <q-card-section>
             <div class="row q-gutter-md">
               <div class="col-12 col-md-8">
-                <div class="text-h5 q-mb-md">{{ selectedWeapon.name }}</div>
+                <div class="text-h5 text-weight-bold q-mb-md">{{ selectedWeapon.name }}</div>
                 <div class="text-subtitle1 text-grey q-mb-md">{{ selectedWeapon.fullName }}</div>
               </div>
             </div>
@@ -92,12 +96,12 @@
                 </q-card>
               </div>
             </div>
-                        <img
-                v-if="selectedWeapon.image"
-                :src="selectedWeapon.image"
-                :alt="selectedWeapon.name"
-                class="weapon-detail-image"
-              />
+            <img
+              v-if="selectedWeapon.image"
+              :src="selectedWeapon.image"
+              :alt="selectedWeapon.name"
+              class="weapon-detail-image"
+            />
           </q-card-section>
         </q-card>
       </div>
@@ -358,48 +362,115 @@ const goBack = () => {
 </script>
 
 <style scoped>
-.page-background {
-  background: #232b23;
+
+.modern-bg {
+  background: #f7f8f9;
   min-height: 100vh;
 }
-@media (prefers-color-scheme: light) {
-  .page-background {
-    background: #f5f5f5;
+
+/* Dashboard container for max-width and responsive padding */
+.dashboard-container {
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 32px 24px 32px 24px;
+}
+@media (max-width: 600px) {
+  .dashboard-container {
+    padding: 16px 6px 24px 6px;
   }
 }
 
-.weapons-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-  margin-top: 20px;
+/* Dashboard style for tiles/cards */
+.dashboard-tiles {
+  max-width: 900px;
+  margin: 0 auto 0 auto;
+  padding: 0 0 24px 0;
+}
+@media (max-width: 600px) {
+  .dashboard-tiles {
+    padding: 0 0 12px 0;
+  }
 }
 
-.weapon-card {
-  transition: all 0.3s ease;
-  border-radius: 12px;
-  min-height: 180px;
+.page-header {
+  max-width: 900px;
+  margin: 0 auto 24px auto;
+  padding: 0 0 8px 0;
   display: flex;
   align-items: center;
+  justify-content: flex-start;
+}
+@media (max-width: 600px) {
+  .page-header {
+    padding: 0 0 4px 0;
+  }
 }
 
-.weapon-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+.text-dashboard-header {
+  color: #0f2c05;
 }
-
-.weapon-image {
-  width: 80px;
-  height: 60px;
-  object-fit: contain;
-  margin-bottom: 10px;
+/* --- Dashboard tile/card styles from IndexPage.vue --- */
+.tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 36px;
+  justify-items: center;
+  margin-top: 12px;
+}
+.modern-tile {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s;
+  min-height: 170px;
+  width: 100%;
+  max-width: 270px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  border: none;
+}
+.modern-tile:hover {
+  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
+  transform: translateY(-2px) scale(1.03);
+}
+.tile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 38px 0 28px 0;
+}
+.tile-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.tile-label {
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #0f2c05;
+}
+.tile-desc-chip-big {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 12px;
+  min-height: 36px;
 }
 
 .weapon-detail-image {
-  width: 300px;
-  height: 200px;
+  width: 100%;
   object-fit: contain;
   margin-bottom: 20px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .weapon-details {
@@ -414,31 +485,23 @@ const goBack = () => {
 .spec-card {
   border-radius: 8px;
   transition: all 0.2s ease;
+  background: #f5f5f5;
+  border: 1.5px solid #171716;
 }
-
 .spec-card:hover {
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 12px rgba(15,44,5,0.10);
 }
-
 .spec-card .q-card__section {
   padding: 12px 16px;
 }
 
-/* Mobile optimizations */
 @media (max-width: 600px) {
-  .weapons-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-  }
-
-  .weapon-card {
+  .dashboard-tile {
     min-height: 140px;
   }
-
   .spec-card {
     margin-bottom: 8px;
   }
-
   .spec-card .q-card__section {
     padding: 10px 14px;
   }
