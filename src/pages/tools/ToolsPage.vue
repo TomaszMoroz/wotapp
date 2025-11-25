@@ -1,104 +1,23 @@
 <template>
-  <q-page class="page-background">
-    <div class="container q-pa-md">
-      <BackNav />
-      <!-- Header Section -->
-      <div class="text-center q-mb-xl">
-        <div class="hero-section q-pa-lg rounded-borders">
-          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Narzędzia</div>
-          <div class="text-body1 text-grey-6">Kalkulatory i narzędzia wojskowe</div>
-        </div>
+  <q-page class="modern-bg q-pa-lg">
+    <BackNav />
+    <div class="row items-center justify-between q-mb-xl">
+      <div>
+        <div class="text-h3 text-weight-bold modern-title">Narzędzia</div>
+        <div class="text-subtitle1 text-grey-7 q-mt-xs">Kalkulatory i narzędzia wojskowe</div>
       </div>
-
-      <!-- Tools Grid -->
-      <div class="tools-grid q-mb-xl">
-        <!-- Kalkulator odległości -->
-        <q-card
-          class="tool-card military-primary-card"
-          clickable
-          @click="navigateTo('/tools/distance')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="straighten" size="3rem" color="white" />
+    </div>
+    <div class="dashboard-tiles q-mb-xl">
+      <div class="tiles-grid">
+        <q-card v-for="(tool, i) in tools" :key="tool.title" class="modern-tile" @click="navigateTo(tool.route)">
+          <q-card-section class="tile-content">
+            <div class="tile-icon-bg" :style="{ background: iconColors[i % iconColors.length] }">
+              <q-icon :name="tool.icon" color="white" size="32px" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Kalkulator odległości</div>
-            <div class="text-caption text-grey-4">Pomiar przez tysiące</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- GROT Offset -->
-        <q-card
-          class="tool-card military-brown-card"
-          clickable
-          @click="navigateTo('/training')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="gps_fixed" size="3rem" color="white" />
+            <div class="tile-label-row">
+              <span class="tile-label">{{ tool.title }}</span>
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">GROT Offset</div>
-            <div class="text-caption text-grey-4">Korekta celowania</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Alfabet NATO -->
-        <q-card
-          class="tool-card military-green-card"
-          clickable
-          @click="navigateTo('/communication')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="record_voice_over" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Alfabet NATO</div>
-            <div class="text-caption text-grey-4">Komunikacja fonetyczna</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Trening korekty celowania -->
-        <q-card
-          class="tool-card military-dark-card"
-          clickable
-          @click="navigateTo('/tools/settings')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="tune" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Trening korekty celowania</div>
-            <div class="text-caption text-grey-4">Symulacja nastaw</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Konwerter MILS - MOA -->
-        <q-card
-          class="tool-card military-accent-card"
-          clickable
-          @click="navigateTo('/tools/mils-moa')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="swap_horiz" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Konwerter MILS - MOA</div>
-            <div class="text-caption text-grey-4">Przelicznik jednostek</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Pobrany sprzęt -->
-        <q-card
-          class="tool-card military-primary-card"
-          clickable
-          @click="navigateTo('/tools/equipment')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="inventory_2" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Pobrany sprzęt</div>
-            <div class="text-caption text-grey-4">Lista wydanego wyposażenia</div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ tool.desc }}</q-chip>
           </q-card-section>
         </q-card>
       </div>
@@ -109,132 +28,99 @@
 <script setup>
 import BackNav from 'components/BackNav.vue'
 import { useRouter } from 'vue-router'
-
-defineOptions({
-  name: 'ToolsPage'
-})
-
 const router = useRouter()
-
-const navigateTo = (path) => {
+const tools = [
+  { title: 'Kalkulator odległości', icon: 'straighten', desc: 'Pomiar DWK1000', route: '/tools/distance' },
+  { title: 'GROT Offset', icon: 'gps_fixed', desc: 'Korekta celowania', route: '/training' },
+  { title: 'Alfabet NATO', icon: 'record_voice_over', desc: 'Komunikacja fonetyczna', route: '/communication' },
+  { title: 'Trening korekty celowania', icon: 'tune', desc: 'Symulacja nastaw', route: '/tools/settings' },
+  { title: 'Konwerter MILS - MOA', icon: 'swap_horiz', desc: 'Przelicznik jednostek', route: '/tools/mils-moa' },
+  { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment' }
+]
+const iconColors = [
+  '#0f2c05',
+  '#65473f',
+  '#827858',
+  '#8e936d',
+  '#a2ad59'
+]
+function navigateTo (path) {
   router.push(path)
 }
 </script>
 
 <style scoped>
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+.modern-bg {
+  background: #f7f8f9;
   min-height: 100vh;
 }
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+.modern-title {
+  color: #0f2c05;
+  letter-spacing: -0.5px;
 }
-
-.hero-section {
-  background: #232b23;
-  border: 1px solid #384c38;
-  color: #f5f7fa;
-  backdrop-filter: blur(6px);
-  box-shadow: 0 4px 16px rgba(44,62,47,0.13);
+.dashboard-tiles {
+  margin-bottom: 32px;
 }
-.hero-section .text-h3,
-.hero-section .text-h4,
-.hero-section .text-h5,
-.hero-section .text-h6 {
-  color: #f5f7fa !important;
+.tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 36px;
+  justify-items: center;
 }
-
-.tools-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  justify-content: center;
-  margin: 0 auto;
-}
-
-.tool-card {
-  flex: 0 0 280px;
-  width: 280px;
-  height: 180px;
-  border-radius: 16px;
+.modern-tile {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.18s, transform 0.18s;
+  min-height: 170px;
+  width: 100%;
+  max-width: 270px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
   border: none;
-  overflow: hidden;
-  position: relative;
 }
-
-.tool-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+.modern-tile:hover {
+  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
+  transform: translateY(-2px) scale(1.03);
 }
-
-.military-primary-card {
-  background: linear-gradient(135deg, #2D3E2F 0%, #1A2A1C 100%);
-  color: white;
+.tile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 38px 0 28px 0;
 }
-
-.military-brown-card {
-  background: linear-gradient(135deg, #8B4513 0%, #5D2F0A 100%);
-  color: white;
-}
-
-.military-green-card {
-  background: linear-gradient(135deg, #556B2F 0%, #3A4A20 100%);
-  color: white;
-}
-
-.military-dark-card {
-  background: linear-gradient(135deg, #2C3E50 0%, #1A252F 100%);
-  color: white;
-}
-
-.military-accent-card {
-  background: linear-gradient(135deg, #4A5D31 0%, #2D3E2F 100%);
-  color: white;
-}
-
-.card-icon-wrapper {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+.tile-icon-bg {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
 }
-
-/* Mobile responsiveness */
-@media (max-width: 640px) {
-  .tool-card {
-    flex: 0 0 100%;
-    width: 100%;
-    max-width: 320px;
-  }
+.tile-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
 }
-
-/* Tablet and small desktop - 2 per row */
-@media (min-width: 641px) and (max-width: 1024px) {
-  .tools-grid {
-    max-width: 608px; /* 2 * 280px + 1 * 24px gap + padding */
-  }
+.tile-label {
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #0f2c05;
 }
-
-/* Desktop - 3 per row */
-@media (min-width: 1025px) and (max-width: 1440px) {
-  .tools-grid {
-    max-width: 888px; /* 3 * 280px + 2 * 24px gap + padding */
-  }
-}
-
-/* Large desktop - 4 per row */
-@media (min-width: 1441px) {
-  .tools-grid {
-    max-width: 1168px; /* 4 * 280px + 3 * 24px gap + padding */
-  }
+.tile-desc-chip-big {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 12px;
+  min-height: 36px;
 }
 </style>

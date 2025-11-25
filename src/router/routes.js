@@ -38,7 +38,8 @@ const routes = [
       { path: '/drill', component: () => import('pages/emergency/DrillPage.vue') },
       // TCCC
       { path: '/tccc', component: () => import('pages/tccc/TcccPage.vue') },
-      { path: '/tccc/:nr', component: () => import('pages/tccc/TcccChapterPage.vue') }
+      { path: '/tccc/:nr', component: () => import('pages/tccc/TcccChapterPage.vue') },
+      { path: '/new-layout', component: () => import('pages/NewLayoutPage.vue') }
     ]
   },
 

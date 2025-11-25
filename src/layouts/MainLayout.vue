@@ -285,6 +285,23 @@
               <q-item-label caption :class="isActiveRoute('/abc') && 'text-white'">Podstawowe informacje dla nowo wcielonych</q-item-label>
             </q-item-section>
           </q-item>
+
+          <!-- Nowy layout -->
+        <q-separator class="q-my-md" />
+        <q-item
+          clickable
+          @click="$router.push('/new-layout')"
+          :class="isActiveRoute('/new-layout') ? 'bg-military-active text-white' : ''"
+          class="q-my-xs q-mx-sm rounded-borders"
+        >
+          <q-item-section avatar>
+            <q-icon name="auto_awesome" :color="isActiveRoute('/new-layout') ? 'white' : 'military-primary'" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-weight-medium">New Layout</q-item-label>
+            <q-item-label caption :class="isActiveRoute('/new-layout') && 'text-white'">Nowy dashboard</q-item-label>
+          </q-item-section>
+        </q-item>
         </template>
 
         <q-separator class="q-my-md" />

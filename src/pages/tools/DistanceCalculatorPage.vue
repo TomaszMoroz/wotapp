@@ -1,157 +1,149 @@
 <template>
-  <q-page class="page-background">
-    <div class="container q-pa-md">
+  <q-page class="modern-bg q-pa-lg">
+    <div class="row items-center justify-between q-mb-xl">
+      <div>
+        <div class="text-h3 text-weight-bold modern-title">Kalkulator odległości</div>
+        <div class="text-subtitle1 text-grey-7 q-mt-xs">Obliczanie odległości metodą "DWK1000"</div>
+      </div>
       <BackNav />
-
-      <!-- Header Section -->
-      <div class="text-center q-mb-xl">
-        <div class="hero-section q-pa-lg rounded-borders">
-          <div class="text-h3 text-weight-bold text-grey-4 q-mb-sm">Kalkulator odległości</div>
-          <div class="text-body1 text-grey-6">Obliczanie odległości metodą \"DWK1000\"</div>
-        </div>
-      </div>
-
-      <div class="calculation-section">
-        <div class="section-card">
-          <div class="card-header-modern">
-            <h4 class="section-title">Dane wejściowe</h4>
-            <p class="section-subtitle">Wprowadź parametry pomiaru</p>
-          </div>
-
-          <div class="inputs-grid">
-            <div class="input-group">
-              <label class="input-label">Wymiar obiektu (m)</label>
-              <q-input
-                v-model.number="objectHeight"
-                type="number"
-                filled
-                placeholder="Np. 1.8"
-                step="0.1"
-                min="0"
-                class="modern-input"
-              />
-
-              <!-- Object selector -->
-              <div class="object-selector q-mt-md">
-                <q-btn
-                  unelevated
-                  icon="security"
-                  label="lub wybierz obiekt z bazy"
-                  color="blue-grey-8"
-                  text-color="white"
-                  size="md"
-                  @click="showObjectDialog = true"
-                  class="object-selector-btn"
+    </div>
+    <div class="dashboard-tiles q-mb-xl">
+      <div class="tiles-grid">
+        <q-card class="modern-tile" style="max-width: 420px; width: 100%;">
+          <q-card-section class="tile-content">
+            <div class="tile-icon-bg icon-ruler-bg">
+              <q-icon name="straighten" color="#65473f" size="52px" class="icon-ruler" />
+            </div>
+            <div class="tile-label-row">
+              <span class="tile-label">Dane wejściowe</span>
+            </div>
+            <div class="inputs-grid q-mt-md">
+              <div class="input-group">
+                <label class="input-label">Wymiar obiektu (m)</label>
+                <q-input
+                  v-model.number="objectHeight"
+                  type="number"
+                  filled
+                  placeholder="Np. 1.8"
+                  step="0.1"
+                  min="0"
+                  class="modern-input"
                 />
-              </div>
 
-              <!-- Selected object display -->
-              <div v-if="selectedObjectName" class="selected-object q-mt-md">
-                <q-chip
-                  :label="selectedObjectName"
-                  color="primary"
-                  text-color="white"
-                  icon="check_circle"
-                  removable
-                  @remove="clearSelectedObject"
-                />
-              </div>
-            </div>
+                <!-- Object selector -->
+                <div class="object-selector q-mt-md">
+                  <q-btn
+                    unelevated
+                    icon="security"
+                    label="lub wybierz obiekt z bazy"
+                    color="blue-grey-8"
+                    text-color="white"
+                    size="md"
+                    @click="showObjectDialog = true"
+                    class="object-selector-btn"
+                  />
+                </div>
 
-            <div class="input-group">
-              <label class="input-label">Wartość w tysięcznych</label>
-              <q-input
-                v-model.number="distanceInMils"
-                type="number"
-                filled
-                placeholder="Np. 5.2"
-                step="0.1"
-                min="0"
-                class="modern-input"
-              />
-            </div>
-          </div>
-
-          <div class="results-section q-mt-lg" v-if="calculatedDistance">
-            <div class="result-card">
-              <div class="result-icon">
-                <q-icon name="place" color="primary" />
-              </div>
-              <div class="result-content">
-                <span class="result-label">Obliczona odległość</span>
-                <span class="result-value">{{ calculatedDistance }} m</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Object Selection Dialog -->
-      <q-dialog v-model="showObjectDialog" persistent>
-        <q-card class="object-dialog">
-          <q-card-section class="dialog-header">
-            <div class="text-h6 text-weight-bold">Wybierz obiekt</div>
-            <div class="text-caption text-grey-6">Sprzęt wojskowy - wymiary orientacyjne</div>
-          </q-card-section>
-
-          <!-- Filter input -->
-          <q-card-section class="filter-section">
-            <q-input
-              v-model="equipmentFilter"
-              placeholder="Filtruj sprzęt..."
-              filled
-              clearable
-              class="filter-input"
-            >
-              <template v-slot:prepend>
-                <q-icon name="search" />
-              </template>
-            </q-input>
-            <!-- Dimension selector -->
-            <div class="dimension-selector q-mt-md">
-              <div class="text-subtitle2 q-mb-sm text-center">Wybierz wymiar:</div>
-              <q-option-group
-                v-model="selectedDimension"
-                :options="[
-                  { label: 'Długość', value: 'length' },
-                  { label: 'Szerokość', value: 'width' },
-                  { label: 'Wysokość', value: 'height' }
-                ]"
-                color="primary"
-                type="radio"
-                inline
-                class="dimension-radio"
-              />
-            </div>
-          </q-card-section>
-
-          <q-card-section class="object-list">
-            <div
-              v-for="equipment in filteredEquipment"
-              :key="equipment.id"
-              class="equipment-item"
-              @click="selectEquipment(equipment)"
-            >
-              <div class="equipment-info">
-                <div class="equipment-name">{{ equipment.name }}</div>
-                <div class="equipment-details">
-                  <span class="equipment-type">{{ equipment.type }}</span>
-                  <span class="equipment-dimensions">
-                    {{ selectedDimension === 'height' ? 'Wys:' : selectedDimension === 'width' ? 'Szer:' : 'Dł:' }}
-                    {{ selectedDimension === 'height' ? equipment.height : selectedDimension === 'width' ? equipment.width : equipment.length }}m
-                  </span>
+                <!-- Selected object display -->
+                <div v-if="selectedObjectName" class="selected-object q-mt-md">
+                  <q-chip
+                    :label="selectedObjectName"
+                    color="primary"
+                    text-color="white"
+                    icon="check_circle"
+                    removable
+                    @remove="clearSelectedObject"
+                  />
                 </div>
               </div>
-              <q-icon name="chevron_right" color="grey-5" />
-            </div>
-          </q-card-section>
 
-          <q-card-actions align="right">
-            <q-btn flat label="Anuluj" color="grey" @click="closeDialog" />
-          </q-card-actions>
+              <div class="input-group">
+                <label class="input-label">Wartość w tysięcznych</label>
+                <q-input
+                  v-model.number="distanceInMils"
+                  type="number"
+                  filled
+                  placeholder="Np. 5.2"
+                  step="0.1"
+                  min="0"
+                  class="modern-input"
+                />
+              </div>
+            </div>
+
+            <q-chip v-if="calculatedDistance" class="tile-desc-chip-big q-mt-lg" color="grey-3" text-color="grey-8" dense>
+              Obliczona odległość: <b class="q-ml-xs">{{ calculatedDistance }} m</b>
+            </q-chip>
+          </q-card-section>
         </q-card>
-      </q-dialog>
+      </div>
     </div>
+
+    <!-- Object Selection Dialog -->
+    <q-dialog v-model="showObjectDialog" persistent>
+      <q-card class="object-dialog">
+        <q-card-section class="dialog-header">
+          <div class="text-h6 text-weight-bold">Wybierz obiekt</div>
+          <div class="text-caption text-grey-6">Sprzęt wojskowy - wymiary orientacyjne</div>
+        </q-card-section>
+
+        <!-- Filter input -->
+        <q-card-section class="filter-section">
+          <q-input
+            v-model="equipmentFilter"
+            placeholder="Filtruj sprzęt..."
+            filled
+            clearable
+            class="filter-input"
+          >
+            <template v-slot:prepend>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+          <!-- Dimension selector -->
+          <div class="dimension-selector q-mt-md">
+            <div class="text-subtitle2 q-mb-sm text-center">Wybierz wymiar:</div>
+            <q-option-group
+              v-model="selectedDimension"
+              :options="[
+                { label: 'Długość', value: 'length' },
+                { label: 'Szerokość', value: 'width' },
+                { label: 'Wysokość', value: 'height' }
+              ]"
+              color="primary"
+              type="radio"
+              inline
+              class="dimension-radio"
+            />
+          </div>
+        </q-card-section>
+
+        <q-card-section class="object-list">
+          <div
+            v-for="equipment in filteredEquipment"
+            :key="equipment.id"
+            class="equipment-item"
+            @click="selectEquipment(equipment)"
+          >
+            <div class="equipment-info">
+              <div class="equipment-name">{{ equipment.name }}</div>
+              <div class="equipment-details">
+                <span class="equipment-type">{{ equipment.type }}</span>
+                <span class="equipment-dimensions">
+                  {{ selectedDimension === 'height' ? 'Wys:' : selectedDimension === 'width' ? 'Szer:' : 'Dł:' }}
+                  {{ selectedDimension === 'height' ? equipment.height : selectedDimension === 'width' ? equipment.width : equipment.length }}m
+                </span>
+              </div>
+            </div>
+            <q-icon name="chevron_right" color="grey-5" />
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Anuluj" color="grey" @click="closeDialog" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 
@@ -264,124 +256,121 @@ const calculatedDistance = computed(() => {
 </script>
 
 <style scoped>
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+.modern-bg {
+  background: #f7f8f9;
   min-height: 100vh;
 }
+.modern-title {
+  color: #0f2c05;
+  letter-spacing: -0.5px;
+}
+.dashboard-tiles {
+  margin-bottom: 32px;
+}
+.tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 36px;
+  justify-items: center;
+}
 
+/* Jasna kolorystyka formularza */
+.page-background {
+  background: #f7f8f9;
+  min-height: 100vh;
+}
 .container {
   max-width: 1200px;
   margin: 0 auto;
 }
-
 .hero-section {
-  background: rgba(40, 44, 52, 0.95);
-  border: 1px solid rgba(66, 165, 245, 0.3);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  color: #e1e1e1;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  color: #0f2c05;
+  box-shadow: 0 4px 16px rgba(15,44,5,0.07);
 }
-
 .section-card {
-  background: rgba(40, 44, 52, 0.95);
+  background: #fff;
   border-radius: 16px;
   padding: 32px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(66, 165, 245, 0.2);
+  box-shadow: 0 4px 16px rgba(15,44,5,0.07);
+  border: 1px solid #e0e0e0;
 }
-
 .card-header-modern {
   margin-bottom: 32px;
   text-align: center;
 }
-
 .section-title {
-  color: #e1e1e1;
+  color: #0f2c05;
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0 0 8px 0;
 }
-
 .section-subtitle {
-  color: #b0b0b0;
+  color: #827858;
   font-size: 1rem;
   margin: 0;
 }
-
 .inputs-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 32px;
   margin-bottom: 32px;
 }
-
 .input-group {
   display: flex;
   flex-direction: column;
 }
-
 .input-label {
   font-weight: 600;
-  color: #e1e1e1;
+  color: #0f2c05;
   margin-bottom: 12px;
   font-size: 1rem;
 }
-
 .modern-input {
   border-radius: 12px;
 }
-
-/* Dark mode input styling */
 :deep(.q-field--filled .q-field__control) {
-  background: rgba(66, 165, 245, 0.1) !important;
+  background: #f3f4f6 !important;
 }
-
 :deep(.q-field--filled .q-field__control input) {
-  color: #e1e1e1 !important;
+  color: #0f2c05 !important;
 }
-
 :deep(.q-field--filled .q-field__label) {
-  color: #b0b0b0 !important;
+  color: #827858 !important;
 }
-
 :deep(.q-field--filled.q-field--focused .q-field__control) {
-  background: rgba(66, 165, 245, 0.15) !important;
+  background: #e0e0e0 !important;
 }
-
 .formula-section {
   margin: 32px 0;
 }
-
 .formula-card {
-  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-  border: 2px solid #1976d2;
+  background: linear-gradient(135deg, #f7f8f9 0%, #e0e0e0 100%);
+  border: 2px solid #a2ad59;
   border-radius: 16px;
   padding: 24px;
   text-align: center;
 }
-
 .formula-title {
-  color: #1976d2;
+  color: #827858;
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 16px 0;
 }
-
 .formula-text {
-  color: #37474f;
+  color: #65473f;
   font-size: 1.2rem;
   font-weight: 500;
   font-family: 'Courier New', monospace;
 }
-
 .results-section {
   display: flex;
   justify-content: center;
 }
-
 .result-card {
-  background: linear-gradient(135deg, rgba(46, 125, 50, 0.2) 0%, rgba(27, 94, 32, 0.3) 100%);
-  border: 2px solid #4caf50;
+  background: linear-gradient(135deg, #e0f7e9 0%, #f7f8f9 100%);
+  border: 2px solid #a2ad59;
   border-radius: 16px;
   padding: 24px;
   display: flex;
@@ -390,197 +379,100 @@ const calculatedDistance = computed(() => {
   transition: all 0.3s ease;
   min-width: 300px;
 }
-
 .result-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 8px 25px rgba(162,173,89,0.18);
 }
-
 .result-icon {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 60px;
   height: 60px;
-  background: #4caf50;
+  background: #a2ad59;
   border-radius: 50%;
   color: white;
 }
-
 .result-content {
   display: flex;
   flex-direction: column;
   flex: 1;
 }
-
 .result-label {
   font-size: 1rem;
-  color: #b0b0b0;
+  color: #827858;
   font-weight: 500;
   margin-bottom: 4px;
 }
-
 .result-value {
   font-size: 2rem;
   font-weight: 700;
-  color: #4caf50;
+  color: #a2ad59;
 }
-
 .object-selector {
   text-align: center;
 }
-
 .selected-object {
   display: flex;
   justify-content: center;
 }
-
 .object-selector-btn {
-  border: 2px solid #42a5f5;
+  border: 2px solid #a2ad59;
   border-radius: 12px;
   padding: 12px 20px;
   transition: all 0.3s ease;
   font-weight: 600;
   width: 100%;
   max-width: 280px;
+  background: #f7f8f9;
+  color: #0f2c05;
 }
-
 .object-selector-btn:hover {
-  background: rgba(66, 165, 245, 0.15);
-  border-color: #1976d2;
+  background: #e0e0e0;
+  border-color: #827858;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(66, 165, 245, 0.3);
+  box-shadow: 0 4px 12px rgba(162,173,89,0.13);
 }
 
-.object-dialog {
-  min-width: 400px;
-  max-width: 500px;
-  background: rgba(40, 44, 52, 0.98);
-  color: #e1e1e1;
-}
-
-.dialog-header {
-  background: linear-gradient(135deg, #42a5f5 0%, #1976d2 100%);
-  color: white;
-  margin: -16px -16px 0 -16px;
-  padding: 20px;
-}
-
-.filter-section {
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(66, 165, 245, 0.2);
-  background: rgba(40, 44, 52, 0.95);
-}
-
-.filter-input {
-  border-radius: 8px;
-}
-
-.dimension-selector {
+.tile-icon-bg {
   display: flex;
-  flex-direction: column;
   align-items: center;
-}
-
-.dimension-radio {
   justify-content: center;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  margin-bottom: 16px;
+  background: #f3f4f6;
+  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
+}
+.icon-ruler-bg {
+  background: #f3f4f6 !important;
+}
+.icon-ruler {
+  color: #65473f !important;
+  font-size: 52px !important;
 }
 
-.dimension-toggle {
-  border-radius: 8px;
-}
-
-.object-list {
-  padding: 0;
-  background: rgba(40, 44, 52, 0.95);
-}
-
-.equipment-item {
-  padding: 16px 20px;
-  border-bottom: 1px solid rgba(66, 165, 245, 0.1);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(40, 44, 52, 0.95);
-  color: #e1e1e1;
-}
-
-.equipment-item:hover {
-  background: rgba(66, 165, 245, 0.1);
-}
-
-.equipment-item:last-child {
-  border-bottom: none;
-}
-
-.equipment-info {
-  flex: 1;
-}
-
-.equipment-name {
-  font-weight: 600;
-  color: #e1e1e1;
-  font-size: 1.1rem;
-  margin-bottom: 4px;
-}
-
-.equipment-details {
-  display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.equipment-type {
-  color: #b0b0b0;
-  font-size: 0.9rem;
-  background: rgba(66, 165, 245, 0.15);
-  padding: 2px 8px;
-  border-radius: 4px;
-}
-
-.equipment-dimensions {
-  color: #42a5f5;
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-/* Mobile responsiveness */
+/* Dialog styles and equipment list remain unchanged */
 @media (max-width: 768px) {
   .inputs-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-
-  .section-card {
-    padding: 24px;
+  .section-card, .tile-content {
+    padding: 24px 0 18px 0;
   }
-
   .result-card {
     min-width: auto;
     flex-direction: column;
     text-align: center;
   }
-
   .result-icon {
     width: 50px;
     height: 50px;
   }
-
   .result-value {
     font-size: 1.75rem;
-  }
-
-  .object-dialog {
-    min-width: 300px;
-    margin: 16px;
-  }
-
-  .equipment-details {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
   }
 }
 </style>

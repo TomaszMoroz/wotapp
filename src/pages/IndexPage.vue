@@ -1,375 +1,131 @@
 <template>
-  <q-page class="page-background">
-    <div class="container q-pa-md">
-      <!-- Header Section -->
-      <div class="text-center q-mb-xl">
-        <div class="hero-section q-pa-lg rounded-borders">
-          <!-- <div class="logo-wrapper q-mb-md">
-            <img src="~/assets/721.jpeg" alt="WOT Logo" class="wot-logo" />
-          </div> -->
-          <div class="text-h3 text-weight-bold text-primary q-mb-sm">Dashboard</div>
-          <!-- <div class="text-subtitle1 text-grey-7 q-mb-md">aplikacja wewnętrzna</div> -->
-          <div class="text-body1 text-grey-6">Wybierz sekcję aby rozpocząć pracę</div>
-        </div>
+  <q-page class="modern-bg q-pa-lg">
+    <div class="row items-center justify-between q-mb-xl">
+      <div>
+        <div class="text-h3 text-weight-bold modern-title">Dashboard</div>
+        <div class="text-subtitle1 text-grey-7 q-mt-xs">Wybierz sekcję aby rozpocząć pracę</div>
       </div>
+      <q-avatar size="56px" class="shadow-2">
+        <img src="/icons/favicon-128x128.png" alt="Profil" />
+      </q-avatar>
+    </div>
 
-      <!-- Cards Grid -->
-      <div class="cards-grid q-mb-xl">
-        <!-- Najpierw Narzędzia -->
-        <q-card
-          class="dashboard-card military-brown-card"
-          clickable
-          @click="navigateTo('/tools')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="build" size="3rem" color="white" />
+    <div class="dashboard-tiles q-mb-xl">
+      <div class="tiles-grid">
+        <q-card v-for="(tile, i) in tiles" :key="tile.label" class="modern-tile" @click="navigateTo(tile.route)">
+          <q-card-section class="tile-content">
+            <div class="tile-icon-bg" :style="{ background: iconColors[i % iconColors.length] }">
+              <q-icon :name="tile.icon" color="white" size="32px" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Narzędzia</div>
-            <div class="text-caption text-grey-4 mobile-caption">Pomoce, kalkulatory</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Pozostałe sekcje alfabetycznie -->
-        <q-card
-          class="dashboard-card military-accent-card"
-          clickable
-          @click="navigateTo('/emergency')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="military_tech" size="3rem" color="white" />
+            <div class="tile-label-row">
+              <span class="tile-label">{{ tile.title }}</span>
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Stopnie, regulaminy, prawo</div>
-            <div class="text-caption text-grey-4 mobile-caption">Informacje</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-primary-card"
-          clickable
-          @click="navigateTo('/equipment')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="inventory" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Wyposażenie</div>
-            <div class="text-caption text-grey-4 mobile-caption">Sprzęt wojskowy</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-dark-card"
-          clickable
-          @click="navigateTo('/reports')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="description" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Meldunki</div>
-            <div class="text-caption text-grey-4 mobile-caption">Raporty wojskowe</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-shooting-card"
-          clickable
-          @click="navigateTo('/shooting')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="gps_fixed" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Strzelectwo</div>
-            <div class="text-caption text-grey-4 mobile-caption">Balistyka, teoria, technika</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-tccc-card"
-          clickable
-          @click="navigateTo('/tccc')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="medical_services" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">TCCC</div>
-            <div class="text-caption text-grey-4 mobile-caption">Taktyczna pomoc poszkodowanym</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-green-card"
-          clickable
-          @click="navigateTo('/tactics')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="school" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Taktyka, dowodzenie i procedury</div>
-            <div class="text-caption text-grey-4 mobile-caption">Materiały szkoleniowe</div>
-          </q-card-section>
-        </q-card>
-
-        <q-card
-          class="dashboard-card military-secondary-card"
-          clickable
-          @click="navigateTo('/topography')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="map" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">Topografia</div>
-            <div class="text-caption text-grey-4 mobile-caption">Mapy i nawigacja</div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Kafelek ABC na końcu -->
-        <q-card
-          class="dashboard-card military-accent-card"
-          clickable
-          @click="navigateTo('/abc')"
-        >
-          <q-card-section class="text-center">
-            <div class="card-icon-wrapper">
-              <q-icon name="info" size="3rem" color="white" />
-            </div>
-            <div class="text-h6 q-mt-md text-weight-bold">ABC</div>
-            <div class="text-caption text-grey-4 mobile-caption">Podstawowe informacje dla nowo wcielonych</div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ tile.desc }}</q-chip>
           </q-card-section>
         </q-card>
       </div>
-
-      <!-- Status Bar -->
-      <!-- <div class="text-center">
-        <div class="status-bar q-pa-md rounded-borders">
-          <div class="row items-center justify-center q-gutter-md">
-            <q-chip color="positive" text-color="white" icon="offline_pin" class="q-px-md">
-              Tryb offline dostępny
-            </q-chip>
-            <q-chip color="military-dark" text-color="white" icon="security" class="q-px-md">
-              Zabezpieczona komunikacja
-            </q-chip>
-            <q-chip color="military-brown" text-color="white" icon="update" class="q-px-md">
-              Wersja 1.0.0
-            </q-chip>
-          </div>
-        </div>
-      </div> -->
     </div>
   </q-page>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
-
 const router = useRouter()
-
-const navigateTo = (path) => {
+const tiles = [
+  { label: 'Narzędzia', icon: 'build', desc: 'Pomoce, kalkulatory', route: '/tools', title: 'Narzędzia' },
+  { label: 'Stopnie, regulaminy, prawo', icon: 'military_tech', desc: 'Informacje', route: '/emergency', title: 'Stopnie, regulaminy, prawo' },
+  { label: 'Wyposażenie', icon: 'inventory', desc: 'Broń etatowa', route: '/equipment', title: 'Wyposażenie' },
+  { label: 'Meldunki', icon: 'description', desc: 'Raporty wojskowe', route: '/reports', title: 'Meldunki' },
+  { label: 'Strzelectwo', icon: 'gps_fixed', desc: 'Balistyka, teoria, technika', route: '/shooting', title: 'Strzelectwo' },
+  { label: 'TCCC', icon: 'medical_services', desc: 'Taktyczna pomoc', route: '/tccc', title: 'TCCC' },
+  { label: 'Taktyka, dowodzenie i procedury', icon: 'school', desc: 'Materiały szkoleniowe', route: '/tactics', title: 'Taktyka, dowodzenie i procedury' },
+  { label: 'Topografia', icon: 'map', desc: 'Mapy i nawigacja', route: '/topography', title: 'Topografia' },
+  { label: 'ABC', icon: 'info', desc: 'Dla nowo wcielonych', route: '/abc', title: 'ABC' }
+]
+const iconColors = [
+  '#0f2c05',
+  '#65473f',
+  '#827858',
+  '#8e936d',
+  '#a2ad59'
+]
+function navigateTo (path) {
   router.push(path)
 }
 </script>
 
 <style scoped>
-.military-tccc-card {
-  background: linear-gradient(135deg, #1976d2 0%, #0d47a1 100%);
-  color: white;
-}
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+.modern-bg {
+  background: #f7f8f9;
   min-height: 100vh;
 }
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
+.modern-title {
+  color: #0f2c05;
+  letter-spacing: -0.5px;
 }
-
-  .hero-section {
-    background: #232b23;
-    border: 1px solid #384c38;
-    color: #f5f7fa;
-    backdrop-filter: blur(6px);
-    box-shadow: 0 4px 16px rgba(44,62,47,0.13);
-  }
-  .hero-section .text-h3,
-  .hero-section .text-h4,
-  .hero-section .text-h5,
-  .hero-section .text-h6 {
-    color: #f5f7fa !important;
-  }
-
-.logo-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.dashboard-tiles {
+  margin-bottom: 32px;
 }
-
-.wot-logo {
-  max-width: 120px;
-  max-height: 120px;
-  width: auto;
-  height: auto;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.cards-grid {
+.tiles-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  max-width: 900px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 36px;
+  justify-items: center;
 }
-
-.dashboard-card {
-  height: 200px;
-  border-radius: 16px;
+.modern-tile {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: box-shadow 0.18s, transform 0.18s;
+  min-height: 170px;
+  width: 100%;
+  max-width: 270px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
   border: none;
-  overflow: hidden;
-  position: relative;
 }
-
-.dashboard-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+.modern-tile:hover {
+  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
+  transform: translateY(-2px) scale(1.03);
 }
-
-.military-primary-card {
-  background: linear-gradient(135deg, #2D3E2F 0%, #1A2A1C 100%);
-  color: white;
+.tile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 38px 0 28px 0;
 }
-
-.military-brown-card {
-  background: linear-gradient(135deg, #8B4513 0%, #5D2F0A 100%);
-  color: white;
-}
-
-.military-green-card {
-  background: linear-gradient(135deg, #556B2F 0%, #3A4A20 100%);
-  color: white;
-}
-
-.military-secondary-card {
-  background: linear-gradient(135deg, #4A5D31 0%, #334021 100%);
-  color: white;
-}
-
-.military-dark-card {
-  background: linear-gradient(135deg, #1A1A1A 0%, #000000 100%);
-  color: white;
-}
-
-.military-accent-card {
-  background: linear-gradient(135deg, #704214 0%, #4A2C0E 100%);
-  color: white;
-}
-
-.military-shooting-card {
-  background: linear-gradient(135deg, #8B1538 0%, #5D0E24 100%);
-  color: white;
-}
-
-.card-icon-wrapper {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
+.tile-icon-bg {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  backdrop-filter: blur(10px);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
 }
-
-.card-footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px 16px;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
+.tile-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
 }
-
-.status-bar {
-  background: rgba(245, 245, 245, 0.95);
-  border: 1px solid rgba(139, 69, 19, 0.3);
-  backdrop-filter: blur(10px);
+.tile-label {
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #0f2c05;
 }
-
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .q-pa-sm-mobile {
-    padding: 8px;
-  }
-
-  .mobile-caption {
-    padding: 4px 8px;
-    line-height: 1.3;
-  }
-
-  .cards-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-
-  .dashboard-card {
-    height: 180px; /* Zwiększona wysokość dla tablet */
-  }
-
-  .hero-section {
-    margin: 0 -16px;
-    border-radius: 0;
-  }
-
-  .text-h3 {
-    font-size: 2rem;
-  }
-
-  .wot-logo {
-    max-width: 100px;
-    max-height: 100px;
-  }
-}
-
-@media (max-width: 480px) {
-  .card-icon-wrapper {
-    width: 60px;
-    height: 60px;
-  }
-
-  .dashboard-card {
-    height: 170px; /* Zwiększona wysokość dla mobile */
-    padding-bottom: 12px; /* Dodatkowy padding na dole */
-  }
-
-  /* Zapewnienie miejsca dla tekstu na mobile */
-  .dashboard-card .q-card-section {
-    padding-bottom: 20px;
-  }
-
-  .mobile-caption {
-    padding: 6px 12px;
-    line-height: 1.4;
-    font-size: 0.75rem;
-  }
-
-  .status-bar .row {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .wot-logo {
-    max-width: 80px;
-    max-height: 80px;
-  }
+.tile-desc-chip-big {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 12px;
+  min-height: 36px;
 }
 </style>
