@@ -80,6 +80,178 @@
           </q-card-section>
         </q-card>
 
+        <!-- Stabilność i Postawa Strzelecka (każda podsekcja jako osobna karta) -->
+        <!-- Wprowadzenie -->
+        <q-card class="modern-content-card">
+          <q-card-section class="modern-card-header">
+            <div class="row items-center">
+              <div>
+                <div class="text-h5 text-weight-bold modern-title">Stabilność i Postawa Strzelecka</div>
+                <div class="text-subtitle2 text-grey-7">Fundamenty precyzyjnego strzelania</div>
+              </div>
+            </div>
+          </q-card-section>
+          <q-separator />
+          <q-card-section class="q-pa-lg">
+            <div class="step-header-modern q-mb-sm">
+              <q-icon name="pan_tool_alt" color="grey-8" size="md" class="q-mr-sm" />
+              <span class="text-h6 text-weight-bold" style="color:#232b23">Wprowadzenie: Stabilność to Fundament</span>
+            </div>
+            <div class="text-body1" style="color:#232b23">
+              W strzelectwie dynamicznym i precyzyjnym kluczem jest nie siła, lecz powtarzalna stabilność i minimalizacja napięcia mięśniowego.
+              Prawidłowa postawa i chwyt mają za zadanie stworzyć stabilną "platformę" minimalizującą naturalne drgania ciała,
+              co bezpośrednio przekłada się na celność.
+            </div>
+          </q-card-section>
+        </q-card>
+
+        <!-- I. Postawa -->
+        <q-card class="modern-content-card">
+          <q-card-section class="modern-card-header">
+            <div class="row items-center">
+              <div>
+                <div class="text-h5 text-weight-bold modern-title">I. Postawa: Trójkąt Stabilności</div>
+                <div class="text-subtitle2 text-grey-7">Podstawy pozycji strzeleckiej</div>
+              </div>
+            </div>
+          </q-card-section>
+          <q-separator />
+          <q-card-section class="q-pa-lg">
+            <div class="text-body1 q-mb-md" style="color:#232b23">
+              <strong>Postawa powinna być agresywna, ale luźna.</strong>
+            </div>
+            <div class="q-mb-md">
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Fundament (Nogi)</div>
+              <div class="text-body2" style="color:#232b23">
+                Stań w lekkim rozkroku, na szerokości barków lub nieco szerzej. Kolana lekko ugięte –
+                to pozwala działać ciału jako naturalny amortyzator. Środek ciężkości powinien być
+                przesunięty delikatnie do przodu, aby przeciwdziałać odrzutowi i kontrolować broń.
+              </div>
+            </div>
+            <div class="q-mb-md">
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Balans</div>
+              <div class="text-body2" style="color:#232b23">
+                Zbuduj trójkąt stabilności, w którym wierzchołkami są stopy i biodra. Celuj do przodu,
+                stopy ustawiając pod kątem, aby były gotowe na szybkie przesunięcie, ale jednocześnie
+                zapewniały pewny balans.
+              </div>
+            </div>
+            <div>
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Luźne mięśnie</div>
+              <div class="text-body2" style="color:#232b23">
+                Zredukuj napięcie w plecach i ramionach. Im więcej napięcia, tym trudniej o powtarzalność
+                i tym silniejsze są niekontrolowane drgania.
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+
+        <!-- II. Chwyt -->
+        <q-card class="modern-content-card">
+          <q-card-section class="modern-card-header">
+            <div class="row items-center">
+              <div>
+                <div class="text-h5 text-weight-bold modern-title">II. Chwyt (Grip): Kontrola a Rozluźnienie</div>
+                <div class="text-subtitle2 text-grey-7">Technika trzymania broni</div>
+              </div>
+            </div>
+          </q-card-section>
+          <q-separator />
+          <q-card-section class="q-pa-lg">
+            <div class="text-body1 q-mb-md" style="color:#232b23">Wyróżniamy dwa kluczowe chwyty:</div>
+            <div class="q-mb-md">
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">1. Chwyt Dominujący (Kontrola Spustu)</div>
+              <div class="q-mb-xs">
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Pewność, nie siła:</div>
+                <div class="text-body2" style="color:#232b23">
+                  Chwyt pistoletowy ma być pewny, ale nie ma na celu miażdżenia. Zbyt mocny chwyt ręki strzelającej
+                  powoduje napięcie, które przenosi się na palec spustowy, zwiększając ryzyko szarpnięcia.
+                </div>
+              </div>
+              <div>
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Praca na języku spustowym:</div>
+                <div class="text-body2" style="color:#232b23">
+                  Palec powinien dotykać spustu opuszkiem. Cała praca palca musi być izolowana od reszty ręki.
+                  Cel to równomierny i ciągły ruch w tył, bez żadnych ruchów bocznych czy pionowych (tzw. "pchnięcie spustu").
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">2. Chwyt Wspierający (Stabilność)</div>
+              <div class="q-mb-xs">
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Siła w kierunku celu:</div>
+                <div class="text-body2" style="color:#232b23">
+                  Ręka wspierająca trzymająca łoże karabinka powinna działać jak zacisk. Nie służy do unoszenia broni,
+                  lecz do ściągania karabinka w kierunku strzelca, dociskając go do ramienia.
+                </div>
+              </div>
+              <div>
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Bliski chwyt (C-Clamp):</div>
+                <div class="text-body2" style="color:#232b23">
+                  W strzelectwie dynamicznym popularny jest chwyt dalekiego zasięgu na łożu, który maksymalizuje
+                  stabilność i kontrolę nad odrzutem. Ramię wspierające powinno być zgięte, a łokieć skierowany w dół,
+                  co pomaga złożyć ramiona w bardziej zwartą i stabilną bryłę.
+                </div>
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+
+        <!-- III. Kontrola Krytyczna -->
+        <q-card class="modern-content-card">
+          <q-card-section class="modern-card-header">
+            <div class="row items-center">
+              <div>
+                <div class="text-h5 text-weight-bold modern-title">III. Kontrola Krytyczna: Oddech i Spust</div>
+                <div class="text-subtitle2 text-grey-7">Praca na spuście i oddech</div>
+              </div>
+            </div>
+          </q-card-section>
+          <q-separator />
+          <q-card-section class="q-pa-lg">
+            <div class="q-mb-md">
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Kontrola Oddechu</div>
+              <div class="q-mb-xs">
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Strefa Czasu Krytycznego:</div>
+                <div class="text-body2" style="color:#232b23">
+                  Strzał powinien zostać oddany w naturalnej pauzie oddechowej – po spokojnym wydechu,
+                  ale przed rozpoczęciem naturalnej potrzeby kolejnego wdechu. Jest to moment,
+                  kiedy ciało jest najbardziej zrelaksowane i nieruchome.
+                </div>
+              </div>
+              <div>
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Stabilność:</div>
+                <div class="text-body2" style="color:#232b23">
+                  Wstrzymywanie oddechu na siłę zwiększa napięcie. Celem jest osiągnięcie naturalnego spokoju na 1-3 sekundy.
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Praca na Spuście (Sight Picture, Sight Alignment)</div>
+              <div class="q-mb-xs">
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Decyzja:</div>
+                <div class="text-body2" style="color:#232b23">
+                  Strzał jest oddawany w momencie, gdy celownik jest idealnie zgrany z celem.
+                </div>
+              </div>
+              <div class="q-mb-xs">
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Dwa etapy (Two-Stage Trigger):</div>
+                <div class="text-body2" style="color:#232b23">
+                  Naucz się "wybierać luz" (branie wstępne) na spuście, aż poczujesz ścianę (punkt oporu).
+                  Dopiero w momencie idealnego zgrania celownika, świadomie i płynnie przełamuj tę ścianę, powodując strzał.
+                </div>
+              </div>
+              <div>
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Follow-Through:</div>
+                <div class="text-body2" style="color:#232b23">
+                  Po strzale nie rozluźniaj chwytu i nie ruszaj głową. Utrzymaj celownik na celu przez ułamek sekundy,
+                  aby upewnić się, że to nie ruch po strzale wpłynął na trafienie.
+                </div>
+              </div>
+            </div>
+          </q-card-section>
+        </q-card>
+
         <!-- Działanie karabinka Grot -->
         <q-card class="modern-content-card">
           <q-card-section class="modern-card-header">
@@ -134,171 +306,6 @@
                 </div>
                 <div class="text-body1 q-mt-sm q-ml-xl text-grey-8">
                   Broń jest gotowa do oddania kolejnego strzału, kontynuując cykl automatyki (w przypadku ognia ciągłego) lub oczekując na ponowne naciśnięcie spustu (w przypadku ognia pojedynczego).
-                </div>
-              </div>
-            </div>
-          </q-card-section>
-        </q-card>
-
-        <!-- Stabilność i Postawa Strzelecka -->
-        <q-card class="modern-content-card">
-          <q-card-section class="modern-card-header">
-            <div class="row items-center">
-              <div>
-                <div class="text-h5 text-weight-bold modern-title">Stabilność i Postawa Strzelecka</div>
-                <div class="text-subtitle2 text-grey-7">Fundamenty precyzyjnego strzelania</div>
-              </div>
-            </div>
-          </q-card-section>
-
-          <q-separator />
-
-          <q-card-section class="q-pa-sm">
-            <!-- Wprowadzenie -->
-            <div class="intro-section q-mb-lg">
-              <div class="text-h6 text-weight-bold text-white q-mb-md">Wprowadzenie: Stabilność to Fundament</div>
-              <div class="text-body1 q-mb-md">
-                W strzelectwie dynamicznym i precyzyjnym kluczem jest nie siła, lecz powtarzalna stabilność i minimalizacja napięcia mięśniowego.
-                Prawidłowa postawa i chwyt mają za zadanie stworzyć stabilną "platformę" minimalizującą naturalne drgania ciała,
-                co bezpośrednio przekłada się na celność.
-              </div>
-            </div>
-
-            <!-- I. Postawa -->
-            <div class="stance-section q-mb-lg">
-              <div class="text-h6 text-weight-bold text-white q-mb-md">I. Postawa: Trójkąt Stabilności</div>
-              <div class="text-body1 q-mb-md">
-                <strong>Postawa powinna być agresywna, ale luźna.</strong>
-              </div>
-
-              <div class="stance-elements">
-                <div class="stance-item q-mb-md">
-                  <div class="text-subtitle1 text-weight-bold text-white q-mb-sm">Fundament (Nogi)</div>
-                  <div class="text-body2">
-                    Stań w lekkim rozkroku, na szerokości barków lub nieco szerzej. Kolana lekko ugięte –
-                    to pozwala działać ciału jako naturalny amortyzator. Środek ciężkości powinien być
-                    przesunięty delikatnie do przodu, aby przeciwdziałać odrzutowi i kontrolować broń.
-                  </div>
-                </div>
-
-                <div class="stance-item q-mb-md">
-                  <div class="text-subtitle1 text-weight-bold text-white q-mb-sm">Balans</div>
-                  <div class="text-body2">
-                    Zbuduj trójkąt stabilności, w którym wierzchołkami są stopy i biodra. Celuj do przodu,
-                    stopy ustawiając pod kątem, aby były gotowe na szybkie przesunięcie, ale jednocześnie
-                    zapewniały pewny balans.
-                  </div>
-                </div>
-
-                <div class="stance-item q-mb-md">
-                  <div class="text-subtitle1 text-weight-bold text-white q-mb-sm">Luźne mięśnie</div>
-                  <div class="text-body2">
-                    Zredukuj napięcie w plecach i ramionach. Im więcej napięcia, tym trudniej o powtarzalność
-                    i tym silniejsze są niekontrolowane drgania.
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- II. Chwyt -->
-            <div class="grip-section q-mb-md">
-              <div class="text-h6 text-weight-bold text-white q-mb-md">II. Chwyt (Grip): Kontrola a Rozluźnienie</div>
-              <div class="text-body1 q-mb-md">Wyróżniamy dwa kluczowe chwyty:</div>
-
-              <div class="grip-types">
-                <div class="grip-item q-mb-lg">
-                  <div class="text-subtitle1 text-weight-bold text-white q-mb-sm">1. Chwyt Dominujący (Kontrola Spustu)</div>
-
-                  <div class="grip-detail q-mb-sm">
-                    <div class="text-subtitle2 text-weight-bold text-white">Pewność, nie siła:</div>
-                    <div class="text-body2">
-                      Chwyt pistoletowy ma być pewny, ale nie ma na celu miażdżenia. Zbyt mocny chwyt ręki strzelającej
-                      powoduje napięcie, które przenosi się na palec spustowy, zwiększając ryzyko szarpnięcia.
-                    </div>
-                  </div>
-
-                  <div class="grip-detail">
-                    <div class="text-subtitle2 text-weight-bold text-white">Praca na języku spustowym:</div>
-                    <div class="text-body2">
-                      Palec powinien dotykać spustu opuszkiem. Cała praca palca musi być izolowana od reszty ręki.
-                      Cel to równomierny i ciągły ruch w tył, bez żadnych ruchów bocznych czy pionowych (tzw. "pchnięcie spustu").
-                    </div>
-                  </div>
-                </div>
-
-                <div class="grip-item q-mb-lg">
-                  <div class="text-subtitle1 text-weight-bold text-white q-mb-sm">2. Chwyt Wspierający (Stabilność)</div>
-
-                  <div class="grip-detail q-mb-sm">
-                    <div class="text-subtitle2 text-weight-bold text-white">Siła w kierunku celu:</div>
-                    <div class="text-body2">
-                      Ręka wspierająca trzymająca łoże karabinka powinna działać jak zacisk. Nie służy do unoszenia broni,
-                      lecz do ściągania karabinka w kierunku strzelca, dociskając go do ramienia.
-                    </div>
-                  </div>
-
-                  <div class="grip-detail">
-                    <div class="text-subtitle2 text-weight-bold text-white">Bliski chwyt (C-Clamp):</div>
-                    <div class="text-body2">
-                      W strzelectwie dynamicznym popularny jest chwyt dalekiego zasięgu na łożu, który maksymalizuje
-                      stabilność i kontrolę nad odrzutem. Ramię wspierające powinno być zgięte, a łokieć skierowany w dół,
-                      co pomaga złożyć ramiona w bardziej zwartą i stabilną bryłę.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- III. Kontrola Krytyczna -->
-            <div class="control-section">
-              <div class="text-h6 text-weight-bold text-white q-mb-md">III. Kontrola Krytyczna: Oddech i Spust</div>
-
-              <div class="control-types">
-                <div class="control-item q-mb-lg">
-                  <div class="text-subtitle1 text-weight-bold text-white q-mb-sm">Kontrola Oddechu</div>
-
-                  <div class="control-detail q-mb-sm">
-                    <div class="text-subtitle2 text-weight-bold text-white">Strefa Czasu Krytycznego:</div>
-                    <div class="text-body2">
-                      Strzał powinien zostać oddany w naturalnej pauzie oddechowej – po spokojnym wydechu,
-                      ale przed rozpoczęciem naturalnej potrzeby kolejnego wdechu. Jest to moment,
-                      kiedy ciało jest najbardziej zrelaksowane i nieruchome.
-                    </div>
-                  </div>
-
-                  <div class="control-detail">
-                    <div class="text-subtitle2 text-weight-bold text-white">Stabilność:</div>
-                    <div class="text-body2">
-                      Wstrzymywanie oddechu na siłę zwiększa napięcie. Celem jest osiągnięcie naturalnego spokoju na 1-3 sekundy.
-                    </div>
-                  </div>
-                </div>
-
-                <div class="control-item">
-                  <div class="text-subtitle1 text-weight-bold text-white q-mb-sm">Praca na Spuście (Sight Picture, Sight Alignment)</div>
-
-                  <div class="control-detail q-mb-sm">
-                    <div class="text-subtitle2 text-weight-bold text-white">Decyzja:</div>
-                    <div class="text-body2">
-                      Strzał jest oddawany w momencie, gdy celownik jest idealnie zgrany z celem.
-                    </div>
-                  </div>
-
-                  <div class="control-detail q-mb-sm">
-                    <div class="text-subtitle2 text-weight-bold text-white">Dwa etapy (Two-Stage Trigger):</div>
-                    <div class="text-body2">
-                      Naucz się "wybierać luz" (branie wstępne) na spuście, aż poczujesz ścianę (punkt oporu).
-                      Dopiero w momencie idealnego zgrania celownika, świadomie i płynnie przełamuj tę ścianę, powodując strzał.
-                    </div>
-                  </div>
-
-                  <div class="control-detail">
-                    <div class="text-subtitle2 text-weight-bold text-white">Follow-Through:</div>
-                    <div class="text-body2">
-                      Po strzale nie rozluźniaj chwytu i nie ruszaj głową. Utrzymaj celownik na celu przez ułamek sekundy,
-                      aby upewnić się, że to nie ruch po strzale wpłynął na trafienie.
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
