@@ -1,7 +1,7 @@
 <template>
   <q-page class="modern-bg">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
 
       <!-- Header Section -->
       <div class="modern-hero q-pa-lg q-mb-lg">

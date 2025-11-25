@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md flex flex-center bg-grey-2">
     <q-card class="tccc-chapter-card column q-pa-none" flat bordered>
-      <q-card-section class="tccc-header q-pa-md bg-green-10 text-white shadow-2 rounded-borders">
+      <q-card-section class="tccc-header q-pa-md bg-blue-grey-3 text-black shadow-2 rounded-borders">
         <div class="row items-center no-wrap">
           <q-btn
             class="tccc-back-btn q-mr-md"

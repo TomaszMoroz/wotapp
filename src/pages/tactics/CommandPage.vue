@@ -1,38 +1,36 @@
 <template>
-  <q-page class="page-background">
+  <q-page class="modern-bg">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
 
       <!-- Header Section -->
-      <div class="hero-section q-pa-lg q-mb-lg rounded-borders">
-        <div class="row items-center">
-          <div class="col">
-            <div class="text-h4 text-weight-bold text-brown-8 q-mb-sm">
-              <q-icon name="psychology" class="q-mr-md" />
-              Dowodzenie
-            </div>
-            <div class="text-subtitle1 text-grey-7">
-              Metody i procedury dowodzenia w jednostkach WOT
-            </div>
+      <div class="modern-header-section q-mb-lg">
+        <div class="modern-hero-section q-pa-lg rounded-borders">
+          <div class="text-h4 text-weight-bold text-military-secondary q-mb-sm">
+            <q-icon name="psychology" class="q-mr-md" />
+            Dowodzenie
+          </div>
+          <div class="text-body1 text-military-dark">
+            Metody i procedury dowodzenia w jednostkach WOT
           </div>
         </div>
       </div>
 
       <!-- Command Topics Grid -->
-      <div class="topics-grid">
+      <div class="modern-content-grid q-gutter-md">
         <q-card
           v-for="topic in commandTopics"
           :key="topic.id"
-          class="topic-card"
+          class="modern-content-card topic-card"
           clickable
           @click="selectTopic(topic)"
         >
           <q-card-section class="text-center">
             <div class="topic-icon-wrapper">
-              <q-icon :name="topic.icon" size="3rem" color="primary" />
+              <q-icon :name="topic.icon" size="3rem" color="military-secondary" />
             </div>
-            <div class="text-h6 q-mt-md text-weight-bold">{{ topic.title }}</div>
-            <div class="text-caption text-grey-6">{{ topic.description }}</div>
+            <div class="text-h6 q-mt-md text-weight-bold text-military-secondary">{{ topic.title }}</div>
+            <div class="text-caption text-military-dark">{{ topic.description }}</div>
           </q-card-section>
         </q-card>
       </div>
@@ -40,7 +38,7 @@
       <!-- Topic Details Modal -->
       <q-dialog v-model="showTopicDetails" maximized class="topic-dialog">
         <q-card class="full-width full-height">
-          <q-card-section class="bg-primary text-white">
+          <q-card-section class="bg-military-secondary text-white">
             <div class="row items-center">
               <div class="col">
                 <div class="text-h5 text-weight-bold">
@@ -62,8 +60,8 @@
             </div>
           </q-card-section>
 
-          <q-card-section class="content-section">
-            <div class="content-card q-pa-lg">
+          <q-card-section class="q-pa-lg content-section">
+            <div>
               <!-- METT-TC -->
               <div v-if="selectedTopic?.id === 1">
                 <h4>METT-TC - Analiza sytuacji taktycznej</h4>
@@ -666,47 +664,48 @@ const selectTopic = (topic) => {
 </script>
 
 <style scoped>
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+.modern-bg {
+  background: #F5F5F5;
   min-height: 100vh;
 }
-
 .container {
   max-width: 1200px;
   margin: 0 auto;
 }
-
-.hero-section {
-  background: white;
-  border: 1px solid rgba(139, 69, 19, 0.3);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+.modern-header-section {
+  margin-bottom: 2.5rem;
 }
-
-.topics-grid {
+.modern-hero-section {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border: 1px solid #e0e0e0;
+}
+.modern-content-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
   margin-bottom: 32px;
 }
-
+.modern-content-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border: 1px solid #e0e0e0;
+}
 .topic-card {
-  background: white;
-  border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid transparent;
   height: 180px;
 }
-
 .topic-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 32px rgba(0,0,0,0.15);
-  border-color: rgba(139, 69, 19, 0.3);
+  box-shadow: 0 12px 32px rgba(44,62,47,0.13);
+  border-color: #4A5D31;
 }
-
 .topic-icon-wrapper {
-  background: rgba(139, 69, 19, 0.1);
+  background: rgba(74, 93, 49, 0.08);
   border-radius: 50%;
   width: 80px;
   height: 80px;
@@ -714,12 +713,6 @@ const selectTopic = (topic) => {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-}
-
-.content-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .mett-tc-grid,
@@ -1065,37 +1058,30 @@ const selectTopic = (topic) => {
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
-  .topics-grid {
+  .modern-content-grid {
     grid-template-columns: 1fr;
   }
-
   .mett-tc-grid,
   .ocoka-grid,
   .sketch-elements {
     grid-template-columns: 1fr;
   }
-
   .draw-d-flow {
     gap: 12px;
   }
-
   .draw-step:not(:last-child)::after {
     bottom: -16px;
   }
-
   .tpd-phases {
     gap: 16px;
   }
-
   .planning-elements,
   .control-types {
     grid-template-columns: 1fr;
   }
-
   .battle-order {
     gap: 10px;
   }
-
   .aar-process {
     grid-template-columns: 1fr;
     gap: 12px;

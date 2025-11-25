@@ -1,23 +1,22 @@
 <template>
-  <q-page class="page-background">
+  <q-page class="modern-bg">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
 
       <!-- Header -->
-      <div class="header-section q-mb-lg">
-        <div class="hero-section q-pa-lg rounded-borders">
-          <div class="text-h4 text-weight-bold text-primary q-mb-sm">Procedury</div>
-          <div class="text-body1 text-grey-6">Protokoły medyczne i procedury wojskowe</div>
+      <div class="modern-header-section q-mb-lg">
+        <div class="modern-hero-section q-pa-lg rounded-borders">
+          <div class="text-h4 text-weight-bold text-military-secondary q-mb-sm">Procedury</div>
+          <div class="text-body1 text-military-dark">Protokoły medyczne i procedury wojskowe</div>
         </div>
       </div>
 
-      <div class="row q-gutter-lg">
+      <div class="row modern-content-grid q-gutter-lg">
         <!-- Lista treści -->
         <div class="col-md-4 col-sm-12">
-          <q-card class="content-list-card">
+          <q-card class="modern-content-list-card">
             <q-card-section>
-              <div class="text-h6 q-mb-md">Spis treści</div>
-
+              <div class="text-h6 q-mb-md text-military-secondary">Spis treści</div>
               <!-- Filtrowanie -->
               <q-input
                 v-model="searchQuery"
@@ -31,7 +30,6 @@
                   <q-icon name="search" />
                 </template>
               </q-input>
-
               <!-- Lista procedur -->
               <q-list separator>
                 <q-item
@@ -39,11 +37,11 @@
                   :key="procedure.id"
                   clickable
                   @click="selectProcedure(procedure)"
-                  :class="{ 'bg-blue-1': selectedProcedure?.id === procedure.id }"
+                  :class="{ 'bg-military-light': selectedProcedure?.id === procedure.id }"
                 >
                   <q-item-section>
-                    <q-item-label class="text-weight-medium">{{ procedure.title }}</q-item-label>
-                    <q-item-label caption>{{ procedure.category }}</q-item-label>
+                    <q-item-label class="text-weight-medium text-military-dark">{{ procedure.title }}</q-item-label>
+                    <q-item-label caption class="text-military-secondary">{{ procedure.category }}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -53,22 +51,20 @@
 
         <!-- Treść -->
         <div class="col-md-7 col-sm-12">
-          <q-card v-if="selectedProcedure" class="content-card">
+          <q-card v-if="selectedProcedure" class="modern-content-card">
             <q-card-section>
-              <div class="text-h5 text-weight-bold q-mb-md">{{ selectedProcedure.title }}</div>
-              <div class="text-subtitle2 text-grey-7 q-mb-lg">{{ selectedProcedure.category }}</div>
-
-              <div class="content-body">
+              <div class="text-h5 text-weight-bold q-mb-md text-military-secondary">{{ selectedProcedure.title }}</div>
+              <div class="text-subtitle2 q-mb-lg text-military-dark">{{ selectedProcedure.category }}</div>
+              <div class="modern-content-body">
                 <div v-html="selectedProcedure.content"></div>
               </div>
             </q-card-section>
           </q-card>
-
-          <q-card v-else class="content-card">
+          <q-card v-else class="modern-content-card">
             <q-card-section class="text-center">
-              <q-icon name="fact_check" size="4rem" color="grey-5" class="q-mb-md" />
-              <div class="text-h6 text-grey-6">Wybierz procedurę z listy</div>
-              <div class="text-body2 text-grey-5">Kliknij na wybraną procedurę aby wyświetlić jej treść</div>
+              <q-icon name="fact_check" size="4rem" color="military-secondary" class="q-mb-md" />
+              <div class="text-h6 text-military-secondary">Wybierz procedurę z listy</div>
+              <div class="text-body2 text-military-dark">Kliknij na wybraną procedurę aby wyświetlić jej treść</div>
             </q-card-section>
           </q-card>
         </div>
@@ -358,76 +354,76 @@ const selectProcedure = (procedure) => {
 </script>
 
 <style scoped>
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+
+.modern-bg {
+  background: #F5F5F5;
   min-height: 100vh;
 }
-
 .container {
   max-width: 1400px;
   margin: 0 auto;
 }
-
-.hero-section {
-  background: white;
-  border: 1px solid rgba(139, 69, 19, 0.3);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+.modern-header-section {
+  margin-bottom: 2.5rem;
 }
-
-.content-list-card,
-.content-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+.modern-hero-section {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border: 1px solid #e0e0e0;
+}
+.modern-content-grid {
+  display: flex;
+  flex-direction: row;
+  gap: 32px;
+}
+.modern-content-list-card,
+.modern-content-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   min-height: 600px;
+  border: 1px solid #e0e0e0;
 }
-
-.content-body {
+.modern-content-body {
   line-height: 1.6;
+  color: #111;
 }
-
-.content-body h4 {
+.modern-content-body h4 {
   color: #8B4513;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
   font-size: 1.25rem;
   font-weight: 600;
 }
-
-.content-body h5 {
+.modern-content-body h5 {
   color: #2D3E2F;
   margin-top: 1.25rem;
   margin-bottom: 0.75rem;
   font-size: 1.1rem;
   font-weight: 600;
 }
-
-.content-body ul,
-.content-body ol {
+.modern-content-body ul,
+.modern-content-body ol {
   margin-left: 1.5rem;
   margin-bottom: 1rem;
 }
-
-.content-body li {
+.modern-content-body li {
   margin-bottom: 0.5rem;
 }
-
-.content-body strong {
+.modern-content-body strong {
   color: #8B4513;
   font-weight: 600;
 }
-
-.content-body p {
+.modern-content-body p {
   margin-bottom: 1rem;
 }
-
 @media (max-width: 768px) {
-  .container .row {
+  .modern-content-grid {
     flex-direction: column;
+    gap: 16px;
   }
-
-  .content-list-card {
+  .modern-content-list-card {
     min-height: auto;
     margin-bottom: 1rem;
   }

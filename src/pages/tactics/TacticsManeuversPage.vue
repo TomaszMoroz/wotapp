@@ -1,23 +1,22 @@
 <template>
-  <q-page class="page-background">
+  <q-page class="modern-bg">
     <div class="container q-pa-md">
-      <BackNav />
+      <BackNav color="black"/>
 
       <!-- Header -->
-      <div class="header-section q-mb-lg">
-        <div class="hero-section q-pa-lg rounded-borders">
-          <div class="text-h4 text-weight-bold text-primary q-mb-sm">Taktyka</div>
-          <div class="text-body1 text-grey-6">Manewry i formacje wojskowe</div>
+      <div class="modern-header-section q-mb-lg">
+        <div class="modern-hero-section q-pa-lg rounded-borders">
+          <div class="text-h4 text-weight-bold text-military-secondary q-mb-sm">Taktyka</div>
+          <div class="text-body1 text-military-dark">Manewry i formacje wojskowe</div>
         </div>
       </div>
 
-      <div class="row q-gutter-md">
+      <div class="modern-content-row q-gutter-md">
         <!-- Lista treści -->
-        <div class="col-md-4 col-sm-12 col-xs-12">
-          <q-card class="content-list-card">
+        <div class="modern-content-list-col">
+          <q-card class="modern-content-list-card">
             <q-card-section class="q-pa-md">
-              <div class="text-h6 q-mb-md">Spis treści</div>
-
+              <div class="text-h6 q-mb-md text-military-secondary">Spis treści</div>
               <!-- Filtrowanie -->
               <q-input
                 v-model="searchQuery"
@@ -31,7 +30,6 @@
                   <q-icon name="search" />
                 </template>
               </q-input>
-
               <!-- Lista manewrów -->
               <q-list separator>
                 <q-item
@@ -39,11 +37,11 @@
                   :key="maneuver.id"
                   clickable
                   @click="selectManeuver(maneuver)"
-                  :class="{ 'bg-blue-1': selectedManeuver?.id === maneuver.id }"
+                  :class="{ 'bg-military-light': selectedManeuver?.id === maneuver.id }"
                 >
                   <q-item-section>
-                    <q-item-label class="text-weight-medium">{{ maneuver.title }}</q-item-label>
-                    <q-item-label caption>{{ maneuver.category }}</q-item-label>
+                    <q-item-label class="text-weight-medium text-military-dark">{{ maneuver.title }}</q-item-label>
+                    <q-item-label caption class="text-military-secondary">{{ maneuver.category }}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -52,13 +50,12 @@
         </div>
 
         <!-- Treść -->
-        <div class="col-md-8 col-sm-12 col-xs-12">
-          <q-card v-if="selectedManeuver" class="content-card">
+        <div class="modern-content-main-col">
+          <q-card v-if="selectedManeuver" class="modern-content-card">
             <q-card-section class="q-pa-md">
-              <div class="text-h5 text-weight-bold q-mb-md">{{ selectedManeuver.title }}</div>
-              <div class="text-subtitle2 text-grey-7 q-mb-lg">{{ selectedManeuver.category }}</div>
-
-              <div class="content-body">
+              <div class="text-h5 text-weight-bold q-mb-md text-military-secondary">{{ selectedManeuver.title }}</div>
+              <div class="text-subtitle2 q-mb-lg text-military-dark">{{ selectedManeuver.category }}</div>
+              <div class="modern-content-body">
                 <div v-if="selectedManeuver.id === 1">
                   <h4>Okrężna</h4>
                   <p>Procedura rozpoznania i zajęcia rejonu bazy po wykonaniu manewru "HAK".</p>
@@ -251,11 +248,11 @@
             </q-card-section>
           </q-card>
 
-          <q-card v-else class="content-card">
+          <q-card v-else class="modern-content-card">
             <q-card-section class="text-center q-pa-md">
-              <q-icon name="military_tech" size="4rem" color="grey-5" class="q-mb-md" />
-              <div class="text-h6 text-grey-6">Wybierz manewer z listy</div>
-              <div class="text-body2 text-grey-5">Kliknij na wybrany manewer aby wyświetlić jego treść</div>
+              <q-icon name="military_tech" size="4rem" color="military-secondary" class="q-mb-md" />
+              <div class="text-h6 text-military-secondary">Wybierz manewer z listy</div>
+              <div class="text-body2 text-military-dark">Kliknij na wybrany manewer aby wyświetlić jego treść</div>
             </q-card-section>
           </q-card>
         </div>
@@ -318,72 +315,72 @@ const selectManeuver = (maneuver) => {
 </script>
 
 <style scoped>
-.page-background {
-  background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
+
+.modern-bg {
+  background: #F5F5F5;
   min-height: 100vh;
 }
-
 .container {
   max-width: 1400px;
   margin: 0 auto;
 }
-
-.row {
-  align-items: flex-start;
-  gap: 1rem;
+.modern-header-section {
+  margin-bottom: 2.5rem;
 }
-
-.hero-section {
-  background: white;
-  border: 1px solid rgba(139, 69, 19, 0.3);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+.modern-hero-section {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  border: 1px solid #e0e0e0;
 }
-
-.content-list-card,
-.content-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  min-height: 600px;
+.modern-content-row {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
 }
-
-.content-list-card {
-  position: sticky;
-  top: 20px;
+.modern-content-list-col {
+  flex: 0 0 340px;
+  max-width: 340px;
+  min-width: 260px;
 }
-
-.content-body {
+.modern-content-main-col {
+  flex: 1 1 0%;
+  min-width: 0;
+}
+.modern-content-list-card,
+.modern-content-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  min-height: 300px;
+  border: 1px solid #e0e0e0;
+}
+.modern-content-body {
   line-height: 1.6;
+  color: #111;
 }
-
-.content-body h4 {
+.modern-content-body h4 {
   color: #2D3E2F;
   margin-top: 1.5rem;
   margin-bottom: 1rem;
 }
-
-.content-body h5 {
+.modern-content-body h5 {
   color: #8B4513;
   margin-top: 1.25rem;
   margin-bottom: 0.75rem;
 }
-
-.content-body ul,
-.content-body ol {
+.modern-content-body ul,
+.modern-content-body ol {
   margin-left: 1.5rem;
   margin-bottom: 1rem;
 }
-
-.content-body li {
+.modern-content-body li {
   margin-bottom: 0.5rem;
 }
-
-.content-body strong {
+.modern-content-body strong {
   color: #2D3E2F;
   font-weight: 600;
 }
-
 .diagram-container {
   text-align: center;
   padding: 1.5rem;
@@ -395,7 +392,6 @@ const selectManeuver = (maneuver) => {
   box-sizing: border-box;
   margin: 1.5rem 0;
 }
-
 .tactical-diagram {
   width: 100%;
   max-width: 100%;
@@ -409,8 +405,6 @@ const selectManeuver = (maneuver) => {
   display: block;
   margin: 0 auto;
 }
-
-/* Caption styling for diagrams */
 .diagram-caption {
   margin-top: 12px;
   color: #6c757d;
@@ -418,47 +412,50 @@ const selectManeuver = (maneuver) => {
   font-style: italic;
   padding: 0 16px;
 }
-
-@media (max-width: 768px) {
-  .container .row {
+@media (max-width: 1024px) {
+  .modern-content-row {
     flex-direction: column;
-    gap: 1rem;
+    gap: 16px;
   }
-
-  .content-list-card {
+  .modern-content-list-col {
+    max-width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+  .modern-content-main-col {
+    max-width: 100%;
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+}
+@media (max-width: 768px) {
+  .modern-content-list-card {
     min-height: auto;
     margin-bottom: 1rem;
     position: static;
   }
-
-  .content-card {
+  .modern-content-card {
     min-height: auto;
   }
-
   .diagram-container {
     padding: 1rem;
     margin: 1rem 0;
   }
-
   .tactical-diagram {
     padding: 8px;
   }
-
   .diagram-caption {
     padding: 0 8px;
   }
 }
-
 @media (max-width: 480px) {
   .tactical-diagram {
     padding: 6px;
   }
-
   .diagram-container {
     padding: 0.75rem;
     margin: 0.75rem 0;
   }
-
   .diagram-caption {
     padding: 0 4px;
     font-size: 0.8rem;
