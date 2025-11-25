@@ -28,7 +28,8 @@ register(process.env.SERVICE_WORKER_FILE, {
   },
 
   updated (/* registration */) {
-    // console.log('New content is available; please refresh.')
+    // Notify app about the update
+    window.dispatchEvent(new Event('pwa-update-available'))
   },
 
   offline () {

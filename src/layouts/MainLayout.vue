@@ -1,5 +1,16 @@
 <template>
   <q-layout view="lHh Lpr lFf" class="dashboard-bg">
+    <q-dialog v-model="pwaUpdateDialog" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-icon name="system_update" color="primary" size="md" class="q-mr-md" />
+          <div class="text-h6">Dostępna jest nowa wersja aplikacji!</div>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn color="primary" label="ZAKTUALIZUJ" @click="reloadPwa" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <q-header elevated class="bg-military-primary dashboard-header">
       <q-toolbar class="q-px-md dashboard-toolbar">
         <q-btn
@@ -329,14 +340,21 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import logo721 from 'assets/721.jpeg'
 
-defineOptions({
-  name: 'MainLayout'
-})
+const pwaUpdateDialog = ref(false)
 
+function reloadPwa () {
+  window.location.reload(true)
+}
+
+onMounted(() => {
+  window.addEventListener('pwa-update-available', () => {
+    pwaUpdateDialog.value = true
+  })
+})
 const route = useRoute()
 const leftDrawerOpen = ref(false)
 
