@@ -27,7 +27,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v2.4.0 WERSJA TESTOWA</span>
+        <span class="dashboard-version">v2.4.1 WERSJA TESTOWA</span>
       </q-toolbar>
     </q-header>
 
