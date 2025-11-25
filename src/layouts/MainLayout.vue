@@ -27,7 +27,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v2.3.8 WERSJA TESTOWA</span>
+        <span class="dashboard-version">v2.3.9 WERSJA TESTOWA</span>
       </q-toolbar>
     </q-header>
 
@@ -170,7 +170,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Wyposażenie</q-item-label>
-              <q-item-label caption :class="isActiveRoute('/equipement') && 'text-white'">Sprzęt wojskowy</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/equipment') && 'text-white'">Sprzęt wojskowy</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -215,7 +215,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Topografia</q-item-label>
-              <q-item-label caption :class="isActiveRoute('/topography ') && 'text-white'">Mapy i nawigacja</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/topography') && 'text-white'">Mapy i nawigacja</q-item-label>
             </q-item-section>
           </q-item>
 
