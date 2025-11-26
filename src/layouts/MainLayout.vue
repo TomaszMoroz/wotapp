@@ -29,7 +29,7 @@
         </q-toolbar-title>
         <span class="dashboard-version">v1.0.1</span>
         <q-btn
-          v-if="showInstall && !isMobile"
+          v-if="showInstall && !isMobile && false"
           flat
           dense
           icon="download"
