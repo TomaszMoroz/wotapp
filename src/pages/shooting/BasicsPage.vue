@@ -111,7 +111,7 @@
             <div class="row items-center">
               <div>
                 <div class="text-h5 text-weight-bold modern-title">I. Postawa: Trójkąt Stabilności</div>
-                <div class="text-subtitle2 text-grey-7">Podstawy pozycji strzeleckiej</div>
+                <div class="text-subtitle2 text-grey-7">Podstawy pozycji strzeleckiej stojącej</div>
               </div>
             </div>
           </q-card-section>
@@ -120,10 +120,13 @@
             <div class="text-body1 q-mb-md" style="color:#232b23">
               <strong>Postawa powinna być agresywna, ale luźna.</strong>
             </div>
+            <div class="stance-img-wrapper q-mb-md">
+              <img src="/src/assets/stance.png" alt="Trójkąt stabilności - postawa strzelecka" class="stance-img" />
+            </div>
             <div class="q-mb-md">
               <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Fundament (Nogi)</div>
               <div class="text-body2" style="color:#232b23">
-                Stań w lekkim rozkroku, na szerokości barków lub nieco szerzej. Kolana lekko ugięte –
+                Stań w lekkim rozkroku, na szerokości barków lub nieco szerzej. Wysuń nogę od strony ręki wspomagającej w przód (o 1-1.5 długości stopy). Kolana lekko ugięte –
                 to pozwala działać ciału jako naturalny amortyzator. Środek ciężkości powinien być
                 przesunięty delikatnie do przodu, aby przeciwdziałać odrzutowi i kontrolować broń.
               </div>
@@ -132,8 +135,8 @@
               <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Balans</div>
               <div class="text-body2" style="color:#232b23">
                 Zbuduj trójkąt stabilności, w którym wierzchołkami są stopy i biodra. Celuj do przodu,
-                stopy ustawiając pod kątem, aby były gotowe na szybkie przesunięcie, ale jednocześnie
-                zapewniały pewny balans.
+                stopy trzymając równolegle w kierunku celu, aby były gotowe na szybkie przesunięcie, ale jednocześnie
+                zapewniały pewny balans. Lekko obniż i wysuń do tyłu biodra zachowując frontalne ustawienie tułowia w kierunku celu.
               </div>
             </div>
             <div>
@@ -171,28 +174,31 @@
               <div>
                 <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Praca na języku spustowym:</div>
                 <div class="text-body2" style="color:#232b23">
-                  Palec powinien dotykać spustu opuszkiem. Cała praca palca musi być izolowana od reszty ręki.
-                  Cel to równomierny i ciągły ruch w tył, bez żadnych ruchów bocznych czy pionowych (tzw. "pchnięcie spustu").
+                  Palec powinien dotykać spustu środkiem opuszka. Cała praca palca musi być izolowana od reszty ręki.
+                  Cel to równomierny i ciągły ruch w tył, bez żadnych ruchów bocznych czy pionowych.
                 </div>
               </div>
             </div>
             <div>
-              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">2. Chwyt Wspierający (Stabilność)</div>
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">2. Chwyt Wspierający</div>
               <div class="q-mb-xs">
                 <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Siła w kierunku celu:</div>
                 <div class="text-body2" style="color:#232b23">
                   Ręka wspierająca trzymająca łoże karabinka powinna działać jak zacisk. Nie służy do unoszenia broni,
-                  lecz do ściągania karabinka w kierunku strzelca, dociskając go do ramienia.
+                  lecz do ściągania karabinka w kierunku strzelca, dociskając go delikatnie do tułowia.
                 </div>
               </div>
               <div>
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Bliski chwyt (C-Clamp):</div>
+                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Chwyt C (C-Clamp):</div>
                 <div class="text-body2" style="color:#232b23">
-                  W strzelectwie dynamicznym popularny jest chwyt dalekiego zasięgu na łożu, który maksymalizuje
-                  stabilność i kontrolę nad odrzutem. Ramię wspierające powinno być zgięte, a łokieć skierowany w dół,
+                  W strzelectwie popularny jest chwyt dalekiego zasięgu na łożu, który maksymalizuje
+                  stabilność i kontrolę nad odrzutem. Ramię wspierające i dominujące powinny być zgięte, a łokcie skierowany w dół,
                   co pomaga złożyć ramiona w bardziej zwartą i stabilną bryłę.
                 </div>
               </div>
+            </div>
+            <div class="cclamp-img-wrapper q-mt-md">
+              <img src="/src/assets/cclamp.png" alt="Chwyt C-Clamp - karabinek" class="cclamp-img" />
             </div>
           </q-card-section>
         </q-card>
@@ -404,6 +410,48 @@ import BackNav from 'components/BackNav.vue'
   display: flex;
   align-items: center;
 }
+.cclamp-img-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0 18px 0;
+}
+.cclamp-img {
+  max-width: 340px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44,62,47,0.10);
+  background: #fff;
+}
+@media (max-width: 600px) {
+  .cclamp-img {
+    max-width: 98vw;
+  }
+}
+
+.stance-img-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 0 18px 0;
+}
+.stance-img {
+  max-width: 340px;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(44,62,47,0.10);
+  background: #fff;
+}
+@media (max-width: 600px) {
+  .stance-img {
+    max-width: 98vw;
+  }
+}
+
 @media (max-width: 768px) {
   .modern-hero-section .text-h3 {
     font-size: 1.5rem;
