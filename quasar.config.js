@@ -56,7 +56,7 @@ module.exports = configure(function (/* ctx */) {
 
       // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-      publicPath: process.env.NODE_ENV === 'production' ? '/wotapp/' : '/',
+      publicPath: process.env.NODE_ENV === '/',
       // analyze: true,
       // env: {},
       // rawDefine: {}
