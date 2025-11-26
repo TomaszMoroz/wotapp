@@ -98,7 +98,7 @@ const allTopics = computed(() => [
     name: 'Orientacja w terenie',
     category: 'Orientacja',
     icon: 'explore',
-    color: 'green',
+    color: 'green-7', // ciemna zieleń
     description: 'Podstawowe metody orientacji bez kompasu',
     content: `
       <h3>Orientacja w terenie</h3>
@@ -145,7 +145,7 @@ const allTopics = computed(() => [
     name: 'Busola - budowa i obsługa',
     category: 'Orientacja',
     icon: 'explore',
-    color: 'green',
+    color: 'grey-8', // ciemna szarość
     description: 'Szczegółowa budowa i obsługa busoli terenowej',
     content: `
       <h3>Budowa busoli</h3>
@@ -215,7 +215,7 @@ const allTopics = computed(() => [
     name: 'Marsz na azymut',
     category: 'Orientacja',
     icon: 'directions_walk',
-    color: 'green',
+    color: 'brown-7', // ciemny brąz
     description: 'Techniki przemieszczania się na zadany kierunek',
     content: `
       <h3>Marsz na azymut</h3>
@@ -247,7 +247,7 @@ const allTopics = computed(() => [
     name: 'Czytanie map',
     category: 'Mapa topograficzna',
     icon: 'map',
-    color: 'blue',
+    color: 'brown-5', // jaśniejszy brąz
     description: 'Podstawy interpretacji map topograficznych',
     content: `
       <h3>Czytanie map topograficznych</h3>
@@ -324,7 +324,7 @@ const allTopics = computed(() => [
     name: 'Znaki topograficzne',
     category: 'Mapa topograficzna',
     icon: 'legend_toggle',
-    color: 'blue',
+    color: 'grey-6', // jasna szarość
     description: 'Najważniejsze symbole na mapach',
     content: `
       <h3>Znaki topograficzne</h3>
@@ -354,7 +354,7 @@ const allTopics = computed(() => [
     name: 'Współrzędne MGRS',
     category: 'Systemy współrzędnych',
     icon: 'grid_3x3',
-    color: 'blue',
+    color: 'green-10', // bardzo ciemna zieleń
     description: 'Military Grid Reference System - NATO',
     content: `
       <h3>System współrzędnych MGRS</h3>
@@ -395,7 +395,7 @@ const allTopics = computed(() => [
     name: 'Planowanie trasy',
     category: 'Nawigacja',
     icon: 'route',
-    color: 'orange',
+    color: 'brown-10', // najciemniejszy brąz
     description: 'Wybór optymalnej trasy przemieszczania',
     content: `
       <h3>Planowanie trasy</h3>
@@ -494,7 +494,7 @@ const allTopics = computed(() => [
     name: 'Odległość i czas',
     category: 'Nawigacja',
     icon: 'schedule',
-    color: 'orange',
+    color: 'grey-7', // średnia szarość
     description: 'Szacowanie czasu przemieszczania',
     content: `
       <h3>Odległość i czas</h3>
@@ -889,6 +889,11 @@ const goBack = () => {
   .article-content :deep(h4) {
     font-size: 1rem;
     margin: 1rem 0 0.5rem 0;
+  }
+
+  /* Ukryj ikony nagłówków na mobile */
+  .page-header q-icon {
+    display: none !important;
   }
 }
 </style>
