@@ -310,6 +310,7 @@
         <div class="logo-section q-pa-md text-center">
           <img :src="logo721" alt="WOT 721 Logo" class="wot-logo-drawer" />
           <div class="text-caption text-grey-6 q-mt-sm">Aplikacja wewnętrzna</div>
+          <div class="text-caption text-grey-7 q-mt-sm">Kontakt: Tomasz Mo83</div>
         </div>
 
         <!-- <q-item-label header class="text-grey-7 text-weight-bold q-px-md">
