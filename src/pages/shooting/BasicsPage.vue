@@ -121,7 +121,7 @@
               <strong>Postawa powinna być agresywna, ale luźna.</strong>
             </div>
             <div class="stance-img-wrapper q-mb-md">
-              <img src="/src/assets/stance.png" alt="Trójkąt stabilności - postawa strzelecka" class="stance-img" />
+              <img :src="stanceImg" alt="Trójkąt stabilności - postawa strzelecka" class="stance-img" />
             </div>
             <div class="q-mb-md">
               <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Fundament (Nogi)</div>
@@ -198,7 +198,7 @@
               </div>
             </div>
             <div class="cclamp-img-wrapper q-mt-md">
-              <img src="/src/assets/cclamp.png" alt="Chwyt C-Clamp - karabinek" class="cclamp-img" />
+              <img :src="cclampImg" alt="Chwyt C-Clamp - karabinek" class="cclamp-img" />
             </div>
           </q-card-section>
         </q-card>
@@ -325,6 +325,8 @@
 
 <script setup>
 import BackNav from 'components/BackNav.vue'
+import stanceImg from 'assets/stance.png'
+import cclampImg from 'assets/cclamp.png'
 </script>
 
 <style scoped>
