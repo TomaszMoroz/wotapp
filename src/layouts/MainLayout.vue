@@ -28,6 +28,15 @@
           </div>
         </q-toolbar-title>
         <span class="dashboard-version">v1.0.1</span>
+        <q-btn
+          v-if="showInstall && !isMobile"
+          flat
+          dense
+          icon="download"
+          label="Zainstaluj aplikację"
+          class="q-ml-md text-white"
+          @click="installPwa"
+        />
       </q-toolbar>
     </q-header>
 
@@ -340,6 +349,10 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import logo721 from 'assets/721.jpeg'
 
+const deferredPrompt = ref(null)
+const showInstall = ref(false)
+const isMobile = /android|iphone|ipad|ipod|opera mini|iemobile|wpdesktop/i.test(navigator.userAgent)
+
 const pwaUpdateDialog = ref(false)
 
 function reloadPwa () {
@@ -350,7 +363,25 @@ onMounted(() => {
   window.addEventListener('pwa-update-available', () => {
     pwaUpdateDialog.value = true
   })
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault()
+    deferredPrompt.value = e
+    showInstall.value = true
+  })
+  window.addEventListener('appinstalled', () => {
+    showInstall.value = false
+  })
 })
+
+function installPwa () {
+  if (deferredPrompt.value) {
+    deferredPrompt.value.prompt()
+    deferredPrompt.value.userChoice.then(() => {
+      deferredPrompt.value = null
+      showInstall.value = false
+    })
+  }
+}
 const route = useRoute()
 const leftDrawerOpen = ref(false)
 
