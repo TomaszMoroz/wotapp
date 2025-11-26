@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md abc-bg">
-    <BackNav color="black"/>
+    <BackNav color="black" parentPath="/abc"/>
     <div class="text-h4 text-weight-bold text-grey-10 q-mb-md">KTS</div>
     <div class="text-subtitle1 text-grey-8 q-mb-lg">Instrukcja odbioru i potwierdzenia KTS</div>
     <q-card class="abc-card q-mb-lg">

@@ -37,6 +37,14 @@ const props = defineProps({
   showBack: {
     type: Boolean,
     default: true
+  },
+  customBack: {
+    type: Function,
+    default: null
+  },
+  parentPath: {
+    type: String,
+    default: null
   }
 })
 
@@ -44,59 +52,38 @@ const navBtnColor = computed(() => props.color === 'black' ? 'black' : 'white')
 const navBtnTextColor = computed(() => props.color === 'black' ? 'black' : 'white')
 
 // Określ, czy można wrócić o jeden poziom wyżej (czyli nie jesteśmy na dashboardzie ani na głównej sekcji)
+
 const canGoBack = computed(() => {
   if (!props.showBack) return false
-  // Dashboard
-  if (route.path === '/') return false
-  // Jeśli jest parent w matched i nie jest to root
-  if (route.matched.length > 1 && route.matched[route.matched.length - 2].path !== '/') return true
-  // Jeśli jest child route (np. /equipment/:weaponId)
-  if (route.matched.length > 1 && route.matched[route.matched.length - 2].path === '/') return true
-  // Jeśli obecny route ma children (czyli jest zbiorem podstron), nie pokazuj strzałki
-  if (route.matched.length && route.matched[route.matched.length - 1].children && route.matched[route.matched.length - 1].children.length > 0) {
-    return false
-  }
-  // Domyślnie: jeśli nie jesteśmy na root, pokaż strzałkę
+  // Nie pokazuj strzałki na dashboardzie
   return route.path !== '/'
 })
 
 function getParentPath () {
-  // Jeśli jesteśmy na childzie (np. /equipment/weaponId), wróć do parenta (np. /equipment)
-  if (route.matched.length > 1) {
-    const parent = route.matched[route.matched.length - 2]
-    if (parent && parent.path !== '/') {
-      // Zbuduj ścieżkę parenta z parametrami, jeśli trzeba
-      let parentPath = parent.path
-      // Zamień parametry na wartości z obecnego route
-      if (parentPath.includes(':')) {
-        Object.entries(route.params).forEach(([key, value]) => {
-          parentPath = parentPath.replace(`:${key}`, value)
-        })
-      }
-      return parentPath
-    }
-    // Jeśli parent to root, wróć do dashboardu
-    if (parent && parent.path === '/') {
-      return '/'
-    }
-  }
-  // Domyślnie dashboard
-  return '/'
+  // Ucinamy ostatni segment ścieżki (np. /tools/equipment -> /tools)
+  const segments = route.path.split('/').filter(Boolean)
+  if (segments.length === 0) return '/'
+  segments.pop()
+  return '/' + segments.join('/')
 }
 
 function goBack () {
-  // Jeśli jest historia, wróć o krok
-  if (window.history.length > 1) {
-    router.back()
+  if (props.parentPath) {
+    if (props.parentPath !== route.path) {
+      router.push(props.parentPath)
+    }
     return
   }
-  // W innym przypadku, wróć do parenta
-  const parent = getParentPath()
-  if (parent === route.path) {
-    window.location.reload()
-  } else {
-    router.push(parent)
+  if (props.customBack) {
+    props.customBack()
+    return
   }
+  const parent = getParentPath()
+  if (parent === route.path || route.path === '/') {
+    // Jeśli już jesteśmy na root lub nie ma gdzie wracać, nie rób nic
+    return
+  }
+  router.push(parent)
 }
 
 function goDashboard () {

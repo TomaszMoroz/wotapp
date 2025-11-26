@@ -1,5 +1,5 @@
 <template>
-  <q-page class="modern-bg q-pa-lg">
+  <q-page class="modern-bg q-pa-md">
     <BackNav color="black"/>
     <div class="row items-center justify-between q-mb-xl">
       <div>

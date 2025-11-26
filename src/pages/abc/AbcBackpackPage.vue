@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <BackNav :showBack="true" color="black"/>
+    <BackNav color="black" parentPath="/abc"/>
     <div class="text-h4 text-weight-bold q-mb-md">Pakowanie plecaka</div>
     <div class="text-subtitle1 text-grey-7 q-mb-lg">Praktyczne wskazówki dotyczące organizacji ekwipunku</div>
     <div class="q-gutter-lg q-mb-lg row items-start flex-wrap" style="flex-direction: column;" :class="{'flex-row': $q.screen.gt.sm, 'flex-column': !$q.screen.gt.sm}">

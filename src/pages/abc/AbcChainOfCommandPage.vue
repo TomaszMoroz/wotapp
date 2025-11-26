@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <BackNav :showBack="true" color="black"/>
+    <BackNav color="black" parentPath="/abc"/>
     <div class="text-h4 text-weight-bold q-mb-md">Droga służbowa</div>
     <div class="text-subtitle1 text-grey-7 q-mb-lg">Zasady komunikacji i meldowania w WOT</div>
     <q-card class="q-mb-lg">

@@ -1,6 +1,6 @@
 <template>
   <q-page class="page-background">
-    <div class="container q-pa-md">
+    <div class="container q-pa-sm">
 
       <div class="row justify-center">
         <div class="col-12 col-md-8 col-lg-6">
@@ -24,7 +24,6 @@
                 @update:model-value="onReportSelected"
                 class="q-mb-md"
                 dropdown-auto-width
-                :menu-props="{ maxHeight: 'none' }"
               >
                 <template v-slot:no-option>
                   <q-item>

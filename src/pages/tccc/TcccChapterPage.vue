@@ -3,16 +3,7 @@
     <q-card class="tccc-chapter-card column q-pa-none" flat bordered>
       <q-card-section class="tccc-header q-pa-md bg-blue-grey-3 text-black shadow-2 rounded-borders">
         <div class="row items-center no-wrap">
-          <q-btn
-            class="tccc-back-btn q-mr-md"
-            flat
-            round
-            color="white"
-            text-color="white"
-            icon="arrow_back"
-            @click="goBack"
-            aria-label="Powrót"
-          />
+          <BackNav color="black" parentPath="/tccc" />
           <div class="tccc-title text-h5 text-weight-bold q-mb-xs">{{ chapter.title }}</div>
         </div>
       </q-card-section>
@@ -25,7 +16,8 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
+import BackNav from 'components/BackNav.vue'
+import { useRoute } from 'vue-router'
 import { computed } from 'vue'
 
 const chapters = {
@@ -554,13 +546,9 @@ const chapters = {
 }
 
 const route = useRoute()
-const router = useRouter()
 const chapterId = computed(() => Number(route.params.nr))
 const chapter = computed(() => chapters[chapterId.value] || { title: 'Nieznany rozdział', content: '' })
 
-function goBack () {
-  router.back()
-}
 </script>
 
 <style scoped>

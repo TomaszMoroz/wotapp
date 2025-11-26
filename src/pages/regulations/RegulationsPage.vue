@@ -3,7 +3,7 @@
     <div class="container q-pa-md">
 
       <div class="page-container">
-        <BackNav color="black"/>
+        <BackNav color="black" :customBack="goBack"/>
         <div class="page-header">
           <h1 class="page-title">
             <q-icon name="description" class="title-icon" />

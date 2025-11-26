@@ -27,7 +27,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v2.4.2 WERSJA TESTOWA</span>
+        <span class="dashboard-version">v2.4.3 WERSJA TESTOWA</span>
       </q-toolbar>
     </q-header>
 
@@ -38,10 +38,6 @@
       class="dashboard-drawer bg-military-light"
       :width="280"
     >
-      <div class="q-pa-md dashboard-drawer-header text-military-secondary">
-        <div class="text-h6 text-weight-bold">Menu Główne</div>
-        <div class="text-caption opacity-70">Wybierz sekcję</div>
-      </div>
 
       <q-list class="q-mt-sm">
 
@@ -94,7 +90,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Kalkulator odległości</q-item-label>
-              <q-item-label caption :class="isActiveRoute('/tools/distance') && 'text-white'">Pomiar przez tysiączne</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tools/distance') && 'text-white'">Pomiar przez DWK1000</q-item-label>
             </q-item-section>
           </q-item>
                     <q-item
@@ -137,7 +133,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">GROT Offset</q-item-label>
-              <q-item-label caption :class="isActiveRoute('/training') && 'text-white'">Kalkulator balistyczny</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/training') && 'text-white'">Kalkulator offsetu</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -170,7 +166,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Wyposażenie</q-item-label>
-              <q-item-label caption :class="isActiveRoute('/equipment') && 'text-white'">Sprzęt wojskowy</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/equipment') && 'text-white'">Broń etatowa</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -230,7 +226,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Strzelectwo</q-item-label>
-              <q-item-label caption :class="isActiveRoute('/shooting') && 'text-white'">Balistyka i techniki</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/shooting') && 'text-white'">Balistyka i technika</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -246,7 +242,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">TCCC</q-item-label>
-              <q-item-label caption :class="isActiveRoute('/tccc') && 'text-white'">Taktyczna pomoc poszkodowanym</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/tccc') && 'text-white'">Taktyczna pomoc</q-item-label>
             </q-item-section>
           </q-item>
 
@@ -276,7 +272,7 @@
             </q-item-section>
             <q-item-section>
               <q-item-label class="text-weight-medium">Stopnie</q-item-label>
-              <q-item-label caption :class="isActiveRoute('/emergency') && 'text-white'">Regulaminy wojskowe</q-item-label>
+              <q-item-label caption :class="isActiveRoute('/emergency') && 'text-white'">Regulaminy wojskowe, prawo</q-item-label>
             </q-item-section>
           </q-item>
 

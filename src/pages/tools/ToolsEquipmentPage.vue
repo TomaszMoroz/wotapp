@@ -61,18 +61,21 @@
     </div>
 
     <div v-for="date in availableDates" :key="date" class="q-mb-xl">
-      <q-list bordered separator class="bg-grey-10 text-white q-mt-xl" style="max-width: 600px; margin: 50px auto">
-        <q-item-label v-if="equipmentData[date] && equipmentData[date].length > 0" header class="text-h6 flex items-center justify-center q-gutter-x-sm" style="color:#fff;">
-          <span style="color:#fff;">{{ date }}</span>
-          <span style="color:#fff; font-size:0.95em;">({{ equipmentData[date].length }} el.)</span>
+      <q-list bordered separator class="bg-grey-1 text-grey-8 q-mt-xl" style="max-width: 600px; margin: 50px auto">
+        <q-item-label v-if="equipmentData[date] && equipmentData[date].length > 0" header class="text-h6 text-grey-9 flex items-center justify-center q-gutter-x-sm">
+          <span>{{ date }}</span>
+          <span style="font-size:0.95em;">({{ equipmentData[date].length }} el.)</span>
           <q-btn flat dense round icon="delete" color="red-4" size="sm" @click="deleteEquipmentList(date)" />
         </q-item-label>
-        <q-item v-for="(item, idx) in equipmentData[date]" :key="item.id" class="q-my-md q-py-md">
-          <q-item-section>
-            <div class="text-h6">{{ item.type }}</div>
-            <div class="text-h6">SN: {{ item.sn }}</div>
-            <div v-if="item.snImage" class="q-mt-sm">
-              <img :src="item.snImage" alt="Podgląd SN" style="width:100%; max-width:480px; max-height:120px; border:1.5px solid #21c521; background:#222; object-fit:contain; display:block;" />
+        <q-separator></q-separator>
+        <q-item v-for="(item, idx) in equipmentData[date]" :key="item.id" class="q-my-md q-py-md flex">
+          <q-item-section style="width:100%; padding:0;">
+            <div class="row items-center no-wrap" style="width:100%;">
+              <div class="text-h6 col-4 q-mr-md"><q-chip size="lg" class="">{{ item.type }}</q-chip></div>
+              <div v-if="!item.snImage" class="text-h6">SN: {{ item.sn }}</div>
+              <div v-else style="margin-left: 16px;">
+                <img :src="item.snImage" alt="Podgląd SN" style="width:100%; max-width:280px; max-height:60px; border:1.5px solid lightgrey; background:#222; object-fit:contain; display:block;" />
+              </div>
             </div>
           </q-item-section>
           <q-item-section side>
@@ -221,8 +224,13 @@ function editItemGlobal (date, idx) {
 }
 function saveEdit () {
   if (editIdx.value >= 0 && editDate.value) {
-    equipmentData.value[editDate.value][editIdx.value].type = editType.value
-    equipmentData.value[editDate.value][editIdx.value].sn = editSN.value
+    const item = equipmentData.value[editDate.value][editIdx.value]
+    item.type = editType.value
+    item.sn = editSN.value
+    // If user enters SN manually and there was an image, remove the image
+    if (editSN.value && item.snImage) {
+      item.snImage = undefined
+    }
     saveEquipment()
     editDialog.value = false
   }

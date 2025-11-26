@@ -2,8 +2,8 @@
   <q-page class="modern-bg q-pa-lg">
     <div class="dashboard-title-bg q-mb-xl">
       <div class="dashboard-title-content">
-        <div class="text-h3 text-weight-bold modern-title">Dashboard</div>
-        <div class="text-subtitle1 text-grey-7 q-mt-xs">Wybierz sekcję aby rozpocząć pracę</div>
+        <div class="text-h3 text-weight-bold modern-title q-pa-lg">Dashboard</div>
+        <!-- <div class="text-subtitle1 text-grey-7 q-mt-xs">Wybierz sekcję aby rozpocząć pracę</div> -->
       </div>
     </div>
 
@@ -95,9 +95,9 @@ function navigateTo (path) {
     text-align: center;
   }
   .dashboard-title-bg::before {
-    background-size: 210px auto;
+    background-size: 220px auto;
     background-position: center 60%;
-    opacity: 0.16;
+    opacity: 0.19;
   }
 }
 .modern-bg {

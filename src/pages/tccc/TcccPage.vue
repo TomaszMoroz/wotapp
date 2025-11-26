@@ -61,6 +61,12 @@ function goToTcccChapter (nr) {
   gap: 12px;
   margin-top: 8px;
 }
+
+@media (max-width: 600px) {
+  .tccc-chapters-grid {
+    justify-content: center;
+  }
+}
 .tccc-chapter-tile {
   width: 240px;
   height: 120px;
