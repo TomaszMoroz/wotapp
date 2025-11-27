@@ -58,7 +58,7 @@
               <div class="modern-content-body">
                 <div v-if="selectedManeuver.id === 1">
                   <h4>Okrężna</h4>
-                  <p>Procedura rozpoznania i zajęcia rejonu bazy po wykonaniu manewru "HAK".</p>
+                  <p>Procedura rozpoznania i zajęcia rejonu bazy.</p>
 
                   <div class="diagram-container q-my-lg">
                     <img :src="okrImg" alt="Diagram manewru okrężnego" class="tactical-diagram" />
@@ -66,37 +66,37 @@
 
                   <h5>Przygotowanie do okrężnej:</h5>
                   <ol>
+                    <li><strong>Ustalenie miejsca:</strong> Wstępnie w planowaniu, precyzowanie w terenie</li>
                     <li><strong>Wykonanie "HAK":</strong> Sprawdzenie czy sekcja nie jest śledzona</li>
                     <li><strong>Procedura "5-25 m":</strong> Rozpoznanie planowanego rejonu bazy</li>
-                    <li><strong>Ustalenie miejsca:</strong> Wstępnie w planowaniu, precyzowanie w terenie</li>
                   </ol>
 
                   <h5>Rozpoznanie rejonu bazy:</h5>
                   <ul>
-                    <li><strong>Siły rozpoznawcze:</strong> Minimum 4 (idealnie 5) żołnierzy ze środka szyku</li>
+                    <li><strong>Siły rozpoznawcze:</strong> Minimum 4 (idealnie 5) żołnierzy</li>
                     <li><strong>Ubezpieczenie:</strong> Skrajni żołnierze ubezpieczają wyznaczone sektory</li>
                     <li><strong>Punkt kontrolny:</strong> Wyjście i powrót przez punkt charakterystyczny w terenie</li>
                     <li><strong>Pozostawienie straży:</strong> 2 żołnierzy pozostaje w rejonie bazy</li>
                     <li><strong>Łączność:</strong> Dowódca zawsze z radiotelefonistą</li>
-                    <li><strong>Bezpieczeństwo:</strong> Hasło i odzew</li>
+                    <li><strong>Bezpieczeństwo:</strong> Hasło i odzew, znaki dalsze</li>
                   </ul>
 
                   <h5>Organizacja obrony okrężnej:</h5>
                   <ol>
                     <li><strong>Zajęcie pozycji:</strong> Wszystkie siły osiągają rejon bazy</li>
-                    <li><strong>Obrona okrężna:</strong> Rozmieszczenie wokół rejonu</li>
+                    <li><strong>Obrona:</strong> Rozmieszczenie wokół rejonu</li>
                     <li><strong>Nasłuch z obserwacją:</strong> Sprawdzenie bezpieczeństwa</li>
-                    <li><strong>Dowodzenie:</strong> Dowódca i radiotelefonista w środku okrężnej</li>
+                    <li><strong>Dowodzenie:</strong> Dowódca i radiotelefonista w środku</li>
                     <li><strong>Planowanie:</strong> Czas na przemyślenie kolejnych zadań</li>
-                    <li><strong>Meldunek:</strong> Wysłanie meldunku o osiągnięciu rejonu bazy</li>
+                    <li><strong>Meldunki:</strong> Wysłanie meldunku o osiągnięciu rejonu bazy, SAS - wg potrzeb</li>
                   </ol>
 
                   <h5>Działania w bazie:</h5>
                   <ul>
-                    <li><strong>Odpoczynek:</strong> Regeneracja sił do dalszego działania</li>
                     <li><strong>Szczegółowe zadania:</strong> Dowódca może wezwać żołnierzy do instrukcji</li>
                     <li><strong>Stałe ubezpieczenie:</strong> Baza musi być ciągle ubezpieczana</li>
-                    <li><strong>Kontrola:</strong> Monitoring wszystkich elementów procedury</li>
+                    <li><strong>Kontrola:</strong>Stan ludzi, sprzętu</li>
+                    <li><strong>Odpoczynek:</strong> Regeneracja sił do dalszego działania (w buddy team, jedna osoba odpoczywa a druga czuwa)</li>
                   </ul>
 
                   <div class="q-pa-md bg-amber-1 rounded-borders q-mt-md">
@@ -122,7 +122,7 @@
                   <ol>
                     <li><strong>Sygnał:</strong> Prowadzący sygnalizuje „HAK"</li>
                     <li><strong>Zejście z trasy:</strong> Schodzi z kierunku marszu w lewo lub w prawo</li>
-                    <li><strong>Pozycja obserwacyjna:</strong> Odchodzi od pierwotnej trasy na maksymalną odległość, aby obserwować miejsce zejścia i oddziaływać ogniowo</li>
+                    <li><strong>Pozycja obserwacyjna:</strong> Odchodzi od pierwotnej trasy na taką odległość aby obserwować miejsce zejścia i oddziaływać ogniowo</li>
                     <li><strong>Ruch równoległy:</strong> Zmienia kierunek poruszając się równolegle do pierwotnej trasy w kierunku przeciwnym</li>
                     <li><strong>Zawrót:</strong> Zawraca o 180° i przechodzi odcinek do pozycji równoległej do pierwotnej trasy</li>
                     <li><strong>Obserwacja:</strong> Zatrzymuje się na wysokości punktu zejścia z trasy i obserwuje</li>
