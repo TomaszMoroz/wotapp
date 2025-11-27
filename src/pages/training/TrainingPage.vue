@@ -271,7 +271,7 @@ defineOptions({
 const targetDistance = ref(100)
 const offsetValue = ref(0)
 
-const quickDistances = [0, 15, 20, 25, 40, 60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 400]
+const quickDistances = [0, 15, 20, 25, 40, 50, 60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 400]
 
 // Dane balistyczne dla GROT - oficjalne dane z instrukcji WOT
 // Tabela 6: Przewyższenie toru lotu pocisku nad linią celowania (w cm)
@@ -282,6 +282,7 @@ const offsetData = {
   20: 0,
   25: 1.75, // interpolowane między 20m i 40m
   40: 7,
+  50: 12, // ustalony offset na 50m
   60: 14,
   80: 20,
   100: 25,

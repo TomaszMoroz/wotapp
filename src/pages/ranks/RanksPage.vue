@@ -45,6 +45,9 @@ import plutonowy from 'assets/ranks/plutonowy.jpg'
 import sierzant from 'assets/ranks/sierzant.jpg'
 import stSierz from 'assets/ranks/st_sierz.jpg'
 import mlChor from 'assets/ranks/ml_chor.jpg'
+import choro from 'assets/ranks/choro.jpg'
+import stChor from 'assets/ranks/st_chor.jpg'
+import stChorSztab from 'assets/ranks/st_chor_sztab.jpg'
 // Oficerowie młodsi
 import podporucznik from 'assets/ranks/podporucznik.jpg'
 import porucznik from 'assets/ranks/porucznik.jpg'
@@ -76,7 +79,10 @@ const sections = [
       { title: 'Plutonowy', image: plutonowy },
       { title: 'Sierżant', image: sierzant },
       { title: 'Starszy sierżant', image: stSierz },
-      { title: 'Młodszy chorąży', image: mlChor }
+      { title: 'Młodszy chorąży', image: mlChor },
+      { title: 'Chorąży', image: choro },
+      { title: 'Starszy chorąży', image: stChor },
+      { title: 'Starszy chorąży sztabowy', image: stChorSztab }
     ]
   },
   {
