@@ -26,5 +26,15 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
+  // Google Tag Manager pageview tracking
+  Router.afterEach((to) => {
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'pageview',
+        pagePath: to.fullPath,
+        pageTitle: document.title
+      })
+    }
+  })
   return Router
 })
