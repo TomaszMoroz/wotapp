@@ -27,7 +27,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v1.0.3</span>
+        <span class="dashboard-version">v1.0.4</span>
         <q-btn
           v-if="showInstall && !isMobile && false"
           flat
