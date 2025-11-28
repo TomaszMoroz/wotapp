@@ -327,17 +327,19 @@ const weapons = [
     icon: 'gps_not_fixed',
     color: 'purple',
     specs: [
-      { parameter: 'Amunicja', value: '40 mm x 46SR LV' },
-      { parameter: 'Masa', value: '1,5 kg' },
-      { parameter: 'Długość', value: '295 mm' },
-      { parameter: 'Szerokość (z celownikiem)', value: '92 mm' },
-      { parameter: 'Wysokość', value: '142 mm' },
-      { parameter: 'Długość lufy', value: '200 mm' },
-      { parameter: 'Skok bruzd', value: '1200 mm' },
-      { parameter: 'Liczba bruzd', value: '6' },
-      { parameter: 'Prędkość początkowa pocisku', value: '78 m/s' },
-      { parameter: 'Donośność', value: '350 m' },
-      { parameter: 'Szybkostrzelność teoretyczna', value: '5-7 strz./min.' }
+      { parameter: 'Typ broni', value: 'nieautomatyczna, jednostrzałowa podwieszana' },
+      { parameter: 'Kaliber broni [mm]', value: '40' },
+      { parameter: 'Nabój [mm]', value: '40x46 mm LV' },
+      { parameter: 'Masa broni [kg]', value: '1,35' },
+      { parameter: 'Długość broni [mm]', value: '296' },
+      { parameter: 'Szerokość broni z celownikiem mech. [mm]', value: '95' },
+      { parameter: 'Wysokość broni [mm]', value: '140' },
+      { parameter: 'Długość lufy [mm]', value: '214' },
+      { parameter: 'Skok bruzd [mm]', value: '1200' },
+      { parameter: 'Liczba bruzd [szt.]', value: '6' },
+      { parameter: 'Prędkość początkowa pocisku [m/s]', value: '80 +/-5' },
+      { parameter: 'Donośność skuteczna [m]', value: '≥ 350' },
+      { parameter: 'Szybkostrzelność teoretyczna strz./min', value: '5-7' }
     ]
   }
 ]

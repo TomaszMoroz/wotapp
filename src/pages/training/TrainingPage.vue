@@ -4,13 +4,14 @@
       <BackNav color="black"/>
 
       <!-- Modern Header -->
+
       <div class="modern-header">
         <div class="header-content">
           <div class="header-icon">
             <q-icon name="gps_fixed" size="2.5rem" color="white" />
           </div>
           <div class="header-text">
-            <h1 class="header-title">GROT Offset</h1>
+            <h1 class="header-title" style="margin: 0;">GROT Offset</h1>
             <p class="header-subtitle">Korekta punktu celowania</p>
           </div>
         </div>
@@ -150,7 +151,7 @@
 
             <div class="controls-content">
               <!-- Distance Input -->
-              <div class="input-group">
+              <!-- <div class="input-group">
                 <label class="input-label">Odległość do celu</label>
                 <q-input
                   v-model.number="targetDistance"
@@ -166,7 +167,7 @@
                     <q-icon name="straighten" color="primary" />
                   </template>
                 </q-input>
-              </div>
+              </div> -->
 
               <!-- Quick Distances -->
               <div class="input-group">

@@ -6,11 +6,32 @@
       <!-- Header z tytułem -->
       <div class="page-header q-mb-lg">
         <div class="row items-center">
-          <div>
-            <div class="text-h4 text-weight-bold text-primary">Kalkulator nastaw</div>
-            <div class="text-subtitle1 text-grey-7">Symulacja korekty celowania</div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="text-h4 text-weight-bold text-primary" style="margin: 0;">Kalkulator nastaw</div>
+            <q-btn flat dense round icon="help_outline" color="primary" aria-label="Instrukcja"
+              @click="showInstruction = true" style="font-size: 1.2rem;" />
           </div>
+          <q-dialog v-model="showInstruction" persistent>
+            <q-card style="max-width: 400px;">
+              <q-card-section class="row items-center q-pb-none">
+                <q-icon name="help_outline" color="primary" size="md" class="q-mr-md" />
+                <div class="text-h6">Instrukcja obsługi kalkulatora nastaw</div>
+              </q-card-section>
+              <q-card-section>
+                <ol style="padding-left: 1.2em;">
+                  <li>Wybierz parametry strzału.</li>
+                  <li>Oddaj strzał kontrolny.</li>
+                  <li>Zrób korektę względem centrum tarczy a strzałem kontrolnym.</li>
+                  <li>Oddaj strzał – jeśli korekta jest poprawna, trafisz w centrum.</li>
+                </ol>
+              </q-card-section>
+              <q-card-actions align="right">
+                <q-btn flat label="Zamknij" color="primary" v-close-popup />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
         </div>
+        <div class="text-subtitle1 text-grey-7">Symulacja korekty celowania</div>
       </div>
 
       <div class="row q-col-gutter-lg">
@@ -407,6 +428,7 @@ import BackNav from 'components/BackNav.vue'
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import targetImg from '../../assets/target.jpg'
 
+const showInstruction = ref(false)
 // Reactive data
 const measurementSystem = ref('mils')
 const clickValue = ref(0.1) // domyślnie 0.1 mil lub 0.25 MOA
