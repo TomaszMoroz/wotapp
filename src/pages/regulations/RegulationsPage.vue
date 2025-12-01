@@ -73,6 +73,9 @@
 <script setup>
 import BackNav from 'components/BackNav.vue'
 import { defineComponent, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const currentView = ref('main') // main, subchapters, content
 const selectedChapter = ref(null)
@@ -405,13 +408,11 @@ const showContent = (contentId) => {
 
 const goBack = () => {
   if (currentView.value === 'content') {
-    if (currentContentId.value === 'wstep') {
-      currentView.value = 'main'
-    } else {
-      currentView.value = 'subchapters'
-    }
+    currentView.value = 'subchapters'
   } else if (currentView.value === 'subchapters') {
     currentView.value = 'main'
+  } else {
+    router.back()
   }
 }
 
