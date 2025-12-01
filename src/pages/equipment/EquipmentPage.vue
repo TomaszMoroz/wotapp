@@ -112,6 +112,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import visImg from 'assets/vis.png'
+import ukmImg from 'assets/ukm.png'
 import BackNav from 'components/BackNav.vue'
 
 defineOptions({
@@ -228,21 +229,32 @@ const weapons = [
     ]
   },
   {
-    id: 'ukm200p',
-    name: 'UKM 200P',
+    id: 'ukm2000p',
+    name: 'UKM 2000P',
     fullName: 'Uniwersalny Karabin Maszynowy 200P',
     category: 'Karabin maszynowy',
     icon: 'settings',
+    image: ukmImg,
     color: 'warning',
     specs: [
-      { parameter: 'Amunicja', value: '7,62 mm × 51 NATO w taśmie rozsypnej M13' },
-      { parameter: 'Długość lufy', value: '540 mm' },
-      { parameter: 'Masa', value: '10 kg' },
-      { parameter: 'Pojemność magazynka', value: '100/200 szt.' },
-      { parameter: 'Szybkostrzelność', value: '700-900 strz./min.' },
-      { parameter: 'Przeznaczenie', value: 'Zwalczanie siły żywej, środków ogniowych, sprzętu technicznego' },
-      { parameter: 'Warunki użycia', value: 'W każdym terenie i w dowolnych warunkach meteorologicznych, zarówno w dzień jak i w nocy' },
-      { parameter: 'Charakterystyka', value: 'Zmodyfikowany uniwersalny karabin maszynowy opracowany w celu poprawy niezawodności, trwałości oraz ergonomii' }
+      { parameter: 'Kaliber [mm]', value: '7,62' },
+      { parameter: 'Nabój', value: '7,62x51 mm NATO' },
+      { parameter: 'Masa broni bez amunicji [kg]', value: '8,4' },
+      { parameter: 'Masa lufy [kg]', value: '2,2' },
+      { parameter: 'Długość karabinu ze złożoną oporą naramienną [mm]', value: '1182' },
+      { parameter: 'Wysokość broni [mm]', value: '213**' },
+      { parameter: 'Szerokość broni [mm]', value: '120**' },
+      { parameter: 'Długość lufy bez urządzenia wylotowego [mm]', value: '540' },
+      { parameter: 'Liczba bruzd [szt.]', value: '4' },
+      { parameter: 'Skok bruzd [mm]', value: '328' },
+      { parameter: 'Odległość celowania [m]', value: '1500' },
+      { parameter: 'Prędkość początkowa pocisku z rdzeniem ołowianym [m/s]', value: '840' },
+      { parameter: 'Zasięg skuteczny [m]', value: '1500***' },
+      { parameter: 'Odległość strzału bezwzględnego do popiersia [m]', value: '420' },
+      { parameter: 'Odległość strzału bezwzględnego do biegnącego [m]', value: '640' },
+      { parameter: 'Szybkostrzelność teoretyczna [strz./min]', value: '700 - 850' },
+      { parameter: 'Szybkostrzelność praktyczna [strz./min]', value: '250' },
+      { parameter: 'Pojemność skrzynki nabojowej [szt.]', value: '100 i 200' }
     ]
   },
   {
