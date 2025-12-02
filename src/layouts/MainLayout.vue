@@ -37,7 +37,17 @@
           class="q-ml-md text-white"
           @click="installPwa"
         />
+        <q-btn
+          flat
+          dense
+          icon="notifications"
+          aria-label="Włącz powiadomienia push"
+          @click="enablePushNotifications"
+          class="q-ml-md text-white"
+        />
       </q-toolbar>
+      <div v-if="pushError" class="q-px-md text-negative text-caption">{{ pushError }}</div>
+      <div v-if="pushEnabled" class="q-px-md text-positive text-caption">Powiadomienia push są aktywne</div>
     </q-header>
 
     <q-drawer
@@ -400,6 +410,53 @@ const isActiveRoute = computed(() => (path) => {
 const isInToolsSection = computed(() => {
   return route.path.startsWith('/tools') || route.path === '/training' || route.path === '/communication'
 })
+
+const pushEnabled = ref(false)
+const pushError = ref('')
+
+async function enablePushNotifications () {
+  pushError.value = ''
+  if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    pushError.value = 'Twoja przeglądarka nie obsługuje powiadomień push.'
+    return
+  }
+  try {
+    const permission = await Notification.requestPermission()
+    if (permission !== 'granted') {
+      pushError.value = 'Brak zgody na powiadomienia.'
+      return
+    }
+    const reg = await navigator.serviceWorker.ready
+    // Pobierz publiczny klucz VAPID z backendu
+    const vapidRes = await fetch('http://localhost:4000/api/push/vapidPublicKey')
+    const { publicKey } = await vapidRes.json()
+    // Subskrybuj push
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey)
+    })
+    // Wyślij subskrypcję do backendu
+    await fetch('http://localhost:4000/api/push/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sub)
+    })
+    pushEnabled.value = true
+  } catch (e) {
+    pushError.value = 'Błąd rejestracji powiadomień: ' + (e?.message || e)
+  }
+}
+
+function urlBase64ToUint8Array (base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4)
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/')
+  const rawData = window.atob(base64)
+  const outputArray = new Uint8Array(rawData.length)
+  for (let i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i)
+  }
+  return outputArray
+}
 </script>
 
 <style scoped>
