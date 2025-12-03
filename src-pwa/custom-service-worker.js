@@ -32,12 +32,17 @@ if (process.env.MODE !== 'ssr' || process.env.PROD) {
 // Obsługa powiadomień push
 self.addEventListener('push', function (event) {
   let data = {}
+  console.log('[SW] push event', event)
   if (event.data) {
     try {
       data = event.data.json()
+      console.log('[SW] push data json', data)
     } catch (e) {
       data = { title: 'Nowe powiadomienie', body: event.data.text() }
+      console.log('[SW] push data text', data)
     }
+  } else {
+    console.log('[SW] push event with no data')
   }
   const title = data.title || 'Nowe powiadomienie'
   const options = {

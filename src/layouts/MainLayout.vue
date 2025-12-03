@@ -39,7 +39,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v1.0.9</span>
+        <span class="dashboard-version">v1.1.0</span>
         <q-btn
           v-if="showInstall && !isMobile && false"
           flat
@@ -429,31 +429,39 @@ const pushDialog = ref(false)
 
 async function enablePushNotifications () {
   pushDialog.value = false
+  console.log('[PWA] enablePushNotifications start')
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
+    console.error('[PWA] Brak wsparcia dla serviceWorker/PushManager')
     $q.notify({ type: 'negative', message: 'Twoja przeglądarka nie obsługuje powiadomień push.' })
     return
   }
   try {
     const permission = await Notification.requestPermission()
+    console.log('[PWA] Notification permission:', permission)
     if (permission !== 'granted') {
       $q.notify({ type: 'warning', message: 'Brak zgody na powiadomienia.' })
       return
     }
     const reg = await navigator.serviceWorker.ready
+    console.log('[PWA] serviceWorker ready:', reg)
     const vapidRes = await fetch('https://kitabag.smallhost.pl/api/push/vapidPublicKey')
     const { publicKey } = await vapidRes.json()
+    console.log('[PWA] VAPID publicKey:', publicKey)
     const sub = await reg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicKey)
     })
-    await fetch('https://kitabag.smallhost.pl/api/push/subscribe', {
+    console.log('[PWA] pushManager.subscribe result:', sub)
+    const resp = await fetch('https://kitabag.smallhost.pl/api/push/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(sub)
     })
+    console.log('[PWA] backend subscribe response:', resp)
     pushEnabled.value = true
     $q.notify({ type: 'positive', message: 'Powiadomienia push zostały włączone!' })
   } catch (e) {
+    console.error('[PWA] Błąd rejestracji powiadomień:', e)
     $q.notify({ type: 'negative', message: 'Błąd rejestracji powiadomień: ' + (e?.message || e) })
   }
 }
