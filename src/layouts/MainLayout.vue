@@ -27,7 +27,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v1.0.6</span>
+        <span class="dashboard-version">v1.0.7</span>
         <q-btn
           v-if="showInstall && !isMobile && false"
           flat
@@ -428,7 +428,7 @@ async function enablePushNotifications () {
     }
     const reg = await navigator.serviceWorker.ready
     // Pobierz publiczny klucz VAPID z backendu
-    const vapidRes = await fetch('http://localhost:4000/api/push/vapidPublicKey')
+    const vapidRes = await fetch('https://kitabag.smallhost.pl/api/push/vapidPublicKey')
     const { publicKey } = await vapidRes.json()
     // Subskrybuj push
     const sub = await reg.pushManager.subscribe({
@@ -436,7 +436,7 @@ async function enablePushNotifications () {
       applicationServerKey: urlBase64ToUint8Array(publicKey)
     })
     // Wyślij subskrypcję do backendu
-    await fetch('http://localhost:4000/api/push/subscribe', {
+    await fetch('https://kitabag.smallhost.pl/api/push/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(sub)
