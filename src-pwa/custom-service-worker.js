@@ -28,3 +28,32 @@ if (process.env.MODE !== 'ssr' || process.env.PROD) {
     )
   )
 }
+
+// Obsługa powiadomień push
+self.addEventListener('push', function (event) {
+  let data = {}
+  if (event.data) {
+    try {
+      data = event.data.json()
+    } catch (e) {
+      data = { title: 'Nowe powiadomienie', body: event.data.text() }
+    }
+  }
+  const title = data.title || 'Nowe powiadomienie'
+  const options = {
+    body: data.body || '',
+    icon: '/icons/icon-192x192.png',
+    data: { url: data.url || '/' }
+  }
+  event.waitUntil(
+    self.registration.showNotification(title, options)
+  )
+})
+
+self.addEventListener('notificationclick', function (event) {
+  event.notification.close()
+  const url = event.notification.data && event.notification.data.url ? event.notification.data.url : '/'
+  event.waitUntil(
+    clients.openWindow(url)
+  )
+})
