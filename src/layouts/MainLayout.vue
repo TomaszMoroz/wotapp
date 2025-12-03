@@ -12,6 +12,18 @@
       </q-card>
     </q-dialog>
     <q-header elevated class="bg-military-primary dashboard-header">
+          <q-dialog v-model="pushDialog" persistent>
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">Włączyć powiadomienia push?</div>
+                <div class="q-mt-sm">Aby otrzymywać komunikaty, szkolenia i alarmy, musisz wyrazić zgodę na powiadomienia push.</div>
+              </q-card-section>
+              <q-card-actions align="right">
+                <q-btn flat label="Anuluj" color="primary" v-close-popup />
+                <q-btn flat label="Włącz" color="positive" @click="enablePushNotifications" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
       <q-toolbar class="q-px-md dashboard-toolbar">
         <q-btn
           flat
@@ -27,7 +39,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v1.0.8</span>
+        <span class="dashboard-version">v1.0.9</span>
         <q-btn
           v-if="showInstall && !isMobile && false"
           flat
@@ -42,12 +54,11 @@
           dense
           icon="notifications"
           aria-label="Włącz powiadomienia push"
-          @click="enablePushNotifications"
+          @click="pushDialog = true"
           class="q-ml-md text-white"
         />
       </q-toolbar>
-      <div v-if="pushError" class="q-px-md text-negative text-caption">{{ pushError }}</div>
-      <div v-if="pushEnabled" class="q-px-md text-positive text-caption">Powiadomienia push są aktywne</div>
+      <!-- Usunięto komunikaty z górnego paska -->
     </q-header>
 
     <q-drawer
@@ -357,6 +368,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 import { useRoute } from 'vue-router'
 import logo721 from 'assets/721.jpeg'
 
@@ -411,39 +423,38 @@ const isInToolsSection = computed(() => {
   return route.path.startsWith('/tools') || route.path === '/training' || route.path === '/communication'
 })
 
+const $q = useQuasar()
 const pushEnabled = ref(false)
-const pushError = ref('')
+const pushDialog = ref(false)
 
 async function enablePushNotifications () {
-  pushError.value = ''
+  pushDialog.value = false
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-    pushError.value = 'Twoja przeglądarka nie obsługuje powiadomień push.'
+    $q.notify({ type: 'negative', message: 'Twoja przeglądarka nie obsługuje powiadomień push.' })
     return
   }
   try {
     const permission = await Notification.requestPermission()
     if (permission !== 'granted') {
-      pushError.value = 'Brak zgody na powiadomienia.'
+      $q.notify({ type: 'warning', message: 'Brak zgody na powiadomienia.' })
       return
     }
     const reg = await navigator.serviceWorker.ready
-    // Pobierz publiczny klucz VAPID z backendu
     const vapidRes = await fetch('https://kitabag.smallhost.pl/api/push/vapidPublicKey')
     const { publicKey } = await vapidRes.json()
-    // Subskrybuj push
     const sub = await reg.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: urlBase64ToUint8Array(publicKey)
     })
-    // Wyślij subskrypcję do backendu
     await fetch('https://kitabag.smallhost.pl/api/push/subscribe', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(sub)
     })
     pushEnabled.value = true
+    $q.notify({ type: 'positive', message: 'Powiadomienia push zostały włączone!' })
   } catch (e) {
-    pushError.value = 'Błąd rejestracji powiadomień: ' + (e?.message || e)
+    $q.notify({ type: 'negative', message: 'Błąd rejestracji powiadomień: ' + (e?.message || e) })
   }
 }
 
