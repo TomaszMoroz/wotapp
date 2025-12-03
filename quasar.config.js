@@ -142,7 +142,11 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'generateSW', // or 'injectManifest'
+      // workboxMode: 'generateSW', // or 'injectManifest'
+      workboxMode: 'injectManifest',
+      injectManifest: {
+        swSrc: 'src-pwa/custom-service-worker.js'
+      },
       injectPwaMetaTags: true,
       swFilename: 'service-worker.js',
       manifestFilename: 'manifest.json',
