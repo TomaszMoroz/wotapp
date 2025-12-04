@@ -29,6 +29,35 @@ if (process.env.MODE !== 'ssr' || process.env.PROD) {
   )
 }
 
+// Cache all tools and pages for offline use
+import { StaleWhileRevalidate } from 'workbox-strategies'
+import { CacheFirst } from 'workbox-strategies'
+import { ExpirationPlugin } from 'workbox-expiration'
+import { CacheableResponsePlugin } from 'workbox-cacheable-response'
+
+// Cache all HTML pages (SPA routes)
+registerRoute(
+  ({ request }) => request.mode === 'navigate',
+  new StaleWhileRevalidate({
+    cacheName: 'pages-cache',
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 7 * 24 * 60 * 60 })
+    ]
+  })
+)
+
+// Cache all static assets (js, css, images, icons)
+registerRoute(
+  ({ request }) => ['style', 'script', 'image', 'font'].includes(request.destination),
+  new CacheFirst({
+    cacheName: 'assets-cache',
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 100, maxAgeSeconds: 30 * 24 * 60 * 60 }),
+      new CacheableResponsePlugin({ statuses: [0, 200] })
+    ]
+  })
+)
+
 // Obsługa powiadomień push
 self.addEventListener('push', function (event) {
   let data = {}
