@@ -30,8 +30,7 @@ if (process.env.MODE !== 'ssr' || process.env.PROD) {
 }
 
 // Cache all tools and pages for offline use
-import { StaleWhileRevalidate } from 'workbox-strategies'
-import { CacheFirst } from 'workbox-strategies'
+import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies'
 import { ExpirationPlugin } from 'workbox-expiration'
 import { CacheableResponsePlugin } from 'workbox-cacheable-response'
 
