@@ -4,10 +4,10 @@
       <q-card>
         <q-card-section class="row items-center">
           <q-icon name="system_update" color="primary" size="md" class="q-mr-md" />
-          <div class="text-h6">Dostępna jest nowa wersja aplikacji!</div>
+          <div class="text-h6">Zaktualizowano aplikację do najnowszej wersji.</div>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn color="primary" label="ZAKTUALIZUJ" @click="reloadPwa" />
+          <q-btn color="primary" label="Zamknij" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -39,7 +39,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v1.1.2</span>
+        <span class="dashboard-version">v1.1.3</span>
         <q-btn
           v-if="showInstall && !isMobile && false"
           flat
@@ -378,9 +378,9 @@ const isMobile = /android|iphone|ipad|ipod|opera mini|iemobile|wpdesktop/i.test(
 
 const pwaUpdateDialog = ref(false)
 
-function reloadPwa () {
-  window.location.reload(true)
-}
+// function reloadPwa () {
+//   window.location.reload(true)
+// }
 
 onMounted(() => {
   window.addEventListener('pwa-update-available', () => {
