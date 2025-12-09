@@ -35,7 +35,9 @@ const tools = [
   { title: 'Alfabet NATO', icon: 'record_voice_over', desc: 'Komunikacja fonetyczna', route: '/communication' },
   { title: 'Trening korekty celowania', icon: 'tune', desc: 'Symulacja nastaw', route: '/tools/settings' },
   { title: 'Konwerter MILS - MOA', icon: 'swap_horiz', desc: 'Przelicznik jednostek', route: '/tools/mils-moa' },
-  { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment' }
+  { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment' },
+  { title: 'Pogoda', icon: 'cloud', desc: 'Prognoza', route: '/tools/weather' },
+  { title: 'Tabela marszu', icon: 'table_chart', desc: 'Kreator', route: '/tools/march-table' }
 ]
 const iconColors = [
   '#0f2c05',
