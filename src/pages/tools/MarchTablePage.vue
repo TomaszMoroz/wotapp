@@ -4,12 +4,13 @@
       <div class="text-h5 text-center q-mb-md">Tabela marszu</div>
       <div class="q-mb-md">
         <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
-        <q-btn label="Pokaż teren" color="primary" class="q-ml-sm" @click="searchArea" />
+        <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
       </div>
       <div id="march-map" class="q-mb-md" style="height:400px;width:100%;border-radius:8px;overflow:hidden;"></div>
       <div class="q-mb-md">
-        <q-btn label="Dodaj pinezkę" color="secondary" @click="enablePinMode" :disable="pinMode" />
-        <q-btn label="Oblicz trasę" color="primary" class="q-ml-sm" @click="calculateRoute" :disable="pins.length < 2" />
+        <q-btn label="Dodaj pinezkę" color="blue-7" @click="enablePinMode" :disable="pinMode" />
+        <q-btn label="Usuń ostatnią pinezkę" color="red-4" class="q-ml-sm" @click="removeLastPin" :disable="pins.length === 0" />
+        <!-- <q-btn label="Oblicz trasę" color="primary" class="q-ml-sm" @click="calculateRoute" :disable="pins.length < 2" /> -->
         <q-btn label="Wyczyść" color="negative" class="q-ml-sm" @click="clearAll" />
       </div>
       <q-table
@@ -34,11 +35,14 @@ import * as mgrs from 'mgrs'
 const search = ref('')
 const map = ref(null)
 const pins = ref([])
+const markers = ref([])
+const polylines = ref([])
 const pinMode = ref(false)
 const routeTable = ref([])
 
 const columns = [
   { name: 'lp', label: 'Lp.', field: 'lp', align: 'left' },
+  { name: 'mgrs', label: 'MGRS', field: 'mgrs', align: 'left' },
   { name: 'azymut', label: 'Azymut', field: 'azymut', align: 'left' },
   { name: 'odleglosc', label: 'Odległość (m)', field: 'odleglosc', align: 'left' }
 ]
@@ -80,18 +84,37 @@ function enablePinMode () {
 function clearAll () {
   pins.value = []
   routeTable.value = []
-  if (map.value) map.value.eachLayer(l => { if ((l.options && l.options.pane === 'markerPane')) map.value.removeLayer(l) })
+  // Usuń markery
+  markers.value.forEach(m => map.value && map.value.removeLayer(m))
+  markers.value = []
+  // Usuń linie
+  polylines.value.forEach(l => map.value && map.value.removeLayer(l))
+  polylines.value = []
 }
 
 function calculateRoute () {
-  if (pins.value.length < 2) return
+  // Rysuj linie między pinezkami
+  polylines.value.forEach(l => map.value && map.value.removeLayer(l))
+  polylines.value = []
+  if (pins.value.length > 1 && map.value) {
+    for (let i = 1; i < pins.value.length; i++) {
+      const prev = pins.value[i - 1]
+      const curr = pins.value[i]
+      const polyline = L.polyline([[prev.lat, prev.lng], [curr.lat, curr.lng]], { color: 'red', weight: 4 }).addTo(map.value)
+      polylines.value.push(polyline)
+    }
+  }
+  if (pins.value.length < 1) return
   const table = []
+  // Punkt startowy
+  const start = pins.value[0]
+  table.push({ lp: 0, mgrs: mgrs.forward([start.lng, start.lat], 5), azymut: '-', odleglosc: '-' })
   for (let i = 1; i < pins.value.length; i++) {
     const prev = pins.value[i - 1]
     const curr = pins.value[i]
     const azymut = getAzimuth(prev, curr)
     const odleglosc = getDistance(prev, curr)
-    table.push({ lp: i, azymut: azymut.toFixed(1), odleglosc: odleglosc.toFixed(1) })
+    table.push({ lp: i, mgrs: mgrs.forward([curr.lng, curr.lat], 5), azymut: azymut.toFixed(1), odleglosc: odleglosc.toFixed(1) })
   }
   routeTable.value = table
 }
@@ -126,11 +149,25 @@ onMounted(() => {
   }).addTo(map.value)
   map.value.on('click', (e) => {
     if (!pinMode.value) return
+    const marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map.value)
     pins.value.push({ lat: e.latlng.lat, lng: e.latlng.lng })
-    L.marker([e.latlng.lat, e.latlng.lng]).addTo(map.value)
+    markers.value.push(marker)
     pinMode.value = false
+    calculateRoute()
   })
 })
+
+function removeLastPin () {
+  if (pins.value.length === 0) return
+  pins.value.pop()
+  // Usuń marker
+  const marker = markers.value.pop()
+  if (marker && map.value) map.value.removeLayer(marker)
+  // Usuń linie i narysuj od nowa
+  polylines.value.forEach(l => map.value && map.value.removeLayer(l))
+  polylines.value = []
+  calculateRoute()
+}
 </script>
 
 <style scoped>
