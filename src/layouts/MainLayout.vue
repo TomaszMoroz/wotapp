@@ -39,7 +39,7 @@
             <span class="q-ml-sm">Kit Bag App</span>
           </div>
         </q-toolbar-title>
-        <span class="dashboard-version">v1.1.5</span>
+        <span class="dashboard-version">v{{ appVersion }}</span>
         <q-btn
           v-if="showInstall && !isMobile && false"
           flat
@@ -428,6 +428,8 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import pkg from '../../package.json'
+const appVersion = pkg.version
 import { useQuasar } from 'quasar'
 import { useRoute } from 'vue-router'
 import logo721 from 'assets/721.jpeg'
