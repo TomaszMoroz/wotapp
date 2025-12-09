@@ -181,6 +181,36 @@
               <q-item-label caption :class="isActiveRoute('/communication') && 'text-white'">Komunikacja fonetyczna</q-item-label>
             </q-item-section>
           </q-item>
+
+           <q-item
+              clickable
+              @click="$router.push('/tools/weather')"
+              :class="isActiveRoute('/tools/weather') ? 'bg-military-active text-white' : ''"
+              class="q-my-xs q-mx-sm rounded-borders"
+            >
+              <q-item-section avatar>
+                <q-icon name="cloud" :color="isActiveRoute('/tools/weather') ? 'white' : 'military-blue'" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-weight-medium">Pogoda</q-item-label>
+                <q-item-label caption :class="isActiveRoute('/tools/weather') && 'text-white'">Prognoza pogody</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item
+              clickable
+              @click="$router.push('/tools/march-table')"
+              :class="isActiveRoute('/tools/march-table') ? 'bg-military-active text-white' : ''"
+              class="q-my-xs q-mx-sm rounded-borders"
+            >
+              <q-item-section avatar>
+                <q-icon name="table_chart" :color="isActiveRoute('/tools/march-table') ? 'white' : 'military-grey'" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-weight-medium">Tabela marszu</q-item-label>
+                <q-item-label caption :class="isActiveRoute('/tools/march-table') && 'text-white'">Kreator marszu</q-item-label>
+              </q-item-section>
+            </q-item>
         </template>
 
         <!-- Menu główne (gdy nie jesteśmy w narzędziach) -->
@@ -214,6 +244,36 @@
               <q-item-label caption :class="isActiveRoute('/tools') && 'text-white'">Kalkulatory wojskowe</q-item-label>
             </q-item-section>
           </q-item>
+
+            <q-item
+              clickable
+              @click="$router.push('/tools/weather')"
+              :class="isActiveRoute('/tools/weather') ? 'bg-military-active text-white' : ''"
+              class="q-my-xs q-mx-sm rounded-borders"
+            >
+              <q-item-section avatar>
+                <q-icon name="cloud" :color="isActiveRoute('/tools/weather') ? 'white' : 'military-blue'" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-weight-medium">Pogoda</q-item-label>
+                <q-item-label caption :class="isActiveRoute('/tools/weather') && 'text-white'">Prognoza pogody</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item
+              clickable
+              @click="$router.push('/tools/march-table')"
+              :class="isActiveRoute('/tools/march-table') ? 'bg-military-active text-white' : ''"
+              class="q-my-xs q-mx-sm rounded-borders"
+            >
+              <q-item-section avatar>
+                <q-icon name="table_chart" :color="isActiveRoute('/tools/march-table') ? 'white' : 'military-grey'" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-weight-medium">Tabela marszu</q-item-label>
+                <q-item-label caption :class="isActiveRoute('/tools/march-table') && 'text-white'">Kreator marszu</q-item-label>
+              </q-item-section>
+            </q-item>
 
           <q-item
             clickable
