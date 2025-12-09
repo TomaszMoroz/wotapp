@@ -1,23 +1,24 @@
 <template>
   <q-page class="tccc-bg q-pa-md">
-  <BackNav color="black" :showBack="false"/>
-  <div class="text-h4 text-weight-bold q-mb-md">TCCC – Taktyczna Pomoc Poszkodowanym na Polu Walki</div>
-    <div class="text-subtitle1 text-grey-7 q-mb-xs">Wytyczne dla personelu medycznego (2024)</div>
-    <div class="text-body2 text-grey-8 q-mb-lg">
+    <div class="dashboard-main-container">
+      <BackNav color="black" :showBack="false"/>
+      <div class="text-h4 text-weight-bold q-mb-md">TCCC – Taktyczna Pomoc Poszkodowanym na Polu Walki</div>
+      <div class="text-subtitle1 text-grey-7 q-mb-xs">Wytyczne dla personelu medycznego (2024)</div>
+      <div class="text-body2 text-grey-8 q-mb-lg">
       <strong>Podręcznik:</strong> TAKTYCZNA POMOC POSZKODOWANYM NA POLU WALKI (TCCC)<br>
       WYTYCZNE DLA PERSONELU MEDYCZNEGO<br>
       z 25 stycznia 2024 roku<br>
       ŁÓDŹ 2024
     </div>
-    <div class="tccc-chapters-grid">
-      <q-card v-for="chapter in tcccChapters" :key="chapter.nr" class="tccc-chapter-tile q-ma-xs" @click="goToTcccChapter(chapter.nr)">
+      <div class="tccc-chapters-grid">
+        <q-card v-for="chapter in tcccChapters" :key="chapter.nr" class="tccc-chapter-tile q-ma-xs" @click="goToTcccChapter(chapter.nr)">
         <q-card-section class="q-pa-sm">
           <div class="text-weight-bold text-primary">{{ chapter.nr }}. {{ chapter.title }}</div>
           <div class="text-caption text-grey-7">{{ chapter.short }}</div>
         </q-card-section>
-      </q-card>
+        </q-card>
+      </div>
     </div>
-    <!-- Usunięto pobieranie PDF na życzenie użytkownika -->
   </q-page>
 </template>
 
@@ -51,6 +52,13 @@ function goToTcccChapter (nr) {
 </script>
 
 <style scoped>
+
+.dashboard-main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
 .tccc-bg {
   background: #f5f7fa;
   min-height: 100vh;

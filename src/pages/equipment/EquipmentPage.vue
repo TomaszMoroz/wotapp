@@ -1,6 +1,6 @@
 <template>
   <q-page class="modern-bg">
-    <div class="dashboard-container">
+    <div class="dashboard-main-container">
       <BackNav color="black"/>
 
       <!-- Header with navigation -->
@@ -376,6 +376,13 @@ const goBack = () => {
 </script>
 
 <style scoped>
+
+.dashboard-main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
 .tile-icon-bg {
   display: flex;
   align-items: center;
@@ -406,7 +413,7 @@ const goBack = () => {
 
 /* Dashboard style for tiles/cards */
 .dashboard-tiles {
-  max-width: 900px;
+  max-width: 1500px;
   margin: 0 auto 0 auto;
   padding: 0 0 24px 0;
 }
@@ -417,7 +424,7 @@ const goBack = () => {
 }
 
 .page-header {
-  max-width: 900px;
+  max-width: 1500px;
   margin: 0 auto 24px auto;
   padding: 0 0 8px 0;
   display: flex;

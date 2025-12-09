@@ -1,15 +1,16 @@
 <template>
   <q-page class="modern-bg q-pa-lg">
-    <div class="dashboard-title-bg q-mb-xl">
+    <div class="dashboard-main-container">
+      <div class="dashboard-title-bg q-mb-xl">
       <div class="dashboard-title-content">
         <div class="text-h3 text-weight-bold modern-title q-pa-lg">Dashboard</div>
         <!-- <div class="text-subtitle1 text-grey-7 q-mt-xs">Wybierz sekcję aby rozpocząć pracę</div> -->
       </div>
     </div>
 
-    <div class="dashboard-tiles q-mb-xl">
-      <div class="tiles-grid">
-        <q-card v-for="(tile, i) in tiles" :key="tile.label" class="modern-tile" @click="navigateTo(tile.route)">
+      <div class="dashboard-tiles q-mb-xl">
+        <div class="tiles-grid">
+          <q-card v-for="(tile, i) in tiles" :key="tile.label" class="modern-tile" @click="navigateTo(tile.route)">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" :style="{ background: iconColors[i % iconColors.length] }">
               <q-icon :name="tile.icon" color="white" size="32px" />
@@ -20,6 +21,7 @@
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ tile.desc }}</q-chip>
           </q-card-section>
         </q-card>
+        </div>
       </div>
     </div>
   </q-page>
@@ -52,6 +54,13 @@ function navigateTo (path) {
 </script>
 
 <style scoped>
+
+.dashboard-main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
 
 .dashboard-title-bg {
   position: relative;

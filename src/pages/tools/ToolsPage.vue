@@ -1,15 +1,16 @@
 <template>
   <q-page class="modern-bg q-pa-md">
+    <div class="dashboard-main-container">
     <BackNav color="black"/>
-    <div class="row items-center justify-between q-mb-xl">
+      <div class="row items-center justify-between q-mb-xl">
       <div>
         <div class="text-h3 text-weight-bold modern-title">Narzędzia</div>
         <div class="text-subtitle1 text-grey-7 q-mt-xs">Kalkulatory i narzędzia wojskowe</div>
       </div>
     </div>
-    <div class="dashboard-tiles q-mb-xl">
-      <div class="tiles-grid">
-        <q-card v-for="(tool, i) in tools" :key="tool.title" class="modern-tile" @click="navigateTo(tool.route)">
+      <div class="dashboard-tiles q-mb-xl">
+        <div class="tiles-grid">
+          <q-card v-for="(tool, i) in tools" :key="tool.title" class="modern-tile" @click="navigateTo(tool.route)">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" :style="{ background: iconColors[i % iconColors.length] }">
               <q-icon :name="tool.icon" color="white" size="32px" />
@@ -20,6 +21,7 @@
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ tool.desc }}</q-chip>
           </q-card-section>
         </q-card>
+        </div>
       </div>
     </div>
   </q-page>
@@ -52,6 +54,13 @@ function navigateTo (path) {
 </script>
 
 <style scoped>
+
+.dashboard-main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
 .modern-bg {
   background: #f7f8f9;
   min-height: 100vh;

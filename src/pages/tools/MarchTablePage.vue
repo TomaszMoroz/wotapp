@@ -1,6 +1,7 @@
 <template>
   <q-page class="q-pa-md column items-center">
-    <div class="full-width" style="max-width:900px;">
+    <div class="march-main-container">
+      <BackNav color="black" parentPath="/tools" />
       <div class="text-h5 text-center q-mb-md">Tabela marszu</div>
       <div class="q-mb-md">
         <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
@@ -27,23 +28,7 @@
 </template>
 
 <script setup>
-// Eksport GPX
-function exportGPX () {
-  if (pins.value.length < 2) return
-  const gpxHeader = '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="WOT PWA" xmlns="http://www.topografix.com/GPX/1/1">\n<trk><name>Tabela marszu</name><trkseg>'
-  const gpxPoints = pins.value.map(p => `<trkpt lat="${p.lat}" lon="${p.lng}"></trkpt>`).join('\n')
-  const gpxFooter = '</trkseg></trk></gpx>'
-  const gpxContent = `${gpxHeader}\n${gpxPoints}\n${gpxFooter}`
-  const blob = new Blob([gpxContent], { type: 'application/gpx+xml' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = 'tabela-marszu.gpx'
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
+import BackNav from 'components/BackNav.vue'
 import { ref, onMounted } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -185,6 +170,24 @@ function updateMarkerIcons () {
       marker.setIcon(iconPin)
     }
   })
+}
+
+// Eksport GPX
+function exportGPX () {
+  if (pins.value.length < 2) return
+  const gpxHeader = '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="WOT PWA" xmlns="http://www.topografix.com/GPX/1/1">\n<trk><name>Tabela marszu</name><trkseg>'
+  const gpxPoints = pins.value.map(p => `<trkpt lat="${p.lat}" lon="${p.lng}"></trkpt>`).join('\n')
+  const gpxFooter = '</trkseg></trk></gpx>'
+  const gpxContent = `${gpxHeader}\n${gpxPoints}\n${gpxFooter}`
+  const blob = new Blob([gpxContent], { type: 'application/gpx+xml' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'tabela-marszu.gpx'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
 }
 
 onMounted(() => {

@@ -1,5 +1,6 @@
 <template>
   <q-page class="q-pa-md" style="max-width: 800px; margin: auto;">
+    <BackNav color="black" parentPath="/tools" />
     <div class="text-h5 text-weight-bold q-mb-md">Pogoda</div>
     <div class="text-subtitle2 q-mb-lg">Prognoza pogody dla wybranego obszaru</div>
     <q-card class="q-pa-md">
@@ -140,6 +141,7 @@
 import { ref, reactive } from 'vue'
 import { useQuasar, date } from 'quasar'
 import axios from 'axios'
+import BackNav from 'components/BackNav.vue'
 
 const $q = useQuasar()
 

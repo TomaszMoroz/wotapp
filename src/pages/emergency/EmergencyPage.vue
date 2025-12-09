@@ -1,15 +1,16 @@
 <template>
   <q-page class="modern-bg q-pa-md">
-    <div class="q-mx-auto" style="width: 80%"><BackNav color="black"/></div>
-    <div class="row items-center justify-between q-mb-xl q-mx-auto" style="width:80%">
+    <div class="dashboard-main-container">
+      <BackNav color="black"/>
+      <div class="row items-center justify-between q-mb-xl">
       <div>
         <div class="text-h4 text-weight-bold modern-title">Stopnie, regulamin, prawo</div>
         <div class="text-subtitle1 text-grey-7 q-mt-xs">Wojskowe oznaczenia i przepisy</div>
       </div>
     </div>
-    <div class="dashboard-tiles q-mb-xl">
-      <div class="tiles-grid">
-        <q-card class="modern-tile" @click="navigateTo('/ranks')">
+      <div class="dashboard-tiles q-mb-xl">
+        <div class="tiles-grid">
+          <q-card class="modern-tile" @click="navigateTo('/ranks')">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" style="background: #827858;">
               <q-icon name="military_tech" color="white" size="32px" />
@@ -20,7 +21,7 @@
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Oznaczenia i hierarchia WOT</q-chip>
           </q-card-section>
         </q-card>
-        <q-card class="modern-tile" @click="navigateTo('/regulations')">
+          <q-card class="modern-tile" @click="navigateTo('/regulations')">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" style="background: #a2ad59;">
               <q-icon name="gavel" color="white" size="32px" />
@@ -31,7 +32,7 @@
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Przepisy i procedury WOT</q-chip>
           </q-card-section>
         </q-card>
-        <q-card class="modern-tile" @click="navigateTo('/firearms-law')">
+          <q-card class="modern-tile" @click="navigateTo('/firearms-law')">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" style="background: #65473f;">
               <q-icon name="security" color="white" size="32px" />
@@ -42,7 +43,7 @@
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Art. 45 - Ustawa o ś.p.</q-chip>
           </q-card-section>
         </q-card>
-        <q-card class="modern-tile" @click="navigateTo('/drill')">
+          <q-card class="modern-tile" @click="navigateTo('/drill')">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" style="background: #8e936d;">
               <q-icon name="flag" color="white" size="32px" />
@@ -53,6 +54,7 @@
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Regulamin musztry</q-chip>
           </q-card-section>
         </q-card>
+        </div>
       </div>
     </div>
   </q-page>
@@ -68,6 +70,13 @@ function navigateTo (path) {
 </script>
 
 <style scoped>
+
+.dashboard-main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
 .modern-bg {
   background: #f7f8f9;
   min-height: 100vh;
@@ -78,7 +87,7 @@ function navigateTo (path) {
 }
 .dashboard-tiles {
   margin-bottom: 32px;
-  max-width: 1200px;
+  max-width: 1500px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 10vw;

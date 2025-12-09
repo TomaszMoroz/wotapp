@@ -599,10 +599,11 @@ defineComponent({
 
 .content-view {
   margin-top: 1rem;
+  background-color: white;
 }
 
 .content-text {
-  background: var(--q-color-surface);
+  background: white;
   border-radius: 8px;
   padding: 2rem;
   border: 1px solid #e0e0e0;

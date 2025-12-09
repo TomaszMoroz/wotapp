@@ -1,8 +1,9 @@
 <template>
   <q-page class="q-pa-lg">
-    <div class="text-h4 q-mb-md">📍 Mapa i Lokalizacja</div>
+    <div class="dashboard-main-container">
+      <div class="text-h4 q-mb-md">📍 Mapa i Lokalizacja</div>
 
-    <div class="row q-gutter-md">
+      <div class="row q-gutter-md">
       <div class="col-12 col-md-8">
         <q-card>
           <q-card-section>
@@ -168,6 +169,13 @@ const getLocation = () => {
 </script>
 
 <style scoped>
+
+.dashboard-main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
 .map-placeholder {
   height: 400px;
   display: flex;
