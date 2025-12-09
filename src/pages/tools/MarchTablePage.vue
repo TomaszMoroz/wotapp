@@ -32,6 +32,23 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import * as mgrs from 'mgrs'
 
+// Ikony SVG z public/icons/
+const iconHome = L.icon({
+  iconUrl: '/icons/home.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+})
+const iconFlag = L.icon({
+  iconUrl: '/icons/flag.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+})
+const iconPin = L.icon({
+  iconUrl: '/icons/pin.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+})
+
 const search = ref('')
 const map = ref(null)
 const pins = ref([])
@@ -141,6 +158,18 @@ function getDistance (a, b) {
   return Math.sqrt(x * x + y * y) * R
 }
 
+function updateMarkerIcons () {
+  markers.value.forEach((marker, idx) => {
+    if (idx === 0) {
+      marker.setIcon(iconHome)
+    } else if (idx === markers.value.length - 1) {
+      marker.setIcon(iconFlag)
+    } else {
+      marker.setIcon(iconPin)
+    }
+  })
+}
+
 onMounted(() => {
   map.value = L.map('march-map').setView([52.2297, 21.0122], 13)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -149,9 +178,11 @@ onMounted(() => {
   }).addTo(map.value)
   map.value.on('click', (e) => {
     if (!pinMode.value) return
-    const marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map.value)
     pins.value.push({ lat: e.latlng.lat, lng: e.latlng.lng })
+    // Dodaj marker z domyślną ikoną, potem zaktualizuj wszystkie
+    const marker = L.marker([e.latlng.lat, e.latlng.lng], { icon: iconPin }).addTo(map.value)
     markers.value.push(marker)
+    updateMarkerIcons()
     pinMode.value = false
     calculateRoute()
   })
@@ -163,6 +194,8 @@ function removeLastPin () {
   // Usuń marker
   const marker = markers.value.pop()
   if (marker && map.value) map.value.removeLayer(marker)
+  // Zaktualizuj ikony markerów
+  updateMarkerIcons()
   // Usuń linie i narysuj od nowa
   polylines.value.forEach(l => map.value && map.value.removeLayer(l))
   polylines.value = []
@@ -194,5 +227,10 @@ function removeLastPin () {
     min-width: 0;
     max-width: 100%;
   }
+}
+
+/* Leaflet marker SVG na czarno */
+.leaflet-marker-icon[src$='.svg'] {
+  filter: invert(1) grayscale(1);
 }
 </style>
