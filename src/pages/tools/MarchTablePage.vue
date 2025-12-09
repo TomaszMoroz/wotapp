@@ -9,7 +9,7 @@
       <div id="march-map" class="q-mb-md" style="height:400px;width:100%;border-radius:8px;overflow:hidden;"></div>
       <div class="q-mb-md">
         <q-btn label="Dodaj pinezkę" color="blue-7" @click="enablePinMode" :disable="pinMode" />
-        <q-btn label="Usuń ostatnią pinezkę" color="red-4" class="q-ml-sm" @click="removeLastPin" :disable="pins.length === 0" />
+        <q-btn label="Usuń ostatnią pinezkę" color="brown-8" class="q-ml-sm" @click="removeLastPin" :disable="pins.length === 0" />
         <!-- <q-btn label="Oblicz trasę" color="primary" class="q-ml-sm" @click="calculateRoute" :disable="pins.length < 2" /> -->
         <q-btn label="Wyczyść" color="negative" class="q-ml-sm" @click="clearAll" />
       </div>
@@ -20,7 +20,7 @@
         row-key="id"
         flat
         dense
-        class="bg-white shadow-1"
+        class="march-table-bg shadow-1"
       />
     </div>
   </q-page>
@@ -174,5 +174,8 @@ function removeLastPin () {
 #march-map { min-height: 300px; min-width: 100%; }
 .text-h5 {
   color: var(--military-primary, #2D3E2F);
+}
+.march-table-bg {
+  background: var(--military-light, #F5F5F5) !important;
 }
 </style>
