@@ -11,7 +11,25 @@ import { precacheAndRoute, cleanupOutdatedCaches, createHandlerBoundToURL } from
 import { registerRoute, NavigationRoute } from 'workbox-routing'
 
 self.skipWaiting()
+
 clientsClaim()
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          // Usuń wszystkie cache, które nie są aktualne
+          if (!['pages-cache', 'assets-cache'].includes(cacheName)) {
+            return caches.delete(cacheName)
+          }
+          // Zwróć resolved promise jeśli cache ma zostać
+          return Promise.resolve()
+        })
+      )
+    })
+  )
+})
 
 // Use with precache injection
 precacheAndRoute(self.__WB_MANIFEST)
