@@ -78,6 +78,18 @@
                   <div class="text-weight-bold">UV:</div>
                   <div>{{ data.day.uv }}</div>
                 </div>
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">Punkt rosy:</div>
+                  <div>{{ data.hour && data.hour.length ? data.hour[0].dewpoint_c + '°C' : '-' }}</div>
+                </div>
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">Czy będzie padać:</div>
+                  <div>{{ data.day.daily_will_it_rain ? 'Tak' : 'Nie' }} ({{ data.day.daily_chance_of_rain }}%)</div>
+                </div>
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">Czy będzie śnieżyć:</div>
+                  <div>{{ data.day.daily_will_it_snow ? 'Tak' : 'Nie' }} ({{ data.day.daily_chance_of_snow }}%)</div>
+                </div>
                 <div class="q-mt-sm">
                   <div class="text-weight-bold">Dane astronomiczne:</div>
                   <div>Wschód słońca: {{ data.astro.sunrise }}</div>
@@ -104,8 +116,10 @@
                           <div class="row items-center q-gutter-x-md">
                             <div class="text-weight-bold">{{ hour.time.split(' ')[1] }}</div>
                             <div>{{ hour.temp_c }}°C</div>
+                            <div>Odczuwalna: {{ hour.feelslike_c }}°C</div>
                             <div>{{ hour.condition.text }}</div>
                             <div>Wiatr: {{ hour.wind_kph }} km/h</div>
+                            <div>Kierunek: {{ hour.wind_dir }}</div>
                             <div>Wilg.: {{ hour.humidity }}%</div>
                           </div>
                         </q-card>
