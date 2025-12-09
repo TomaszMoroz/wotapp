@@ -7,11 +7,11 @@
         <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
       </div>
       <div id="march-map" class="q-mb-md" style="height:400px;width:100%;border-radius:8px;overflow:hidden;"></div>
-      <div class="q-mb-md">
-        <q-btn label="Dodaj pinezkę" color="blue-7" @click="enablePinMode" :disable="pinMode" />
-        <q-btn label="Usuń ostatnią pinezkę" color="brown-8" class="q-ml-sm" @click="removeLastPin" :disable="pins.length === 0" />
-        <!-- <q-btn label="Oblicz trasę" color="primary" class="q-ml-sm" @click="calculateRoute" :disable="pins.length < 2" /> -->
-        <q-btn label="Wyczyść" color="negative" class="q-ml-sm" @click="clearAll" />
+      <div class="q-mb-md march-btn-row">
+        <q-btn label="Dodaj pinezkę" color="blue-7" @click="enablePinMode" :disable="pinMode" class="march-btn" />
+        <q-btn label="Usuń ostatnią pinezkę" color="brown-8" @click="removeLastPin" :disable="pins.length === 0" class="march-btn" />
+        <!-- <q-btn label="Oblicz trasę" color="primary" @click="calculateRoute" :disable="pins.length < 2" class="march-btn" /> -->
+        <q-btn label="Wyczyść" color="negative" @click="clearAll" class="march-btn" />
       </div>
       <q-table
         v-if="routeTable.length > 0"
@@ -177,5 +177,22 @@ function removeLastPin () {
 }
 .march-table-bg {
   background: var(--military-light, #F5F5F5) !important;
+}
+/* Poprawa rozmieszczenia przycisków na mobile */
+.march-btn-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+.march-btn {
+  min-width: 140px;
+}
+@media (max-width: 600px) {
+  .march-btn {
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
 }
 </style>
