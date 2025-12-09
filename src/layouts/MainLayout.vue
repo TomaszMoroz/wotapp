@@ -7,7 +7,7 @@
           <div class="text-h6">Zaktualizowano aplikację do najnowszej wersji.</div>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn color="primary" label="Zamknij" v-close-popup />
+          <q-btn color="primary" label="Zamknij" @click="handlePwaDialogClose" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -439,6 +439,11 @@ const showInstall = ref(false)
 const isMobile = /android|iphone|ipad|ipod|opera mini|iemobile|wpdesktop/i.test(navigator.userAgent)
 
 const pwaUpdateDialog = ref(false)
+
+function handlePwaDialogClose () {
+  // Wymuś przeładowanie po zamknięciu dialogu aktualizacji
+  window.location.reload()
+}
 
 // function reloadPwa () {
 //   window.location.reload(true)
