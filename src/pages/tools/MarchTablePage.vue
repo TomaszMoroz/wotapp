@@ -10,7 +10,7 @@
       <div class="q-mb-md march-btn-row">
         <q-btn label="Dodaj pinezkę" color="blue-7" @click="enablePinMode" :disable="pinMode" class="march-btn" />
         <q-btn label="Usuń ostatnią pinezkę" color="brown-8" @click="removeLastPin" :disable="pins.length === 0" class="march-btn" />
-        <!-- <q-btn label="Oblicz trasę" color="primary" @click="calculateRoute" :disable="pins.length < 2" class="march-btn" /> -->
+        <q-btn label="Eksportuj GPX" color="primary" @click="exportGPX" :disable="pins.length < 2" class="march-btn" />
         <q-btn label="Wyczyść" color="negative" @click="clearAll" class="march-btn" />
       </div>
       <q-table
@@ -27,6 +27,23 @@
 </template>
 
 <script setup>
+// Eksport GPX
+function exportGPX () {
+  if (pins.value.length < 2) return
+  const gpxHeader = '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="WOT PWA" xmlns="http://www.topografix.com/GPX/1/1">\n<trk><name>Tabela marszu</name><trkseg>'
+  const gpxPoints = pins.value.map(p => `<trkpt lat="${p.lat}" lon="${p.lng}"></trkpt>`).join('\n')
+  const gpxFooter = '</trkseg></trk></gpx>'
+  const gpxContent = `${gpxHeader}\n${gpxPoints}\n${gpxFooter}`
+  const blob = new Blob([gpxContent], { type: 'application/gpx+xml' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'tabela-marszu.gpx'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
 import { ref, onMounted } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
