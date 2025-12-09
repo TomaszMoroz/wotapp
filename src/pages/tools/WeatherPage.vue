@@ -52,21 +52,41 @@
           <q-item-label header>Prognoza pogody</q-item-label>
           <q-item v-for="(data, index) in weatherData.forecast.forecastday" :key="index">
             <q-item-section>
-              <div><strong>Data:</strong> {{ data.date }}</div>
-              <div><strong>Warunki:</strong> {{ data.day.condition.text }}</div>
-              <img v-if="data.day.condition.icon" :src="fixIconUrl(data.day.condition.icon)" alt="icon" style="width:32px;height:32px;vertical-align:middle;margin-bottom:4px;" />
-              <div><strong>Maks. temp:</strong> {{ data.day.maxtemp_c }}°C</div>
-              <div><strong>Min. temp:</strong> {{ data.day.mintemp_c }}°C</div>
-              <div><strong>Wilgotność:</strong> {{ data.day.avghumidity }}%</div>
-              <div><strong>UV:</strong> {{ data.day.uv }}</div>
-              <div class="q-mt-sm">
-                <strong>Dane astronomiczne:</strong>
-                <div>Wschód słońca: {{ data.astro.sunrise }}</div>
-                <div>Zachód słońca: {{ data.astro.sunset }}</div>
-                <div>Wschód księżyca: {{ data.astro.moonrise }}</div>
-                <div>Zachód księżyca: {{ data.astro.moonset }}</div>
-                <div>Faza księżyca: {{ data.astro.moon_phase }}</div>
-                <div>Oświetlenie księżyca: {{ data.astro.moon_illumination }}%</div>
+              <div class="column q-gutter-y-sm q-mb-md">
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">Data:</div>
+                  <div>{{ data.date }}</div>
+                </div>
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">Warunki:</div>
+                  <div>{{ data.day.condition.text }}</div>
+                  <img v-if="data.day.condition.icon" :src="fixIconUrl(data.day.condition.icon)" alt="icon" style="width:32px;height:32px;vertical-align:middle;" />
+                </div>
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">Maks. temp:</div>
+                  <div>{{ data.day.maxtemp_c }}°C</div>
+                </div>
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">Min. temp:</div>
+                  <div>{{ data.day.mintemp_c }}°C</div>
+                </div>
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">Wilgotność:</div>
+                  <div>{{ data.day.avghumidity }}%</div>
+                </div>
+                <div class="row items-center q-gutter-x-sm">
+                  <div class="text-weight-bold">UV:</div>
+                  <div>{{ data.day.uv }}</div>
+                </div>
+                <div class="q-mt-sm">
+                  <div class="text-weight-bold">Dane astronomiczne:</div>
+                  <div>Wschód słońca: {{ data.astro.sunrise }}</div>
+                  <div>Zachód słońca: {{ data.astro.sunset }}</div>
+                  <div>Wschód księżyca: {{ data.astro.moonrise }}</div>
+                  <div>Zachód księżyca: {{ data.astro.moonset }}</div>
+                  <div>Faza księżyca: {{ data.astro.moon_phase }}</div>
+                  <div>Oświetlenie księżyca: {{ data.astro.moon_illumination }}%</div>
+                </div>
                 <q-btn
                   dense
                   flat
@@ -78,18 +98,19 @@
                 </q-btn>
                 <q-slide-transition>
                   <div v-if="showHourly[index]" class="q-mt-md">
-                    <q-list bordered>
-                      <q-item-label header>Dane godzinowe</q-item-label>
-                      <q-item v-for="(hour, hourIndex) in data.hour" :key="hourIndex">
-                        <q-item-section>
-                          <div><strong>Godzina:</strong> {{ hour.time }}</div>
-                          <div><strong>Temp:</strong> {{ hour.temp_c }}°C</div>
-                          <div><strong>Warunki:</strong> {{ hour.condition.text }}</div>
-                          <div><strong>Wiatr:</strong> {{ hour.wind_kph }} km/h</div>
-                          <div><strong>Wilgotność:</strong> {{ hour.humidity }}%</div>
-                        </q-item-section>
-                      </q-item>
-                    </q-list>
+                    <div class="column q-gutter-y-sm">
+                      <div v-for="(hour, hourIndex) in data.hour" :key="hourIndex">
+                        <q-card flat bordered class="q-pa-sm q-mb-sm" style="background:#f7f8fa;">
+                          <div class="row items-center q-gutter-x-md">
+                            <div class="text-weight-bold">{{ hour.time.split(' ')[1] }}</div>
+                            <div>{{ hour.temp_c }}°C</div>
+                            <div>{{ hour.condition.text }}</div>
+                            <div>Wiatr: {{ hour.wind_kph }} km/h</div>
+                            <div>Wilg.: {{ hour.humidity }}%</div>
+                          </div>
+                        </q-card>
+                      </div>
+                    </div>
                   </div>
                 </q-slide-transition>
               </div>
