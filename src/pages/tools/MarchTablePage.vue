@@ -1,38 +1,47 @@
 <template>
-  <q-page class="q-pa-md column items-center">
-    <div class="march-main-container">
+  <q-page class="q-pa-md flex row">
+    <div class="march-main-container q-mx-auto" style="width:100%;max-width:1500px;">
       <BackNav color="black" parentPath="/tools" />
       <div class="text-h5 text-center q-mb-md">Tabela marszu</div>
-      <div class="q-mb-md">
-        <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
-        <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
+      <div class="row items-start justify-center">
+        <div class="col-7 flex column q-mr-xs" :class="isMobile ? 'col-12' : ''">
+          <div class="q-mb-md">
+            <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
+            <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
+          </div>
+          <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
+          <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
+            <q-btn label="Dodaj punkt" color="green-7" @click="enablePinMode" :disable="pinMode" />
+            <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" />
+            <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" />
+            <q-btn icon="delete" color="negative" @click="clearAll" />
+          </div>
+        </div>
+        <div class="col-4 flex column q-ml-sm" :class="isMobile ? 'col-12' : ''">
+          <q-table
+            v-if="routeTable.length > 0"
+            :rows="routeTable"
+            :columns="columns"
+            row-key="id"
+            flat
+            dense
+            class="march-table-bg shadow-1"
+          />
+        </div>
       </div>
-      <div id="march-map" class="q-mb-md" style="height:400px;width:100%;border-radius:8px;overflow:hidden;"></div>
-      <div class="q-mb-md march-btn-row">
-        <q-btn label="Dodaj pinezkę" color="blue-7" @click="enablePinMode" :disable="pinMode" class="march-btn" />
-        <q-btn label="Usuń ostatnią pinezkę" color="brown-8" @click="removeLastPin" :disable="pins.length === 0" class="march-btn" />
-        <q-btn label="Eksportuj GPX" color="primary" @click="exportGPX" :disable="pins.length < 2" class="march-btn" />
-        <q-btn label="Wyczyść" color="negative" @click="clearAll" class="march-btn" />
-      </div>
-      <q-table
-        v-if="routeTable.length > 0"
-        :rows="routeTable"
-        :columns="columns"
-        row-key="id"
-        flat
-        dense
-        class="march-table-bg shadow-1"
-      />
     </div>
   </q-page>
 </template>
 
 <script setup>
 import BackNav from 'components/BackNav.vue'
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useQuasar } from 'quasar'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import * as mgrs from 'mgrs'
+
+const $q = useQuasar()
 
 // Ikony SVG z public/icons/
 const iconHome = L.icon({
@@ -65,6 +74,8 @@ const columns = [
   { name: 'azymut', label: 'Azymut', field: 'azymut', align: 'left' },
   { name: 'odleglosc', label: 'Odległość (m)', field: 'odleglosc', align: 'left' }
 ]
+
+const isMobile = computed(() => $q.screen.width < 600)
 
 async function searchArea () {
   if (!search.value) return
