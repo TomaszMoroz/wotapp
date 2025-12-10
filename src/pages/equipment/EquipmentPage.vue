@@ -144,7 +144,12 @@ import visImg from 'assets/vis.png'
 import ukmImg from 'assets/ukm.png'
 import msbsImg from 'assets/msbs56.jpg'
 import borImg from 'assets/bor.jpg'
+import lmpImg from 'assets/lmp.jpeg'
+import m72Img from 'assets/m72.jpg'
+import gpImg from 'assets/granatnik17.webp'
 import BackNav from 'components/BackNav.vue'
+
+const showImageDialog = ref(false)
 
 defineOptions({
   name: 'EquipmentPage'
@@ -326,6 +331,7 @@ const weapons = [
     category: 'Moździerz',
     icon: 'architecture',
     color: 'info',
+    image: lmpImg,
     specs: [
       { parameter: 'Kaliber lufy', value: '60mm' },
       { parameter: 'Długość całkowita broni', value: '852 mm' },
@@ -355,6 +361,7 @@ const weapons = [
     category: 'Broń przeciwpancerna',
     icon: 'rocket_launch',
     color: 'deep-orange',
+    image: m72Img,
     specs: [
       { parameter: 'Kaliber', value: '66 mm' },
       { parameter: 'Długość rozłożony', value: '980 mm' },
@@ -371,6 +378,7 @@ const weapons = [
     category: 'Granatnik',
     icon: 'gps_not_fixed',
     color: 'purple',
+    image: gpImg,
     specs: [
       { parameter: 'Typ broni', value: 'nieautomatyczna, jednostrzałowa podwieszana' },
       { parameter: 'Kaliber broni [mm]', value: '40' },
