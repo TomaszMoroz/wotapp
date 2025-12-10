@@ -15,6 +15,7 @@
             <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" />
             <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" />
             <q-btn icon="delete" color="negative" @click="clearAll" />
+            <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" />
           </div>
         </div>
         <div class="col-4 flex column q-ml-sm" :class="isMobile ? 'col-12' : ''">
@@ -29,13 +30,39 @@
           />
         </div>
       </div>
+      <q-dialog v-model="showEtaDialog">
+        <q-card style="min-width:320px;max-width:95vw;">
+          <q-card-section class="text-h6">Szacowanie czasu marszu</q-card-section>
+          <q-card-section>
+            <div v-for="(seg, i) in etaSegments" :key="i" class="q-mb-sm">
+              <div class="row items-center q-gutter-sm">
+                <div class="text-caption">Odcinek {{ i+1 }} ({{ seg.distance }} m):</div>
+                <q-option-group
+                  v-model="seg.terrain"
+                  :options="terrainTypes.map(t => ({ label: t, value: t }))"
+                  type="radio"
+                  inline
+                />
+              </div>
+            </div>
+            <div class="row q-gutter-md q-mt-md">
+              <q-select v-model="breakEvery" :options="breakEveryOptions" label="Przerwa co (min)" dense outlined style="min-width:120px;" />
+              <q-select v-model="breakLength" :options="breakLengthOptions" label="Długość przerwy (min)" dense outlined style="min-width:120px;" />
+            </div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Zamknij" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+      <div v-if="routeTable.length > 0" class="q-mt-md text-h6 text-center">ETA: {{ formatEta(etaResult) }}</div>
     </div>
   </q-page>
 </template>
 
 <script setup>
 import BackNav from 'components/BackNav.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted, reactive, computed, watchEffect } from 'vue'
 import { useQuasar } from 'quasar'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -76,6 +103,53 @@ const columns = [
 ]
 
 const isMobile = computed(() => $q.screen.width < 600)
+
+const showEtaDialog = ref(false)
+const terrainTypes = ['ciężki', 'średni', 'łatwy']
+const terrainSpeeds = { ciężki: 1.5, średni: 3, łatwy: 5 }
+const etaSegments = reactive([])
+const breakEvery = ref(60)
+const breakLength = ref(10)
+const breakEveryOptions = [30, 45, 60, 90]
+const breakLengthOptions = [5, 10, 15]
+
+// Synchronizuj etaSegments z routeTable
+watchEffect(() => {
+  etaSegments.length = 0
+  for (let i = 1; i < routeTable.value.length; i++) {
+    etaSegments.push({
+      idx: i,
+      terrain: 'średni',
+      distance: parseFloat(routeTable.value[i].odleglosc)
+    })
+  }
+})
+
+const etaResult = computed(() => {
+  let totalDist = 0
+  let totalTime = 0 // w minutach
+  let timeSinceBreak = 0
+  etaSegments.forEach(seg => {
+    const speed = terrainSpeeds[seg.terrain] // km/h
+    const distKm = seg.distance / 1000
+    const time = distKm / speed * 60 // min
+    totalDist += distKm
+    totalTime += time
+    timeSinceBreak += time
+    if (timeSinceBreak >= breakEvery.value) {
+      totalTime += breakLength.value
+      timeSinceBreak = 0
+    }
+  })
+  return { totalTime, totalDist }
+})
+
+function formatEta (result) {
+  const minutes = result.totalTime
+  const h = Math.floor(minutes / 60)
+  const m = Math.round(minutes % 60)
+  return `${h > 0 ? h + 'h ' : ''}${m}min (${result.totalDist.toFixed(2)} km)`
+}
 
 async function searchArea () {
   if (!search.value) return
