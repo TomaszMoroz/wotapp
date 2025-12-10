@@ -7,7 +7,7 @@
       <q-card-section>
         <q-input v-model="area" label="Podaj lokalizację (np. miasto)" filled class="q-mb-md" />
         <q-input
-          label="Wybierz datę"
+          label="Wybierz datę początkową"
           v-model="dateRange.from"
           @click="showDateFrom = !showDateFrom"
           filled
@@ -21,9 +21,10 @@
           v-if="showDateFrom"
           v-model="dateRange.from"
           mask="YYYY-MM-DD"
+          :options="isValidWeatherDate"
           @update:model-value="showDateFrom = !showDateFrom"
         />
-        <!-- <q-input
+        <q-input
           label="Wybierz datę końcową"
           v-model="dateRange.to"
           @click="showDateTo = !showDateTo"
@@ -39,7 +40,7 @@
           v-model="dateRange.to"
           mask="YYYY-MM-DD"
           @update:model-value="showDateTo = !showDateTo"
-        /> -->
+        />
         <q-btn
           :loading="loadingWeather"
           label="Pobierz prognozę pogody"
@@ -51,7 +52,7 @@
       <q-card-section v-if="weatherData">
         <q-list bordered class="weather-list q-mb-md">
           <q-item-label header>Prognoza pogody</q-item-label>
-          <q-item v-for="(data, index) in weatherData.forecast.forecastday" :key="index">
+          <q-item v-for="(data, index) in selectedForecastDay" :key="index">
             <q-item-section>
               <div class="column q-gutter-y-sm q-mb-md">
                 <div class="row items-center q-gutter-x-sm">
@@ -138,7 +139,7 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useQuasar, date } from 'quasar'
 import axios from 'axios'
 import BackNav from 'components/BackNav.vue'
@@ -152,7 +153,7 @@ const loadingWeather = ref(false)
 const showHourly = ref([])
 const dateRange = reactive({ from: today, to: '' })
 const showDateFrom = ref(false)
-// const showDateTo = ref(false)
+const showDateTo = ref(false)
 
 const WEATHER_API_KEY = '0446e39ac5e64d6697684411252001'
 
@@ -166,8 +167,7 @@ const fetchWeatherData = async () => {
     const params = {
       key: WEATHER_API_KEY,
       q: area.value,
-      // days: calculateDays(dateRange.from, dateRange.to),
-      days: 1,
+      days: calculateDays(dateRange.from, dateRange.to),
       lang: 'pl'
     }
     const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', { params })
@@ -188,15 +188,27 @@ function fixIconUrl (url) {
   return url
 }
 
-// const calculateDays = (start, end) => {
-//   if (!end) return 1
-//   const diffDays = Math.abs(date.getDateDiff(start, end, 'days'))
-//   return diffDays > 10 ? 10 : diffDays === 0 ? 1 : diffDays
-// }
+const calculateDays = (start, end) => {
+  if (!end) return 1
+  const diffDays = Math.abs(date.getDateDiff(start, end, 'days'))
+  return diffDays > 10 ? 10 : diffDays === 0 ? 1 : diffDays
+}
 
 const toggleHourlyData = (index) => {
   showHourly.value[index] = !showHourly.value[index]
 }
+
+const isValidWeatherDate = dateStr => {
+  const todayDate = date.extractDate(today, 'YYYY-MM-DD')
+  const pickedDate = date.extractDate(dateStr, 'YYYY-MM-DD')
+  const diff = date.getDateDiff(pickedDate, todayDate, 'days')
+  return diff >= 0 && diff < 14
+}
+
+const selectedForecastDay = computed(() => {
+  if (!weatherData.value || !weatherData.value.forecast) return []
+  return weatherData.value.forecast.forecastday.filter(day => day.date === dateRange.from)
+})
 </script>
 
 <style scoped>
