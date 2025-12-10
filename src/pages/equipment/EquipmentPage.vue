@@ -145,7 +145,7 @@ import ukmImg from 'assets/ukm.png'
 import msbsImg from 'assets/msbs56.jpg'
 import borImg from 'assets/bor.jpg'
 import lmpImg from 'assets/lmp.jpeg'
-import m72Img from 'assets/m72.jpg'
+import m72Img from 'assets/m72.webp'
 import gpImg from 'assets/gp.png'
 import BackNav from 'components/BackNav.vue'
 
