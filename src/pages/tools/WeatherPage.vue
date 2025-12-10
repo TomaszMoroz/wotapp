@@ -9,21 +9,22 @@
         <q-input
           label="Wybierz datę"
           v-model="dateRange.from"
-          @click="showDateFrom = !showDateFrom"
+          readonly
           filled
           class="q-mb-md"
         >
           <template v-slot:append>
-            <q-icon name="event" />
+            <q-icon name="event" class="cursor-pointer" @click.stop="showDateFrom = true" />
           </template>
+          <q-menu v-model="showDateFrom" anchor="bottom left" self="top left">
+            <q-date
+              v-model="dateRange.from"
+              mask="YYYY-MM-DD"
+              :options="isValidWeatherDate"
+              @update:model-value="showDateFrom = false"
+            />
+          </q-menu>
         </q-input>
-        <q-date
-          v-if="showDateFrom"
-          v-model="dateRange.from"
-          mask="YYYY-MM-DD"
-          :options="isValidWeatherDate"
-          @update:model-value="showDateFrom = !showDateFrom"
-        />
         <q-btn
           :loading="loadingWeather"
           label="Pobierz prognozę pogody"
