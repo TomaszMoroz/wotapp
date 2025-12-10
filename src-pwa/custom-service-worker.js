@@ -27,6 +27,13 @@ self.addEventListener('activate', event => {
           return Promise.resolve()
         })
       )
+    }).then(() => {
+      // Powiadom klientów o dostępnej aktualizacji
+      return self.clients.matchAll().then(clients => {
+        clients.forEach(client => {
+          client.postMessage({ type: 'pwa-update-available' })
+        })
+      })
     })
   )
 })

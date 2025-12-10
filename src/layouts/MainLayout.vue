@@ -453,6 +453,14 @@ onMounted(() => {
   window.addEventListener('pwa-update-available', () => {
     pwaUpdateDialog.value = true
   })
+
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('message', event => {
+      if (event.data && event.data.type === 'pwa-update-available') {
+        pwaUpdateDialog.value = true
+      }
+    })
+  }
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault()
     deferredPrompt.value = e
