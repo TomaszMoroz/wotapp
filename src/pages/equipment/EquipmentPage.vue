@@ -146,7 +146,7 @@ import msbsImg from 'assets/msbs56.jpg'
 import borImg from 'assets/bor.jpg'
 import lmpImg from 'assets/lmp.jpeg'
 import m72Img from 'assets/m72.jpg'
-import gpImg from 'assets/granatnik17.webp'
+import gpImg from 'assets/gp.png'
 import BackNav from 'components/BackNav.vue'
 
 const showImageDialog = ref(false)
