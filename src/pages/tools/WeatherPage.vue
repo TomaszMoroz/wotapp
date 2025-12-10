@@ -7,7 +7,7 @@
       <q-card-section>
         <q-input v-model="area" label="Podaj lokalizację (np. miasto)" filled class="q-mb-md" />
         <q-input
-          label="Wybierz datę początkową"
+          label="Wybierz datę"
           v-model="dateRange.from"
           @click="showDateFrom = !showDateFrom"
           filled
@@ -23,7 +23,7 @@
           mask="YYYY-MM-DD"
           @update:model-value="showDateFrom = !showDateFrom"
         />
-        <q-input
+        <!-- <q-input
           label="Wybierz datę końcową"
           v-model="dateRange.to"
           @click="showDateTo = !showDateTo"
@@ -39,7 +39,7 @@
           v-model="dateRange.to"
           mask="YYYY-MM-DD"
           @update:model-value="showDateTo = !showDateTo"
-        />
+        /> -->
         <q-btn
           :loading="loadingWeather"
           label="Pobierz prognozę pogody"
@@ -152,7 +152,7 @@ const loadingWeather = ref(false)
 const showHourly = ref([])
 const dateRange = reactive({ from: today, to: '' })
 const showDateFrom = ref(false)
-const showDateTo = ref(false)
+// const showDateTo = ref(false)
 
 const WEATHER_API_KEY = '0446e39ac5e64d6697684411252001'
 
@@ -166,7 +166,8 @@ const fetchWeatherData = async () => {
     const params = {
       key: WEATHER_API_KEY,
       q: area.value,
-      days: calculateDays(dateRange.from, dateRange.to),
+      // days: calculateDays(dateRange.from, dateRange.to),
+      days: 1,
       lang: 'pl'
     }
     const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', { params })
@@ -187,11 +188,11 @@ function fixIconUrl (url) {
   return url
 }
 
-const calculateDays = (start, end) => {
-  if (!end) return 1
-  const diffDays = Math.abs(date.getDateDiff(start, end, 'days'))
-  return diffDays > 10 ? 10 : diffDays === 0 ? 1 : diffDays
-}
+// const calculateDays = (start, end) => {
+//   if (!end) return 1
+//   const diffDays = Math.abs(date.getDateDiff(start, end, 'days'))
+//   return diffDays > 10 ? 10 : diffDays === 0 ? 1 : diffDays
+// }
 
 const toggleHourlyData = (index) => {
   showHourly.value[index] = !showHourly.value[index]

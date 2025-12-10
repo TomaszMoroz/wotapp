@@ -24,6 +24,7 @@
                 @update:model-value="onReportSelected"
                 class="q-mb-md"
                 dropdown-auto-width
+                popup-content-class="meldunki-dropdown-full"
               >
                 <template v-slot:no-option>
                   <q-item>
@@ -533,6 +534,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+  .meldunki-dropdown-full {
+    max-height: none !important;
+    height: auto !important;
+  }
   .hero-section, .page-header {
     background: #f5f5f5;
     border: 1px solid #e0e0e0;

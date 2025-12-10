@@ -96,12 +96,41 @@
                 </q-card>
               </div>
             </div>
-            <img
-              v-if="selectedWeapon.image"
-              :src="selectedWeapon.image"
-              :alt="selectedWeapon.name"
-              class="weapon-detail-image"
-            />
+            <div v-if="selectedWeapon.image" class="weapon-image-wrapper">
+              <img
+                :src="selectedWeapon.image"
+                :alt="selectedWeapon.name"
+                class="weapon-detail-image"
+                :style="selectedWeapon.id === 'ukm2000p' ? 'transform: rotate(90deg); max-width: 100%; width: 100%;' : 'max-width: 100%; width: 100%;'"
+              />
+              <q-btn
+                round
+                dense
+                flat
+                icon="zoom_in"
+                color="primary"
+                class="weapon-image-zoom-btn"
+                @click="showImageDialog = true"
+              />
+              <q-dialog v-model="showImageDialog">
+                <q-card class="weapon-image-dialog-card">
+                  <q-btn
+                    round
+                    dense
+                    flat
+                    icon="close"
+                    color="primary"
+                    class="weapon-image-dialog-close"
+                    @click="showImageDialog = false"
+                  />
+                  <img
+                    :src="selectedWeapon.image"
+                    :alt="selectedWeapon.name"
+                    class="weapon-image-dialog-img"
+                  />
+                </q-card>
+              </q-dialog>
+            </div>
           </q-card-section>
         </q-card>
       </div>
@@ -113,6 +142,8 @@
 import { ref, computed } from 'vue'
 import visImg from 'assets/vis.png'
 import ukmImg from 'assets/ukm.png'
+import msbsImg from 'assets/msbs56.jpg'
+import borImg from 'assets/bor.jpg'
 import BackNav from 'components/BackNav.vue'
 
 defineOptions({
@@ -186,6 +217,7 @@ const weapons = [
     fullName: 'Modułowy System Broni Strzeleckiej GROT',
     category: 'Karabin szturmowy',
     icon: 'military_tech',
+    image: msbsImg,
     color: 'secondary',
     specs: [
       { parameter: 'Amunicja', value: '5.56 x 45 mm NATO' },
@@ -213,6 +245,7 @@ const weapons = [
     fullName: 'Karabinek wyborowy BOR',
     category: 'Broń precyzyjna',
     icon: 'my_location',
+    image: borImg,
     color: 'accent',
     specs: [
       { parameter: 'Kaliber', value: '7,62 mm' },
@@ -376,6 +409,48 @@ const goBack = () => {
 </script>
 
 <style scoped>
+.weapon-image-wrapper {
+  position: relative;
+  display: block;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.weapon-detail-image {
+  max-width: 100%;
+  border-radius: 8px;
+  display: block;
+  width: 100%;
+}
+.weapon-image-zoom-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+}
+.weapon-image-dialog-card {
+  position: relative;
+  background: #222;
+  padding: 0;
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.weapon-image-dialog-img {
+  max-width: 90vw;
+  max-height: 80vh;
+  border-radius: 8px;
+  display: block;
+  margin: auto;
+}
+.weapon-image-dialog-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 3;
+}
 
 .dashboard-main-container {
   max-width: 1500px;
