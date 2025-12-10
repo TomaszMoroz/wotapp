@@ -7,7 +7,7 @@
       <q-card-section>
         <q-input v-model="area" label="Podaj lokalizację (np. miasto)" filled class="q-mb-md" />
         <q-input
-          label="Wybierz datę początkową"
+          label="Wybierz datę"
           v-model="dateRange.from"
           @click="showDateFrom = !showDateFrom"
           filled
@@ -24,23 +24,6 @@
           :options="isValidWeatherDate"
           @update:model-value="showDateFrom = !showDateFrom"
         />
-        <q-input
-          label="Wybierz datę końcową"
-          v-model="dateRange.to"
-          @click="showDateTo = !showDateTo"
-          filled
-          class="q-mb-md"
-        >
-          <template v-slot:append>
-            <q-icon name="event" />
-          </template>
-        </q-input>
-        <q-date
-          v-if="showDateTo"
-          v-model="dateRange.to"
-          mask="YYYY-MM-DD"
-          @update:model-value="showDateTo = !showDateTo"
-        />
         <q-btn
           :loading="loadingWeather"
           label="Pobierz prognozę pogody"
@@ -52,7 +35,7 @@
       <q-card-section v-if="weatherData">
         <q-list bordered class="weather-list q-mb-md">
           <q-item-label header>Prognoza pogody</q-item-label>
-          <q-item v-for="(data, index) in selectedForecastDay" :key="index">
+          <q-item v-for="(data, index) in weatherData.forecast.forecastday" :key="index">
             <q-item-section>
               <div class="column q-gutter-y-sm q-mb-md">
                 <div class="row items-center q-gutter-x-sm">
@@ -139,7 +122,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
+import { ref, reactive } from 'vue'
 import { useQuasar, date } from 'quasar'
 import axios from 'axios'
 import BackNav from 'components/BackNav.vue'
@@ -151,9 +134,9 @@ const area = ref('')
 const weatherData = ref(null)
 const loadingWeather = ref(false)
 const showHourly = ref([])
-const dateRange = reactive({ from: today, to: '' })
+const dateRange = reactive({ from: today })
 const showDateFrom = ref(false)
-const showDateTo = ref(false)
+// const showDateTo = ref(false)
 
 const WEATHER_API_KEY = '0446e39ac5e64d6697684411252001'
 
@@ -167,7 +150,7 @@ const fetchWeatherData = async () => {
     const params = {
       key: WEATHER_API_KEY,
       q: area.value,
-      days: calculateDays(dateRange.from, dateRange.to),
+      dt: dateRange.from,
       lang: 'pl'
     }
     const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', { params })
@@ -188,27 +171,34 @@ function fixIconUrl (url) {
   return url
 }
 
-const calculateDays = (start, end) => {
-  if (!end) return 1
-  const diffDays = Math.abs(date.getDateDiff(start, end, 'days'))
-  return diffDays > 10 ? 10 : diffDays === 0 ? 1 : diffDays
-}
+// const calculateDays = (start, end) => {
+//   if (!end) return 1
+//   const diffDays = Math.abs(date.getDateDiff(start, end, 'days'))
+//   return diffDays > 10 ? 10 : diffDays === 0 ? 1 : diffDays
+// }
 
 const toggleHourlyData = (index) => {
   showHourly.value[index] = !showHourly.value[index]
 }
 
-const isValidWeatherDate = dateStr => {
+const isValidWeatherDate = dateObj => {
+  // dateObj może być stringiem lub obiektem daty
+  let picked
+  if (typeof dateObj === 'string') {
+    // obsłuż oba formaty: YYYY-MM-DD i YYYY/MM/DD
+    picked = date.extractDate(dateObj.replace(/\//g, '-'), 'YYYY-MM-DD')
+  } else {
+    picked = dateObj
+  }
   const todayDate = date.extractDate(today, 'YYYY-MM-DD')
-  const pickedDate = date.extractDate(dateStr, 'YYYY-MM-DD')
-  const diff = date.getDateDiff(pickedDate, todayDate, 'days')
+  const diff = date.getDateDiff(picked, todayDate, 'days')
   return diff >= 0 && diff < 14
 }
 
-const selectedForecastDay = computed(() => {
-  if (!weatherData.value || !weatherData.value.forecast) return []
-  return weatherData.value.forecast.forecastday.filter(day => day.date === dateRange.from)
-})
+// const selectedForecastDay = computed(() => {
+//   if (!weatherData.value || !weatherData.value.forecast) return []
+//   return weatherData.value.forecast.forecastday.filter(day => day.date === dateRange.from)
+// })
 </script>
 
 <style scoped>
