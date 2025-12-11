@@ -35,6 +35,13 @@ export default route(function (/* { store, ssrContext } */) {
         pageTitle: document.title
       })
     }
+    // Google Analytics 4 page_view
+    if (window.gtag) {
+      window.gtag('event', 'page_view', {
+        page_path: to.fullPath,
+        page_title: document.title
+      })
+    }
   })
   return Router
 })
