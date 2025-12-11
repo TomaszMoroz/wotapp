@@ -14,8 +14,9 @@
             <q-btn label="Dodaj punkt" color="green-7" @click="enablePinMode" :disable="pinMode" />
             <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" />
             <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" />
-            <q-btn icon="delete" color="negative" @click="clearAll" />
             <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" />
+            <q-btn icon="picture_as_pdf" color="grey-9" @click="exportPDF" />
+            <q-btn icon="delete" color="negative" @click="clearAll" />
           </div>
         </div>
         <div class="col-4 flex column q-ml-sm" :class="isMobile ? 'col-12' : ''">
@@ -67,6 +68,8 @@ import { useQuasar } from 'quasar'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import * as mgrs from 'mgrs'
+import JsPDF from 'jspdf'
+import autoTable from 'jspdf-autotable'
 
 const $q = useQuasar()
 
@@ -273,6 +276,21 @@ function exportGPX () {
   a.click()
   document.body.removeChild(a)
   URL.revokeObjectURL(url)
+}
+
+// Eksport PDF
+function exportPDF () {
+  if (!routeTable.value.length) return
+  const doc = new JsPDF()
+  doc.text('Tabela marszu', 14, 16)
+  autoTable(doc, {
+    startY: 22,
+    head: [columns.map(col => col.name !== 'odleglosc' ? col.label : 'Dystans (m)')],
+    body: routeTable.value.map(row => columns.map(col => row[col.field])),
+    styles: { fontSize: 10 },
+    headStyles: { fillColor: [45, 62, 47] }
+  })
+  doc.save('tabela-marszu.pdf')
 }
 
 onMounted(() => {
