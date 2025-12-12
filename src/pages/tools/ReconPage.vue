@@ -1,0 +1,133 @@
+<template>
+  <q-page class="modern-bg q-pa-md">
+    <div class="dashboard-main-container">
+      <BackNav color="black"/>
+      <div class="row items-center q-mb-xl">
+        <div class="col">
+          <div class="text-h4 text-weight-bold modern-title">Rozpoznanie (sprzęt FR)</div>
+          <div class="text-subtitle1 text-grey-7 q-mt-xs">Wybierz tryb nauki lub testu</div>
+        </div>
+      </div>
+      <div class="dashboard-tiles q-mb-xl">
+        <div class="tiles-grid">
+          <q-card class="modern-tile" @click="navigateTo('learn')">
+            <q-card-section class="tile-content">
+              <div class="tile-icon-bg" style="background: #1976d2;">
+                <q-icon name="school" color="white" size="32px" />
+              </div>
+              <div class="tile-label-row">
+                <span class="tile-label">NAUKA</span>
+              </div>
+              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Poznaj sprzęt rozpoznawczy FR</q-chip>
+            </q-card-section>
+          </q-card>
+          <q-card class="modern-tile" @click="navigateTo('test')">
+            <q-card-section class="tile-content">
+              <div class="tile-icon-bg" style="background: #e65100;">
+                <q-icon name="quiz" color="white" size="32px" />
+              </div>
+              <div class="tile-label-row">
+                <span class="tile-label">TEST</span>
+              </div>
+              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Sprawdź swoją wiedzę</q-chip>
+            </q-card-section>
+          </q-card>
+        </div>
+      </div>
+      <router-view/>
+    </div>
+  </q-page>
+</template>
+
+<script setup>
+import BackNav from 'components/BackNav.vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+function navigateTo (mode) {
+  // Użyj replace, aby wymusić przejście nawet jeśli już jesteś na tej trasie
+  const target = `/tools/recon/${mode}`
+  if (router && typeof router.replace === 'function') {
+    router.replace(target)
+  } else if (router && typeof router.push === 'function') {
+    router.push(target)
+  } else {
+    window.location.href = target
+  }
+}
+</script>
+
+<style scoped>
+.dashboard-main-container {
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+</style>
+<style scoped>
+.dashboard-tiles {
+  margin-bottom: 32px;
+}
+.tiles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 36px;
+  justify-items: center;
+}
+.modern-tile {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s;
+  min-height: 170px;
+  width: 100%;
+  max-width: 270px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  border: none;
+}
+.modern-tile:hover {
+  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
+  transform: translateY(-2px) scale(1.03);
+}
+.tile-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 38px 0 28px 0;
+}
+.tile-icon-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
+}
+.tile-label-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+.tile-label {
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 600;
+  color: #0f2c05;
+}
+.tile-desc-chip-big {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 12px;
+  min-height: 36px;
+}
+</style>

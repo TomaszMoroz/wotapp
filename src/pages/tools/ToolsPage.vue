@@ -39,7 +39,8 @@ const tools = [
   { title: 'Konwerter MILS - MOA', icon: 'swap_horiz', desc: 'Przelicznik jednostek', route: '/tools/mils-moa' },
   { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment' },
   { title: 'Pogoda', icon: 'cloud', desc: 'Prognoza', route: '/tools/weather' },
-  { title: 'Tabela marszu', icon: 'table_chart', desc: 'Kreator', route: '/tools/march-table' }
+  { title: 'Tabela marszu', icon: 'table_chart', desc: 'Kreator', route: '/tools/march-table' },
+  { title: 'ROZPOZNANIE (sprzęt FR)', icon: 'visibility', desc: 'Nauka i test pojazdów', route: '/tools/recon' }
 ]
 const iconColors = [
   '#0f2c05',
