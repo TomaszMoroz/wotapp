@@ -161,9 +161,9 @@ const selectedObjectName = ref('')
 // Military equipment data
 const militaryEquipment = ref([
   // BOJOWE WOZY PIECHOTY
-  { id: 1, name: 'BWP 1', type: 'Bojowy wóz piechoty', length: 6.74, width: 2.94, height: 2.15, description: 'Bojowy wóz piechoty' },
-  { id: 2, name: 'BWP 2', type: 'Bojowy wóz piechoty', length: 6.74, width: 3.15, height: 2.45, description: 'Bojowy wóz piechoty' },
-  { id: 3, name: 'BWP 3', type: 'Bojowy wóz piechoty', length: 6.73, width: 3.15, height: 2.45, description: 'Bojowy wóz piechoty' },
+  { id: 1, name: 'BMP 1', type: 'Bojowy wóz piechoty', length: 6.74, width: 2.94, height: 2.15, description: 'Bojowy wóz piechoty' },
+  { id: 2, name: 'BMP 2', type: 'Bojowy wóz piechoty', length: 6.74, width: 3.15, height: 2.45, description: 'Bojowy wóz piechoty' },
+  { id: 3, name: 'BMP 3', type: 'Bojowy wóz piechoty', length: 6.73, width: 3.15, height: 2.45, description: 'Bojowy wóz piechoty' },
   { id: 4, name: 'BTR 80A', type: 'Bojowy wóz piechoty', length: 7.62, width: 2.90, height: 2.41, description: 'Transporter opancerzony' },
   { id: 5, name: 'BTR 90', type: 'Bojowy wóz piechoty', length: 7.64, width: 3.20, height: 2.98, description: 'Transporter opancerzony' },
   { id: 6, name: 'BMP-T TERMINATOR', type: 'Bojowy wóz piechoty', length: 6.96, width: 3.46, height: 2.10, description: 'Bojowy wóz wsparcia czołgów' },
