@@ -18,7 +18,7 @@
               <div class="tile-label-row">
                 <span class="tile-label">NAUKA</span>
               </div>
-              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Poznaj sprzęt rozpoznawczy FR</q-chip>
+              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Poznaj sprzęt wojsk F.R.</q-chip>
             </q-card-section>
           </q-card>
           <q-card class="modern-tile" @click="navigateTo('test')">
@@ -72,7 +72,9 @@ function navigateTo (mode) {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
   gap: 36px;
-  justify-items: center;
+  justify-items: start;
+  max-width: 600px;
+  margin-left: 0;
 }
 .modern-tile {
   background: #fff;

@@ -30,11 +30,22 @@
           {{ cat }}
         </q-chip>
       </div>
-      <div class="gt-sm">
-        <q-table :rows="filteredVehicles" :columns="columns" row-key="name" flat @row-click="showVehicle">
+      <div class="gt-sm table-center-wrap">
+        <q-table
+          :rows="filteredVehicles"
+          :columns="columns"
+          row-key="name"
+          flat
+          @row-click="showVehicle"
+          :rows-per-page-options="[0]"
+          :rows-per-page="0"
+        >
           <template v-slot:body-cell-photo="props">
             <q-td :props="props">
-              <q-img :src="props.row.photo" :alt="props.row.name" style="max-width:120px;max-height:80px;" />
+              <div class="recon-img-wrap">
+                <q-img :src="props.row.photo" :alt="props.row.name" class="recon-table-img" />
+                <q-icon name="zoom_in" class="recon-img-zoom-icon" size="32px" color="white" />
+              </div>
             </q-td>
           </template>
         </q-table>
@@ -44,7 +55,7 @@
           <q-card v-for="vehicle in filteredVehicles" :key="vehicle.name" class="modern-tile cursor-pointer" @click="showVehicle(null, vehicle)">
             <q-card-section class="tile-content">
               <div class="tile-img-wrap">
-                <q-img :src="vehicle.photo" :alt="vehicle.name" style="max-width:170px;max-height:110px; margin: 0 auto; display: block;" />
+                <q-img :src="vehicle.photo" :alt="vehicle.name" style="max-width:340px;max-height:220px; margin: 0 auto; display: block;" />
               </div>
               <div class="tile-label-row q-mt-md">
                 <span class="tile-label">{{ vehicle.name }}</span>
@@ -105,6 +116,40 @@ function showVehicle (evt, row) {
 </script>
 
 <style scoped>
+.recon-img-wrap {
+  position: relative;
+  display: inline-block;
+}
+.recon-table-img {
+  width: 320px;
+  height: 200px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+.recon-img-zoom-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0,0,0,0.55);
+  border-radius: 50%;
+  padding: 4px;
+  z-index: 2;
+  pointer-events: none;
+}
+.recon-table-img {
+  width: 320px;
+  height: 200px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.table-center-wrap {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
 .tiles-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));

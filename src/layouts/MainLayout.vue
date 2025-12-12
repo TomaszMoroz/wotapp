@@ -563,7 +563,7 @@ function urlBase64ToUint8Array (base64String) {
 }
 /* Dashboard Modern Theme */
 .dashboard-bg {
-  background: var(--military-light, #F5F5F5);
+  background: var(--military-light, #faf6f6);
   min-height: 100vh;
 }
 .dashboard-header {
