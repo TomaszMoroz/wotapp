@@ -3,6 +3,7 @@
     <div class="container q-pa-md">
       <BackNav color="black"/>
       <!-- Header Section -->
+
       <div class="text-center q-mb-xl">
         <div class="modern-hero-section q-pa-lg rounded-borders">
           <div class="text-h3 text-weight-bold text-military-secondary q-mb-sm">Taktyka i Procedury</div>
@@ -54,6 +55,21 @@
             </div>
             <div class="text-h6 q-mt-md text-weight-bold text-white">Dowodzenie</div>
             <div class="text-caption text-military-light">Metody i procedury dowodzenia</div>
+          </q-card-section>
+        </q-card>
+
+        <!-- Łączność -->
+        <q-card
+          class="modern-category-card bg-military-green"
+          clickable
+          @click="navigateTo('/tactics/radio')"
+        >
+          <q-card-section class="text-center">
+            <div class="modern-card-icon-wrapper">
+              <q-icon name="settings_voice" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold text-white">Łączność</div>
+            <div class="text-caption text-military-light">Procedury radiowe i komunikacja</div>
           </q-card-section>
         </q-card>
       </div>
