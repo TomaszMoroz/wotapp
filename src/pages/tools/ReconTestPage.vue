@@ -137,9 +137,51 @@ function startTest () {
   userHeight.value = ''
 }
 const currentVehicle = computed(() => testList.value[currentIdx.value])
+function normalizeName (str) {
+  // Remove dashes, slashes, spaces, dots, underscores, make lowercase
+  return (str || '')
+    .toLowerCase()
+    .replace(/[-_/\\.\s]/g, '')
+    .normalize('NFD').replace(/\p{Diacritic}/gu, '')
+}
+
 function checkAnswer () {
   if (!currentVehicle.value) return
-  const nameOk = userName.value.trim().toLowerCase() === currentVehicle.value.name.trim().toLowerCase()
+  const user = userName.value.trim().toLowerCase()
+  const correct = currentVehicle.value.name.trim().toLowerCase()
+  const userNorm = normalizeName(user)
+  const correctNorm = normalizeName(correct)
+
+  // Accept if normalized matches
+  let nameOk = userNorm === correctNorm
+
+  // Accept if user answer is a single word and matches any token in correct name
+  if (!nameOk && user.split(' ').length === 1) {
+    const correctTokens = correctNorm.split(/\d+/).concat(correctNorm.match(/\d+/g) || [])
+    if (correctTokens.some(token => token && userNorm === token)) {
+      nameOk = true
+    }
+  }
+  // Accept if user answer is a single word and matches any word in original correct name
+  if (!nameOk && user.split(' ').length === 1) {
+    const correctWords = correct.split(/[-_/\\.\s]/g)
+    if (correctWords.some(word => word && user === word)) {
+      nameOk = true
+    }
+  }
+  // Accept if user answer is a single word and matches any word in original correct name (case-insensitive)
+  if (!nameOk && user.split(' ').length === 1) {
+    const correctWords = correct.split(/[-_/\\.\s]/g)
+    if (correctWords.some(word => word && user.toLowerCase() === word.toLowerCase())) {
+      nameOk = true
+    }
+  }
+
+  // Accept if user answer is a single word and matches any part of the correct name (e.g. 'hiacynt' in '2s7 hiacynt')
+  if (!nameOk && user.split(' ').length === 1 && correct.includes(user)) {
+    nameOk = true
+  }
+
   // Sprawdź wymiary (dokładność do 0.1m)
   let master = false
   if (nameOk && userLength.value && userWidth.value && userHeight.value) {

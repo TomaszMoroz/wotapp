@@ -72,10 +72,14 @@
       </div>
 
       <q-dialog v-model="dialogOpen" persistent maximized transition-show="fade" transition-hide="fade">
-        <q-card class="q-pa-xl flex flex-center column items-center" style="background: #222; color: #fff; min-height: 100vh;">
-          <q-btn flat round icon="close" color="white" class="self-end q-mb-md" @click="dialogOpen = false" aria-label="Zamknij" />
-          <q-img :src="selectedVehicle?.photo" :alt="selectedVehicle?.name" style="max-width:90vw;max-height:60vh; border-radius: 18px; box-shadow: 0 8px 32px #0008;" />
-          <div class="text-h4 text-center q-mt-lg q-mb-md">{{ selectedVehicle?.name }}</div>
+        <q-card class="dialog-card">
+          <div class="dialog-content">
+            <q-btn flat round icon="close" color="white" class="dialog-close-btn" @click="dialogOpen = false" aria-label="Zamknij" />
+            <div class="dialog-img-wrap">
+              <q-img :src="selectedVehicle?.photo" :alt="selectedVehicle?.name" class="dialog-img" />
+            </div>
+            <div class="dialog-name text-h4 text-center">{{ selectedVehicle?.name }}</div>
+          </div>
         </q-card>
       </q-dialog>
     </div>
@@ -116,6 +120,77 @@ function showVehicle (evt, row) {
 </script>
 
 <style scoped>
+.dialog-card {
+  background: #222;
+  color: #fff;
+  min-height: 100vh;
+  min-width: 100vw;
+  border-radius: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
+  padding: 0;
+}
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+}
+.dialog-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  z-index: 10;
+}
+.dialog-img-wrap {
+  flex: 1 1 auto;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  min-width: 0;
+}
+.dialog-img {
+  width: 100vw;
+  height: 100%;
+  max-width: 100vw;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px #0008;
+  background: #111;
+}
+.dialog-name {
+  width: 100vw;
+  background: rgba(34,34,34,0.98);
+  color: #fff;
+  padding: 24px 0 18px 0;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  border-radius: 0 0 18px 18px;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+}
+@media (max-width: 700px) {
+  .dialog-img {
+    max-height: 65vh;
+  }
+  .dialog-name {
+    font-size: 1.15rem;
+    padding: 18px 0 14px 0;
+  }
+  .dialog-close-btn {
+    top: 10px;
+    right: 10px;
+  }
+}
 .recon-img-wrap {
   position: relative;
   display: inline-block;

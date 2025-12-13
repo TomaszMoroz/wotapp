@@ -64,6 +64,17 @@
             </q-card-section>
           </q-card>
         </q-col>
+        <q-col cols="12" sm="6" md="3">
+          <q-card class="dashboard-content-card" style="width:280px; height:200px;" clickable @click="goToFitness">
+            <q-card-section class="text-center flex column justify-center" style="height:100%;">
+              <div class="row justify-center items-center q-mb-sm">
+                <q-icon name="fitness_center" size="2.5rem" color="primary" />
+              </div>
+              <div class="text-h6 text-weight-bold text-grey-10">Sprawność</div>
+              <div class="text-caption">Znaczenie sprawności fizycznej</div>
+            </q-card-section>
+          </q-card>
+        </q-col>
       </div>
     </div>
   </q-page>
@@ -77,6 +88,10 @@ const router = useRouter()
 
 function goToRotation () {
   router.push({ name: 'abc-rotation' })
+}
+
+function goToFitness () {
+  router.push({ name: 'abc-fitness' })
 }
 
 function goToBackpack () {

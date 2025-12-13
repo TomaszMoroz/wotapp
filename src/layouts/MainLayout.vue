@@ -65,7 +65,7 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="dashboard-drawer bg-military-light"
+      class="dashboard-drawer bg-grey-3"
       :width="280"
     >
 
@@ -583,10 +583,10 @@ function urlBase64ToUint8Array (base64String) {
   margin-left: 1.5rem;
   opacity: 0.7;
 }
-.dashboard-drawer {
+/* .dashboard-drawer {
   border-right: 1px solid #e0e0e0;
-  background: var(--military-light, #F5F5F5);
-}
+  background: var(--military-light, #ad9a9a);
+} */
 .dashboard-drawer-header {
   background: #fff;
   border-bottom: 1px solid #e0e0e0;

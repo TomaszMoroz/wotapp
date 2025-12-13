@@ -38,6 +38,7 @@ const routes = [
       { path: '/abc/chain', name: 'abc-chain', component: () => import('pages/abc/AbcChainOfCommandPage.vue') },
       { path: '/abc/cyber', name: 'abc-cyber', component: () => import('pages/abc/AbcCybersecurityPage.vue') },
       { path: '/abc/kts', name: 'abc-kts', component: () => import('pages/abc/AbcKtsPage.vue') },
+      { path: '/abc/fitness', name: 'abc-fitness', component: () => import('pages/abc/AbcFitnessPage.vue') },
       { path: '/ranks', component: () => import('pages/ranks/RanksPage.vue') },
       { path: '/regulations', component: () => import('pages/regulations/RegulationsPage.vue') },
       { path: '/firearms-law', component: () => import('pages/emergency/FirearmsLawPage.vue') },

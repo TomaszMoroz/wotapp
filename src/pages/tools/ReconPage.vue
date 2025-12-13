@@ -76,6 +76,14 @@ function navigateTo (mode) {
   max-width: 600px;
   margin-left: 0;
 }
+
+@media (max-width: 700px) {
+  .tiles-grid {
+    justify-items: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 .modern-tile {
   background: #fff;
   border-radius: 22px;
