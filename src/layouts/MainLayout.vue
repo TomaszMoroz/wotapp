@@ -499,15 +499,49 @@ const isInToolsSection = computed(() => {
 })
 
 const $q = useQuasar()
+
 const pushEnabled = ref(false)
 const pushDialog = ref(false)
 
+// Przypomnienie o powiadomieniach po kilku dniach (np. 3 dni)
+const PUSH_REMIND_KEY = 'push-remind-date-v1'
+const PUSH_DENIED_KEY = 'push-denied-v1'
+const REMIND_AFTER_DAYS = 5
+
+function shouldRemindPush () {
+  const denied = localStorage.getItem(PUSH_DENIED_KEY)
+  if (!denied) return false
+  const last = parseInt(localStorage.getItem(PUSH_REMIND_KEY) || '0', 10)
+  const now = Date.now()
+  return (now - last) > REMIND_AFTER_DAYS * 24 * 60 * 60 * 1000
+}
+
+onMounted(() => {
+  // ...existing code...
+  // Przypomnienie o powiadomieniach push
+  if (!pushEnabled.value && shouldRemindPush()) {
+    pushDialog.value = true
+  }
+})
+
 async function enablePushNotifications () {
   pushDialog.value = false
+  // Log analityczny: otwarcie dialogu
+  fetch('https://kitabag.smallhost.pl/api/push/analytics', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ event: 'push-dialog-open', date: new Date().toISOString() })
+  }).catch(() => {})
   console.log('[PWA] enablePushNotifications start')
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
     console.error('[PWA] Brak wsparcia dla serviceWorker/PushManager')
     $q.notify({ type: 'negative', message: 'Twoja przeglądarka nie obsługuje powiadomień push.' })
+    // Log analityczny: brak wsparcia
+    fetch('https://kitabag.smallhost.pl/api/push/analytics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event: 'push-no-support', date: new Date().toISOString() })
+    }).catch(() => {})
     return
   }
   try {
@@ -515,8 +549,20 @@ async function enablePushNotifications () {
     console.log('[PWA] Notification permission:', permission)
     if (permission !== 'granted') {
       $q.notify({ type: 'warning', message: 'Brak zgody na powiadomienia.' })
+      // Zapisz datę i status odmowy do localStorage
+      localStorage.setItem(PUSH_DENIED_KEY, '1')
+      localStorage.setItem(PUSH_REMIND_KEY, Date.now().toString())
+      // Log analityczny: odmowa
+      fetch('https://kitabag.smallhost.pl/api/push/analytics', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event: 'push-denied', date: new Date().toISOString() })
+      }).catch(() => {})
       return
     }
+    // Jeśli zgoda, usuń info o odmowie
+    localStorage.removeItem(PUSH_DENIED_KEY)
+    localStorage.removeItem(PUSH_REMIND_KEY)
     const reg = await navigator.serviceWorker.ready
     console.log('[PWA] serviceWorker ready:', reg)
     const vapidRes = await fetch('https://kitabag.smallhost.pl/api/push/vapidPublicKey')
@@ -535,9 +581,21 @@ async function enablePushNotifications () {
     console.log('[PWA] backend subscribe response:', resp)
     pushEnabled.value = true
     $q.notify({ type: 'positive', message: 'Powiadomienia push zostały włączone!' })
+    // Log analityczny: sukces
+    fetch('https://kitabag.smallhost.pl/api/push/analytics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event: 'push-subscribed', date: new Date().toISOString() })
+    }).catch(() => {})
   } catch (e) {
     console.error('[PWA] Błąd rejestracji powiadomień:', e)
     $q.notify({ type: 'negative', message: 'Błąd rejestracji powiadomień: ' + (e?.message || e) })
+    // Log analityczny: błąd
+    fetch('https://kitabag.smallhost.pl/api/push/analytics', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ event: 'push-error', error: e?.message || e, date: new Date().toISOString() })
+    }).catch(() => {})
   }
 }
 
