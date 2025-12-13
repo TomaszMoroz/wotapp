@@ -535,7 +535,7 @@ async function enablePushNotifications () {
   console.log('[PWA] enablePushNotifications start')
   if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
     console.error('[PWA] Brak wsparcia dla serviceWorker/PushManager')
-    $q.notify({ type: 'negative', message: 'Twoja przeglądarka nie obsługuje powiadomień push.' })
+    $q.notify({ type: 'negative', message: 'Twoja przeglądarka nie obsługuje powiadomień push (brak wsparcia Service Worker/PushManager).' })
     // Log analityczny: brak wsparcia
     fetch('https://kitabag.smallhost.pl/api/push/analytics', {
       method: 'POST',
@@ -548,7 +548,7 @@ async function enablePushNotifications () {
     const permission = await Notification.requestPermission()
     console.log('[PWA] Notification permission:', permission)
     if (permission !== 'granted') {
-      $q.notify({ type: 'warning', message: 'Brak zgody na powiadomienia.' })
+      $q.notify({ type: 'warning', message: 'Brak zgody na powiadomienia. Użytkownik odrzucił prośbę o powiadomienia.' })
       // Zapisz datę i status odmowy do localStorage
       localStorage.setItem(PUSH_DENIED_KEY, '1')
       localStorage.setItem(PUSH_REMIND_KEY, Date.now().toString())
@@ -563,21 +563,47 @@ async function enablePushNotifications () {
     // Jeśli zgoda, usuń info o odmowie
     localStorage.removeItem(PUSH_DENIED_KEY)
     localStorage.removeItem(PUSH_REMIND_KEY)
-    const reg = await navigator.serviceWorker.ready
+    let reg
+    try {
+      reg = await navigator.serviceWorker.ready
+    } catch (err) {
+      $q.notify({ type: 'negative', message: 'Błąd: Service Worker nie jest gotowy.' })
+      throw err
+    }
     console.log('[PWA] serviceWorker ready:', reg)
-    const vapidRes = await fetch('https://kitabag.smallhost.pl/api/push/vapidPublicKey')
-    const { publicKey } = await vapidRes.json()
+    let vapidRes, publicKey
+    try {
+      vapidRes = await fetch('https://kitabag.smallhost.pl/api/push/vapidPublicKey')
+      if (!vapidRes.ok) throw new Error('Błąd pobierania klucza VAPID: ' + vapidRes.status)
+      ;({ publicKey } = await vapidRes.json())
+    } catch (err) {
+      $q.notify({ type: 'negative', message: 'Błąd pobierania klucza VAPID z backendu.' })
+      throw err
+    }
     console.log('[PWA] VAPID publicKey:', publicKey)
-    const sub = await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToUint8Array(publicKey)
-    })
+    let sub
+    try {
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(publicKey)
+      })
+    } catch (err) {
+      $q.notify({ type: 'negative', message: 'Błąd subskrypcji pushManager. Użytkownik mógł już być subskrybowany lub odrzucił prośbę.' })
+      throw err
+    }
     console.log('[PWA] pushManager.subscribe result:', sub)
-    const resp = await fetch('https://kitabag.smallhost.pl/api/push/subscribe', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(sub)
-    })
+    let resp
+    try {
+      resp = await fetch('https://kitabag.smallhost.pl/api/push/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(sub)
+      })
+      if (!resp.ok) throw new Error('Błąd backendu: ' + resp.status)
+    } catch (err) {
+      $q.notify({ type: 'negative', message: 'Błąd rejestracji subskrypcji w backendzie.' })
+      throw err
+    }
     console.log('[PWA] backend subscribe response:', resp)
     pushEnabled.value = true
     $q.notify({ type: 'positive', message: 'Powiadomienia push zostały włączone!' })
@@ -589,8 +615,7 @@ async function enablePushNotifications () {
     }).catch(() => {})
   } catch (e) {
     console.error('[PWA] Błąd rejestracji powiadomień:', e)
-    $q.notify({ type: 'negative', message: 'Błąd rejestracji powiadomień: ' + (e?.message || e) })
-    // Log analityczny: błąd
+    // $q.notify już wywołane wyżej dla każdego przypadku
     fetch('https://kitabag.smallhost.pl/api/push/analytics', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
