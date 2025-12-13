@@ -158,13 +158,24 @@ function showVehicle (evt, row) {
 }
 .dialog-img {
   width: 100vw;
-  height: 100%;
+  height: auto;
   max-width: 100vw;
   max-height: 80vh;
   object-fit: contain;
   border-radius: 18px;
   box-shadow: 0 8px 32px #0008;
   background: #111;
+  display: block;
+  box-sizing: border-box;
+}
+@media (max-width: 700px) {
+  .dialog-img {
+    max-width: 100vw;
+    max-height: 65vh;
+    width: 100vw;
+    height: auto;
+    margin: 0 auto;
+  }
 }
 .dialog-name {
   width: 100vw;
