@@ -51,7 +51,18 @@
             row-key="id"
             flat
             dense
+            class="march-table-bg shadow-1 q-mb-md"
+          />
+
+          <q-table
+            v-if="specialPoints.length > 0"
+            :rows="specialPointsTable"
+            :columns="specialColumns"
+            row-key="__rowKey"
+            flat
+            dense
             class="march-table-bg shadow-1"
+            title="Punkty specjalne"
           />
         </div>
       </div>
@@ -81,43 +92,45 @@
         </q-card>
       </q-dialog>
 
-           <q-dialog v-model="showPdfDialog">
-                <q-card style="min-width:320px;max-width:95vw;">
-                  <q-card-section class="text-h6">Eksport PDF</q-card-section>
-                  <q-card-section>
-                    <q-option-group
-                      v-model="pdfOptions"
-                      :options="[
-                        { label: 'Załącz mapę', value: 'map' },
-                        { label: 'Nadaj nazwę', value: 'name' }
-                      ]"
-                      type="checkbox"
-                    />
-                    <div v-if="pdfOptions.includes('name')" class="q-mt-md">
-                      <q-input
-                        v-model="pdfCustomName"
-                        label="Nazwa trasy (własna)"
-                        dense outlined
-                        @input="onCustomNameInput"
-                        :disable="pdfSelectedName !== ''"
-                        class="q-mb-sm"
-                      />
-                      <q-select
-                        v-model="pdfSelectedName"
-                        :options="predefinedRouteNames"
-                        label="Wybierz nazwę trasy"
-                        dense outlined emit-value map-options
-                        @update:model-value="onDropdownSelect"
-                        :disable="pdfCustomName !== ''"
-                      />
-                    </div>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn flat label="Anuluj" color="primary" v-close-popup />
-                    <q-btn flat label="OK" color="primary" @click="handlePdfExport" />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
+      <q-dialog v-model="showPdfDialog">
+        <q-card style="min-width:320px;max-width:95vw;">
+          <q-card-section class="text-h6">Eksport PDF</q-card-section>
+          <q-card-section>
+            <q-option-group
+              v-model="pdfOptions"
+              :options="[
+                { label: 'Załącz mapę', value: 'map' },
+                { label: 'Nadaj nazwę', value: 'name' },
+                ...(specialPoints.length > 0 ? [{ label: 'Dodaj punkty specjalne', value: 'specialPoints' }] : []),
+                ...(routeTable.length > 0 ? [{ label: 'Dodaj trasę', value: 'routeTable' }] : [])
+              ]"
+              type="checkbox"
+            />
+            <div v-if="pdfOptions.includes('name')" class="q-mt-md">
+              <q-input
+                v-model="pdfCustomName"
+                label="Nazwa trasy (własna)"
+                dense outlined
+                @input="onCustomNameInput"
+                :disable="pdfSelectedName !== ''"
+                class="q-mb-sm"
+              />
+              <q-select
+                v-model="pdfSelectedName"
+                :options="predefinedRouteNames"
+                label="Wybierz nazwę trasy"
+                dense outlined emit-value map-options
+                @update:model-value="onDropdownSelect"
+                :disable="pdfCustomName !== ''"
+              />
+            </div>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Anuluj" color="primary" v-close-popup />
+            <q-btn flat label="OK" color="primary" @click="handlePdfExport" />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
       <div v-if="routeTable.length > 0" class="q-mt-md text-h6 text-center">ETA: {{ formatEta(etaResult) }}</div>
     </div>
   </q-page>
@@ -210,6 +223,42 @@ const columns = [
   { name: 'azymut', label: 'Azymut', field: 'azymut', align: 'left' },
   { name: 'odleglosc', label: 'Odległość (m)', field: 'odleglosc', align: 'left' }
 ]
+
+// Columns for special points table
+const specialColumns = [
+  { name: 'type', label: 'Typ', field: 'type', align: 'left' },
+  { name: 'mgrs', label: 'MGRS', field: 'mgrs', align: 'left' }
+]
+
+// Compute display rows for special points table
+const specialPointsTable = computed(() => {
+  return specialPoints.value.map((pt, idx) => {
+    // MGRS conversion
+    let mgrsStr = ''
+    try {
+      mgrsStr = mgrs.forward([pt.lng, pt.lat], 5)
+    } catch (e) {}
+    return {
+      __rowKey: pt.__rowKey,
+      type: pt.type,
+      name: pt.name,
+      mgrs: mgrsStr,
+      azymut: '-',
+      odleglosc: '-'
+    }
+  })
+})
+
+// Add a unique row key for q-table
+function addSpecialPointRowKey () {
+  specialPoints.value.forEach((pt, idx) => {
+    pt.__rowKey = idx + '-' + pt.type + '-' + pt.name + '-' + pt.lat + '-' + pt.lng
+  })
+}
+
+watchEffect(() => {
+  addSpecialPointRowKey()
+})
 
 const isMobile = computed(() => $q.screen.width < 600)
 
@@ -419,7 +468,6 @@ function handlePdfExport () {
 }
 
 function exportPDF (routeName = '') {
-  if (!routeTable.value.length) return
   // Use Roboto if available, else fallback to helvetica
   const doc = new JsPDF()
   try {
@@ -433,16 +481,32 @@ function exportPDF (routeName = '') {
     doc.text(routeName || 'Tabela marszu', 14, y)
     y += 8
   }
-  autoTable(doc, {
-    startY: y,
-    head: [columns.map(col => col.name !== 'odleglosc' ? col.label : 'Dystans (m)')],
-    body: routeTable.value.map(row => columns.map(col => row[col.field])),
-    styles: { fontSize: 10 },
-    headStyles: { fillColor: [45, 62, 47] }
-  })
+  // Dodaj trasę jeśli wybrano
+  if (pdfOptions.value.includes('routeTable') && routeTable.value.length > 0) {
+    autoTable(doc, {
+      startY: y,
+      head: [columns.map(col => col.name !== 'odleglosc' ? col.label : 'Dystans (m)')],
+      body: routeTable.value.map(row => columns.map(col => row[col.field])),
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [45, 62, 47] }
+    })
+    y = doc.lastAutoTable.finalY + 8
+  }
+  // Dodaj punkty specjalne jeśli wybrano
+  if (pdfOptions.value.includes('specialPoints') && specialPointsTable.value.length > 0) {
+    autoTable(doc, {
+      startY: y,
+      head: [specialColumns.map(col => col.label)],
+      body: specialPointsTable.value.map(row => specialColumns.map(col => row[col.field])),
+      styles: { fontSize: 10 },
+      headStyles: { fillColor: [45, 62, 47] },
+      margin: { left: 14, right: 14 }
+    })
+    y = doc.lastAutoTable.finalY + 8
+  }
   // Dodaj mapę jeśli wybrano (placeholder, do implementacji)
   if (pdfOptions.value.includes('map')) {
-    doc.text('[MAPA - do wdrożenia]', 14, doc.lastAutoTable.finalY + 10)
+    doc.text('[MAPA - do wdrożenia]', 14, y)
   }
   doc.save((routeName ? routeName.replace(/\s+/g, '-') : 'tabela-marszu') + '.pdf')
 }
