@@ -15,7 +15,7 @@
             <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" />
             <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" />
             <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" />
-            <q-btn icon="picture_as_pdf" color="grey-9" @click="exportPDF" />
+            <q-btn icon="picture_as_pdf" color="grey-9" @click="showPdfDialog = true" />
             <q-btn icon="delete" color="negative" @click="clearAll" />
           </div>
         </div>
@@ -56,6 +56,44 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+
+           <q-dialog v-model="showPdfDialog">
+                <q-card style="min-width:320px;max-width:95vw;">
+                  <q-card-section class="text-h6">Eksport PDF</q-card-section>
+                  <q-card-section>
+                    <q-option-group
+                      v-model="pdfOptions"
+                      :options="[
+                        { label: 'Załącz mapę', value: 'map' },
+                        { label: 'Nadaj nazwę', value: 'name' }
+                      ]"
+                      type="checkbox"
+                    />
+                    <div v-if="pdfOptions.includes('name')" class="q-mt-md">
+                      <q-input
+                        v-model="pdfCustomName"
+                        label="Nazwa trasy (własna)"
+                        dense outlined
+                        @input="onCustomNameInput"
+                        :disable="pdfSelectedName !== ''"
+                        class="q-mb-sm"
+                      />
+                      <q-select
+                        v-model="pdfSelectedName"
+                        :options="predefinedRouteNames"
+                        label="Wybierz nazwę trasy"
+                        dense outlined emit-value map-options
+                        @update:model-value="onDropdownSelect"
+                        :disable="pdfCustomName !== ''"
+                      />
+                    </div>
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn flat label="Anuluj" color="primary" v-close-popup />
+                    <q-btn flat label="OK" color="primary" @click="handlePdfExport" />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
       <div v-if="routeTable.length > 0" class="q-mt-md text-h6 text-center">ETA: {{ formatEta(etaResult) }}</div>
     </div>
   </q-page>
@@ -108,6 +146,27 @@ const columns = [
 const isMobile = computed(() => $q.screen.width < 600)
 
 const showEtaDialog = ref(false)
+const showPdfDialog = ref(false)
+const pdfOptions = ref([])
+const pdfCustomName = ref('')
+const pdfSelectedName = ref('')
+const predefinedRouteNames = [
+  'Trasa główna',
+  'Trasa zapasowa',
+  'Trasa powrotna główna',
+  'Trasa powrotna zapasowa'
+]
+
+function onCustomNameInput (val) {
+  if (val && pdfSelectedName.value) {
+    pdfSelectedName.value = ''
+  }
+}
+function onDropdownSelect (val) {
+  if (val && pdfCustomName.value) {
+    pdfCustomName.value = ''
+  }
+}
 const terrainTypes = ['ciężki', 'średni', 'łatwy']
 const terrainSpeeds = { ciężki: 1.5, średni: 3, łatwy: 5 }
 const etaSegments = reactive([])
@@ -279,18 +338,37 @@ function exportGPX () {
 }
 
 // Eksport PDF
-function exportPDF () {
+
+function handlePdfExport () {
+  showPdfDialog.value = false
+  let routeName = ''
+  if (pdfOptions.value.includes('name')) {
+    routeName = pdfCustomName.value || pdfSelectedName.value || 'Tabela marszu'
+  }
+  exportPDF(routeName)
+}
+
+function exportPDF (routeName = '') {
   if (!routeTable.value.length) return
   const doc = new JsPDF()
-  doc.text('Tabela marszu', 14, 16)
+  let y = 16
+  // Dodaj nazwę jeśli wybrano
+  if (pdfOptions.value.includes('name')) {
+    doc.text(routeName || 'Tabela marszu', 14, y)
+    y += 8
+  }
   autoTable(doc, {
-    startY: 22,
+    startY: y,
     head: [columns.map(col => col.name !== 'odleglosc' ? col.label : 'Dystans (m)')],
     body: routeTable.value.map(row => columns.map(col => row[col.field])),
     styles: { fontSize: 10 },
     headStyles: { fillColor: [45, 62, 47] }
   })
-  doc.save('tabela-marszu.pdf')
+  // Dodaj mapę jeśli wybrano (placeholder, do implementacji)
+  if (pdfOptions.value.includes('map')) {
+    doc.text('[MAPA - do wdrożenia]', 14, doc.lastAutoTable.finalY + 10)
+  }
+  doc.save((routeName ? routeName.replace(/\s+/g, '-') : 'tabela-marszu') + '.pdf')
 }
 
 onMounted(() => {
