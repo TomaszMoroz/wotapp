@@ -12,6 +12,30 @@
           <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
             <q-btn label="Dodaj punkt" color="green-7" @click="enablePinMode" :disable="pinMode" />
+            <q-btn label="Dodaj pkt spec." color="blue-7" @click="showSpecialDialog = true" :disable="pinMode" />
+                  <q-dialog v-model="showSpecialDialog">
+                    <q-card style="min-width:320px;max-width:95vw;">
+                      <q-card-section class="text-h6">Dodaj punkt specjalny</q-card-section>
+                      <q-card-section>
+                        <q-select
+                          v-model="specialType"
+                          :options="specialTypes"
+                          label="Typ punktu"
+                          dense outlined emit-value map-options
+                        />
+                        <q-input
+                          v-if="specialType === 'INNY'"
+                          v-model="specialCustomName"
+                          label="Nazwa własna punktu"
+                          dense outlined class="q-mt-md"
+                        />
+                      </q-card-section>
+                      <q-card-actions align="right">
+                        <q-btn flat label="Anuluj" color="primary" v-close-popup />
+                        <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk" />
+                      </q-card-actions>
+                    </q-card>
+                  </q-dialog>
             <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" />
             <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" />
             <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" />
@@ -127,6 +151,31 @@ const iconPin = L.icon({
   iconSize: [32, 32],
   iconAnchor: [16, 32]
 })
+const iconPzpr = L.icon({
+  iconUrl: '/icons/pzpr.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+})
+const iconMedevac = L.icon({
+  iconUrl: '/icons/medevac.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+})
+const iconOp = L.icon({
+  iconUrl: '/icons/op.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+})
+const iconBaza = L.icon({
+  iconUrl: '/icons/baza.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+})
+const iconOther = L.icon({
+  iconUrl: '/icons/other.svg',
+  iconSize: [32, 32],
+  iconAnchor: [16, 32]
+})
 
 const search = ref('')
 const map = ref(null)
@@ -135,6 +184,25 @@ const markers = ref([])
 const polylines = ref([])
 const pinMode = ref(false)
 const routeTable = ref([])
+
+// --- Special Points State ---
+const showSpecialDialog = ref(false)
+const specialType = ref('')
+const specialCustomName = ref('')
+const specialTypes = [
+  { label: 'PZPR', value: 'PZPR' },
+  { label: 'MEDEVAC', value: 'MEDEVAC' },
+  { label: 'OP', value: 'OP' },
+  { label: 'BAZA', value: 'BAZA' },
+  { label: 'INNY', value: 'INNY' }
+]
+const specialPoints = ref([]) // {lat, lng, type, name}
+let addSpecialMode = false
+
+function handleSpecialDialogOk () {
+  showSpecialDialog.value = false
+  addSpecialMode = true
+}
 
 const columns = [
   { name: 'lp', label: 'Lp.', field: 'lp', align: 'left' },
@@ -151,10 +219,12 @@ const pdfOptions = ref([])
 const pdfCustomName = ref('')
 const pdfSelectedName = ref('')
 const predefinedRouteNames = [
-  'Trasa główna',
-  'Trasa zapasowa',
-  'Trasa powrotna główna',
-  'Trasa powrotna zapasowa'
+  'Trasa A',
+  'Trasa B',
+  'Trasa C',
+  'Trasa powrotna A',
+  'Trasa powrotna B',
+  'Trasa powrotna C'
 ]
 
 function onCustomNameInput (val) {
@@ -350,7 +420,13 @@ function handlePdfExport () {
 
 function exportPDF (routeName = '') {
   if (!routeTable.value.length) return
+  // Use Roboto if available, else fallback to helvetica
   const doc = new JsPDF()
+  try {
+    doc.setFont('Roboto', 'normal')
+  } catch (e) {
+    doc.setFont('helvetica', 'normal')
+  }
   let y = 16
   // Dodaj nazwę jeśli wybrano
   if (pdfOptions.value.includes('name')) {
@@ -378,6 +454,24 @@ onMounted(() => {
     maxZoom: 19
   }).addTo(map.value)
   map.value.on('click', (e) => {
+    if (addSpecialMode) {
+      // Add special point
+      const type = specialType.value
+      const name = type === 'INNY' ? specialCustomName.value : type
+      specialPoints.value.push({ lat: e.latlng.lat, lng: e.latlng.lng, type, name })
+      // Add marker with correct icon
+      let icon = iconOther
+      if (type === 'PZPR') icon = iconPzpr
+      else if (type === 'MEDEVAC') icon = iconMedevac
+      else if (type === 'OP') icon = iconOp
+      else if (type === 'BAZA') icon = iconBaza
+      L.marker([e.latlng.lat, e.latlng.lng], { icon }).addTo(map.value)
+      // Optionally store marker if you want to remove later
+      addSpecialMode = false
+      specialType.value = ''
+      specialCustomName.value = ''
+      return
+    }
     if (!pinMode.value) return
     pins.value.push({ lat: e.latlng.lat, lng: e.latlng.lng })
     // Dodaj marker z domyślną ikoną, potem zaktualizuj wszystkie
