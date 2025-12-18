@@ -195,6 +195,8 @@ const map = ref(null)
 const pins = ref([])
 const markers = ref([])
 const polylines = ref([])
+// Stack historii: każdy wpis to { type: 'pin'|'special', marker, idx }
+const pointHistory = ref([])
 const pinMode = ref(false)
 const routeTable = ref([])
 
@@ -367,14 +369,19 @@ function enablePinMode () {
 }
 
 function clearAll () {
+  // Usuń wszystkie markery z mapy
+  pointHistory.value.forEach(entry => {
+    if (entry.marker && map.value) {
+      try { map.value.removeLayer(entry.marker) } catch (e) {}
+    }
+  })
   pins.value = []
+  specialPoints.value = []
   routeTable.value = []
-  // Usuń markery
-  markers.value.forEach(m => map.value && map.value.removeLayer(m))
   markers.value = []
-  // Usuń linie
   polylines.value.forEach(l => map.value && map.value.removeLayer(l))
   polylines.value = []
+  pointHistory.value = []
 }
 
 function calculateRoute () {
@@ -389,7 +396,10 @@ function calculateRoute () {
       polylines.value.push(polyline)
     }
   }
-  if (pins.value.length < 1) return
+  if (pins.value.length < 1) {
+    routeTable.value = []
+    return
+  }
   const table = []
   // Punkt startowy
   const start = pins.value[0]
@@ -523,14 +533,13 @@ onMounted(() => {
       const type = specialType.value
       const name = type === 'INNY' ? specialCustomName.value : type
       specialPoints.value.push({ lat: e.latlng.lat, lng: e.latlng.lng, type, name })
-      // Add marker with correct icon
       let icon = iconOther
       if (type === 'PZPR') icon = iconPzpr
       else if (type === 'MEDEVAC') icon = iconMedevac
       else if (type === 'OP') icon = iconOp
       else if (type === 'BAZA') icon = iconBaza
-      L.marker([e.latlng.lat, e.latlng.lng], { icon }).addTo(map.value)
-      // Optionally store marker if you want to remove later
+      const marker = L.marker([e.latlng.lat, e.latlng.lng], { icon }).addTo(map.value)
+      pointHistory.value.push({ type: 'special', marker, idx: specialPoints.value.length - 1 })
       addSpecialMode = false
       specialType.value = ''
       specialCustomName.value = ''
@@ -538,9 +547,9 @@ onMounted(() => {
     }
     if (!pinMode.value) return
     pins.value.push({ lat: e.latlng.lat, lng: e.latlng.lng })
-    // Dodaj marker z domyślną ikoną, potem zaktualizuj wszystkie
     const marker = L.marker([e.latlng.lat, e.latlng.lng], { icon: iconPin }).addTo(map.value)
     markers.value.push(marker)
+    pointHistory.value.push({ type: 'pin', marker, idx: pins.value.length - 1 })
     updateMarkerIcons()
     pinMode.value = false
     calculateRoute()
@@ -548,17 +557,29 @@ onMounted(() => {
 })
 
 function removeLastPin () {
-  if (pins.value.length === 0) return
-  pins.value.pop()
-  // Usuń marker
-  const marker = markers.value.pop()
-  if (marker && map.value) map.value.removeLayer(marker)
-  // Zaktualizuj ikony markerów
-  updateMarkerIcons()
-  // Usuń linie i narysuj od nowa
-  polylines.value.forEach(l => map.value && map.value.removeLayer(l))
-  polylines.value = []
-  calculateRoute()
+  if (pointHistory.value.length === 0) return
+  const last = pointHistory.value.pop()
+  if (last.type === 'pin' && pins.value.length > 0) {
+    pins.value.splice(last.idx, 1)
+    if (last.marker && map.value) {
+      try { map.value.removeLayer(last.marker) } catch (e) {}
+    }
+    markers.value.splice(last.idx, 1)
+    updateMarkerIcons()
+    polylines.value.forEach(l => map.value && map.value.removeLayer(l))
+    polylines.value = []
+    calculateRoute()
+  } else if (last.type === 'special' && specialPoints.value.length > 0) {
+    specialPoints.value.splice(last.idx, 1)
+    if (last.marker && map.value) {
+      try { map.value.removeLayer(last.marker) } catch (e) {}
+    }
+    // Wymuś odświeżenie tabeli jeśli nie ma już żadnych punktów specjalnych
+    if (specialPoints.value.length === 0) {
+      // Trik: Vue czasem nie odświeża computed, więc wymuszamy re-render
+      specialPoints.value = []
+    }
+  }
 }
 </script>
 
