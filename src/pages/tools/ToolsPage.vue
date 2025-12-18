@@ -41,6 +41,7 @@ const tools = [
   { title: 'Pogoda', icon: 'cloud', desc: 'Prognoza', route: '/tools/weather' },
   { title: 'Tabela marszu', icon: 'table_chart', desc: 'Kreator', route: '/tools/march-table' },
   { title: 'ROZPOZNANIE (F.R.)', icon: 'visibility', desc: 'Nauka i test', route: '/tools/recon' }
+  // { title: 'Watch Dog', icon: 'pets', desc: 'Analiza pojazdu', route: '/tools/lifereco' }
 ]
 const iconColors = [
   '#0f2c05',
