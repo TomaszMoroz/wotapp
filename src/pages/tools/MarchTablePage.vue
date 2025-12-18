@@ -2,7 +2,10 @@
   <q-page class="q-pa-md flex row">
     <div class="march-main-container q-mx-auto" style="width:100%;max-width:1500px;">
       <BackNav color="black" parentPath="/tools" />
-      <div class="text-h5 text-center q-mb-md">Tabela marszu</div>
+      <div class="text-h5 text-center q-mb-md flex items-center justify-center">
+        Tabela marszu
+        <q-btn flat round dense icon="info_outline" class="q-ml-sm" @click="showInfoDialog = true" aria-label="Instrukcja" />
+      </div>
       <div class="row items-start justify-center">
         <div class="col-7 flex column q-mr-xs" :class="isMobile ? 'col-12' : ''">
           <div class="q-mb-md">
@@ -131,6 +134,31 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
+
+      <q-dialog v-model="showInfoDialog">
+        <q-card style="min-width:340px;max-width:95vw;">
+          <q-card-section class="text-h6">Instrukcja korzystania z Tabeli marszu</q-card-section>
+          <q-card-section style="max-height:60vh;overflow:auto;">
+            <ol style="padding-left: 1.2em;">
+              <li><b>Dodawanie punktów trasy:</b> Kliknij „Dodaj punkt”, a następnie wskaż miejsce na mapie. Punkty wyznaczają trasę marszu.</li>
+              <li><b>Dodawanie punktów specjalnych:</b> Kliknij „Dodaj pkt spec.”, wybierz typ punktu (np. PZPR, MEDEVAC, OP, BAZA lub INNY), a następnie wskaż miejsce na mapie.</li>
+              <li><b>Usuwanie punktów:</b> Kliknij „Usuń ostatni”, aby usunąć ostatnio dodany punkt (trasy lub specjalny).</li>
+              <li><b>Czyszczenie wszystkiego:</b> Kliknij ikonę kosza, aby usunąć wszystkie punkty i wyczyścić tabelę.</li>
+              <li><b>Eksport danych:</b>
+                <ul>
+                  <li><b>GPX:</b> Pobierz trasę do pliku GPX.</li>
+                  <li><b>PDF:</b> Kliknij ikonę PDF, aby wygenerować dokument. Przed eksportem zaznacz, które elementy mają znaleźć się w pliku PDF (np. trasę, punkty specjalne, mapę, nazwę trasy), a następnie kliknij „Eksportuj”.</li>
+                </ul>
+              </li>
+              <li><b>Wyszukiwanie terenu:</b> Wpisz nazwę miejsca lub współrzędne MGRS i kliknij „Pokaż teren”.</li>
+              <li><b>Obliczanie czasu marszu:</b> Kliknij ikonę zegara, aby zobaczyć szacowany czas przejścia trasy.</li>
+            </ol>
+          </q-card-section>
+          <q-card-actions align="right">
+            <q-btn flat label="Zamknij" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
       <div v-if="routeTable.length > 0" class="q-mt-md text-h6 text-center">ETA: {{ formatEta(etaResult) }}</div>
     </div>
   </q-page>
@@ -200,6 +228,7 @@ const pointHistory = ref([])
 const pinMode = ref(false)
 const routeTable = ref([])
 
+const showInfoDialog = ref(false)
 // --- Special Points State ---
 const showSpecialDialog = ref(false)
 const specialType = ref('')
