@@ -99,16 +99,17 @@
         <q-card style="min-width:320px;max-width:95vw;">
           <q-card-section class="text-h6">Eksport PDF</q-card-section>
           <q-card-section>
-            <q-option-group
-              v-model="pdfOptions"
-              :options="[
-                { label: 'Załącz mapę', value: 'map' },
-                { label: 'Nadaj nazwę', value: 'name' },
-                ...(specialPoints.length > 0 ? [{ label: 'Dodaj punkty specjalne', value: 'specialPoints' }] : []),
-                ...(routeTable.length > 0 ? [{ label: 'Dodaj trasę', value: 'routeTable' }] : [])
-              ]"
-              type="checkbox"
-            />
+<q-option-group
+  v-model="pdfOptions"
+  :options="[
+    { label: 'Załącz mapę', value: 'map' },
+    { label: 'Siatka MGRS (1km)', value: 'mgrsGrid' },
+    { label: 'Nadaj nazwę', value: 'name' },
+    ...(specialPoints.length > 0 ? [{ label: 'Dodaj punkty specjalne', value: 'specialPoints' }] : []),
+    ...(routeTable.length > 0 ? [{ label: 'Dodaj trasę', value: 'routeTable' }] : [])
+  ]"
+  type="checkbox"
+/>
             <div v-if="pdfOptions.includes('name')" class="q-mt-md">
               <q-input
                 v-model="pdfCustomName"
@@ -167,12 +168,13 @@
 <script setup>
 import BackNav from 'components/BackNav.vue'
 import { ref, onMounted, reactive, computed, watchEffect } from 'vue'
-import { useQuasar } from 'quasar'
+import { useQuasar, Loading } from 'quasar'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import * as mgrs from 'mgrs'
 import JsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
+import leafletImage from 'leaflet-image'
 
 const $q = useQuasar()
 
@@ -421,7 +423,7 @@ function calculateRoute () {
     for (let i = 1; i < pins.value.length; i++) {
       const prev = pins.value[i - 1]
       const curr = pins.value[i]
-      const polyline = L.polyline([[prev.lat, prev.lng], [curr.lat, curr.lng]], { color: 'red', weight: 4 }).addTo(map.value)
+      const polyline = L.polyline([[prev.lat, prev.lng], [curr.lat, curr.lng]], { color: 'red', weight: 4, renderer: L.canvas() }).addTo(map.value)
       polylines.value.push(polyline)
     }
   }
@@ -499,14 +501,126 @@ function exportGPX () {
 
 function handlePdfExport () {
   showPdfDialog.value = false
+  Loading.show({ message: 'Generowanie PDF...' })
   let routeName = ''
   if (pdfOptions.value.includes('name')) {
     routeName = pdfCustomName.value || pdfSelectedName.value || 'Tabela marszu'
   }
-  exportPDF(routeName)
+  // Dodaj/usuń siatkę MGRS na mapie przed eksportem
+  let gridLayers = []
+  const forPdf = pdfOptions.value.includes('map')
+  if (pdfOptions.value.includes('mgrsGrid') && map.value) {
+    gridLayers = drawMgrsGrid(map.value, forPdf)
+  }
+  // Force redraw of all overlays (rectangles, polylines)
+  if (pdfOptions.value.includes('map') && map.value) {
+    map.value.invalidateSize()
+    map.value.setZoom(map.value.getZoom()) // force repaint
+    map.value.eachLayer(l => {
+      if (l.redraw) l.redraw()
+    })
+    polylines.value.forEach(l => l.redraw && l.redraw())
+    gridLayers.forEach(l => l.redraw && l.redraw())
+    // Wait for two animation frames and a longer timeout to ensure overlays are painted
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          leafletImage(map.value, function (err, canvas) {
+            let mapImgData = null
+            let mapImgDims = null
+            if (!err && canvas) {
+              mapImgData = canvas.toDataURL('image/png')
+              mapImgDims = { width: canvas.width, height: canvas.height }
+            }
+            // Usuń siatkę po eksporcie
+            if (gridLayers.length) gridLayers.forEach(l => map.value.removeLayer(l))
+            exportPDF(routeName, mapImgData, mapImgDims)
+            Loading.hide()
+          })
+        }, 400)
+      })
+    })
+  } else {
+    // Usuń siatkę jeśli była dodana
+    if (gridLayers.length && map.value) gridLayers.forEach(l => map.value.removeLayer(l))
+    exportPDF(routeName, null, null)
+    Loading.hide()
+  }
 }
 
-function exportPDF (routeName = '') {
+// Rysuj siatkę MGRS 1km x 1km na mapie, zwraca tablicę warstw do usunięcia
+function drawMgrsGrid (map, forPdf = false) {
+  const bounds = map.getBounds()
+  const sw = bounds.getSouthWest()
+  const ne = bounds.getNorthEast()
+  // 1km w stopniach szerokości geograficznej (stała)
+  const latStep = 1 / 110.574
+  const centerLat = (sw.lat + ne.lat) / 2
+  const lngStep = 1 / (111.320 * Math.cos(centerLat * Math.PI / 180))
+  const minLat = Math.floor(sw.lat / latStep) * latStep
+  const maxLat = Math.ceil(ne.lat / latStep) * latStep
+  const minLng = Math.floor(sw.lng / lngStep) * lngStep
+  const maxLng = Math.ceil(ne.lng / lngStep) * lngStep
+  const maxSquares = 50
+
+  // Usuń poprzednią warstwę grid jeśli istnieje
+  if (map._mgrsGridLayer) {
+    map.removeLayer(map._mgrsGridLayer)
+    map._mgrsGridLayer = null
+  }
+  // Custom canvas layer
+  const gridLayer = L.canvas({ padding: 0.5 })
+  gridLayer.addTo(map)
+  map._mgrsGridLayer = gridLayer
+  const ctx = gridLayer._ctx
+  if (!ctx) return [gridLayer]
+  // Get pixel positions for grid lines
+  let latCount = 0
+  for (let lat = minLat; lat < maxLat && latCount < maxSquares; lat += latStep, latCount++) {
+    const p1 = map.latLngToContainerPoint([lat, minLng])
+    const p2 = map.latLngToContainerPoint([lat, maxLng])
+    ctx.save()
+    ctx.strokeStyle = '#008800'
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(p1.x, p1.y)
+    ctx.lineTo(p2.x, p2.y)
+    ctx.stroke()
+    ctx.restore()
+  }
+  let lngCount = 0
+  for (let lng = minLng; lng < maxLng && lngCount < maxSquares; lng += lngStep, lngCount++) {
+    const p1 = map.latLngToContainerPoint([minLat, lng])
+    const p2 = map.latLngToContainerPoint([maxLat, lng])
+    ctx.save()
+    ctx.strokeStyle = '#008800'
+    ctx.lineWidth = 1
+    ctx.beginPath()
+    ctx.moveTo(p1.x, p1.y)
+    ctx.lineTo(p2.x, p2.y)
+    ctx.stroke()
+    ctx.restore()
+  }
+  // Optionally add MGRS labels for interactive map only
+  if (!forPdf) {
+    latCount = 0
+    for (let lat = minLat; lat < maxLat && latCount < maxSquares; lat += latStep, latCount++) {
+      let lngCount = 0
+      for (let lng = minLng; lng < maxLng && lngCount < maxSquares; lng += lngStep, lngCount++) {
+        const center = [(lat + lat + latStep) / 2, (lng + lng + lngStep) / 2]
+        const mgrsLabel = mgrs.forward([center[1], center[0]], 5)
+        const icon = L.divIcon({
+          className: 'mgrs-label',
+          html: `<div style="font-size:10px;color:#008800;text-shadow:1px 1px 2px #fff;">${mgrsLabel}</div>`
+        })
+        L.marker(center, { icon, interactive: false }).addTo(map)
+      }
+    }
+  }
+  return [gridLayer]
+}
+
+function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
   // Use Roboto if available, else fallback to helvetica
   const doc = new JsPDF()
   try {
@@ -543,9 +657,16 @@ function exportPDF (routeName = '') {
     })
     y = doc.lastAutoTable.finalY + 8
   }
-  // Dodaj mapę jeśli wybrano (placeholder, do implementacji)
-  if (pdfOptions.value.includes('map')) {
-    doc.text('[MAPA - do wdrożenia]', 14, y)
+  // Dodaj mapę jeśli wybrano i jest screenshot
+  if (pdfOptions.value.includes('map') && mapImgData && mapImgDims) {
+    // Szerokość PDF: 210mm, marginesy 14px, szerokość mapy ~180mm
+    const pdfWidth = doc.internal.pageSize.getWidth()
+    const imgWidth = pdfWidth - 28
+    // Zachowaj proporcje mapy
+    const aspect = mapImgDims.height / mapImgDims.width
+    const imgHeight = imgWidth * aspect
+    doc.addImage(mapImgData, 'PNG', 14, y, imgWidth, imgHeight)
+    y += imgHeight + 8
   }
   doc.save((routeName ? routeName.replace(/\s+/g, '-') : 'tabela-marszu') + '.pdf')
 }
