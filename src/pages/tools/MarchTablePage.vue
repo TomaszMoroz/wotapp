@@ -11,6 +11,7 @@
           <div class="q-mb-md">
             <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
             <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
+            <q-checkbox v-model="showMgrsGrid" label="Pokaż siatkę MGRS" color="green" class="q-ml-md" />
           </div>
           <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
@@ -167,7 +168,7 @@
 
 <script setup>
 import BackNav from 'components/BackNav.vue'
-import { ref, onMounted, reactive, computed, watchEffect } from 'vue'
+import { ref, onMounted, reactive, computed, watchEffect, watch } from 'vue'
 import { useQuasar, Loading } from 'quasar'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
@@ -565,7 +566,11 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
   const minLng = Math.floor(sw.lng / lngStep) * lngStep
   const maxLng = Math.ceil(ne.lng / lngStep) * lngStep
   const maxSquares = 50
-  // Get pixel positions for grid lines
+  ctx.font = 'bold 14px Arial'
+  ctx.fillStyle = '#008800'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'middle'
+  // Draw grid lines
   let latCount = 0
   for (let lat = minLat; lat < maxLat && latCount < maxSquares; lat += latStep, latCount++) {
     const p1 = map.latLngToContainerPoint([lat, minLng])
@@ -578,6 +583,21 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     ctx.lineTo(p2.x, p2.y)
     ctx.stroke()
     ctx.restore()
+    // Label for horizontal line (Y axis)
+    try {
+      const mgrsStr = mgrs.forward([minLng, lat], 5)
+      const label = mgrsStr.slice(2, 4) // first two digits after zone/grid
+      // Left side
+      ctx.save()
+      ctx.textAlign = 'right'
+      ctx.fillText(label, p1.x - 8, p1.y)
+      ctx.restore()
+      // Right side
+      ctx.save()
+      ctx.textAlign = 'left'
+      ctx.fillText(label, p2.x + 8, p2.y)
+      ctx.restore()
+    } catch (e) {}
   }
   let lngCount = 0
   for (let lng = minLng; lng < maxLng && lngCount < maxSquares; lng += lngStep, lngCount++) {
@@ -591,6 +611,23 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     ctx.lineTo(p2.x, p2.y)
     ctx.stroke()
     ctx.restore()
+    // Label for vertical line (X axis)
+    try {
+      const mgrsStr = mgrs.forward([lng, minLat], 5)
+      const label = mgrsStr.slice(4, 6) // first two digits after zone/grid
+      // Top
+      ctx.save()
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'top'
+      ctx.fillText(label, p1.x, p1.y - 10)
+      ctx.restore()
+      // Bottom
+      ctx.save()
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'bottom'
+      ctx.fillText(label, p2.x, p2.y + 10)
+      ctx.restore()
+    } catch (e) {}
   }
 }
 
@@ -782,6 +819,19 @@ function removeLastPin () {
     }
   }
 }
+
+const showMgrsGrid = ref(false)
+
+watch(showMgrsGrid, (val) => {
+  if (map.value) {
+    if (val) {
+      drawMgrsGrid(map.value, true)
+    } else if (map.value._mgrsGridLayer) {
+      map.value.removeLayer(map.value._mgrsGridLayer)
+      map.value._mgrsGridLayer = null
+    }
+  }
+})
 </script>
 
 <style scoped>
