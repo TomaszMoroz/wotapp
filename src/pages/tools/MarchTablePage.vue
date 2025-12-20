@@ -529,6 +529,10 @@ function handlePdfExport () {
             let mapImgData = null
             let mapImgDims = null
             if (!err && canvas) {
+              if (pdfOptions.value.includes('mgrsGrid')) {
+                // Draw grid on the canvas
+                drawMgrsGridOnCanvas(canvas, map.value, map.value.getBounds())
+              }
               mapImgData = canvas.toDataURL('image/png')
               mapImgDims = { width: canvas.width, height: canvas.height }
             }
@@ -548,12 +552,11 @@ function handlePdfExport () {
   }
 }
 
-// Rysuj siatkę MGRS 1km x 1km na mapie, zwraca tablicę warstw do usunięcia
-function drawMgrsGrid (map, forPdf = false) {
-  const bounds = map.getBounds()
+// Helper to draw MGRS grid on a canvas
+function drawMgrsGridOnCanvas (canvas, map, bounds) {
+  const ctx = canvas.getContext('2d')
   const sw = bounds.getSouthWest()
   const ne = bounds.getNorthEast()
-  // 1km w stopniach szerokości geograficznej (stała)
   const latStep = 1 / 110.574
   const centerLat = (sw.lat + ne.lat) / 2
   const lngStep = 1 / (111.320 * Math.cos(centerLat * Math.PI / 180))
@@ -562,18 +565,6 @@ function drawMgrsGrid (map, forPdf = false) {
   const minLng = Math.floor(sw.lng / lngStep) * lngStep
   const maxLng = Math.ceil(ne.lng / lngStep) * lngStep
   const maxSquares = 50
-
-  // Usuń poprzednią warstwę grid jeśli istnieje
-  if (map._mgrsGridLayer) {
-    map.removeLayer(map._mgrsGridLayer)
-    map._mgrsGridLayer = null
-  }
-  // Custom canvas layer
-  const gridLayer = L.canvas({ padding: 0.5 })
-  gridLayer.addTo(map)
-  map._mgrsGridLayer = gridLayer
-  const ctx = gridLayer._ctx
-  if (!ctx) return [gridLayer]
   // Get pixel positions for grid lines
   let latCount = 0
   for (let lat = minLat; lat < maxLat && latCount < maxSquares; lat += latStep, latCount++) {
@@ -601,22 +592,82 @@ function drawMgrsGrid (map, forPdf = false) {
     ctx.stroke()
     ctx.restore()
   }
-  // Optionally add MGRS labels for interactive map only
-  if (!forPdf) {
-    latCount = 0
+}
+
+// Custom Leaflet layer for MGRS grid
+const MGRSGridLayer = L.Layer.extend({
+  initialize: function (options) {
+    L.setOptions(this, options)
+  },
+  onAdd: function (map) {
+    this._map = map
+    this._canvas = L.DomUtil.create('canvas', 'leaflet-mgrs-grid')
+    this._canvas.width = map.getSize().x
+    this._canvas.height = map.getSize().y
+    this._canvas.style.position = 'absolute'
+    this._canvas.style.top = '0'
+    this._canvas.style.left = '0'
+    map.getPanes().overlayPane.appendChild(this._canvas)
+    map.on('moveend zoomend resize', this._draw, this)
+    this._draw()
+  },
+  onRemove: function (map) {
+    map.getPanes().overlayPane.removeChild(this._canvas)
+    map.off('moveend zoomend resize', this._draw, this)
+  },
+  _draw: function () {
+    const map = this._map
+    const ctx = this._canvas.getContext('2d')
+    ctx.clearRect(0, 0, this._canvas.width, this._canvas.height)
+    const bounds = map.getBounds()
+    const sw = bounds.getSouthWest()
+    const ne = bounds.getNorthEast()
+    const latStep = 1 / 110.574
+    const centerLat = (sw.lat + ne.lat) / 2
+    const lngStep = 1 / (111.320 * Math.cos(centerLat * Math.PI / 180))
+    const minLat = Math.floor(sw.lat / latStep) * latStep
+    const maxLat = Math.ceil(ne.lat / latStep) * latStep
+    const minLng = Math.floor(sw.lng / lngStep) * lngStep
+    const maxLng = Math.ceil(ne.lng / lngStep) * lngStep
+    const maxSquares = 50
+    let latCount = 0
     for (let lat = minLat; lat < maxLat && latCount < maxSquares; lat += latStep, latCount++) {
-      let lngCount = 0
-      for (let lng = minLng; lng < maxLng && lngCount < maxSquares; lng += lngStep, lngCount++) {
-        const center = [(lat + lat + latStep) / 2, (lng + lng + lngStep) / 2]
-        const mgrsLabel = mgrs.forward([center[1], center[0]], 5)
-        const icon = L.divIcon({
-          className: 'mgrs-label',
-          html: `<div style="font-size:10px;color:#008800;text-shadow:1px 1px 2px #fff;">${mgrsLabel}</div>`
-        })
-        L.marker(center, { icon, interactive: false }).addTo(map)
-      }
+      const p1 = map.latLngToContainerPoint([lat, minLng])
+      const p2 = map.latLngToContainerPoint([lat, maxLng])
+      ctx.save()
+      ctx.strokeStyle = '#008800'
+      ctx.lineWidth = 1
+      ctx.beginPath()
+      ctx.moveTo(p1.x, p1.y)
+      ctx.lineTo(p2.x, p2.y)
+      ctx.stroke()
+      ctx.restore()
+    }
+    let lngCount = 0
+    for (let lng = minLng; lng < maxLng && lngCount < maxSquares; lng += lngStep, lngCount++) {
+      const p1 = map.latLngToContainerPoint([minLat, lng])
+      const p2 = map.latLngToContainerPoint([maxLat, lng])
+      ctx.save()
+      ctx.strokeStyle = '#008800'
+      ctx.lineWidth = 1
+      ctx.beginPath()
+      ctx.moveTo(p1.x, p1.y)
+      ctx.lineTo(p2.x, p2.y)
+      ctx.stroke()
+      ctx.restore()
     }
   }
+})
+
+// Replace drawMgrsGrid to use the custom layer
+function drawMgrsGrid (map, forPdf = false) {
+  if (map._mgrsGridLayer) {
+    map.removeLayer(map._mgrsGridLayer)
+    map._mgrsGridLayer = null
+  }
+  const gridLayer = new MGRSGridLayer()
+  gridLayer.addTo(map)
+  map._mgrsGridLayer = gridLayer
   return [gridLayer]
 }
 
