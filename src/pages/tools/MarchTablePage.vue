@@ -11,7 +11,7 @@
           <div class="q-mb-md">
             <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
             <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
-            <q-checkbox v-model="showMgrsGrid" label="Pokaż siatkę MGRS" color="green" class="q-ml-md" />
+            <q-checkbox v-model="showMgrsGrid" label="Grid MGRS (test)" color="green" class="q-ml-md" />
           </div>
           <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
@@ -589,8 +589,8 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     ctx.lineTo(p2.x, p2.y)
     ctx.stroke()
     ctx.restore()
-    // Label (first two digits of easting)
-    const label = String(e).padStart(6, '0').slice(0, 2)
+    // Label: pierwsze dwie cyfry easting (km)
+    const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(0, 2)
     ctx.save()
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
@@ -617,8 +617,8 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     ctx.lineTo(p2.x, p2.y)
     ctx.stroke()
     ctx.restore()
-    // Label (first two digits of northing)
-    const label = String(n).padStart(7, '0').slice(0, 2)
+    // Label: pierwsze dwie cyfry northing (km)
+    const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(0, 2)
     ctx.save()
     ctx.textAlign = 'right'
     ctx.textBaseline = 'middle'
@@ -704,12 +704,22 @@ const MGRSGridLayer = L.Layer.extend({
           const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
           const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
           const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
-          console.log('[MGRSGridLayer] VLINE', e, p1, p2)
           ctx.save()
           ctx.beginPath()
           ctx.moveTo(p1.x, p1.y)
           ctx.lineTo(p2.x, p2.y)
           ctx.stroke()
+          ctx.restore()
+          // Etykieta: pierwsze dwie cyfry easting (km)
+          const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(0, 2)
+          ctx.save()
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'top'
+          ctx.fillStyle = '#008800'
+          ctx.font = 'bold 12px Arial'
+          ctx.fillText(label, p1.x, p1.y - 12)
+          ctx.textBaseline = 'bottom'
+          ctx.fillText(label, p2.x, p2.y + 12)
           ctx.restore()
         }
         // Draw horizontal line (only once per northing)
@@ -718,32 +728,25 @@ const MGRSGridLayer = L.Layer.extend({
           const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
           const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
           const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
-          console.log('[MGRSGridLayer] HLINE', n, p1, p2)
           ctx.save()
           ctx.beginPath()
           ctx.moveTo(p1.x, p1.y)
           ctx.lineTo(p2.x, p2.y)
           ctx.stroke()
           ctx.restore()
+          // Etykieta: pierwsze dwie cyfry northing (km)
+          const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(0, 2)
+          ctx.save()
+          ctx.textAlign = 'right'
+          ctx.textBaseline = 'middle'
+          ctx.fillStyle = '#008800'
+          ctx.font = 'bold 12px Arial'
+          ctx.fillText(label, p1.x - 12, p1.y)
+          ctx.textAlign = 'left'
+          ctx.fillText(label, p2.x + 12, p2.y)
+          ctx.restore()
         }
-        // Draw full MGRS label at intersection
-        const latlng = utm.toLatLon(e, n, zoneNum, zoneLetter)
-        const p = map.latLngToContainerPoint([latlng.latitude, latlng.longitude])
-        // Compose full MGRS string (5-digit precision)
-        let mgrsStr = ''
-        try {
-          mgrsStr = mgrs.forward([latlng.lng, latlng.lat], 5)
-        } catch (e) {}
-        ctx.save()
-        ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
-        ctx.fillStyle = '#008800'
-        ctx.font = 'bold 12px Arial'
-        if (mgrsStr) {
-          console.log('[MGRSGridLayer] LABEL', mgrsStr, p)
-          ctx.fillText(mgrsStr, p.x, p.y - 2)
-        }
-        ctx.restore()
+        // (Nie rysujemy pełnego MGRS na przecięciu)
       }
     }
   }
