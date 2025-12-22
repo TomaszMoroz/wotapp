@@ -176,6 +176,7 @@ import * as mgrs from 'mgrs'
 import JsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import leafletImage from 'leaflet-image'
+import * as utm from 'utm'
 
 const $q = useQuasar()
 
@@ -556,25 +557,30 @@ function handlePdfExport () {
 // Helper to draw MGRS grid on a canvas
 function drawMgrsGridOnCanvas (canvas, map, bounds) {
   const ctx = canvas.getContext('2d')
-  const sw = bounds.getSouthWest()
-  const ne = bounds.getNorthEast()
-  const latStep = 1 / 110.574
-  const centerLat = (sw.lat + ne.lat) / 2
-  const lngStep = 1 / (111.320 * Math.cos(centerLat * Math.PI / 180))
-  const minLat = Math.floor(sw.lat / latStep) * latStep
-  const maxLat = Math.ceil(ne.lat / latStep) * latStep
-  const minLng = Math.floor(sw.lng / lngStep) * lngStep
-  const maxLng = Math.ceil(ne.lng / lngStep) * lngStep
-  const maxSquares = 50
   ctx.font = 'bold 14px Arial'
   ctx.fillStyle = '#008800'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
-  // Draw grid lines
-  let latCount = 0
-  for (let lat = minLat; lat < maxLat && latCount < maxSquares; lat += latStep, latCount++) {
-    const p1 = map.latLngToContainerPoint([lat, minLng])
-    const p2 = map.latLngToContainerPoint([lat, maxLng])
+  // Use UTM grid for true MGRS alignment
+  const sw = bounds.getSouthWest()
+  const ne = bounds.getNorthEast()
+  const utmSW = utm.fromLatLon(sw.lat, sw.lng)
+  const utmNE = utm.fromLatLon(ne.lat, ne.lng)
+  const zoneNum = utmSW.zoneNum
+  const zoneLetter = utmSW.zoneLetter
+  // Round easting/northing to 1km
+  const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
+  const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
+  const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
+  const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
+  const maxSquares = 50
+  // Draw vertical grid lines (easting)
+  let eCount = 0
+  for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
+    const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
+    const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
+    const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+    const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
     ctx.save()
     ctx.strokeStyle = '#008800'
     ctx.lineWidth = 1
@@ -583,26 +589,26 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     ctx.lineTo(p2.x, p2.y)
     ctx.stroke()
     ctx.restore()
-    // Label for horizontal line (Y axis)
-    try {
-      const mgrsStr = mgrs.forward([minLng, lat], 5)
-      const label = mgrsStr.slice(2, 4) // first two digits after zone/grid
-      // Left side
-      ctx.save()
-      ctx.textAlign = 'right'
-      ctx.fillText(label, p1.x - 8, p1.y)
-      ctx.restore()
-      // Right side
-      ctx.save()
-      ctx.textAlign = 'left'
-      ctx.fillText(label, p2.x + 8, p2.y)
-      ctx.restore()
-    } catch (e) {}
+    // Label (first two digits of easting)
+    const label = String(e).padStart(6, '0').slice(0, 2)
+    ctx.save()
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'top'
+    ctx.fillText(label, p1.x, p1.y - 12)
+    ctx.restore()
+    ctx.save()
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'bottom'
+    ctx.fillText(label, p2.x, p2.y + 12)
+    ctx.restore()
   }
-  let lngCount = 0
-  for (let lng = minLng; lng < maxLng && lngCount < maxSquares; lng += lngStep, lngCount++) {
-    const p1 = map.latLngToContainerPoint([minLat, lng])
-    const p2 = map.latLngToContainerPoint([maxLat, lng])
+  // Draw horizontal grid lines (northing)
+  let nCount = 0
+  for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
+    const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
+    const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
+    const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+    const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
     ctx.save()
     ctx.strokeStyle = '#008800'
     ctx.lineWidth = 1
@@ -611,27 +617,22 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     ctx.lineTo(p2.x, p2.y)
     ctx.stroke()
     ctx.restore()
-    // Label for vertical line (X axis)
-    try {
-      const mgrsStr = mgrs.forward([lng, minLat], 5)
-      const label = mgrsStr.slice(4, 6) // first two digits after zone/grid
-      // Top
-      ctx.save()
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'top'
-      ctx.fillText(label, p1.x, p1.y - 10)
-      ctx.restore()
-      // Bottom
-      ctx.save()
-      ctx.textAlign = 'center'
-      ctx.textBaseline = 'bottom'
-      ctx.fillText(label, p2.x, p2.y + 10)
-      ctx.restore()
-    } catch (e) {}
+    // Label (first two digits of northing)
+    const label = String(n).padStart(7, '0').slice(0, 2)
+    ctx.save()
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(label, p1.x - 12, p1.y)
+    ctx.restore()
+    ctx.save()
+    ctx.textAlign = 'left'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(label, p2.x + 12, p2.y)
+    ctx.restore()
   }
 }
 
-// Custom Leaflet layer for MGRS grid
+// Custom Leaflet layer for MGRS grid (with full MGRS labels at intersections)
 const MGRSGridLayer = L.Layer.extend({
   initialize: function (options) {
     L.setOptions(this, options)
@@ -644,54 +645,106 @@ const MGRSGridLayer = L.Layer.extend({
     this._canvas.style.position = 'absolute'
     this._canvas.style.top = '0'
     this._canvas.style.left = '0'
-    map.getPanes().overlayPane.appendChild(this._canvas)
-    map.on('moveend zoomend resize', this._draw, this)
+    this._canvas.style.pointerEvents = 'none'
+    this._canvas.style.zIndex = '200'
+    map.getPanes().markerPane.appendChild(this._canvas)
+    console.log('[MGRSGridLayer] Canvas added to overlayPane', this._canvas)
+    this._redrawHandler = this._draw.bind(this)
+    map.on('moveend zoomend resize', this._redrawHandler)
     this._draw()
   },
   onRemove: function (map) {
-    map.getPanes().overlayPane.removeChild(this._canvas)
-    map.off('moveend zoomend resize', this._draw, this)
+    if (this._canvas && this._canvas.parentNode) {
+      this._canvas.parentNode.removeChild(this._canvas)
+    }
+    map.off('moveend zoomend resize', this._redrawHandler)
   },
   _draw: function () {
     const map = this._map
+    // Ensure canvas matches map size
+    const size = map.getSize()
+    if (this._canvas.width !== size.x || this._canvas.height !== size.y) {
+      this._canvas.width = size.x
+      this._canvas.height = size.y
+    }
     const ctx = this._canvas.getContext('2d')
     ctx.clearRect(0, 0, this._canvas.width, this._canvas.height)
+    console.log('[MGRSGridLayer] _draw called, canvas size:', this._canvas.width, this._canvas.height)
+    // --- UTM-based grid for true MGRS alignment ---
     const bounds = map.getBounds()
     const sw = bounds.getSouthWest()
     const ne = bounds.getNorthEast()
-    const latStep = 1 / 110.574
-    const centerLat = (sw.lat + ne.lat) / 2
-    const lngStep = 1 / (111.320 * Math.cos(centerLat * Math.PI / 180))
-    const minLat = Math.floor(sw.lat / latStep) * latStep
-    const maxLat = Math.ceil(ne.lat / latStep) * latStep
-    const minLng = Math.floor(sw.lng / lngStep) * lngStep
-    const maxLng = Math.ceil(ne.lng / lngStep) * lngStep
+    const utmSW = utm.fromLatLon(sw.lat, sw.lng)
+    const utmNE = utm.fromLatLon(ne.lat, ne.lng)
+    console.log('[MGRSGridLayer] utmSW', utmSW, 'utmNE', utmNE, 'sw', sw, 'ne', ne)
+    const zoneNum = utmSW.zoneNum
+    const zoneLetter = utmSW.zoneLetter
+    const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
+    let maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
+    const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
+    let maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
     const maxSquares = 50
-    let latCount = 0
-    for (let lat = minLat; lat < maxLat && latCount < maxSquares; lat += latStep, latCount++) {
-      const p1 = map.latLngToContainerPoint([lat, minLng])
-      const p2 = map.latLngToContainerPoint([lat, maxLng])
-      ctx.save()
-      ctx.strokeStyle = '#008800'
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.moveTo(p1.x, p1.y)
-      ctx.lineTo(p2.x, p2.y)
-      ctx.stroke()
-      ctx.restore()
-    }
-    let lngCount = 0
-    for (let lng = minLng; lng < maxLng && lngCount < maxSquares; lng += lngStep, lngCount++) {
-      const p1 = map.latLngToContainerPoint([minLat, lng])
-      const p2 = map.latLngToContainerPoint([maxLat, lng])
-      ctx.save()
-      ctx.strokeStyle = '#008800'
-      ctx.lineWidth = 1
-      ctx.beginPath()
-      ctx.moveTo(p1.x, p1.y)
-      ctx.lineTo(p2.x, p2.y)
-      ctx.stroke()
-      ctx.restore()
+    console.log('[MGRSGridLayer] minE', minE, 'maxE', maxE, 'minN', minN, 'maxN', maxN)
+    // Wymuś zakres jeśli za mały (np. dla bardzo małego widoku)
+    if (maxE - minE < 1000) maxE = minE + 1000
+    if (maxN - minN < 1000) maxN = minN + 1000
+    ctx.font = 'bold 14px Arial'
+    ctx.fillStyle = '#000000'
+    ctx.strokeStyle = '#000000'
+    ctx.lineWidth = 1
+    console.log('[MGRSGridLayer] Drawing grid: canvas', this._canvas.width, this._canvas.height, 'bounds', bounds.toBBoxString())
+    // Draw grid lines and full MGRS labels at intersections
+    let eCount = 0
+    for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
+      let nCount = 0
+      for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
+        // Draw vertical line (only once per easting)
+        if (n === minN) {
+          const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
+          const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
+          const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+          const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
+          console.log('[MGRSGridLayer] VLINE', e, p1, p2)
+          ctx.save()
+          ctx.beginPath()
+          ctx.moveTo(p1.x, p1.y)
+          ctx.lineTo(p2.x, p2.y)
+          ctx.stroke()
+          ctx.restore()
+        }
+        // Draw horizontal line (only once per northing)
+        if (e === minE) {
+          const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
+          const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
+          const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+          const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
+          console.log('[MGRSGridLayer] HLINE', n, p1, p2)
+          ctx.save()
+          ctx.beginPath()
+          ctx.moveTo(p1.x, p1.y)
+          ctx.lineTo(p2.x, p2.y)
+          ctx.stroke()
+          ctx.restore()
+        }
+        // Draw full MGRS label at intersection
+        const latlng = utm.toLatLon(e, n, zoneNum, zoneLetter)
+        const p = map.latLngToContainerPoint([latlng.latitude, latlng.longitude])
+        // Compose full MGRS string (5-digit precision)
+        let mgrsStr = ''
+        try {
+          mgrsStr = mgrs.forward([latlng.lng, latlng.lat], 5)
+        } catch (e) {}
+        ctx.save()
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillStyle = '#008800'
+        ctx.font = 'bold 12px Arial'
+        if (mgrsStr) {
+          console.log('[MGRSGridLayer] LABEL', mgrsStr, p)
+          ctx.fillText(mgrsStr, p.x, p.y - 2)
+        }
+        ctx.restore()
+      }
     }
   }
 })
@@ -823,12 +876,18 @@ function removeLastPin () {
 const showMgrsGrid = ref(false)
 
 watch(showMgrsGrid, (val) => {
-  if (map.value) {
-    if (val) {
-      drawMgrsGrid(map.value, true)
-    } else if (map.value._mgrsGridLayer) {
-      map.value.removeLayer(map.value._mgrsGridLayer)
-      map.value._mgrsGridLayer = null
+  if (!map.value) return
+  // Usuwamy starą warstwę jeśli istnieje
+  if (map.value._mgrsGridLayer) {
+    map.value.removeLayer(map.value._mgrsGridLayer)
+    map.value._mgrsGridLayer = null
+  }
+  if (val) {
+    console.log('Adding MGRS grid layer')
+    // Dodajemy nową warstwę
+    const layers = drawMgrsGrid(map.value, true)
+    if (layers && layers.length > 0) {
+      map.value._mgrsGridLayer = layers[0]
     }
   }
 })
@@ -863,5 +922,9 @@ watch(showMgrsGrid, (val) => {
 /* Leaflet marker SVG na czarno */
 .leaflet-marker-icon[src$='.svg'] {
   filter: invert(1) grayscale(1);
+}
+.leaflet-mgrs-grid {
+  z-index: 1500 !important;
+  pointer-events: none;
 }
 </style>
