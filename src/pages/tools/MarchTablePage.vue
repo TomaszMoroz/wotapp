@@ -511,7 +511,8 @@ function handlePdfExport () {
   // Dodaj/usuń siatkę MGRS na mapie przed eksportem
   let gridLayers = []
   const forPdf = pdfOptions.value.includes('map')
-  if (pdfOptions.value.includes('mgrsGrid') && map.value) {
+  // Dodaj siatkę MGRS do mapy TYLKO jeśli nie jest już aktywna
+  if (pdfOptions.value.includes('mgrsGrid') && map.value && !map.value._mgrsGridLayer) {
     gridLayers = drawMgrsGrid(map.value, forPdf)
   }
   // Force redraw of all overlays (rectangles, polylines)
@@ -531,8 +532,8 @@ function handlePdfExport () {
             let mapImgData = null
             let mapImgDims = null
             if (!err && canvas) {
+              // Zawsze dorysuj siatkę MGRS na canvasie PDF jeśli wybrano opcję
               if (pdfOptions.value.includes('mgrsGrid')) {
-                // Draw grid on the canvas
                 drawMgrsGridOnCanvas(canvas, map.value, map.value.getBounds())
               }
               mapImgData = canvas.toDataURL('image/png')
