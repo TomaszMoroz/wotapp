@@ -100,17 +100,27 @@
         <q-card style="min-width:320px;max-width:95vw;">
           <q-card-section class="text-h6">Eksport PDF</q-card-section>
           <q-card-section>
-<q-option-group
-  v-model="pdfOptions"
-  :options="[
-    { label: 'Załącz mapę', value: 'map' },
-    { label: 'Siatka MGRS (1km)', value: 'mgrsGrid' },
-    { label: 'Nadaj nazwę', value: 'name' },
-    ...(specialPoints.length > 0 ? [{ label: 'Dodaj punkty specjalne', value: 'specialPoints' }] : []),
-    ...(routeTable.length > 0 ? [{ label: 'Dodaj trasę', value: 'routeTable' }] : [])
-  ]"
-  type="checkbox"
-/>
+            <q-option-group
+              v-model="pdfOptions"
+              :options="[
+                { label: 'Załącz mapę', value: 'map' },
+                { label: 'Nadaj nazwę', value: 'name' },
+                ...(specialPoints.length > 0 ? [{ label: 'Dodaj punkty specjalne', value: 'specialPoints' }] : []),
+                ...(routeTable.length > 0 ? [{ label: 'Dodaj tabelę', value: 'routeTable' }] : [])
+              ]"
+              type="checkbox"
+            />
+            <div v-if="pdfOptions.includes('map')">
+              <q-option-group
+                v-model="pdfMapOptions"
+                :options="[
+                  { label: 'Dodaj linie trasy', value: 'routeLines' },
+                  { label: 'Dodaj punkty trasy', value: 'routeMarkers' },
+                  { label: 'Dodaj siatkę MGRS', value: 'mgrsGrid' }
+                ]"
+                type="checkbox"
+              />
+            </div>
             <div v-if="pdfOptions.includes('name')" class="q-mt-md">
               <q-input
                 v-model="pdfCustomName"
@@ -300,6 +310,7 @@ const isMobile = computed(() => $q.screen.width < 600)
 const showEtaDialog = ref(false)
 const showPdfDialog = ref(false)
 const pdfOptions = ref([])
+const pdfMapOptions = ref([])
 const pdfCustomName = ref('')
 const pdfSelectedName = ref('')
 const predefinedRouteNames = [
@@ -500,7 +511,41 @@ function exportGPX () {
 }
 
 // Eksport PDF
+// Rysowanie linii trasy na canvasie PDF
+function ctxDrawRouteLinesOnCanvas (canvas, map, pins) {
+  if (!pins || pins.length < 2) return
+  const ctx = canvas.getContext('2d')
+  ctx.save()
+  ctx.strokeStyle = 'red'
+  ctx.lineWidth = 4
+  ctx.beginPath()
+  for (let i = 1; i < pins.length; i++) {
+    const prev = map.latLngToContainerPoint([pins[i - 1].lat, pins[i - 1].lng])
+    const curr = map.latLngToContainerPoint([pins[i].lat, pins[i].lng])
+    ctx.moveTo(prev.x, prev.y)
+    ctx.lineTo(curr.x, curr.y)
+  }
+  ctx.stroke()
+  ctx.restore()
+}
 
+// Rysowanie markerów trasy na canvasie PDF
+function ctxDrawRouteMarkersOnCanvas (canvas, map, pins) {
+  if (!pins || pins.length === 0) return
+  const ctx = canvas.getContext('2d')
+  ctx.save()
+  ctx.fillStyle = 'blue'
+  for (let i = 0; i < pins.length; i++) {
+    const p = map.latLngToContainerPoint([pins[i].lat, pins[i].lng])
+    ctx.beginPath()
+    ctx.arc(p.x, p.y, 7, 0, 2 * Math.PI)
+    ctx.fill()
+    ctx.strokeStyle = 'white'
+    ctx.lineWidth = 2
+    ctx.stroke()
+  }
+  ctx.restore()
+}
 function handlePdfExport () {
   showPdfDialog.value = false
   Loading.show({ message: 'Generowanie PDF...' })
@@ -508,22 +553,26 @@ function handlePdfExport () {
   if (pdfOptions.value.includes('name')) {
     routeName = pdfCustomName.value || pdfSelectedName.value || 'Tabela marszu'
   }
-  // Dodaj/usuń siatkę MGRS na mapie przed eksportem
-  let gridLayers = []
-  const forPdf = pdfOptions.value.includes('map')
-  // Dodaj siatkę MGRS do mapy TYLKO jeśli nie jest już aktywna
-  if (pdfOptions.value.includes('mgrsGrid') && map.value && !map.value._mgrsGridLayer) {
-    gridLayers = drawMgrsGrid(map.value, forPdf)
-  }
-  // Force redraw of all overlays (rectangles, polylines)
   if (pdfOptions.value.includes('map') && map.value) {
+    // Tymczasowo ukryj linie trasy i markery jeśli nie są zaznaczone
+    const showLines = pdfMapOptions.value.includes('routeLines')
+    const showMarkers = pdfMapOptions.value.includes('routeMarkers')
+    // Ukryj linie trasy
+    polylines.value.forEach(l => {
+      if (!showLines) l.setStyle({ opacity: 0 })
+      else l.setStyle({ opacity: 1 })
+    })
+    // Ukryj markery
+    markers.value.forEach(m => {
+      if (!showMarkers) m.setOpacity(0)
+      else m.setOpacity(1)
+    })
     map.value.invalidateSize()
     map.value.setZoom(map.value.getZoom()) // force repaint
     map.value.eachLayer(l => {
       if (l.redraw) l.redraw()
     })
     polylines.value.forEach(l => l.redraw && l.redraw())
-    gridLayers.forEach(l => l.redraw && l.redraw())
     // Wait for two animation frames and a longer timeout to ensure overlays are painted
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -532,24 +581,33 @@ function handlePdfExport () {
             let mapImgData = null
             let mapImgDims = null
             if (!err && canvas) {
-              // Zawsze dorysuj siatkę MGRS na canvasie PDF jeśli wybrano opcję
-              if (pdfOptions.value.includes('mgrsGrid')) {
+              // Rysuj siatkę MGRS tylko jeśli wybrano checkbox
+              if (pdfMapOptions.value.includes('mgrsGrid')) {
                 drawMgrsGridOnCanvas(canvas, map.value, map.value.getBounds())
+              }
+              // Rysuj linie trasy tylko jeśli wybrano checkbox
+              if (pdfMapOptions.value.includes('routeLines')) {
+                ctxDrawRouteLinesOnCanvas(canvas, map.value, pins.value)
+              }
+              // Rysuj markery trasy tylko jeśli wybrano checkbox
+              if (pdfMapOptions.value.includes('routeMarkers')) {
+                ctxDrawRouteMarkersOnCanvas(canvas, map.value, pins.value)
               }
               mapImgData = canvas.toDataURL('image/png')
               mapImgDims = { width: canvas.width, height: canvas.height }
             }
-            // Usuń siatkę po eksporcie
-            if (gridLayers.length) gridLayers.forEach(l => map.value.removeLayer(l))
+            // Przywróć widoczność linii i markerów
+            polylines.value.forEach(l => l.setStyle({ opacity: 1 }))
+            markers.value.forEach(m => m.setOpacity(1))
             exportPDF(routeName, mapImgData, mapImgDims)
             Loading.hide()
+            pdfMapOptions.value = []
           })
         }, 400)
       })
     })
   } else {
-    // Usuń siatkę jeśli była dodana
-    if (gridLayers.length && map.value) gridLayers.forEach(l => map.value.removeLayer(l))
+    // (Brak gridLayers do usuwania w tym bloku)
     exportPDF(routeName, null, null)
     Loading.hide()
   }
@@ -893,6 +951,12 @@ watch(showMgrsGrid, (val) => {
     if (layers && layers.length > 0) {
       map.value._mgrsGridLayer = layers[0]
     }
+  }
+})
+
+watch(showPdfDialog, (val) => {
+  if (val) {
+    pdfMapOptions.value = []
   }
 })
 </script>
