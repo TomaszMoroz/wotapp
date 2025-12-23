@@ -13,6 +13,7 @@
             <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
             <q-checkbox v-model="showMgrsGrid" label="Grid MGRS (test)" color="green" class="q-ml-md" />
             <q-btn flat dense icon="my_location" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
+            <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" />
           </div>
           <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
@@ -438,7 +439,18 @@ function centerOnUserLocation () {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords
-        map.value.setView([latitude, longitude], 15)
+        map.value.setView([latitude, longitude], 15, { animate: false })
+        // Wymuś przeliczenie rozmiaru mapy i ponowne rysowanie siatki po centrowaniu
+        setTimeout(() => {
+          map.value.invalidateSize()
+          const overlayPane = map.value.getPanes().overlayPane
+          if (overlayPane) {
+            overlayPane.style.transform = 'none'
+          }
+          if (map.value._mgrsGridLayer && typeof map.value._mgrsGridLayer._draw === 'function') {
+            map.value._mgrsGridLayer._draw()
+          }
+        }, 400)
         locating.value = false
         $q.notify({ type: 'positive', message: 'Ustawiono widok na Twoją lokalizację.' })
       },
@@ -732,7 +744,7 @@ const MGRSGridLayer = L.Layer.extend({
     this._canvas.style.left = '0'
     this._canvas.style.pointerEvents = 'none'
     this._canvas.style.zIndex = '200'
-    map.getPanes().markerPane.appendChild(this._canvas)
+    map.getPanes().overlayPane.appendChild(this._canvas)
     console.log('[MGRSGridLayer] Canvas added to overlayPane', this._canvas)
     this._redrawHandler = this._draw.bind(this)
     map.on('moveend zoomend resize', this._redrawHandler)
@@ -745,6 +757,12 @@ const MGRSGridLayer = L.Layer.extend({
     map.off('moveend zoomend resize', this._redrawHandler)
   },
   _draw: function () {
+    // Pobierz rogi bounds mapy do nowej siatki
+    const bounds = this._map.getBounds()
+    const sw = bounds.getSouthWest()
+    const ne = bounds.getNorthEast()
+    // Reset transformacji canvasu na wypadek dziedziczenia stylu
+    this._canvas.style.transform = 'none'
     const map = this._map
     // Ensure canvas matches map size
     const size = map.getSize()
@@ -755,30 +773,24 @@ const MGRSGridLayer = L.Layer.extend({
     const ctx = this._canvas.getContext('2d')
     ctx.clearRect(0, 0, this._canvas.width, this._canvas.height)
     console.log('[MGRSGridLayer] _draw called, canvas size:', this._canvas.width, this._canvas.height)
-    // --- UTM-based grid for true MGRS alignment ---
-    const bounds = map.getBounds()
-    const sw = bounds.getSouthWest()
-    const ne = bounds.getNorthEast()
-    const utmSW = utm.fromLatLon(sw.lat, sw.lng)
-    const utmNE = utm.fromLatLon(ne.lat, ne.lng)
-    console.log('[MGRSGridLayer] utmSW', utmSW, 'utmNE', utmNE, 'sw', sw, 'ne', ne)
-    const zoneNum = utmSW.zoneNum
-    const zoneLetter = utmSW.zoneLetter
-    const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
-    let maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
-    let maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
-    const maxSquares = 50
-    console.log('[MGRSGridLayer] minE', minE, 'maxE', maxE, 'minN', minN, 'maxN', maxN)
-    // Wymuś zakres jeśli za mały (np. dla bardzo małego widoku)
-    if (maxE - minE < 1000) maxE = minE + 1000
-    if (maxN - minN < 1000) maxN = minN + 1000
-    ctx.font = 'bold 14px Arial'
-    ctx.fillStyle = '#000000'
-    ctx.strokeStyle = '#000000'
-    ctx.lineWidth = 1
-    console.log('[MGRSGridLayer] Drawing grid: canvas', this._canvas.width, this._canvas.height, 'bounds', bounds.toBBoxString())
-    // Draw grid lines and full MGRS labels at intersections
+
+    // TEST: Rysuj linię pionową i poziomą przez środek canvas
+    ctx.save()
+    ctx.strokeStyle = '#FF0000'
+    ctx.lineWidth = 2
+    // Linia pionowa
+    ctx.beginPath()
+    ctx.moveTo(this._canvas.width / 2, 0)
+    ctx.lineTo(this._canvas.width / 2, this._canvas.height)
+    ctx.stroke()
+    // Linia pozioma
+    ctx.beginPath()
+    ctx.moveTo(0, this._canvas.height / 2)
+    ctx.lineTo(this._canvas.width, this._canvas.height / 2)
+    ctx.stroke()
+    ctx.restore()
+    // --- STARA PĘTLA RYSUJĄCA SIATKĘ MGRS (UTM) ---
+    /*
     let eCount = 0
     for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
       let nCount = 0
@@ -834,6 +846,31 @@ const MGRSGridLayer = L.Layer.extend({
         // (Nie rysujemy pełnego MGRS na przecięciu)
       }
     }
+    */
+
+    // --- NOWA SIATKA: linie w zakresie bounds mapy (lat/lng) ---
+    const latStep = 0.01
+    const lngStep = 0.015
+    for (let lat = Math.ceil(sw.lat / latStep) * latStep; lat < ne.lat; lat += latStep) {
+      const p1 = map.latLngToContainerPoint([lat, sw.lng])
+      const p2 = map.latLngToContainerPoint([lat, ne.lng])
+      ctx.save()
+      ctx.beginPath()
+      ctx.moveTo(p1.x, p1.y)
+      ctx.lineTo(p2.x, p2.y)
+      ctx.stroke()
+      ctx.restore()
+    }
+    for (let lng = Math.ceil(sw.lng / lngStep) * lngStep; lng < ne.lng; lng += lngStep) {
+      const p1 = map.latLngToContainerPoint([sw.lat, lng])
+      const p2 = map.latLngToContainerPoint([ne.lat, lng])
+      ctx.save()
+      ctx.beginPath()
+      ctx.moveTo(p1.x, p1.y)
+      ctx.lineTo(p2.x, p2.y)
+      ctx.stroke()
+      ctx.restore()
+    }
   }
 })
 
@@ -847,6 +884,18 @@ function drawMgrsGrid (map, forPdf = false) {
   gridLayer.addTo(map)
   map._mgrsGridLayer = gridLayer
   return [gridLayer]
+}
+
+// Ustawia orientację mapy na północ (jeśli obsługiwane)
+function resetNorthUp () {
+  if (!map.value) return
+  // Leaflet domyślnie nie obsługuje rotacji mapy, ale jeśli jest plugin do rotacji:
+  if (typeof map.value.setBearing === 'function') {
+    map.value.setBearing(0)
+    $q.notify({ type: 'positive', message: 'Północ ustawiona u góry.' })
+  } else {
+    $q.notify({ type: 'info', message: 'Mapa jest już zorientowana na północ (Leaflet).' })
+  }
 }
 
 function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
