@@ -180,10 +180,11 @@
 
 <script setup>
 import BackNav from 'components/BackNav.vue'
-import { ref, onMounted, reactive, computed, watchEffect, watch } from 'vue'
-import { useQuasar, Loading } from 'quasar'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-rotate'
+import { ref, onMounted, reactive, computed, watchEffect, watch } from 'vue'
+import { useQuasar, Loading } from 'quasar'
 import * as mgrs from 'mgrs'
 import JsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
@@ -447,6 +448,11 @@ function centerOnUserLocation () {
           if (overlayPane) {
             overlayPane.style.transform = 'none'
           }
+          // Reset transformacji canvasu siatki MGRS
+          if (map.value._mgrsGridLayer && map.value._mgrsGridLayer._canvas) {
+            map.value._mgrsGridLayer._canvas.style.transform = 'none'
+            console.log('[centerOnUserLocation] Reset transformacji canvasu:', map.value._mgrsGridLayer._canvas.style.transform)
+          }
           if (map.value._mgrsGridLayer && typeof map.value._mgrsGridLayer._draw === 'function') {
             map.value._mgrsGridLayer._draw()
           }
@@ -467,85 +473,52 @@ function centerOnUserLocation () {
 }
 
 function calculateRoute () {
-  // Rysuj linie między pinezkami
+  // Remove existing polylines from the map
   polylines.value.forEach(l => map.value && map.value.removeLayer(l))
   polylines.value = []
+  // Draw new polylines between pins
   if (pins.value.length > 1 && map.value) {
-    for (let i = 1; i < pins.value.length; i++) {
+    const latlngs = pins.value.map(p => [p.lat, p.lng])
+    const polyline = L.polyline(latlngs, { color: 'red', weight: 4 }).addTo(map.value)
+    polylines.value.push(polyline)
+  }
+  // Update route table
+  routeTable.value = []
+  for (let i = 0; i < pins.value.length; i++) {
+    let azymut = '-'
+    let odleglosc = '-'
+    let mgrsStr = ''
+    try {
+      mgrsStr = mgrs.forward([pins.value[i].lng, pins.value[i].lat], 5)
+    } catch (e) {}
+    if (i > 0) {
       const prev = pins.value[i - 1]
       const curr = pins.value[i]
-      const polyline = L.polyline([[prev.lat, prev.lng], [curr.lat, curr.lng]], { color: 'red', weight: 4, renderer: L.canvas() }).addTo(map.value)
-      polylines.value.push(polyline)
+      // Calculate azimuth (bearing)
+      const dLon = (curr.lng - prev.lng) * Math.PI / 180
+      const y = Math.sin(dLon) * Math.cos(curr.lat * Math.PI / 180)
+      const x = Math.cos(prev.lat * Math.PI / 180) * Math.sin(curr.lat * Math.PI / 180) -
+        Math.sin(prev.lat * Math.PI / 180) * Math.cos(curr.lat * Math.PI / 180) * Math.cos(dLon)
+      let brng = Math.atan2(y, x) * 180 / Math.PI
+      brng = (brng + 360) % 360
+      azymut = Math.round(brng)
+      // Calculate distance (meters)
+      const R = 6371000
+      const dLat = (curr.lat - prev.lat) * Math.PI / 180
+      const dLng = (curr.lng - prev.lng) * Math.PI / 180
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(prev.lat * Math.PI / 180) * Math.cos(curr.lat * Math.PI / 180) *
+        Math.sin(dLng / 2) * Math.sin(dLng / 2)
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+      odleglosc = Math.round(R * c)
     }
+    routeTable.value.push({
+      lp: i + 1,
+      mgrs: mgrsStr,
+      azymut,
+      odleglosc: i === 0 ? '-' : odleglosc
+    })
   }
-  if (pins.value.length < 1) {
-    routeTable.value = []
-    return
-  }
-  const table = []
-  // Punkt startowy
-  const start = pins.value[0]
-  table.push({ lp: 0, mgrs: mgrs.forward([start.lng, start.lat], 5), azymut: '-', odleglosc: '-' })
-  for (let i = 1; i < pins.value.length; i++) {
-    const prev = pins.value[i - 1]
-    const curr = pins.value[i]
-    const azymut = getAzimuth(prev, curr)
-    const odleglosc = getDistance(prev, curr)
-    table.push({ lp: i, mgrs: mgrs.forward([curr.lng, curr.lat], 5), azymut: azymut.toFixed(1), odleglosc: odleglosc.toFixed(1) })
-  }
-  routeTable.value = table
-}
-
-function getAzimuth (a, b) {
-  const dLon = (b.lng - a.lng) * Math.PI / 180
-  const lat1 = a.lat * Math.PI / 180
-  const lat2 = b.lat * Math.PI / 180
-  const y = Math.sin(dLon) * Math.cos(lat2)
-  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon)
-  let brng = Math.atan2(y, x) * 180 / Math.PI
-  brng = (brng + 360) % 360
-  return brng
-}
-
-function getDistance (a, b) {
-  const R = 6371000
-  const dLat = (b.lat - a.lat) * Math.PI / 180
-  const dLon = (b.lng - a.lng) * Math.PI / 180
-  const lat1 = a.lat * Math.PI / 180
-  const lat2 = b.lat * Math.PI / 180
-  const x = dLon * Math.cos((lat1 + lat2) / 2)
-  const y = dLat
-  return Math.sqrt(x * x + y * y) * R
-}
-
-function updateMarkerIcons () {
-  markers.value.forEach((marker, idx) => {
-    if (idx === 0) {
-      marker.setIcon(iconHome)
-    } else if (idx === markers.value.length - 1) {
-      marker.setIcon(iconFlag)
-    } else {
-      marker.setIcon(iconPin)
-    }
-  })
-}
-
-// Eksport GPX
-function exportGPX () {
-  if (pins.value.length < 2) return
-  const gpxHeader = '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="WOT PWA" xmlns="http://www.topografix.com/GPX/1/1">\n<trk><name>Tabela marszu</name><trkseg>'
-  const gpxPoints = pins.value.map(p => `<trkpt lat="${p.lat}" lon="${p.lng}"></trkpt>`).join('\n')
-  const gpxFooter = '</trkseg></trk></gpx>'
-  const gpxContent = `${gpxHeader}\n${gpxPoints}\n${gpxFooter}`
-  const blob = new Blob([gpxContent], { type: 'application/gpx+xml' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = 'tabela-marszu.gpx'
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
 }
 
 // Eksport PDF
@@ -610,7 +583,7 @@ function handlePdfExport () {
     map.value.eachLayer(l => {
       if (l.redraw) l.redraw()
     })
-    polylines.value.forEach(l => l.redraw && l.redraw())
+    polylines.value.forEach(l => l.redraw())
     // Wait for two animation frames and a longer timeout to ensure overlays are painted
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
@@ -686,18 +659,6 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     ctx.lineTo(p2.x, p2.y)
     ctx.stroke()
     ctx.restore()
-    // Label: pierwsze dwie cyfry easting (km)
-    const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(0, 2)
-    ctx.save()
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'top'
-    ctx.fillText(label, p1.x, p1.y - 12)
-    ctx.restore()
-    ctx.save()
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'bottom'
-    ctx.fillText(label, p2.x, p2.y + 12)
-    ctx.restore()
   }
   // Draw horizontal grid lines (northing)
   let nCount = 0
@@ -713,18 +674,6 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     ctx.moveTo(p1.x, p1.y)
     ctx.lineTo(p2.x, p2.y)
     ctx.stroke()
-    ctx.restore()
-    // Label: pierwsze dwie cyfry northing (km)
-    const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(0, 2)
-    ctx.save()
-    ctx.textAlign = 'right'
-    ctx.textBaseline = 'middle'
-    ctx.fillText(label, p1.x - 12, p1.y)
-    ctx.restore()
-    ctx.save()
-    ctx.textAlign = 'left'
-    ctx.textBaseline = 'middle'
-    ctx.fillText(label, p2.x + 12, p2.y)
     ctx.restore()
   }
 }
@@ -757,15 +706,15 @@ const MGRSGridLayer = L.Layer.extend({
     map.off('moveend zoomend resize', this._redrawHandler)
   },
   _draw: function () {
+    // (Usunięto rotację overlayPane – cała mapa obracana przez leaflet-rotate)
     // Pobierz rogi bounds mapy do nowej siatki
     const bounds = this._map.getBounds()
     const sw = bounds.getSouthWest()
     const ne = bounds.getNorthEast()
     // Reset transformacji canvasu na wypadek dziedziczenia stylu
     this._canvas.style.transform = 'none'
-    const map = this._map
     // Ensure canvas matches map size
-    const size = map.getSize()
+    const size = this._map.getSize()
     if (this._canvas.width !== size.x || this._canvas.height !== size.y) {
       this._canvas.width = size.x
       this._canvas.height = size.y
@@ -774,21 +723,6 @@ const MGRSGridLayer = L.Layer.extend({
     ctx.clearRect(0, 0, this._canvas.width, this._canvas.height)
     console.log('[MGRSGridLayer] _draw called, canvas size:', this._canvas.width, this._canvas.height)
 
-    // TEST: Rysuj linię pionową i poziomą przez środek canvas
-    ctx.save()
-    ctx.strokeStyle = '#FF0000'
-    ctx.lineWidth = 2
-    // Linia pionowa
-    ctx.beginPath()
-    ctx.moveTo(this._canvas.width / 2, 0)
-    ctx.lineTo(this._canvas.width / 2, this._canvas.height)
-    ctx.stroke()
-    // Linia pozioma
-    ctx.beginPath()
-    ctx.moveTo(0, this._canvas.height / 2)
-    ctx.lineTo(this._canvas.width, this._canvas.height / 2)
-    ctx.stroke()
-    ctx.restore()
     // --- STARA PĘTLA RYSUJĄCA SIATKĘ MGRS (UTM) ---
     /*
     let eCount = 0
@@ -797,8 +731,8 @@ const MGRSGridLayer = L.Layer.extend({
       for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
         // Draw vertical line (only once per easting)
         if (n === minN) {
-          const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
-          const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
+          const latlng1 = utm.toLatLon(e, minN)
+          const latlng2 = utm.toLatLon(e, maxN)
           const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
           const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
           ctx.save()
@@ -849,11 +783,32 @@ const MGRSGridLayer = L.Layer.extend({
     */
 
     // --- NOWA SIATKA: linie w zakresie bounds mapy (lat/lng) ---
-    const latStep = 0.01
-    const lngStep = 0.015
-    for (let lat = Math.ceil(sw.lat / latStep) * latStep; lat < ne.lat; lat += latStep) {
-      const p1 = map.latLngToContainerPoint([lat, sw.lng])
-      const p2 = map.latLngToContainerPoint([lat, ne.lng])
+    // Nowa siatka: linie co 1000m w układzie UTM
+    // Ustal strefę UTM na podstawie środka mapy
+    const center = this._map.getCenter()
+    const utmCenter = utm.fromLatLon(center.lat, center.lng)
+    const zoneNum = utmCenter.zoneNum
+    const zoneLetter = utmCenter.zoneLetter
+    // Przelicz rogi mapy do tej samej strefy UTM co środek
+    const utmSW = utm.fromLatLon(sw.lat, sw.lng, zoneNum)
+    const utmNE = utm.fromLatLon(ne.lat, ne.lng, zoneNum)
+    const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
+    const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
+    const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
+    const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
+    const maxSquares = 50
+    // pionowe linie (easting)
+    // Zakresy UTM
+    const minEasting = 100000, maxEasting = 900000
+    const minNorthing = 0, maxNorthing = 10000000
+    let eCount = 0
+    for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
+      if (e < minEasting || e > maxEasting) continue
+      const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
+      const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
+      if (!latlng1 || !latlng2 || isNaN(latlng1.latitude) || isNaN(latlng1.longitude) || isNaN(latlng2.latitude) || isNaN(latlng2.longitude)) continue
+      const p1 = this._map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+      const p2 = this._map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
       ctx.save()
       ctx.beginPath()
       ctx.moveTo(p1.x, p1.y)
@@ -861,9 +816,15 @@ const MGRSGridLayer = L.Layer.extend({
       ctx.stroke()
       ctx.restore()
     }
-    for (let lng = Math.ceil(sw.lng / lngStep) * lngStep; lng < ne.lng; lng += lngStep) {
-      const p1 = map.latLngToContainerPoint([sw.lat, lng])
-      const p2 = map.latLngToContainerPoint([ne.lat, lng])
+    // poziome linie (northing)
+    let nCount = 0
+    for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
+      if (n < minNorthing || n > maxNorthing) continue
+      const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
+      const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
+      if (!latlng1 || !latlng2 || isNaN(latlng1.latitude) || isNaN(latlng1.longitude) || isNaN(latlng2.latitude) || isNaN(latlng2.longitude)) continue
+      const p1 = this._map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+      const p2 = this._map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
       ctx.save()
       ctx.beginPath()
       ctx.moveTo(p1.x, p1.y)
@@ -950,11 +911,35 @@ function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
 }
 
 onMounted(() => {
-  map.value = L.map('march-map').setView([52.2297, 21.0122], 13)
+  map.value = L.map('march-map', { renderer: L.canvas() }).setView([52.2297, 21.0122], 13)
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© OpenStreetMap',
     maxZoom: 19
   }).addTo(map.value)
+
+  // Funkcja do automatycznego ustawiania bearing mapy zgodnie z kierunkiem UTM
+  function updateMapBearingToUtm () {
+    const center = map.value.getCenter()
+    const utmCenter = utm.fromLatLon(center.lat, center.lng)
+    // Punkt 1km na północ w tej samej strefie
+    const utmNorthEasting = utmCenter.easting
+    const utmNorthNorthing = utmCenter.northing + 1000
+    const latlngNorth = utm.toLatLon(utmNorthEasting, utmNorthNorthing, utmCenter.zoneNum, utmCenter.zoneLetter)
+    const dLat = latlngNorth.latitude - center.lat
+    const dLng = latlngNorth.longitude - center.lng
+    const angleRad = Math.atan2(dLng, dLat)
+    const angleDeg = -angleRad * 180 / Math.PI
+    if (typeof map.value.setBearing === 'function') {
+      map.value.setBearing(angleDeg)
+      // Opcjonalnie: log do debugowania
+      console.log('[Leaflet.Rotate] Ustawiono bearing mapy:', angleDeg)
+    }
+  }
+
+  // Ustaw bearing na starcie i po każdym ruchu/zoomie
+  map.value.on('moveend zoomend', updateMapBearingToUtm)
+  // Ustaw od razu po inicjalizacji
+  setTimeout(updateMapBearingToUtm, 500)
   map.value.on('click', (e) => {
     if (addSpecialMode) {
       // Add special point
@@ -1008,6 +993,19 @@ onMounted(() => {
   }, 400)
   map.value.on('zoomend moveend', debouncedMgrsGrid)
 })
+
+// Add this function if missing
+function updateMarkerIcons () {
+  markers.value.forEach((marker, idx) => {
+    if (idx === 0) {
+      marker.setIcon(iconHome)
+    } else if (idx === markers.value.length - 1) {
+      marker.setIcon(iconFlag)
+    } else {
+      marker.setIcon(iconPin)
+    }
+  })
+}
 
 function removeLastPin () {
   if (pointHistory.value.length === 0) return
