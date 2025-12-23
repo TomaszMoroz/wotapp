@@ -12,6 +12,7 @@
             <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
             <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
             <q-checkbox v-model="showMgrsGrid" label="Grid MGRS (test)" color="green" class="q-ml-md" />
+            <q-btn flat dense icon="my_location" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
           </div>
           <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
@@ -426,6 +427,31 @@ function clearAll () {
   polylines.value.forEach(l => map.value && map.value.removeLayer(l))
   polylines.value = []
   pointHistory.value = []
+}
+
+const locating = ref(false)
+
+function centerOnUserLocation () {
+  if (!map.value) return
+  locating.value = true
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const { latitude, longitude } = pos.coords
+        map.value.setView([latitude, longitude], 15)
+        locating.value = false
+        $q.notify({ type: 'positive', message: 'Ustawiono widok na Twoją lokalizację.' })
+      },
+      (err) => {
+        locating.value = false
+        $q.notify({ type: 'negative', message: `${err.message}` })
+      },
+      { enableHighAccuracy: true, timeout: 10000 }
+    )
+  } else {
+    locating.value = false
+    $q.notify({ type: 'negative', message: 'Geolokalizacja nie jest obsługiwana.' })
+  }
 }
 
 function calculateRoute () {
