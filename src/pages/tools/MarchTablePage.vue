@@ -976,22 +976,22 @@ onMounted(() => {
     }
   }
 
-  // Debounce dla generowania siatki MGRS po zoomend/moveend
+  // Debounce dla generowania siatki MGRS po zoomend/moveend/resize
   const debouncedMgrsGrid = debounce(() => {
-    if (showMgrsGrid.value) {
+    if (showMgrsGrid.value && map.value) {
       // Usuwamy starą warstwę jeśli istnieje
       if (map.value._mgrsGridLayer) {
         map.value.removeLayer(map.value._mgrsGridLayer)
         map.value._mgrsGridLayer = null
       }
-      // Dodajemy nową warstwę
+      // Dodajemy nową warstwę, która pokrywa cały widoczny obszar mapy
       const layers = drawMgrsGrid(map.value, true)
       if (layers && layers.length > 0) {
         map.value._mgrsGridLayer = layers[0]
       }
     }
-  }, 400)
-  map.value.on('zoomend moveend', debouncedMgrsGrid)
+  }, 200)
+  map.value.on('zoomend moveend resize', debouncedMgrsGrid)
 })
 
 // Add this function if missing
