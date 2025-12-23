@@ -907,6 +907,31 @@ onMounted(() => {
     pinMode.value = false
     calculateRoute()
   })
+  // Prosta funkcja debounce
+  function debounce (fn, delay) {
+    let timeout
+    return function (...args) {
+      clearTimeout(timeout)
+      timeout = setTimeout(() => fn.apply(this, args), delay)
+    }
+  }
+
+  // Debounce dla generowania siatki MGRS po zoomend/moveend
+  const debouncedMgrsGrid = debounce(() => {
+    if (showMgrsGrid.value) {
+      // Usuwamy starą warstwę jeśli istnieje
+      if (map.value._mgrsGridLayer) {
+        map.value.removeLayer(map.value._mgrsGridLayer)
+        map.value._mgrsGridLayer = null
+      }
+      // Dodajemy nową warstwę
+      const layers = drawMgrsGrid(map.value, true)
+      if (layers && layers.length > 0) {
+        map.value._mgrsGridLayer = layers[0]
+      }
+    }
+  }, 400)
+  map.value.on('zoomend moveend', debouncedMgrsGrid)
 })
 
 function removeLastPin () {
