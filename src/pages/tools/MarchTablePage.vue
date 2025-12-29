@@ -12,8 +12,8 @@
             <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
             <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
             <q-checkbox v-model="showMgrsGrid" label="Grid MGRS (test)" color="green" class="q-ml-md" />
-            <q-btn flat dense icon="my_location" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
-            <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" />
+            <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
+            <!-- <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" /> -->
           </div>
           <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
@@ -848,16 +848,16 @@ function drawMgrsGrid (map, forPdf = false) {
 }
 
 // Ustawia orientację mapy na północ (jeśli obsługiwane)
-function resetNorthUp () {
-  if (!map.value) return
-  // Leaflet domyślnie nie obsługuje rotacji mapy, ale jeśli jest plugin do rotacji:
-  if (typeof map.value.setBearing === 'function') {
-    map.value.setBearing(0)
-    $q.notify({ type: 'positive', message: 'Północ ustawiona u góry.' })
-  } else {
-    $q.notify({ type: 'info', message: 'Mapa jest już zorientowana na północ (Leaflet).' })
-  }
-}
+// function resetNorthUp () {
+//   if (!map.value) return
+//   // Leaflet domyślnie nie obsługuje rotacji mapy, ale jeśli jest plugin do rotacji:
+//   if (typeof map.value.setBearing === 'function') {
+//     map.value.setBearing(0)
+//     $q.notify({ type: 'positive', message: 'Północ ustawiona u góry.' })
+//   } else {
+//     $q.notify({ type: 'info', message: 'Mapa jest już zorientowana na północ (Leaflet).' })
+//   }
+// }
 
 function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
   // Use Roboto if available, else fallback to helvetica
