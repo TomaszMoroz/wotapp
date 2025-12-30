@@ -13,32 +13,67 @@
             <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
             <q-checkbox v-model="showMgrsGrid" label="Grid MGRS (test)" color="green" class="q-ml-md" />
             <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
+              <q-toggle
+                v-model="inputMode"
+                :label="inputMode === 'map' ? 'punkty na mapie' : 'wpisz gridy'"
+                true-value="map"
+                false-value="grid"
+                color="primary"
+                class="q-ml-md"
+              />
             <!-- <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" /> -->
           </div>
           <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
-            <q-btn label="Dodaj punkt" color="green-7" @click="enablePinMode" :disable="pinMode" />
-            <q-btn label="Dodaj pkt spec." color="blue-7" @click="showSpecialDialog = true" :disable="pinMode" />
+              <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" />
+              <q-dialog v-model="showGridDialog">
+                <q-card style="min-width:320px;max-width:95vw;">
+                  <q-card-section class="text-h6">Dodaj punkt przez grid MGRS</q-card-section>
+                  <q-card-section>
+                      <div class="q-mb-md">
+                        <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly />
+                      </div>
+                      <div class="q-mb-md">
+                        <q-input v-model="mgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" />
+                      </div>
+                      <div class="q-mb-md">
+                        <q-input v-model="mgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" />
+                      </div>
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn flat label="Anuluj" color="primary" v-close-popup @click="showGridDialog = false" />
+                    <q-btn flat label="OK" color="primary" @click="addGridPoint" />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
+            <q-btn label="Dodaj pkt spec." color="blue-7" @click="showSpecialDialog = true" :disable="false" />
                   <q-dialog v-model="showSpecialDialog">
                     <q-card style="min-width:320px;max-width:95vw;">
                       <q-card-section class="text-h6">Dodaj punkt specjalny</q-card-section>
                       <q-card-section>
-                        <q-select
-                          v-model="specialType"
-                          :options="specialTypes"
-                          label="Typ punktu"
-                          dense outlined emit-value map-options
-                        />
-                        <q-input
-                          v-if="specialType === 'INNY'"
-                          v-model="specialCustomName"
-                          label="Nazwa własna punktu"
-                          dense outlined class="q-mt-md"
-                        />
+                          <q-select
+                            v-model="specialType"
+                            :options="specialTypes"
+                            label="Typ punktu"
+                            dense outlined emit-value map-options
+                          />
+                          <q-input
+                            v-if="specialType === 'INNY'"
+                            v-model="specialCustomName"
+                            label="Nazwa własna punktu"
+                            dense outlined class="q-mt-md"
+                          />
+                          <div v-if="inputMode === 'grid'">
+                              <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly class="q-mt-md" />
+                              <q-input v-model="specialMgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
+                              <q-input v-model="specialMgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
+                          </div>
                       </q-card-section>
                       <q-card-actions align="right">
                         <q-btn flat label="Anuluj" color="primary" v-close-popup />
-                        <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk" />
+                        <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk"
+                          :disable="inputMode === 'grid' && (!specialType || specialMgrsPrefix.length !== 5 || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
+                        />
                       </q-card-actions>
                     </q-card>
                   </q-dialog>
@@ -154,8 +189,14 @@
           <q-card-section class="text-h6">Instrukcja korzystania z Tabeli marszu</q-card-section>
           <q-card-section style="max-height:60vh;overflow:auto;">
             <ol style="padding-left: 1.2em;">
-              <li><b>Dodawanie punktów trasy:</b> Kliknij „Dodaj punkt”, a następnie wskaż miejsce na mapie. Punkty wyznaczają trasę marszu.</li>
-              <li><b>Dodawanie punktów specjalnych:</b> Kliknij „Dodaj pkt spec.”, wybierz typ punktu (np. PZPR, MEDEVAC, OP, BAZA lub INNY), a następnie wskaż miejsce na mapie.</li>
+              <li><b>Tryby dodawania punktów:</b> Po prawej stronie przycisku „MOJE POŁOŻENIE” znajduje się przełącznik trybu:
+                <ul>
+                  <li><b>Punkty na mapie:</b> Domyślny tryb. Kliknij „Dodaj punkt”, a następnie wskaż miejsce na mapie.</li>
+                  <li><b>Wpisz gridy (MGRS):</b> Przełącz tryb, kliknij „Dodaj punkt” i wpisz współrzędne MGRS w dialogu. Punkt zostanie dodany do trasy i wyświetlony na mapie.</li>
+                </ul>
+                Możesz przełączać tryby w dowolnym momencie. Wszystkie punkty są uwzględniane w trasie i eksporcie do PDF.
+              </li>
+              <li><b>Dodawanie punktów specjalnych:</b> Kliknij „Dodaj pkt spec.”, wybierz typ punktu (np. PZPR, MEDEVAC, OP, BAZA lub INNY), a następnie wskaż miejsce na mapie lub wpisz grid w zależności od trybu.</li>
               <li><b>Usuwanie punktów:</b> Kliknij „Usuń ostatni”, aby usunąć ostatnio dodany punkt (trasy lub specjalny).</li>
               <li><b>Czyszczenie wszystkiego:</b> Kliknij ikonę kosza, aby usunąć wszystkie punkty i wyczyścić tabelę.</li>
               <li><b>Eksport danych:</b>
@@ -194,6 +235,56 @@ import * as utm from 'utm'
 const $q = useQuasar()
 
 // Ikony SVG z public/icons/
+// Dialog do wpisywania gridów
+const showGridDialog = ref(false)
+const mgrsPrefix = ref('')
+const mgrsEasting = ref('')
+const mgrsNorthing = ref('')
+
+function handleAddPoint () {
+  if (inputMode.value === 'map') {
+    enablePinMode()
+  } else {
+    // Wyciągnij prefix MGRS z centralnego punktu mapy
+    if (map.value) {
+      const center = map.value.getCenter()
+      // Prefix MGRS: pierwsze 5 znaków
+      const mgrsFull = mgrs.forward([center.lng, center.lat], 5)
+      mgrsPrefix.value = mgrsFull.slice(0, 5)
+    } else {
+      mgrsPrefix.value = ''
+    }
+    mgrsEasting.value = ''
+    mgrsNorthing.value = ''
+    showGridDialog.value = true
+  }
+}
+// Dodaje punkt do trasy i aktualizuje mapę/tabelę
+function addPinToRoute (lat, lng) {
+  pins.value.push({ lat, lng })
+  if (map.value) {
+    const marker = L.marker([lat, lng], { icon: iconPin }).addTo(map.value)
+    markers.value.push(marker)
+    pointHistory.value.push({ type: 'pin', marker, idx: pins.value.length - 1 })
+    if (typeof updateMarkerIcons === 'function') updateMarkerIcons()
+  }
+  calculateRoute()
+}
+
+function addGridPoint () {
+  if (!mgrsPrefix.value || mgrsPrefix.value.length !== 5 || mgrsEasting.value.length < 2 || mgrsEasting.value.length > 5 || mgrsNorthing.value.length < 2 || mgrsNorthing.value.length > 5) {
+    $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 5 znaków, easting i northing od 2 do 5 cyfr.' })
+    return
+  }
+  const mgrsFull = mgrsPrefix.value.slice(0, 5) + mgrsEasting.value + mgrsNorthing.value
+  try {
+    const [lng, lat] = mgrs.toPoint(mgrsFull)
+    addPinToRoute(lat, lng)
+    showGridDialog.value = false
+  } catch (e) {
+    $q.notify({ type: 'negative', message: 'Nieprawidłowy adres MGRS!' })
+  }
+}
 const iconHome = L.icon({
   iconUrl: '/icons/home.svg',
   iconSize: [32, 32],
@@ -260,10 +351,52 @@ const specialTypes = [
 const specialPoints = ref([]) // {lat, lng, type, name}
 let addSpecialMode = false
 
+// Tryb dodawania punktów: 'map' (domyślnie) lub 'grid'
+const inputMode = ref('map')
 function handleSpecialDialogOk () {
+  if (inputMode.value === 'grid') {
+    if (!specialMgrsPrefix.value || specialMgrsPrefix.value.length !== 5 || specialMgrsEasting.value.length < 2 || specialMgrsEasting.value.length > 5 || specialMgrsNorthing.value.length < 2 || specialMgrsNorthing.value.length > 5) {
+      $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 5 znaków, easting i northing od 2 do 5 cyfr.' })
+      return
+    }
+    const mgrsFull = specialMgrsPrefix.value.slice(0, 5) + specialMgrsEasting.value + specialMgrsNorthing.value
+    try {
+      const [lng, lat] = mgrs.toPoint(mgrsFull)
+      specialPoints.value.push({ lat, lng, type: specialType.value, name: specialCustomName.value || specialType.value })
+      if (map.value) {
+        let icon = iconOther
+        if (specialType.value === 'PZPR') icon = iconPzpr
+        else if (specialType.value === 'MEDEVAC') icon = iconMedevac
+        else if (specialType.value === 'OP') icon = iconOp
+        else if (specialType.value === 'BAZA') icon = iconBaza
+        const marker = L.marker([lat, lng], { icon }).addTo(map.value)
+        pointHistory.value.push({ type: 'special', marker, idx: specialPoints.value.length - 1 })
+      }
+      showSpecialDialog.value = false
+      addSpecialMode = false
+      return
+    } catch (e) {
+      $q.notify({ type: 'negative', message: 'Nieprawidłowy adres MGRS!' })
+      return
+    }
+  }
   showSpecialDialog.value = false
   addSpecialMode = true
 }
+// Inputy do dialogu punktu specjalnego (grid)
+const specialMgrsPrefix = ref('')
+const specialMgrsEasting = ref('')
+const specialMgrsNorthing = ref('')
+
+watch(showSpecialDialog, (val) => {
+  if (val && inputMode.value === 'grid' && map.value) {
+    const center = map.value.getCenter()
+    const mgrsFull = mgrs.forward([center.lng, center.lat], 5)
+    specialMgrsPrefix.value = mgrsFull.slice(0, 5)
+    specialMgrsEasting.value = ''
+    specialMgrsNorthing.value = ''
+  }
+})
 
 const columns = [
   { name: 'lp', label: 'Lp.', field: 'lp', align: 'left' },
@@ -479,8 +612,19 @@ function calculateRoute () {
   // Draw new polylines between pins
   if (pins.value.length > 1 && map.value) {
     const latlngs = pins.value.map(p => [p.lat, p.lng])
-    const polyline = L.polyline(latlngs, { color: 'red', weight: 4 }).addTo(map.value)
+    const polyline = L.polyline(latlngs, { color: '#888', weight: 2 }).addTo(map.value)
     polylines.value.push(polyline)
+    // Add grey points on the line
+    pins.value.forEach(p => {
+      const greyDot = L.circleMarker([p.lat, p.lng], {
+        radius: 4,
+        color: 'grey',
+        fillColor: 'grey',
+        fillOpacity: 1,
+        weight: 0
+      }).addTo(map.value)
+      polylines.value.push(greyDot)
+    })
   }
   // Update route table
   routeTable.value = []
@@ -545,11 +689,11 @@ function ctxDrawRouteMarkersOnCanvas (canvas, map, pins) {
   if (!pins || pins.length === 0) return
   const ctx = canvas.getContext('2d')
   ctx.save()
-  ctx.fillStyle = 'blue'
+  ctx.fillStyle = 'grey'
   for (let i = 0; i < pins.length; i++) {
     const p = map.latLngToContainerPoint([pins[i].lat, pins[i].lng])
     ctx.beginPath()
-    ctx.arc(p.x, p.y, 7, 0, 2 * Math.PI)
+    ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI)
     ctx.fill()
     ctx.strokeStyle = 'white'
     ctx.lineWidth = 2
@@ -1055,6 +1199,13 @@ watch(showMgrsGrid, (val) => {
 watch(showPdfDialog, (val) => {
   if (val) {
     pdfMapOptions.value = []
+  }
+})
+
+// Resetowanie trybu po zmianie inputMode
+watch(inputMode, (val, oldVal) => {
+  if (val !== oldVal) {
+    pinMode.value = false
   }
 })
 </script>
