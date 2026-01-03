@@ -940,13 +940,26 @@ const MGRSGridLayer = L.Layer.extend({
     const utmCenter = utm.fromLatLon(center.lat, center.lng)
     const zoneNum = utmCenter.zoneNum
     const zoneLetter = utmCenter.zoneLetter
-    // Przelicz rogi mapy do tej samej strefy UTM co środek
-    const utmSW = utm.fromLatLon(sw.lat, sw.lng, zoneNum)
-    const utmNE = utm.fromLatLon(ne.lat, ne.lng, zoneNum)
-    const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
-    const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
+    // Przelicz rogi mapy - każdy w swojej naturalnej strefie, następnie użyj tej samej co środek tylko dla obliczenia zakresu
+    const utmSW = utm.fromLatLon(sw.lat, sw.lng)
+    const utmNE = utm.fromLatLon(ne.lat, ne.lng)
+    // Jeśli rogi są w innej strefie niż środek, użyj strefy środka jako bazowej
+    const useSameZone = (utmSW.zoneNum === zoneNum && utmNE.zoneNum === zoneNum)
+    let minE, maxE, minN, maxN
+    if (useSameZone) {
+      minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
+      maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
+      minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
+      maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
+    } else {
+      // Jeśli mapy obejmują różne strefy, użyj szerszego zakresu
+      const utmSWinCenter = utm.fromLatLon(sw.lat, sw.lng, zoneNum)
+      const utmNEinCenter = utm.fromLatLon(ne.lat, ne.lng, zoneNum)
+      minE = Math.floor(Math.min(utmSWinCenter.easting, utmNEinCenter.easting) / 1000) * 1000
+      maxE = Math.ceil(Math.max(utmSWinCenter.easting, utmNEinCenter.easting) / 1000) * 1000
+      minN = Math.floor(Math.min(utmSWinCenter.northing, utmNEinCenter.northing) / 1000) * 1000
+      maxN = Math.ceil(Math.max(utmSWinCenter.northing, utmNEinCenter.northing) / 1000) * 1000
+    }
     const maxSquares = 50
     // pionowe linie (easting)
     const minEasting = 100000, maxEasting = 900000
@@ -954,7 +967,7 @@ const MGRSGridLayer = L.Layer.extend({
     let eCount = 0
     const zoom = this._map.getZoom()
     const eastingLines = []
-    for (let e = minE; e < maxE && eCount < maxSquares; e += 1000, eCount++) {
+    for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
       if (e < minEasting || e > maxEasting) continue
       eastingLines.push(e)
       // Rysuj pionową linię
@@ -972,13 +985,15 @@ const MGRSGridLayer = L.Layer.extend({
     }
     let nCount = 0
     const northingLines = []
-    for (let n = minN; n < maxN && nCount < maxSquares; n += 1000, nCount++) {
+    for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
       if (n < minNorthing || n > maxNorthing) continue
       northingLines.push(n)
       // Rysuj poziomą linię
       const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
       const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
+      // Walidacja współrzędnych - sprawdź czy są w prawidłowym zakresie
       if (!latlng1 || !latlng2 || isNaN(latlng1.latitude) || isNaN(latlng1.longitude) || isNaN(latlng2.latitude) || isNaN(latlng2.longitude)) continue
+      if (Math.abs(latlng1.latitude) > 90 || Math.abs(latlng2.latitude) > 90 || Math.abs(latlng1.longitude) > 180 || Math.abs(latlng2.longitude) > 180) continue
       const p1 = this._map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
       const p2 = this._map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
       ctx.save()
@@ -1195,16 +1210,18 @@ onMounted(() => {
   // Debounce dla generowania siatki MGRS po zoomend/moveend/resize
   const debouncedMgrsGrid = debounce(() => {
     if (showMgrsGrid.value && map.value) {
-      if (map.value._mgrsGridLayer) {
-        map.value.removeLayer(map.value._mgrsGridLayer)
-        map.value._mgrsGridLayer = null
-      }
-      const layers = drawMgrsGrid(map.value, true)
-      if (layers && layers.length > 0) {
-        map.value._mgrsGridLayer = layers[0]
+      // Zamiast usuwać i tworzyć na nowo, po prostu przerysuj
+      if (map.value._mgrsGridLayer && typeof map.value._mgrsGridLayer._draw === 'function') {
+        map.value._mgrsGridLayer._draw()
+      } else {
+        // Jeśli warstwa nie istnieje, utwórz ją
+        const layers = drawMgrsGrid(map.value, false)
+        if (layers && layers.length > 0) {
+          map.value._mgrsGridLayer = layers[0]
+        }
       }
     }
-  }, 350)
+  }, 200)
   map.value.on('zoomend moveend resize', debouncedMgrsGrid)
   // Dodatkowo, jeśli kontener mapy zmienia rozmiar (np. parent resize), nasłuchuj na resize observer
   const mapContainer = document.getElementById('march-map')
