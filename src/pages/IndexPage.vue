@@ -33,7 +33,7 @@ const router = useRouter()
 const tiles = [
   { label: 'Cargo', icon: 'storage', desc: 'Moje skróty', route: '/cargo', title: 'Cargo' },
   { label: 'Narzędzia', icon: 'build', desc: 'Pomoce, kalkulatory', route: '/tools', title: 'Narzędzia' },
-  { label: 'Stopnie, regulaminy, prawo', icon: 'military_tech', desc: 'Informacje', route: '/emergency', title: 'Stopnie, regulaminy, prawo' },
+  { label: 'Stopnie, regulamin, prawo', icon: 'military_tech', desc: 'Informacje', route: '/emergency', title: 'Stopnie, regulamin, prawo' },
   { label: 'Wyposażenie', icon: 'inventory', desc: 'Broń etatowa', route: '/equipment', title: 'Wyposażenie' },
   { label: 'Meldunki', icon: 'description', desc: 'Raporty wojskowe', route: '/reports', title: 'Meldunki' },
   { label: 'Strzelectwo', icon: 'gps_fixed', desc: 'Balistyka, teoria, technika', route: '/shooting', title: 'Strzelectwo' },
