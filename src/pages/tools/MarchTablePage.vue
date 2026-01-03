@@ -1195,19 +1195,25 @@ onMounted(() => {
   // Debounce dla generowania siatki MGRS po zoomend/moveend/resize
   const debouncedMgrsGrid = debounce(() => {
     if (showMgrsGrid.value && map.value) {
-      // Usuwamy starą warstwę jeśli istnieje
       if (map.value._mgrsGridLayer) {
         map.value.removeLayer(map.value._mgrsGridLayer)
         map.value._mgrsGridLayer = null
       }
-      // Dodajemy nową warstwę, która pokrywa cały widoczny obszar mapy
       const layers = drawMgrsGrid(map.value, true)
       if (layers && layers.length > 0) {
         map.value._mgrsGridLayer = layers[0]
       }
     }
-  }, 200)
+  }, 350)
   map.value.on('zoomend moveend resize', debouncedMgrsGrid)
+  // Dodatkowo, jeśli kontener mapy zmienia rozmiar (np. parent resize), nasłuchuj na resize observer
+  const mapContainer = document.getElementById('march-map')
+  if (window.ResizeObserver && mapContainer) {
+    const resizeObserver = new ResizeObserver(() => {
+      debouncedMgrsGrid()
+    })
+    resizeObserver.observe(mapContainer)
+  }
 })
 
 // Add this function if missing
