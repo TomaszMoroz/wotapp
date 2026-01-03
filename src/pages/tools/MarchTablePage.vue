@@ -855,7 +855,6 @@ const MGRSGridLayer = L.Layer.extend({
     const bounds = this._map.getBounds()
     const sw = bounds.getSouthWest()
     const ne = bounds.getNorthEast()
-    // Reset transformacji canvasu na wypadek dziedziczenia stylu
     this._canvas.style.transform = 'none'
     // Ensure canvas matches map size
     const size = this._map.getSize()
@@ -872,7 +871,7 @@ const MGRSGridLayer = L.Layer.extend({
     let eCount = 0
     for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
       let nCount = 0
-      for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
+      _draw: function () {
         // Draw vertical line (only once per easting)
         if (n === minN) {
           const latlng1 = utm.toLatLon(e, minN)
@@ -893,12 +892,16 @@ const MGRSGridLayer = L.Layer.extend({
           ctx.fillStyle = '#008800'
           ctx.font = 'bold 12px Arial'
           ctx.fillText(label, p1.x, p1.y - 12)
-          ctx.textBaseline = 'bottom'
+          _draw: function () {
+            const zoom = this._map.getZoom();
+            if (zoom >= 13 && (eastingLines.length < 6 || northingLines.length < 6)) {
           ctx.fillText(label, p2.x, p2.y + 12)
           ctx.restore()
         }
         // Draw horizontal line (only once per northing)
-        if (e === minE) {
+            _draw: function () {
+              const zoom = this._map.getZoom();
+              if (zoom >= 13 && (eastingLines.length < 6 || northingLines.length < 6)) {
           const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
           const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
           const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
@@ -942,12 +945,15 @@ const MGRSGridLayer = L.Layer.extend({
     const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
     const maxSquares = 50
     // pionowe linie (easting)
-    // Zakresy UTM
     const minEasting = 100000, maxEasting = 900000
     const minNorthing = 0, maxNorthing = 10000000
     let eCount = 0
-    for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
+    const zoom = this._map.getZoom()
+    const eastingLines = []
+    for (let e = minE; e < maxE && eCount < maxSquares; e += 1000, eCount++) {
       if (e < minEasting || e > maxEasting) continue
+      eastingLines.push(e)
+      // Rysuj pionową linię
       const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
       const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
       if (!latlng1 || !latlng2 || isNaN(latlng1.latitude) || isNaN(latlng1.longitude) || isNaN(latlng2.latitude) || isNaN(latlng2.longitude)) continue
@@ -960,10 +966,12 @@ const MGRSGridLayer = L.Layer.extend({
       ctx.stroke()
       ctx.restore()
     }
-    // poziome linie (northing)
     let nCount = 0
-    for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
+    const northingLines = []
+    for (let n = minN; n < maxN && nCount < maxSquares; n += 1000, nCount++) {
       if (n < minNorthing || n > maxNorthing) continue
+      northingLines.push(n)
+      // Rysuj poziomą linię
       const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
       const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
       if (!latlng1 || !latlng2 || isNaN(latlng1.latitude) || isNaN(latlng1.longitude) || isNaN(latlng2.latitude) || isNaN(latlng2.longitude)) continue
@@ -975,6 +983,66 @@ const MGRSGridLayer = L.Layer.extend({
       ctx.lineTo(p2.x, p2.y)
       ctx.stroke()
       ctx.restore()
+    }
+
+    // Etykiety na środkach boków kwadratu tylko jeśli liczba linii < 6
+    if (zoom >= 13 && (eastingLines.length < 6 || northingLines.length < 6)) {
+      for (let i = 0; i < eastingLines.length - 1; i++) {
+        for (let j = 0; j < northingLines.length - 1; j++) {
+          const e1 = eastingLines[i]
+          const e2 = eastingLines[i + 1]
+          const n1 = northingLines[j]
+          const n2 = northingLines[j + 1]
+          // Środek dolnej krawędzi
+          const latlngBottom = utm.toLatLon((e1 + e2) / 2, n1, zoneNum, zoneLetter)
+          const pBottom = this._map.latLngToContainerPoint([latlngBottom.latitude, latlngBottom.longitude])
+          // Środek górnej krawędzi
+          const latlngTop = utm.toLatLon((e1 + e2) / 2, n2, zoneNum, zoneLetter)
+          const pTop = this._map.latLngToContainerPoint([latlngTop.latitude, latlngTop.longitude])
+          // Środek lewej krawędzi
+          const latlngLeft = utm.toLatLon(e1, (n1 + n2) / 2, zoneNum, zoneLetter)
+          const pLeft = this._map.latLngToContainerPoint([latlngLeft.latitude, latlngLeft.longitude])
+          // Środek prawej krawędzi
+          const latlngRight = utm.toLatLon(e2, (n1 + n2) / 2, zoneNum, zoneLetter)
+          const pRight = this._map.latLngToContainerPoint([latlngRight.latitude, latlngRight.longitude])
+          // Etykieta dolna: n1
+          const labelN1 = String(Math.floor(n1 / 1000)).padStart(2, '0').slice(-2)
+          ctx.save()
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'top'
+          ctx.fillStyle = '#008800'
+          ctx.font = 'bold 12px Arial'
+          ctx.fillText(labelN1, pBottom.x, pBottom.y + 2)
+          ctx.restore()
+          // Etykieta górna: n2
+          const labelN2 = String(Math.floor(n2 / 1000)).padStart(2, '0').slice(-2)
+          ctx.save()
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'bottom'
+          ctx.fillStyle = '#008800'
+          ctx.font = 'bold 12px Arial'
+          ctx.fillText(labelN2, pTop.x, pTop.y - 2)
+          ctx.restore()
+          // Etykieta lewa: e1
+          const labelE1 = String(Math.floor(e1 / 1000)).padStart(2, '0').slice(-2)
+          ctx.save()
+          ctx.textAlign = 'right'
+          ctx.textBaseline = 'middle'
+          ctx.fillStyle = '#008800'
+          ctx.font = 'bold 12px Arial'
+          ctx.fillText(labelE1, pLeft.x - 12, pLeft.y)
+          ctx.restore()
+          // Etykieta prawa: e2
+          const labelE2 = String(Math.floor(e2 / 1000)).padStart(2, '0').slice(-2)
+          ctx.save()
+          ctx.textAlign = 'left'
+          ctx.textBaseline = 'middle'
+          ctx.fillStyle = '#008800'
+          ctx.font = 'bold 12px Arial'
+          ctx.fillText(labelE2, pRight.x + 12, pRight.y)
+          ctx.restore()
+        }
+      }
     }
   }
 })
