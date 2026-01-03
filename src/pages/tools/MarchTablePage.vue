@@ -23,7 +23,11 @@
               />
             <!-- <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" /> -->
           </div>
-          <div id="march-map" :style="isMobile ? 'height: 400px' : 'height: 600px' " style="width:100%;border-radius:8px;overflow:hidden;" class="q-mb-md"></div>
+          <div id="march-map"
+            :style="isMobile ? 'height: 60vh; min-height: 320px; max-height: 80vh' : 'height: 600px'"
+            style="width:100%;border-radius:8px;overflow:hidden;"
+            class="q-mb-md"
+          ></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
               <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" />
               <q-dialog v-model="showGridDialog">
