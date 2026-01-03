@@ -11,16 +11,16 @@
       <div class="dashboard-tiles q-mb-xl">
         <div class="tiles-grid">
           <q-card v-for="(tile, i) in tiles" :key="tile.label" class="modern-tile" @click="navigateTo(tile.route)">
-          <q-card-section class="tile-content">
-            <div class="tile-icon-bg" :style="{ background: iconColors[i % iconColors.length] }">
-              <q-icon :name="tile.icon" color="white" size="32px" />
-            </div>
-            <div class="tile-label-row">
-              <span class="tile-label">{{ tile.title }}</span>
-            </div>
-            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ tile.desc }}</q-chip>
-          </q-card-section>
-        </q-card>
+            <q-card-section class="tile-content">
+              <div class="tile-icon-bg" :style="{ background: iconColors[i % iconColors.length] }">
+                <q-icon :name="tile.icon" color="white" size="32px" />
+              </div>
+              <div class="tile-label-row">
+                <span class="tile-label">{{ tile.title }}</span>
+              </div>
+              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ tile.desc }}</q-chip>
+            </q-card-section>
+          </q-card>
         </div>
       </div>
     </div>
@@ -31,6 +31,7 @@
 import { useRouter } from 'vue-router'
 const router = useRouter()
 const tiles = [
+  { label: 'Cargo', icon: 'storage', desc: 'Moje skróty', route: '/cargo', title: 'Cargo' },
   { label: 'Narzędzia', icon: 'build', desc: 'Pomoce, kalkulatory', route: '/tools', title: 'Narzędzia' },
   { label: 'Stopnie, regulaminy, prawo', icon: 'military_tech', desc: 'Informacje', route: '/emergency', title: 'Stopnie, regulaminy, prawo' },
   { label: 'Wyposażenie', icon: 'inventory', desc: 'Broń etatowa', route: '/equipment', title: 'Wyposażenie' },
@@ -42,6 +43,7 @@ const tiles = [
   { label: 'ABC', icon: 'info', desc: 'Dla nowo wcielonych', route: '/abc', title: 'ABC' }
 ]
 const iconColors = [
+  '#827858', // Cargo
   '#0f2c05',
   '#65473f',
   '#827858',
