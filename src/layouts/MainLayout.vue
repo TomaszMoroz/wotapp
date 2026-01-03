@@ -12,7 +12,7 @@
       </q-card>
     </q-dialog>
     <q-header elevated class="bg-military-primary dashboard-header">
-          <q-dialog v-model="pushDialog" persistent>
+          <!-- <q-dialog v-model="pushDialog" persistent>
             <q-card>
               <q-card-section>
                 <div class="text-h6">Włączyć powiadomienia push?</div>
@@ -23,7 +23,35 @@
                 <q-btn flat label="Włącz" color="positive" @click="enablePushNotifications" />
               </q-card-actions>
             </q-card>
-          </q-dialog>
+          </q-dialog> -->
+          <q-dialog v-model="pushDialog" persistent>
+  <q-card>
+    <q-card-section>
+      <div class="text-h6">
+        {{ (pushEnabled || pushPermission === 'granted') ? 'Powiadomienia push są włączone' : 'Włączyć powiadomienia push?' }}
+      </div>
+      <div class="q-mt-sm">
+        <template v-if="pushEnabled || pushPermission === 'granted'">
+          Otrzymujesz komunikaty, szkolenia i alarmy. Możesz wyłączyć subskrypcję powiadomień push.
+        </template>
+        <template v-else>
+          Aby otrzymywać komunikaty, szkolenia i alarmy, musisz wyrazić zgodę na powiadomienia push.
+        </template>
+      </div>
+    </q-card-section>
+    <q-card-actions align="right">
+      <q-btn flat label="Anuluj" color="primary" v-close-popup />
+      <q-btn
+        v-if="!(pushEnabled || pushPermission === 'granted')"
+        flat label="Włącz" color="positive" @click="enablePushNotifications"
+      />
+      <q-btn
+        v-else
+        flat label="Wyłącz" color="negative" @click="unsubscribePushNotifications"
+      />
+    </q-card-actions>
+  </q-card>
+</q-dialog>
       <q-toolbar class="q-px-md dashboard-toolbar">
         <q-btn
           flat
@@ -52,8 +80,8 @@
         <q-btn
           flat
           dense
-          icon="notifications"
-          aria-label="Włącz powiadomienia push"
+          :icon="(pushEnabled || pushPermission === 'granted') ? 'notifications_off' : 'notifications'"
+          :aria-label="(pushEnabled || pushPermission === 'granted') ? 'Wyłącz powiadomienia push' : 'Włącz powiadomienia push'"
           @click="pushDialog = true"
           class="q-ml-md text-white"
         />
@@ -502,8 +530,10 @@ const $q = useQuasar()
 
 const pushEnabled = ref(false)
 const pushDialog = ref(false)
+// Dodaj reactive do śledzenia permission
+const pushPermission = ref(Notification.permission)
 
-// Przypomnienie o powiadomieniach po kilku dniach (np. 3 dni)
+// Przypomnienie o powiadomieniach po kilku dniach (np. 5 dni)
 const PUSH_REMIND_KEY = 'push-remind-date-v1'
 const PUSH_DENIED_KEY = 'push-denied-v1'
 const REMIND_AFTER_DAYS = 5
@@ -516,13 +546,46 @@ function shouldRemindPush () {
   return (now - last) > REMIND_AFTER_DAYS * 24 * 60 * 60 * 1000
 }
 
-onMounted(() => {
-  // ...existing code...
-  // Przypomnienie o powiadomieniach push
+onMounted(async () => {
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
+    try {
+      const reg = await navigator.serviceWorker.ready
+      const sub = await reg.pushManager.getSubscription()
+      pushEnabled.value = !!sub
+    } catch (e) {
+      pushEnabled.value = false
+    }
+  }
+  pushPermission.value = Notification.permission
+  // Przypomnienie o powiadomieniach push po kilku dniach od odmowy
   if (!pushEnabled.value && shouldRemindPush()) {
     pushDialog.value = true
   }
 })
+
+async function unsubscribePushNotifications () {
+  pushDialog.value = false
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
+    try {
+      const reg = await navigator.serviceWorker.ready
+      const sub = await reg.pushManager.getSubscription()
+      if (sub) {
+        await sub.unsubscribe()
+        setTimeout(checkPushSubscription, 300)
+        $q.notify({ type: 'info', message: 'Subskrypcja powiadomień push została wyłączona.' })
+        fetch('https://kitabag.smallhost.pl/api/push/analytics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event: 'push-unsubscribed', date: new Date().toISOString() })
+        }).catch(() => {})
+      } else {
+        $q.notify({ type: 'info', message: 'Nie znaleziono aktywnej subskrypcji.' })
+      }
+    } catch (e) {
+      $q.notify({ type: 'negative', message: 'Błąd podczas wyłączania subskrypcji.' })
+    }
+  }
+}
 
 async function enablePushNotifications () {
   pushDialog.value = false
@@ -546,6 +609,7 @@ async function enablePushNotifications () {
   }
   try {
     const permission = await Notification.requestPermission()
+    pushPermission.value = permission
     console.log('[PWA] Notification permission:', permission)
     if (permission !== 'granted') {
       $q.notify({ type: 'warning', message: 'Brak zgody na powiadomienia. Użytkownik odrzucił prośbę o powiadomienia.' })
@@ -621,6 +685,18 @@ async function enablePushNotifications () {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ event: 'push-error', error: e?.message || e, date: new Date().toISOString() })
     }).catch(() => {})
+  }
+}
+
+async function checkPushSubscription () {
+  if ('serviceWorker' in navigator && 'PushManager' in window) {
+    try {
+      const reg = await navigator.serviceWorker.ready
+      const sub = await reg.pushManager.getSubscription()
+      pushEnabled.value = !!sub
+    } catch (e) {
+      pushEnabled.value = false
+    }
   }
 }
 
