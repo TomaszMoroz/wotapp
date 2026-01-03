@@ -1,15 +1,17 @@
 <template>
   <q-page class="cargo-page">
     <div class="cargo-main-wrapper">
-      <div class="cargo-content">
-        <CargoShortcuts />
-      </div>
+        <BackNav color="black" />
+        <div class="cargo-content">
+          <CargoShortcuts />
+        </div>
     </div>
   </q-page>
 </template>
 
 <script setup>
 import CargoShortcuts from 'src/components/CargoShortcuts.vue'
+import BackNav from 'src/components/BackNav.vue'
 </script>
 
 <style scoped>
