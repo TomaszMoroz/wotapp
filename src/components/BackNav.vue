@@ -68,6 +68,12 @@ function getParentPath () {
 }
 
 function goBack () {
+  // Jeśli użytkownik wszedł przez skrót z Cargo, wróć do Cargo i wyczyść flagę
+  if (sessionStorage.getItem('fromCargoShortcut') === '1') {
+    sessionStorage.removeItem('fromCargoShortcut')
+    router.push('/cargo')
+    return
+  }
   if (props.parentPath) {
     if (props.parentPath !== route.path) {
       router.push(props.parentPath)

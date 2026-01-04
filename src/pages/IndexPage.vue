@@ -38,7 +38,7 @@ const tiles = [
   { label: 'Meldunki', icon: 'description', desc: 'Raporty wojskowe', route: '/reports', title: 'Meldunki' },
   { label: 'Strzelectwo', icon: 'gps_fixed', desc: 'Balistyka, teoria, technika', route: '/shooting', title: 'Strzelectwo' },
   { label: 'TCCC', icon: 'medical_services', desc: 'Taktyczna pomoc', route: '/tccc', title: 'TCCC' },
-  { label: 'Taktyka, dowodzenie i procedury', icon: 'school', desc: 'Materiały szkoleniowe', route: '/tactics', title: 'Taktyka, dowodzenie i procedury' },
+  { label: 'Taktyka, dowodzenie i procedury', icon: 'school', desc: 'Materiały szkoleniowe', route: '/tactics', title: 'Taktyka, dowodzenie, procedury' },
   { label: 'Topografia', icon: 'map', desc: 'Mapy i nawigacja', route: '/topography', title: 'Topografia' },
   { label: 'ABC', icon: 'info', desc: 'Dla nowo wcielonych', route: '/abc', title: 'ABC' }
 ]

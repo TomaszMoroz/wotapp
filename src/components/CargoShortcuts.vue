@@ -62,11 +62,17 @@ const shortcuts = ref([])
 const search = ref('')
 const tab = ref('tiles')
 
+const emergencyTiles = [
+  { path: '/ranks', label: 'Stopnie Wojskowe' },
+  { path: '/regulations', label: 'Regulamin' },
+  { path: '/firearms-law', label: 'Warunki użycia broni palnej' },
+  { path: '/drill', label: 'Musztra' }
+]
+
 const allRoutes = [
-  { path: '/', label: 'Strona główna' },
-  { path: '/communication', label: 'Komunikacja' },
-  { path: '/training', label: 'Szkolenia' },
-  { path: '/tactics', label: 'Taktyka' },
+  { path: '/communication', label: 'Alfabet NATO' },
+  { path: '/training', label: 'Grot Offset' },
+  { path: '/tactics', label: 'Taktyka, dowodzenie, procedury' },
   { path: '/tactics/maneuvers', label: 'Manewry taktyczne' },
   { path: '/tactics/procedures', label: 'Procedury taktyczne' },
   { path: '/tactics/command', label: 'Dowodzenie' },
@@ -79,11 +85,13 @@ const allRoutes = [
   { path: '/shooting/ballistics', label: 'Balistyka' },
   { path: '/shooting/angular-measurements', label: 'Miary kątowe' },
   { path: '/shooting/optics', label: 'Optyka i celowniki' },
+  // Emergency - kafelki z podstron
+  ...emergencyTiles,
   // ...pozostałe
   { path: '/map', label: 'Mapa' },
   { path: '/reports', label: 'Raporty' },
   { path: '/emergency', label: 'Procedury awaryjne' },
-  { path: '/unit', label: 'Jednostka' },
+  // { path: '/unit', label: 'Jednostka' },
   { path: '/equipment', label: 'Wyposażenie' },
   { path: '/tools', label: 'Narzędzia' },
   { path: '/tools/recon', label: 'Narzędzia - rozpoznanie' },
@@ -102,13 +110,12 @@ const allRoutes = [
   { path: '/abc/cyber', label: 'ABC - cyberbezpieczeństwo' },
   { path: '/abc/kts', label: 'ABC - KTS' },
   { path: '/abc/fitness', label: 'ABC - sprawność' },
-  { path: '/ranks', label: 'Rangi' },
-  { path: '/regulations', label: 'Regulaminy' },
+  { path: '/ranks', label: 'Stopnie Wojskowe' },
+  { path: '/regulations', label: 'Regulamin' },
   { path: '/firearms-law', label: 'Prawo o broni' },
   { path: '/drill', label: 'Musztra' },
-  { path: '/tccc', label: 'TCCC' },
-  { path: '/tccc/:nr', label: 'TCCC - rozdział' },
-  { path: '/cargo', label: 'Cargo (skróty)' }
+  { path: '/tccc', label: 'TCCC' }
+  // { path: '/tccc/:nr', label: 'TCCC - rozdział' }
 ].sort((a, b) => a.label.localeCompare(b.label, 'pl'))
 
 function loadShortcuts () {
@@ -145,6 +152,8 @@ function removeShortcut (id) {
 }
 
 function goToShortcut (shortcut) {
+  // Zapisz flagę w sessionStorage, że wejście nastąpiło przez Cargo
+  sessionStorage.setItem('fromCargoShortcut', '1')
   router.push(shortcut.route)
 }
 
