@@ -79,6 +79,7 @@ const search = ref('')
 const tab = ref('tiles')
 
 // Nowa struktura grupowana i alfabetyczna
+
 const groupedRoutes = [
   {
     group: 'ABC',
@@ -89,40 +90,33 @@ const groupedRoutes = [
       { path: '/abc/chain', label: 'Droga służbowa' },
       { path: '/abc/cyber', label: 'Cyberbezpieczeństwo' },
       { path: '/abc/kts', label: 'KTS' },
-      { path: '/abc/fitness', label: 'Fitness' }
+      { path: '/abc/fitness', label: 'Sprawność fizyczna' }
     ]
   },
-  {
-    group: 'Mapa',
-    children: [
-      { path: '/map', label: 'Mapa' }
-    ]
-  },
+  // Usunięto osobną sekcję 'Mapa'
   {
     group: 'Narzędzia',
     children: [
-      { path: '/tools', label: 'Narzędzia' },
       { path: '/tools/distance', label: 'Kalkulator odległości' },
-      { path: '/tools/recon', label: 'Rozpoznanie' },
-      { path: '/tools/recon/learn', label: 'Rozpoznanie nauka' },
-      { path: '/tools/recon/test', label: 'Rozpoznanie test' },
-      { path: '/tools/settings', label: 'Kalkulator ustawień' },
-      { path: '/tools/mils-moa', label: 'Konwerter mils/moa' },
-      { path: '/tools/equipment', label: 'Wyposażenie narzędzi' },
+      { path: '/training', label: 'GROT Offset' },
+      { path: '/communication', label: 'Alfabet NATO' },
+      { path: '/tools/settings', label: 'Trening korekty celowania' },
+      { path: '/tools/mils-moa', label: 'Konwerter MILS - MOA' },
+      { path: '/tools/equipment', label: 'Pobrany sprzęt' },
       { path: '/tools/weather', label: 'Pogoda' },
-      { path: '/tools/march-table', label: 'Tabela marszu' }
+      { path: '/tools/march-table', label: 'Tabela marszu' },
+      { path: '/tools/recon', label: 'ROZPOZNANIE (F.R.)' }
     ]
   },
   {
-    group: 'Raporty',
+    group: 'Meldunki',
     children: [
-      { path: '/reports', label: 'Raporty' }
+      { path: '/reports', label: 'Meldunki' }
     ]
   },
   {
     group: 'Stopnie, regulamin, prawo',
     children: [
-      { path: '/emergency', label: 'Stopnie, regulamin, prawo' },
       { path: '/ranks', label: 'Stopnie Wojskowe' },
       { path: '/regulations', label: 'Regulamin' },
       { path: '/firearms-law', label: 'Warunki użycia broni palnej' },
@@ -132,7 +126,6 @@ const groupedRoutes = [
   {
     group: 'Strzelectwo',
     children: [
-      { path: '/shooting', label: 'Strzelectwo' },
       { path: '/shooting/basics', label: 'Podstawy strzelania' },
       { path: '/shooting/ballistics', label: 'Balistyka' },
       { path: '/shooting/angular-measurements', label: 'Miary kątowe' },
@@ -140,13 +133,12 @@ const groupedRoutes = [
     ]
   },
   {
-    group: 'Taktyka',
+    group: 'Taktyka, dowodzenie, procedury',
     children: [
-      { path: '/tactics', label: 'Taktyka, dowodzenie, procedury' },
-      { path: '/tactics/maneuvers', label: 'Manewry taktyczne' },
-      { path: '/tactics/procedures', label: 'Procedury taktyczne' },
+      { path: '/tactics/maneuvers', label: 'Taktyka' },
+      { path: '/tactics/procedures', label: 'Procedury' },
       { path: '/tactics/command', label: 'Dowodzenie' },
-      { path: '/tactics/radio', label: 'Łączność taktyczna' }
+      { path: '/tactics/radio', label: 'Łączność' }
     ]
   },
   {
@@ -165,13 +157,7 @@ const groupedRoutes = [
   {
     group: 'Wyposażenie',
     children: [
-      { path: '/equipment', label: 'Wyposażenie' }
-    ]
-  },
-  {
-    group: 'Łączność',
-    children: [
-      { path: '/communication', label: 'Alfabet NATO' }
+      { path: '/equipment', label: 'Broń etatowa' }
     ]
   }
 ]
