@@ -6,7 +6,7 @@
       </div>
       <div>
         <div class="cargo-title">Moje skróty</div>
-        <div class="cargo-subtitle">Szybki dostęp do najważniejszych stron</div>
+        <div class="cargo-subtitle">Szybki dostęp do wybranych sekcji</div>
       </div>
     </div>
     <q-tabs v-model="tab" dense align="left" class="cargo-tabs q-mt-lg q-mb-lg" active-color="primary" indicator-color="primary">
@@ -19,12 +19,28 @@
           <div class="section-title">Wszystkie strony</div>
           <q-input v-model="search" label="Szukaj strony" dense outlined class="search-input q-mb-md" clearable />
           <div class="tiles-grid">
-            <q-card v-for="route in filteredRoutes" :key="route.path" class="route-tile" :class="{ selected: isShortcut(route) }" @click="toggleShortcut(route)">
-              <q-card-section class="tile-content">
-                <div class="tile-label">{{ route.label }}</div>
-                <q-icon v-if="isShortcut(route)" name="check_circle" color="primary" size="20px" class="tile-check" />
-              </q-card-section>
-            </q-card>
+            <template v-for="item in filteredGroupedRoutes">
+              <div
+                v-if="item.isGroup"
+                :key="'group-' + item.group"
+                class="route-group-label"
+                :style="{gridColumn: '1/-1', fontWeight: 'bold', fontSize: '1.1rem', margin: '12px 0 4px 0'}"
+              >
+                {{ item.group }}
+              </div>
+              <q-card
+                v-else
+                :key="item.path"
+                class="route-tile"
+                :class="{ selected: isShortcut(item) }"
+                @click="toggleShortcut(item)"
+              >
+                <q-card-section class="tile-content">
+                  <div class="tile-label">{{ item.label }}</div>
+                  <q-icon v-if="isShortcut(item)" name="check_circle" color="primary" size="20px" class="tile-check" />
+                </q-card-section>
+              </q-card>
+            </template>
           </div>
         </div>
       </q-tab-panel>
@@ -62,61 +78,127 @@ const shortcuts = ref([])
 const search = ref('')
 const tab = ref('tiles')
 
-const emergencyTiles = [
-  { path: '/ranks', label: 'Stopnie Wojskowe' },
-  { path: '/regulations', label: 'Regulamin' },
-  { path: '/firearms-law', label: 'Warunki użycia broni palnej' },
-  { path: '/drill', label: 'Musztra' }
+// Nowa struktura grupowana i alfabetyczna
+const groupedRoutes = [
+  {
+    group: 'ABC',
+    children: [
+      { path: '/abc', label: 'ABC' },
+      { path: '/abc/rotation', label: 'Co zabrać na rotację' },
+      { path: '/abc/backpack', label: 'Pakowanie plecaka' },
+      { path: '/abc/chain', label: 'Droga służbowa' },
+      { path: '/abc/cyber', label: 'Cyberbezpieczeństwo' },
+      { path: '/abc/kts', label: 'KTS' },
+      { path: '/abc/fitness', label: 'Fitness' }
+    ]
+  },
+  {
+    group: 'Mapa',
+    children: [
+      { path: '/map', label: 'Mapa' }
+    ]
+  },
+  {
+    group: 'Narzędzia',
+    children: [
+      { path: '/tools', label: 'Narzędzia' },
+      { path: '/tools/distance', label: 'Kalkulator odległości' },
+      { path: '/tools/recon', label: 'Rozpoznanie' },
+      { path: '/tools/recon/learn', label: 'Rozpoznanie nauka' },
+      { path: '/tools/recon/test', label: 'Rozpoznanie test' },
+      { path: '/tools/settings', label: 'Kalkulator ustawień' },
+      { path: '/tools/mils-moa', label: 'Konwerter mils/moa' },
+      { path: '/tools/equipment', label: 'Wyposażenie narzędzi' },
+      { path: '/tools/weather', label: 'Pogoda' },
+      { path: '/tools/march-table', label: 'Tabela marszu' }
+    ]
+  },
+  {
+    group: 'Raporty',
+    children: [
+      { path: '/reports', label: 'Raporty' }
+    ]
+  },
+  {
+    group: 'Stopnie, regulamin, prawo',
+    children: [
+      { path: '/emergency', label: 'Stopnie, regulamin, prawo' },
+      { path: '/ranks', label: 'Stopnie Wojskowe' },
+      { path: '/regulations', label: 'Regulamin' },
+      { path: '/firearms-law', label: 'Warunki użycia broni palnej' },
+      { path: '/drill', label: 'Musztra' }
+    ]
+  },
+  {
+    group: 'Strzelectwo',
+    children: [
+      { path: '/shooting', label: 'Strzelectwo' },
+      { path: '/shooting/basics', label: 'Podstawy strzelania' },
+      { path: '/shooting/ballistics', label: 'Balistyka' },
+      { path: '/shooting/angular-measurements', label: 'Miary kątowe' },
+      { path: '/shooting/optics', label: 'Optyka i celowniki' }
+    ]
+  },
+  {
+    group: 'Taktyka',
+    children: [
+      { path: '/tactics', label: 'Taktyka, dowodzenie, procedury' },
+      { path: '/tactics/maneuvers', label: 'Manewry taktyczne' },
+      { path: '/tactics/procedures', label: 'Procedury taktyczne' },
+      { path: '/tactics/command', label: 'Dowodzenie' },
+      { path: '/tactics/radio', label: 'Łączność taktyczna' }
+    ]
+  },
+  {
+    group: 'TCCC',
+    children: [
+      { path: '/tccc', label: 'TCCC' }
+    ]
+  },
+  {
+    group: 'Topografia',
+    children: [
+      { path: '/topography', label: 'Topografia' },
+      { path: '/topography/mgrs', label: 'Siatka MGRS' }
+    ]
+  },
+  {
+    group: 'Wyposażenie',
+    children: [
+      { path: '/equipment', label: 'Wyposażenie' }
+    ]
+  },
+  {
+    group: 'Łączność',
+    children: [
+      { path: '/communication', label: 'Alfabet NATO' }
+    ]
+  }
 ]
 
-const allRoutes = [
-  { path: '/communication', label: 'Alfabet NATO' },
-  { path: '/training', label: 'Grot Offset' },
-  { path: '/tactics', label: 'Taktyka, dowodzenie, procedury' },
-  { path: '/tactics/maneuvers', label: 'Manewry taktyczne' },
-  { path: '/tactics/procedures', label: 'Procedury taktyczne' },
-  { path: '/tactics/command', label: 'Dowodzenie' },
-  { path: '/tactics/radio', label: 'Łączność taktyczna' },
-  { path: '/topography', label: 'Topografia' },
-  { path: '/topography/mgrs', label: 'Siatka MGRS' },
-  // Strzelectwo - kafelki z podstron
-  { path: '/shooting', label: 'Strzelectwo' },
-  { path: '/shooting/basics', label: 'Podstawy strzelania' },
-  { path: '/shooting/ballistics', label: 'Balistyka' },
-  { path: '/shooting/angular-measurements', label: 'Miary kątowe' },
-  { path: '/shooting/optics', label: 'Optyka i celowniki' },
-  // Emergency - kafelki z podstron
-  ...emergencyTiles,
-  // ...pozostałe
-  { path: '/map', label: 'Mapa' },
-  { path: '/reports', label: 'Raporty' },
-  { path: '/emergency', label: 'Procedury awaryjne' },
-  // { path: '/unit', label: 'Jednostka' },
-  { path: '/equipment', label: 'Wyposażenie' },
-  { path: '/tools', label: 'Narzędzia' },
-  { path: '/tools/recon', label: 'Narzędzia - rozpoznanie' },
-  { path: '/tools/recon/learn', label: 'Narzędzia - rozpoznanie nauka' },
-  { path: '/tools/recon/test', label: 'Narzędzia - rozpoznanie test' },
-  { path: '/tools/distance', label: 'Narzędzia - kalkulator odległości' },
-  { path: '/tools/settings', label: 'Narzędzia - kalkulator ustawień' },
-  { path: '/tools/mils-moa', label: 'Narzędzia - konwerter mils/moa' },
-  { path: '/tools/equipment', label: 'Narzędzia - wyposażenie' },
-  { path: '/tools/weather', label: 'Narzędzia - pogoda' },
-  { path: '/tools/march-table', label: 'Narzędzia - tabela marszu' },
-  { path: '/abc', label: 'ABC' },
-  { path: '/abc/rotation', label: 'ABC - rotacja' },
-  { path: '/abc/backpack', label: 'ABC - plecak' },
-  { path: '/abc/chain', label: 'ABC - łańcuch dowodzenia' },
-  { path: '/abc/cyber', label: 'ABC - cyberbezpieczeństwo' },
-  { path: '/abc/kts', label: 'ABC - KTS' },
-  { path: '/abc/fitness', label: 'ABC - sprawność' },
-  { path: '/ranks', label: 'Stopnie Wojskowe' },
-  { path: '/regulations', label: 'Regulamin' },
-  { path: '/firearms-law', label: 'Prawo o broni' },
-  { path: '/drill', label: 'Musztra' },
-  { path: '/tccc', label: 'TCCC' }
-  // { path: '/tccc/:nr', label: 'TCCC - rozdział' }
-].sort((a, b) => a.label.localeCompare(b.label, 'pl'))
+// Sortowanie grup i dzieci alfabetycznie
+groupedRoutes.sort((a, b) => a.group.localeCompare(b.group, 'pl'))
+groupedRoutes.forEach(g => g.children.sort((a, b) => a.label.localeCompare(b.label, 'pl')))
+
+// Filtrowanie i spłaszczanie do wyświetlenia
+const filteredGroupedRoutes = computed(() => {
+  const result = []
+  groupedRoutes.forEach(group => {
+    // Jeśli nie ma wyszukiwania, dodaj grupę i jej dzieci
+    if (!search.value) {
+      result.push({ isGroup: true, group: group.group })
+      group.children.forEach(child => result.push({ ...child, group: group.group }))
+    } else {
+      // Jeśli jest wyszukiwanie, tylko pasujące dzieci
+      const matching = group.children.filter(r => r.label.toLowerCase().includes(search.value.toLowerCase()) || r.path.toLowerCase().includes(search.value.toLowerCase()))
+      if (matching.length) {
+        result.push({ isGroup: true, group: group.group })
+        matching.forEach(child => result.push({ ...child, group: group.group }))
+      }
+    }
+  })
+  return result
+})
 
 function loadShortcuts () {
   const saved = localStorage.getItem('cargoShortcuts')
@@ -156,11 +238,6 @@ function goToShortcut (shortcut) {
   sessionStorage.setItem('fromCargoShortcut', '1')
   router.push(shortcut.route)
 }
-
-const filteredRoutes = computed(() => {
-  if (!search.value) return allRoutes
-  return allRoutes.filter(r => r.label.toLowerCase().includes(search.value.toLowerCase()) || r.path.toLowerCase().includes(search.value.toLowerCase()))
-})
 
 loadShortcuts()
 
