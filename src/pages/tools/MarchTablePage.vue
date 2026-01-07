@@ -872,7 +872,13 @@ function drawMgrsGrid (map) {
   const maxSquares = 50
   // pionowe linie (easting)
   let eCount = 0
+  const eastingLines = []
   for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
+    eastingLines.push(e)
+  }
+  const showLabels = eastingLines.length < 10
+  for (let i = 0; i < eastingLines.length; i++) {
+    const e = eastingLines[i]
     const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
     const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
     const poly = L.polyline([
@@ -881,18 +887,22 @@ function drawMgrsGrid (map) {
     ], { color: '#008800', weight: 1, opacity: 0.8, interactive: false, pane: 'overlayPane' })
     poly.addTo(map)
     mgrsGridPolylines.push(poly)
-    // Label easting (na górze mapy)
-    const labelLatLng = [latlng2.latitude, latlng2.longitude]
-    const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
-    const divIcon = L.divIcon({
-      className: 'mgrs-grid-label mgrs-grid-label-e',
-      html: `<span style='color:#008800;font-weight:bold;font-size:14px;'>${label}</span>`,
-      iconSize: [24, 18],
-      iconAnchor: [12, 0]
-    })
-    const marker = L.marker(labelLatLng, { icon: divIcon, interactive: false, pane: 'overlayPane' })
-    marker.addTo(map)
-    mgrsGridLabels.push(marker)
+    // Rysuj etykiety tylko jeśli linii easting < 10
+    if (showLabels) {
+      for (let n = minN; n < maxN; n += 1000) {
+        const labelLatLng = utm.toLatLon(e, n + 500, zoneNum, zoneLetter)
+        const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
+        const divIcon = L.divIcon({
+          className: 'mgrs-grid-label mgrs-grid-label-e',
+          html: `<span style='color:#008800;font-weight:bold;font-size:14px;background:rgba(255,255,255,0.3);padding:1px 4px;border-radius:3px;'>${label}</span>`,
+          iconSize: [28, 20],
+          iconAnchor: [14, 10]
+        })
+        const marker = L.marker([labelLatLng.latitude, labelLatLng.longitude], { icon: divIcon, interactive: false, pane: 'overlayPane' })
+        marker.addTo(map)
+        mgrsGridLabels.push(marker)
+      }
+    }
   }
   // poziome linie (northing)
   let nCount = 0
@@ -905,18 +915,22 @@ function drawMgrsGrid (map) {
     ], { color: '#008800', weight: 1, opacity: 0.8, interactive: false, pane: 'overlayPane' })
     poly.addTo(map)
     mgrsGridPolylines.push(poly)
-    // Label northing (po lewej mapy)
-    const labelLatLng = [latlng1.latitude, latlng1.longitude]
-    const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
-    const divIcon = L.divIcon({
-      className: 'mgrs-grid-label mgrs-grid-label-n',
-      html: `<span style='color:#008800;font-weight:bold;font-size:14px;'>${label}</span>`,
-      iconSize: [24, 18],
-      iconAnchor: [24, 9]
-    })
-    const marker = L.marker(labelLatLng, { icon: divIcon, interactive: false, pane: 'overlayPane' })
-    marker.addTo(map)
-    mgrsGridLabels.push(marker)
+    // Rysuj etykiety northing tylko jeśli linii easting < 10
+    if (showLabels) {
+      for (let e = minE; e < maxE; e += 1000) {
+        const labelLatLng = utm.toLatLon(e + 500, n, zoneNum, zoneLetter)
+        const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
+        const divIcon = L.divIcon({
+          className: 'mgrs-grid-label mgrs-grid-label-n',
+          html: `<span style='color:#008800;font-weight:bold;font-size:14px;background:rgba(255,255,255,0.3);padding:1px 4px;border-radius:3px;'>${label}</span>`,
+          iconSize: [28, 20],
+          iconAnchor: [14, 10]
+        })
+        const marker = L.marker([labelLatLng.latitude, labelLatLng.longitude], { icon: divIcon, interactive: false, pane: 'overlayPane' })
+        marker.addTo(map)
+        mgrsGridLabels.push(marker)
+      }
+    }
   }
 }
 
