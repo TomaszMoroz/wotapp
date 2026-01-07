@@ -24,7 +24,7 @@
               </div>
             </div>
             <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
-            <q-checkbox v-model="showMgrsGrid" label="Grid MGRS (test)" color="green" class="q-ml-md" />
+            <q-checkbox v-model="showMgrsGrid" label="Grid MGRS" color="green" class="q-ml-md" />
             <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
             <q-toggle
               v-model="inputMode"
@@ -34,42 +34,42 @@
               color="primary"
               class="q-ml-md"
             />
-            <q-btn dense flat icon="palette" class="q-ml-sm" @click="showGridColorDialog = true" :style="'color:' + gridColor.value" title="Kolor siatki MGRS" />
-            <q-btn dense flat icon="timeline" class="q-ml-xs" @click="showRouteColorDialog = true" :style="'color:' + routeColor.value" title="Kolor linii trasy" />
-                        <q-btn dense flat icon="place" class="q-ml-xs" @click="showMarkerColorDialog = true" :style="'color:' + markerColor.value" title="Kolor markerów" />
-                        <q-dialog v-model="showMarkerColorDialog">
-                          <q-card>
-                            <q-card-section class="text-h6">Kolor markerów</q-card-section>
-                            <q-card-section>
-                              <q-color v-model="markerColor" format="hex" />
-                            </q-card-section>
-                            <q-card-actions align="right">
-                              <q-btn flat label="OK" color="primary" v-close-popup />
-                            </q-card-actions>
-                          </q-card>
-                        </q-dialog>
-            <q-dialog v-model="showGridColorDialog">
-              <q-card>
-                <q-card-section class="text-h6">Kolor siatki MGRS</q-card-section>
-                <q-card-section>
-                  <q-color v-model="gridColor" format="hex" />
-                </q-card-section>
-                <q-card-actions align="right">
-                  <q-btn flat label="OK" color="primary" v-close-popup />
-                </q-card-actions>
-              </q-card>
-            </q-dialog>
-            <q-dialog v-model="showRouteColorDialog">
-              <q-card>
-                <q-card-section class="text-h6">Kolor linii trasy</q-card-section>
-                <q-card-section>
-                  <q-color v-model="routeColor" format="hex" />
-                </q-card-section>
-                <q-card-actions align="right">
-                  <q-btn flat label="OK" color="primary" v-close-popup />
-                </q-card-actions>
-              </q-card>
-            </q-dialog>
+              <q-btn dense flat icon="palette" class="color-btn q-ml-sm" @click="showGridColorDialog = true" :style="'color:' + gridColor.value" title="Kolor siatki MGRS" />
+              <q-btn dense flat icon="timeline" class="color-btn q-ml-xs" @click="showRouteColorDialog = true" :style="'color:' + routeColor.value" title="Kolor linii trasy" />
+              <q-btn dense flat icon="place" class="color-btn q-ml-xs" @click="showMarkerColorDialog = true" :style="'color:' + markerColor.value" title="Kolor markerów" />
+              <q-dialog v-model="showGridColorDialog">
+                <q-card style="min-width:260px;max-width:95vw;padding:16px 8px;">
+                  <q-card-section class="text-h6">Kolor siatki MGRS</q-card-section>
+                  <q-card-section class="q-pa-md flex flex-center">
+                    <q-color v-model="gridColor" format="hex" style="min-width:180px;" />
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn flat label="OK" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
+              <q-dialog v-model="showRouteColorDialog">
+                <q-card style="min-width:260px;max-width:95vw;padding:16px 8px;">
+                  <q-card-section class="text-h6">Kolor linii trasy</q-card-section>
+                  <q-card-section class="q-pa-md flex flex-center">
+                    <q-color v-model="routeColor" format="hex" style="min-width:180px;" />
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn flat label="OK" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
+              <q-dialog v-model="showMarkerColorDialog">
+                <q-card style="min-width:260px;max-width:95vw;padding:16px 8px;">
+                  <q-card-section class="text-h6">Kolor markerów</q-card-section>
+                  <q-card-section class="q-pa-md flex flex-center">
+                    <q-color v-model="markerColor" format="hex" style="min-width:180px;" />
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn flat label="OK" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
 
             <!-- <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" /> -->
             <!-- Map layer select moved to end of row below -->
@@ -1283,5 +1283,18 @@ watch(inputMode, (val, oldVal) => {
 .leaflet-mgrs-grid {
   z-index: 1500 !important;
   pointer-events: none;
+}
+
+.color-btn {
+  min-width: 36px;
+  min-height: 36px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.07);
+  background: #f5f5f5; /* Quasar grey-1 */
+  transition: box-shadow 0.2s;
+}
+.color-btn:hover {
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.13);
+  background: #f5f5f5;
 }
 </style>
