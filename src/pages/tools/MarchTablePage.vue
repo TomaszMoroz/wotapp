@@ -34,6 +34,42 @@
               color="primary"
               class="q-ml-md"
             />
+            <q-btn dense flat icon="palette" class="q-ml-sm" @click="showGridColorDialog = true" :style="'color:' + gridColor.value" title="Kolor siatki MGRS" />
+            <q-btn dense flat icon="timeline" class="q-ml-xs" @click="showRouteColorDialog = true" :style="'color:' + routeColor.value" title="Kolor linii trasy" />
+                        <q-btn dense flat icon="place" class="q-ml-xs" @click="showMarkerColorDialog = true" :style="'color:' + markerColor.value" title="Kolor markerów" />
+                        <q-dialog v-model="showMarkerColorDialog">
+                          <q-card>
+                            <q-card-section class="text-h6">Kolor markerów</q-card-section>
+                            <q-card-section>
+                              <q-color v-model="markerColor" format="hex" />
+                            </q-card-section>
+                            <q-card-actions align="right">
+                              <q-btn flat label="OK" color="primary" v-close-popup />
+                            </q-card-actions>
+                          </q-card>
+                        </q-dialog>
+            <q-dialog v-model="showGridColorDialog">
+              <q-card>
+                <q-card-section class="text-h6">Kolor siatki MGRS</q-card-section>
+                <q-card-section>
+                  <q-color v-model="gridColor" format="hex" />
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="OK" color="primary" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+            <q-dialog v-model="showRouteColorDialog">
+              <q-card>
+                <q-card-section class="text-h6">Kolor linii trasy</q-card-section>
+                <q-card-section>
+                  <q-color v-model="routeColor" format="hex" />
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="OK" color="primary" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
 
             <!-- <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" /> -->
             <!-- Map layer select moved to end of row below -->
@@ -253,6 +289,14 @@ import leafletImage from 'leaflet-image'
 import * as utm from 'utm'
 
 const $q = useQuasar()
+
+// Kolory siatki i linii trasy
+const showGridColorDialog = ref(false)
+const showRouteColorDialog = ref(false)
+const gridColor = ref('#008800')
+const routeColor = ref('#888')
+const showMarkerColorDialog = ref(false)
+const markerColor = ref('#6666ff')
 
 // Ikony SVG z public/icons/
 // Dialog do wpisywania gridów
@@ -671,14 +715,14 @@ function calculateRoute () {
   // Draw new polylines between pins
   if (pins.value.length > 1 && map.value) {
     const latlngs = pins.value.map(p => [p.lat, p.lng])
-    const polyline = L.polyline(latlngs, { color: '#888', weight: 2 }).addTo(map.value)
+    const polyline = L.polyline(latlngs, { color: routeColor.value, weight: 2 }).addTo(map.value)
     polylines.value.push(polyline)
     // Add grey points on the line
     pins.value.forEach(p => {
       const greyDot = L.circleMarker([p.lat, p.lng], {
         radius: 4,
-        color: 'grey',
-        fillColor: 'grey',
+        color: markerColor.value,
+        fillColor: markerColor.value,
         fillOpacity: 1,
         weight: 0
       }).addTo(map.value)
@@ -730,7 +774,7 @@ function ctxDrawRouteLinesOnCanvas (canvas, map, pins) {
   if (!pins || pins.length < 2) return
   const ctx = canvas.getContext('2d')
   ctx.save()
-  ctx.strokeStyle = 'red'
+  ctx.strokeStyle = (typeof routeColor.value !== 'undefined' && routeColor.value) ? routeColor.value : 'red'
   ctx.lineWidth = 4
   ctx.beginPath()
   for (let i = 1; i < pins.length; i++) {
@@ -748,7 +792,7 @@ function ctxDrawRouteMarkersOnCanvas (canvas, map, pins) {
   if (!pins || pins.length === 0) return
   const ctx = canvas.getContext('2d')
   ctx.save()
-  ctx.fillStyle = 'grey'
+  ctx.fillStyle = (typeof markerColor.value !== 'undefined' && markerColor.value) ? markerColor.value : 'grey'
   for (let i = 0; i < pins.length; i++) {
     const p = map.latLngToContainerPoint([pins[i].lat, pins[i].lng])
     ctx.beginPath()
@@ -931,7 +975,19 @@ function drawMgrsGrid (map) {
   for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
     eastingLines.push(e)
   }
-  const showLabels = eastingLines.length < 10
+  // Adaptive label logic
+  const lineCount = eastingLines.length
+  let labelFontSize = 14
+  let showLabels = false
+  if (lineCount < 10) {
+    showLabels = true
+    labelFontSize = 14
+  } else if (lineCount >= 10 && lineCount <= 30) {
+    showLabels = true
+    labelFontSize = 10
+  } else {
+    showLabels = false
+  }
   for (let i = 0; i < eastingLines.length; i++) {
     const e = eastingLines[i]
     const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
@@ -939,17 +995,17 @@ function drawMgrsGrid (map) {
     const poly = L.polyline([
       [latlng1.latitude, latlng1.longitude],
       [latlng2.latitude, latlng2.longitude]
-    ], { color: '#008800', weight: 1, opacity: 0.8, interactive: false, pane: 'overlayPane' })
+    ], { color: gridColor.value, weight: 1, opacity: 0.8, interactive: false, pane: 'overlayPane' })
     poly.addTo(map)
     mgrsGridPolylines.push(poly)
-    // Rysuj etykiety tylko jeśli linii easting < 10
+    // Rysuj etykiety tylko jeśli showLabels
     if (showLabels) {
       for (let n = minN; n < maxN; n += 1000) {
         const labelLatLng = utm.toLatLon(e, n + 500, zoneNum, zoneLetter)
         const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
         const divIcon = L.divIcon({
           className: 'mgrs-grid-label mgrs-grid-label-e',
-          html: `<span style='color:#008800;font-weight:bold;font-size:14px;background:rgba(255,255,255,0.3);padding:1px 4px;border-radius:3px;'>${label}</span>`,
+          html: `<span style='color:${gridColor.value};font-weight:bold;font-size:${labelFontSize}px;background:rgba(255,255,255,0.3);padding:1px 4px;border-radius:3px;'>${label}</span>`,
           iconSize: [28, 20],
           iconAnchor: [14, 10]
         })
@@ -967,17 +1023,17 @@ function drawMgrsGrid (map) {
     const poly = L.polyline([
       [latlng1.latitude, latlng1.longitude],
       [latlng2.latitude, latlng2.longitude]
-    ], { color: '#008800', weight: 1, opacity: 0.8, interactive: false, pane: 'overlayPane' })
+    ], { color: gridColor.value, weight: 1, opacity: 0.8, interactive: false, pane: 'overlayPane' })
     poly.addTo(map)
     mgrsGridPolylines.push(poly)
-    // Rysuj etykiety northing tylko jeśli linii easting < 10
+    // Rysuj etykiety northing tylko jeśli showLabels
     if (showLabels) {
       for (let e = minE; e < maxE; e += 1000) {
         const labelLatLng = utm.toLatLon(e + 500, n, zoneNum, zoneLetter)
         const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
         const divIcon = L.divIcon({
           className: 'mgrs-grid-label mgrs-grid-label-n',
-          html: `<span style='color:#008800;font-weight:bold;font-size:14px;background:rgba(255,255,255,0.3);padding:1px 4px;border-radius:3px;'>${label}</span>`,
+          html: `<span style='color:${gridColor.value};font-weight:bold;font-size:${labelFontSize}px;background:rgba(255,255,255,0.3);padding:1px 4px;border-radius:3px;'>${label}</span>`,
           iconSize: [28, 20],
           iconAnchor: [14, 10]
         })
