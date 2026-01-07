@@ -835,93 +835,89 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
   }
 }
 
-// Nowa warstwa siatki MGRS na bazie L.GridLayer
-const MGRSGridLayer = L.GridLayer.extend({
-  createTile: function (coords) {
-    const tile = L.DomUtil.create('canvas', 'leaflet-mgrs-grid-tile')
-    const size = this.getTileSize()
-    tile.width = size.x
-    tile.height = size.y
-    const ctx = tile.getContext('2d')
-    // Przelicz granice kafla na współrzędne geograficzne
-    const map = this._map
-    const tileBounds = this._tileCoordsToBounds(coords)
-    const sw = tileBounds.getSouthWest()
-    const ne = tileBounds.getNorthEast()
-    // Ustal strefę UTM na podstawie środka kafla
-    const center = tileBounds.getCenter()
-    const utmCenter = utm.fromLatLon(center.lat, center.lng)
-    const zoneNum = utmCenter.zoneNum
-    const zoneLetter = utmCenter.zoneLetter
-    const utmSW = utm.fromLatLon(sw.lat, sw.lng, zoneNum)
-    const utmNE = utm.fromLatLon(ne.lat, ne.lng, zoneNum)
-    const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
-    const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
-    // Rysuj linie siatki co 1km
-    ctx.strokeStyle = '#008800'
-    ctx.lineWidth = 1
-    ctx.font = 'bold 13px Arial'
-    ctx.fillStyle = '#008800'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'top'
-    for (let e = minE; e <= maxE; e += 1000) {
-      const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
-      const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
-      const p1 = map.project([latlng1.latitude, latlng1.longitude], coords.z)
-      const p2 = map.project([latlng2.latitude, latlng2.longitude], coords.z)
-      const x = p1.x - coords.x * size.x
-      ctx.beginPath()
-      ctx.moveTo(x, p1.y - coords.y * size.y)
-      ctx.lineTo(x, p2.y - coords.y * size.y)
-      ctx.stroke()
-      // Label easting (na górze kafla, zawsze)
-      const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
-      ctx.fillText(label, x, 2)
-    }
-    ctx.textAlign = 'right'
-    ctx.textBaseline = 'middle'
-    for (let n = minN; n <= maxN; n += 1000) {
-      const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
-      const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
-      const p1 = map.project([latlng1.latitude, latlng1.longitude], coords.z)
-      const p2 = map.project([latlng2.latitude, latlng2.longitude], coords.z)
-      const y = p1.y - coords.y * size.y
-      ctx.beginPath()
-      ctx.moveTo(p1.x - coords.x * size.x, y)
-      ctx.lineTo(p2.x - coords.x * size.x, y)
-      ctx.stroke()
-      // Label northing (po lewej kafla)
-      if (p1.x - coords.x * size.x <= 5) {
-        const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
-        ctx.fillText(label, 18, y)
-      }
-    }
-    return tile
-  }
-})
+// --- GLOBALNA SIATKA MGRS JAKO POLYLINES I LABELKI ---
+let mgrsGridPolylines = []
+let mgrsGridLabels = []
 
-// Replace drawMgrsGrid to use the custom layer
+function clearMgrsGridPolylines (map) {
+  if (mgrsGridPolylines && mgrsGridPolylines.length) {
+    mgrsGridPolylines.forEach(l => map.removeLayer(l))
+    mgrsGridPolylines = []
+  }
+  if (mgrsGridLabels && mgrsGridLabels.length) {
+    mgrsGridLabels.forEach(l => map.removeLayer(l))
+    mgrsGridLabels = []
+  }
+}
 
-function drawMgrsGrid (map, forPdf = false, retry = 0) {
-  if (map._mgrsGridLayer) {
-    try { map.removeLayer(map._mgrsGridLayer) } catch (e) {}
-    map._mgrsGridLayer = null
+function drawMgrsGrid (map) {
+  clearMgrsGridPolylines(map)
+  if (!showMgrsGrid.value) return
+  const bounds = map.getBounds()
+  const sw = bounds.getSouthWest()
+  const ne = bounds.getNorthEast()
+  // Ustal strefę UTM na podstawie środka widoku
+  const center = map.getCenter()
+  const utmCenter = utm.fromLatLon(center.lat, center.lng)
+  const zoneNum = utmCenter.zoneNum
+  const zoneLetter = utmCenter.zoneLetter
+  // Przelicz rogi na UTM
+  const utmSW = utm.fromLatLon(sw.lat, sw.lng, zoneNum)
+  const utmNE = utm.fromLatLon(ne.lat, ne.lng, zoneNum)
+  // Round easting/northing to 1km
+  const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
+  const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
+  const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
+  const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
+  const maxSquares = 50
+  // pionowe linie (easting)
+  let eCount = 0
+  for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
+    const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
+    const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
+    const poly = L.polyline([
+      [latlng1.latitude, latlng1.longitude],
+      [latlng2.latitude, latlng2.longitude]
+    ], { color: '#008800', weight: 1, opacity: 0.8, interactive: false, pane: 'overlayPane' })
+    poly.addTo(map)
+    mgrsGridPolylines.push(poly)
+    // Label easting (na górze mapy)
+    const labelLatLng = [latlng2.latitude, latlng2.longitude]
+    const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
+    const divIcon = L.divIcon({
+      className: 'mgrs-grid-label mgrs-grid-label-e',
+      html: `<span style='color:#008800;font-weight:bold;font-size:14px;'>${label}</span>`,
+      iconSize: [24, 18],
+      iconAnchor: [12, 0]
+    })
+    const marker = L.marker(labelLatLng, { icon: divIcon, interactive: false, pane: 'overlayPane' })
+    marker.addTo(map)
+    mgrsGridLabels.push(marker)
   }
-  // Sprawdź czy overlayPane istnieje
-  const overlayPane = map.getPanes && map.getPanes().overlayPane
-  if (!overlayPane) {
-    if (retry < 5) {
-      setTimeout(() => drawMgrsGrid(map, forPdf, retry + 1), 100)
-    }
-    return []
+  // poziome linie (northing)
+  let nCount = 0
+  for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
+    const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
+    const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
+    const poly = L.polyline([
+      [latlng1.latitude, latlng1.longitude],
+      [latlng2.latitude, latlng2.longitude]
+    ], { color: '#008800', weight: 1, opacity: 0.8, interactive: false, pane: 'overlayPane' })
+    poly.addTo(map)
+    mgrsGridPolylines.push(poly)
+    // Label northing (po lewej mapy)
+    const labelLatLng = [latlng1.latitude, latlng1.longitude]
+    const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
+    const divIcon = L.divIcon({
+      className: 'mgrs-grid-label mgrs-grid-label-n',
+      html: `<span style='color:#008800;font-weight:bold;font-size:14px;'>${label}</span>`,
+      iconSize: [24, 18],
+      iconAnchor: [24, 9]
+    })
+    const marker = L.marker(labelLatLng, { icon: divIcon, interactive: false, pane: 'overlayPane' })
+    marker.addTo(map)
+    mgrsGridLabels.push(marker)
   }
-  // Dodaj nową warstwę
-  const gridLayer = new MGRSGridLayer()
-  gridLayer.addTo(map)
-  map._mgrsGridLayer = gridLayer
-  return [gridLayer]
 }
 
 // Ustawia orientację mapy na północ (jeśli obsługiwane)
@@ -1055,38 +1051,8 @@ onMounted(() => {
 
   // Debounce dla generowania siatki MGRS po zoomend/moveend/resize
   const debouncedMgrsGrid = debounce(() => {
-    if (showMgrsGrid.value && map.value) {
-      // ZAWSZE usuń starą warstwę i utwórz nową (nie tylko _draw)
-      if (map.value._mgrsGridLayer) {
-        map.value.removeLayer(map.value._mgrsGridLayer)
-        map.value._mgrsGridLayer = null
-      }
-      // Dodatkowo usuń wszystkie stare canvasy z overlayPane (na wszelki wypadek)
-      const overlayPane = map.value.getPanes().overlayPane
-      if (overlayPane) {
-        Array.from(overlayPane.querySelectorAll('canvas.leaflet-mgrs-grid')).forEach(c => c.remove())
-      }
-      const layers = drawMgrsGrid(map.value, false)
-      if (layers && layers.length > 0) {
-        map.value._mgrsGridLayer = layers[0]
-      }
-      // Fallback: jeśli po 400ms nie ma canvasu siatki, wymuś jej odtworzenie jeszcze raz
-      setTimeout(() => {
-        const overlayPane2 = map.value.getPanes().overlayPane
-        const mgrsCanvas = overlayPane2 && overlayPane2.querySelector('canvas.leaflet-mgrs-grid')
-        if (!mgrsCanvas && showMgrsGrid.value) {
-          if (map.value._mgrsGridLayer) {
-            map.value.removeLayer(map.value._mgrsGridLayer)
-            map.value._mgrsGridLayer = null
-          }
-          const layers2 = drawMgrsGrid(map.value, false)
-          if (layers2 && layers2.length > 0) {
-            map.value._mgrsGridLayer = layers2[0]
-          }
-        }
-      }, 400)
-    }
-  }, 350)
+    if (map.value) drawMgrsGrid(map.value)
+  }, 120)
   map.value.on('zoomend moveend resize', debouncedMgrsGrid)
   // Dodatkowo, jeśli kontener mapy zmienia rozmiar (np. parent resize), nasłuchuj na resize observer
   const mapContainer = document.getElementById('march-map')
@@ -1141,27 +1107,10 @@ const showMgrsGrid = ref(false)
 
 watch(showMgrsGrid, (val) => {
   if (!map.value) return
-  try {
-    // Usuwamy starą warstwę jeśli istnieje
-    if (map.value._mgrsGridLayer) {
-      try { map.value.removeLayer(map.value._mgrsGridLayer) } catch (e) {}
-      map.value._mgrsGridLayer = null
-    }
-    // Usuń wszystkie stare canvasy z overlayPane
-    const overlayPane = map.value.getPanes && map.value.getPanes().overlayPane
-    if (overlayPane) {
-      Array.from(overlayPane.querySelectorAll('canvas.leaflet-mgrs-grid')).forEach(c => c.remove())
-    }
-    if (val) {
-      // Dodajemy nową warstwę
-      const layers = drawMgrsGrid(map.value, true)
-      if (layers && layers.length > 0) {
-        map.value._mgrsGridLayer = layers[0]
-      }
-    }
-  } catch (err) {
-    // Zabezpieczenie: nie blokuj UI
-    map.value._mgrsGridLayer = null
+  if (val) {
+    drawMgrsGrid(map.value)
+  } else {
+    clearMgrsGridPolylines(map.value)
   }
 })
 
