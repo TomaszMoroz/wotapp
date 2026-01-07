@@ -36,7 +36,7 @@
             />
               <q-btn dense flat icon="palette" class="color-btn q-ml-sm" @click="showGridColorDialog = true" :style="'color:' + gridColor.value" title="Kolor siatki MGRS" />
               <q-btn dense flat icon="timeline" class="color-btn q-ml-xs" @click="showRouteColorDialog = true" :style="'color:' + routeColor.value" title="Kolor linii trasy" />
-              <q-btn dense flat icon="place" class="color-btn q-ml-xs" @click="showMarkerColorDialog = true" :style="'color:' + markerColor.value" title="Kolor markerów" />
+              <q-btn dense flat icon="place" class="color-btn q-ml-xs" @click="showMarkerColorDialog = true" :style="'color:' + markerColor.value" title="Kolor punktów" />
               <q-dialog v-model="showGridColorDialog">
                 <q-card style="min-width:260px;max-width:95vw;padding:16px 8px;">
                   <q-card-section class="text-h6">Kolor siatki MGRS</q-card-section>
@@ -61,7 +61,7 @@
               </q-dialog>
               <q-dialog v-model="showMarkerColorDialog">
                 <q-card style="min-width:260px;max-width:95vw;padding:16px 8px;">
-                  <q-card-section class="text-h6">Kolor markerów</q-card-section>
+                  <q-card-section class="text-h6">Kolor punktów</q-card-section>
                   <q-card-section class="q-pa-md flex flex-center">
                     <q-color v-model="markerColor" format="hex" style="min-width:180px;" />
                   </q-card-section>
@@ -349,6 +349,7 @@ function addGridPoint () {
     $q.notify({ type: 'negative', message: 'Nieprawidłowy adres MGRS!' })
   }
 }
+
 const iconHome = L.icon({
   iconUrl: '/icons/home.svg',
   iconSize: [32, 32],
@@ -1233,6 +1234,23 @@ watch(showMgrsGrid, (val) => {
     drawMgrsGrid(map.value)
   } else {
     clearMgrsGridPolylines(map.value)
+  }
+})
+
+watch(gridColor, (val) => {
+  if (map.value && showMgrsGrid.value) {
+    drawMgrsGrid(map.value)
+  }
+})
+watch(routeColor, (val) => {
+  if (map.value) {
+    calculateRoute()
+  }
+})
+watch(markerColor, (val) => {
+  if (map.value) {
+    updateMarkerIcons()
+    calculateRoute()
   }
 })
 
