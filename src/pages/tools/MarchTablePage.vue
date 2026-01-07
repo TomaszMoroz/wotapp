@@ -9,19 +9,34 @@
       <div class="row items-start justify-center">
         <div class="col-7 flex column q-mr-xs" :class="isMobile ? 'col-12' : ''">
           <div class="q-mb-md">
-            <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
+            <div class="row q-gutter-sm q-mb-sm">
+              <div class="col-5">
+                <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
+              </div>
+              <div class="col-5">
+                <q-select
+                  v-model="selectedMapLayer"
+                  :options="mapLayers"
+                  label="Warstwa mapy"
+                  dense outlined emit-value map-options
+                  style="width:100%;"
+                />
+              </div>
+            </div>
             <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
             <q-checkbox v-model="showMgrsGrid" label="Grid MGRS (test)" color="green" class="q-ml-md" />
             <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
-              <q-toggle
-                v-model="inputMode"
-                :label="inputMode === 'map' ? 'punkty na mapie' : 'wpisz gridy'"
-                true-value="map"
-                false-value="grid"
-                color="primary"
-                class="q-ml-md"
-              />
+            <q-toggle
+              v-model="inputMode"
+              :label="inputMode === 'map' ? 'punkty na mapie' : 'wpisz gridy'"
+              true-value="map"
+              false-value="grid"
+              color="primary"
+              class="q-ml-md"
+            />
+
             <!-- <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" /> -->
+            <!-- Map layer select moved to end of row below -->
           </div>
           <div id="march-map"
             :style="isMobile ? 'height: 60vh; min-height: 320px; max-height: 80vh' : 'height: 600px'"
@@ -29,63 +44,64 @@
             class="q-mb-md"
           ></div>
           <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
-              <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" />
-              <q-dialog v-model="showGridDialog">
-                <q-card style="min-width:320px;max-width:95vw;">
-                  <q-card-section class="text-h6">Dodaj punkt przez grid MGRS</q-card-section>
-                  <q-card-section>
-                      <div class="q-mb-md">
-                        <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly />
-                      </div>
-                      <div class="q-mb-md">
-                        <q-input v-model="mgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" />
-                      </div>
-                      <div class="q-mb-md">
-                        <q-input v-model="mgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" />
-                      </div>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn flat label="Anuluj" color="primary" v-close-popup @click="showGridDialog = false" />
-                    <q-btn flat label="OK" color="primary" @click="addGridPoint" />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
+            <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" />
+            <q-dialog v-model="showGridDialog">
+              <q-card style="min-width:320px;max-width:95vw;">
+                <q-card-section class="text-h6">Dodaj punkt przez grid MGRS</q-card-section>
+                <q-card-section>
+                    <div class="q-mb-md">
+                      <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly />
+                    </div>
+                    <div class="q-mb-md">
+                      <q-input v-model="mgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" />
+                    </div>
+                    <div class="q-mb-md">
+                      <q-input v-model="mgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" />
+                    </div>
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="Anuluj" color="primary" v-close-popup @click="showGridDialog = false" />
+                  <q-btn flat label="OK" color="primary" @click="addGridPoint" />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
             <q-btn label="Dodaj pkt spec." color="blue-7" @click="showSpecialDialog = true" :disable="false" />
-                  <q-dialog v-model="showSpecialDialog">
-                    <q-card style="min-width:320px;max-width:95vw;">
-                      <q-card-section class="text-h6">Dodaj punkt specjalny</q-card-section>
-                      <q-card-section>
-                          <q-select
-                            v-model="specialType"
-                            :options="specialTypes"
-                            label="Typ punktu"
-                            dense outlined emit-value map-options
-                          />
-                          <q-input
-                            v-if="specialType === 'INNY'"
-                            v-model="specialCustomName"
-                            label="Nazwa własna punktu"
-                            dense outlined class="q-mt-md"
-                          />
-                          <div v-if="inputMode === 'grid'">
-                              <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly class="q-mt-md" />
-                              <q-input v-model="specialMgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
-                              <q-input v-model="specialMgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
-                          </div>
-                      </q-card-section>
-                      <q-card-actions align="right">
-                        <q-btn flat label="Anuluj" color="primary" v-close-popup />
-                        <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk"
-                          :disable="inputMode === 'grid' && (!specialType || specialMgrsPrefix.length !== 5 || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
-                        />
-                      </q-card-actions>
-                    </q-card>
-                  </q-dialog>
+            <q-dialog v-model="showSpecialDialog">
+              <q-card style="min-width:320px;max-width:95vw;">
+                <q-card-section class="text-h6">Dodaj punkt specjalny</q-card-section>
+                <q-card-section>
+                    <q-select
+                      v-model="specialType"
+                      :options="specialTypes"
+                      label="Typ punktu"
+                      dense outlined emit-value map-options
+                    />
+                    <q-input
+                      v-if="specialType === 'INNY'"
+                      v-model="specialCustomName"
+                      label="Nazwa własna punktu"
+                      dense outlined class="q-mt-md"
+                    />
+                    <div v-if="inputMode === 'grid'">
+                        <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly class="q-mt-md" />
+                        <q-input v-model="specialMgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
+                        <q-input v-model="specialMgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
+                    </div>
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="Anuluj" color="primary" v-close-popup />
+                  <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk"
+                    :disable="inputMode === 'grid' && (!specialType || specialMgrsPrefix.length !== 5 || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
+                  />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
             <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" />
             <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" />
             <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" />
             <q-btn icon="picture_as_pdf" color="grey-9" @click="showPdfDialog = true" />
             <q-btn icon="delete" color="negative" @click="clearAll" />
+
           </div>
         </div>
         <div class="col-4 flex column q-ml-sm" :class="isMobile ? 'col-12' : ''">
@@ -339,6 +355,45 @@ const polylines = ref([])
 const pointHistory = ref([])
 const pinMode = ref(false)
 const routeTable = ref([])
+
+// Map layer options and switching logic
+const mapLayers = [
+  { label: 'OpenStreetMap', value: 'osm' },
+  { label: 'OpenTopoMap', value: 'topo' },
+  { label: 'ESRI Satellite', value: 'esri' }
+]
+const selectedMapLayer = ref('osm')
+let currentTileLayer = null
+
+function setMapLayer (layer) {
+  if (!map.value) return
+  if (currentTileLayer) {
+    map.value.removeLayer(currentTileLayer)
+  }
+  if (layer === 'osm') {
+    currentTileLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap',
+      maxZoom: 19
+    })
+  } else if (layer === 'topo') {
+    currentTileLayer = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenTopoMap',
+      maxZoom: 17
+    })
+  } else if (layer === 'esri') {
+    currentTileLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles © Esri',
+      maxZoom: 19
+    })
+  }
+  if (currentTileLayer) {
+    currentTileLayer.addTo(map.value)
+  }
+}
+
+watch(selectedMapLayer, (val) => {
+  setMapLayer(val)
+})
 
 const showInfoDialog = ref(false)
 // --- Special Points State ---
@@ -999,10 +1054,7 @@ function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
 
 onMounted(() => {
   map.value = L.map('march-map', { renderer: L.canvas() }).setView([52.2297, 21.0122], 13)
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap',
-    maxZoom: 19
-  }).addTo(map.value)
+  setMapLayer(selectedMapLayer.value)
 
   // Funkcja do automatycznego ustawiania bearing mapy zgodnie z kierunkiem UTM
   function updateMapBearingToUtm () {
