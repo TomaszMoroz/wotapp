@@ -8,11 +8,23 @@
       </div>
       <div class="row items-start justify-center">
         <div class="col-7 flex column q-mr-xs" :class="isMobile ? 'col-12' : ''">
-          <div class="q-mb-md">
-            <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" />
-            <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
-            <q-checkbox v-model="showMgrsGrid" label="Grid MGRS (test)" color="green" class="q-ml-md" />
-            <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
+          <div class="q-mb-md column q-gutter-sm">
+            <div class="row items-center q-gutter-xs">
+              <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" class="col" />
+              <q-select
+                v-model="selectedMapLayer"
+                :options="mapLayerOptions"
+                dense outlined emit-value map-options
+                style="min-width:120px;max-width:180px;"
+                :dropdown-icon="'layers'"
+                aria-label="Wybierz warstwę mapy"
+                class="col-auto q-ml-sm"
+              />
+            </div>
+            <div class="row items-center q-gutter-xs">
+              <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
+              <q-checkbox v-model="showMgrsGrid" label="Grid MGRS" color="green" class="q-ml-md" />
+              <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
               <q-toggle
                 v-model="inputMode"
                 :label="inputMode === 'map' ? 'punkty na mapie' : 'wpisz gridy'"
@@ -21,15 +33,7 @@
                 color="primary"
                 class="q-ml-md"
               />
-            <q-select
-              v-model="selectedMapLayer"
-              :options="mapLayerOptions"
-              dense outlined emit-value map-options
-              class="q-ml-md"
-              style="min-width:120px;max-width:180px;"
-              :dropdown-icon="'layers'"
-              aria-label="Wybierz warstwę mapy"
-            />
+            </div>
           </div>
           <div id="march-map"
             :style="isMobile ? 'height: 60vh; min-height: 320px; max-height: 80vh' : 'height: 600px'"
@@ -1238,6 +1242,16 @@ watch(selectedMapLayer, (val, oldVal) => {
 }
 @media (max-width: 600px) {
   .march-btn {
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+  .row.items-center.no-wrap.q-gutter-xs > .row.items-center.no-wrap.q-gutter-xs.q-ml-md {
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-left: 0 !important;
+  }
+  .row.items-center.no-wrap.q-gutter-xs > .row.items-center.no-wrap.q-gutter-xs.q-ml-md > * {
     flex: 1 1 100%;
     min-width: 0;
     max-width: 100%;
