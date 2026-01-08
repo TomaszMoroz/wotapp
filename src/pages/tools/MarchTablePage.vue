@@ -21,7 +21,15 @@
                 color="primary"
                 class="q-ml-md"
               />
-            <!-- <q-btn flat dense icon="explore" color="primary" class="q-ml-sm" @click="resetNorthUp" aria-label="Północ u góry" /> -->
+            <q-select
+              v-model="selectedMapLayer"
+              :options="mapLayerOptions"
+              dense outlined emit-value map-options
+              class="q-ml-md"
+              style="min-width:120px;max-width:180px;"
+              :dropdown-icon="'layers'"
+              aria-label="Wybierz warstwę mapy"
+            />
           </div>
           <div id="march-map"
             :style="isMobile ? 'height: 60vh; min-height: 320px; max-height: 80vh' : 'height: 600px'"
@@ -991,10 +999,22 @@ function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
 
 onMounted(() => {
   map.value = L.map('march-map', { renderer: L.canvas() }).setView([52.2297, 21.0122], 13)
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap',
-    maxZoom: 19
-  }).addTo(map.value)
+  baseLayers = {
+    osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap',
+      maxZoom: 19
+    }),
+    topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenTopoMap',
+      maxZoom: 17
+    }),
+    sat: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: '© Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+      maxZoom: 19
+    })
+  }
+  baseLayer = baseLayers[selectedMapLayer.value]
+  baseLayer.addTo(map.value)
 
   // Funkcja do automatycznego ustawiania bearing mapy zgodnie z kierunkiem UTM
   function updateMapBearingToUtm () {
@@ -1177,6 +1197,23 @@ watch(showPdfDialog, (val) => {
 watch(inputMode, (val, oldVal) => {
   if (val !== oldVal) {
     pinMode.value = false
+  }
+})
+
+const mapLayerOptions = [
+  { label: 'OpenStreetMap', value: 'osm' },
+  { label: 'Topograficzna', value: 'topo' },
+  { label: 'Satelitarna', value: 'sat' }
+]
+const selectedMapLayer = ref('osm')
+let baseLayer = null
+let baseLayers = {}
+
+watch(selectedMapLayer, (val, oldVal) => {
+  if (map.value && baseLayers[val]) {
+    if (baseLayer) map.value.removeLayer(baseLayer)
+    baseLayer = baseLayers[val]
+    baseLayer.addTo(map.value)
   }
 })
 </script>
