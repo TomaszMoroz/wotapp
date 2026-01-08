@@ -255,6 +255,8 @@
               </li>
               <li><b>Wyszukiwanie terenu:</b> Wpisz nazwę miejsca lub współrzędne MGRS i kliknij „Pokaż teren”.</li>
               <li><b>Obliczanie czasu marszu:</b> Kliknij ikonę zegara, aby zobaczyć szacowany czas przejścia trasy.</li>
+              <li><b>Wybór warstwy mapy:</b> Nad mapą znajduje się rozwijany selektor, który pozwala przełączać pomiędzy warstwami: OpenStreetMap, Topograficzna, Satelitarna. Zmiana warstwy natychmiast aktualizuje widok mapy.</li>
+              <li><b>Dostosowanie kolorów elementów mapy:</b> Kliknij ikonę palety obok przełącznika trybu punktów, aby otworzyć dialog zmiany kolorów. Możesz wybrać kolor siatki MGRS, linii marszu oraz markerów trasy. Po kliknięciu w kwadratowy podgląd koloru pojawi się paleta kolorów. Zmiana koloru natychmiast aktualizuje widok mapy i eksportowane pliki.</li>
             </ol>
           </q-card-section>
           <q-card-actions align="right">
@@ -1321,6 +1323,27 @@ const mapLayerOptions = [
 const selectedMapLayer = ref('osm')
 let baseLayer = null
 let baseLayers = {}
+
+// Eksport GPX
+function exportGPX () {
+  if (!pins.value || pins.value.length < 2) return
+  let gpx = '<?xml version="1.0" encoding="UTF-8"?>\n<gpx version="1.1" creator="WOT" xmlns="http://www.topografix.com/GPX/1/1">\n<trk><name>Trasa marszu</name><trkseg>'
+  pins.value.forEach(p => {
+    gpx += `\n<trkpt lat="${p.lat}" lon="${p.lng}"></trkpt>`
+  })
+  gpx += '\n</trkseg></trk>\n</gpx>'
+  const blob = new Blob([gpx], { type: 'application/gpx+xml' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'trasa-marszu.gpx'
+  document.body.appendChild(a)
+  a.click()
+  setTimeout(() => {
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }, 100)
+}
 
 watch(selectedMapLayer, (val, oldVal) => {
   if (map.value && baseLayers[val]) {
