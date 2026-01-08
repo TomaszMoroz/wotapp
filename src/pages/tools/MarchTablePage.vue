@@ -33,6 +33,35 @@
                 color="primary"
                 class="q-ml-md"
               />
+              <q-btn flat dense round icon="palette" class="q-ml-xs" @click="showPaletteDialog = true" aria-label="Kolory" />
+              <q-dialog v-model="showPaletteDialog">
+                <q-card style="min-width:340px;max-width:95vw;">
+                  <q-card-section class="text-h6">Dostosuj kolory mapy</q-card-section>
+                  <q-card-section>
+                    <div class="q-mb-md">
+                      <div class="row items-center q-gutter-sm">
+                        <span class="col">Siatka MGRS</span>
+                        <q-color v-model="colorMgrsGrid" format="hex" class="col-auto" @update:model-value="updateColorsInEditor" />
+                      </div>
+                    </div>
+                    <div class="q-mb-md">
+                      <div class="row items-center q-gutter-sm">
+                        <span class="col">Linie marszu</span>
+                        <q-color v-model="colorRouteLine" format="hex" class="col-auto" @update:model-value="updateColorsInEditor" />
+                      </div>
+                    </div>
+                    <div class="q-mb-md">
+                      <div class="row items-center q-gutter-sm">
+                        <span class="col">Markery trasy</span>
+                        <q-color v-model="colorRouteMarker" format="hex" class="col-auto" @update:model-value="updateColorsInEditor" />
+                      </div>
+                    </div>
+                  </q-card-section>
+                  <q-card-actions align="right">
+                    <q-btn flat label="Zamknij" color="primary" v-close-popup />
+                  </q-card-actions>
+                </q-card>
+              </q-dialog>
             </div>
           </div>
           <div id="march-map"
@@ -503,6 +532,37 @@ watchEffect(() => {
     })
   }
 })
+
+// --- Kolory mapy (customizacja) ---
+const showPaletteDialog = ref(false)
+const colorMgrsGrid = ref('#008800')
+const colorRouteLine = ref('#888888')
+const colorRouteMarker = ref('#808080')
+
+function updateColorsInEditor () {
+  // Zmień kolor siatki MGRS
+  if (map.value && map.value._mgrsGridLayer) {
+    const gridLayer = map.value._mgrsGridLayer
+    // Przerysuj kafle siatki z nowym kolorem
+    if (gridLayer._tiles) {
+      Object.values(gridLayer._tiles).forEach(tileObj => {
+        const tile = tileObj.el
+        if (tile && tile.getContext) {
+          const ctx = tile.getContext('2d')
+          ctx.clearRect(0, 0, tile.width, tile.height)
+        }
+      })
+      gridLayer.redraw && gridLayer.redraw()
+    }
+  }
+  // Zmień kolor linii marszu
+  polylines.value.forEach(l => {
+    if (l.setStyle) l.setStyle({ color: colorRouteLine.value })
+    if (l.setStyle && l.options && l.options.radius) {
+      l.setStyle({ fillColor: colorRouteMarker.value, color: colorRouteMarker.value })
+    }
+  })
+}
 
 const etaResult = computed(() => {
   let totalDist = 0
