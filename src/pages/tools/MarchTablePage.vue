@@ -675,8 +675,12 @@ function ctxDrawRouteLinesOnCanvas (canvas, map, pins) {
   if (!pins || pins.length < 2) return
   const ctx = canvas.getContext('2d')
   ctx.save()
-  ctx.strokeStyle = 'red'
-  ctx.lineWidth = 4
+  // Synchronize with editor route style
+  // Find the color and width used in L.polyline in calculateRoute
+  const routeColor = '#888' // default, update if dynamic
+  const routeWidth = 2 // default, update if dynamic
+  ctx.strokeStyle = routeColor
+  ctx.lineWidth = routeWidth
   ctx.beginPath()
   for (let i = 1; i < pins.length; i++) {
     const prev = map.latLngToContainerPoint([pins[i - 1].lat, pins[i - 1].lng])
