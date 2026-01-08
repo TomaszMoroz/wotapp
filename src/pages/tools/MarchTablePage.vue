@@ -39,23 +39,26 @@
                   <q-card-section class="text-h6">Dostosuj kolory mapy</q-card-section>
                   <q-card-section>
                     <div class="q-mb-md">
-                      <div class="row items-center q-gutter-sm">
-                        <span class="col">Siatka MGRS</span>
-                        <q-color v-model="colorMgrsGrid" format="hex" class="col-auto" @update:model-value="updateColorsInEditor" />
+                      <div v-for="(item, idx) in paletteItems" :key="item.key" class="row items-center q-gutter-sm q-mb-sm">
+                        <span class="col">{{ item.label }}</span>
+                        <div
+                          class="col-auto cursor-pointer"
+                          :style="`width:32px;height:32px;border-radius:6px;border:2px solid #ccc;background:${item.color}`"
+                          @click="openColorPicker(idx)"
+                        ></div>
                       </div>
                     </div>
-                    <div class="q-mb-md">
-                      <div class="row items-center q-gutter-sm">
-                        <span class="col">Linie marszu</span>
-                        <q-color v-model="colorRouteLine" format="hex" class="col-auto" @update:model-value="updateColorsInEditor" />
-                      </div>
-                    </div>
-                    <div class="q-mb-md">
-                      <div class="row items-center q-gutter-sm">
-                        <span class="col">Markery trasy</span>
-                        <q-color v-model="colorRouteMarker" format="hex" class="col-auto" @update:model-value="updateColorsInEditor" />
-                      </div>
-                    </div>
+                    <q-dialog v-model="showColorPickerDialog">
+                      <q-card style="min-width:220px;max-width:95vw;">
+                        <q-card-section class="text-h6">Wybierz kolor</q-card-section>
+                        <q-card-section>
+                          <q-color v-model="paletteItems[selectedPaletteIdx].color" format="hex" panel="palette" @update:model-value="onPaletteColorChange" />
+                        </q-card-section>
+                        <q-card-actions align="right">
+                          <q-btn flat label="OK" color="primary" v-close-popup />
+                        </q-card-actions>
+                      </q-card>
+                    </q-dialog>
                   </q-card-section>
                   <q-card-actions align="right">
                     <q-btn flat label="Zamknij" color="primary" v-close-popup />
@@ -533,11 +536,55 @@ watchEffect(() => {
   }
 })
 
-// --- Kolory mapy (customizacja) ---
 const showPaletteDialog = ref(false)
-const colorMgrsGrid = ref('#008800')
-const colorRouteLine = ref('#888888')
-const colorRouteMarker = ref('#808080')
+const showColorPickerDialog = ref(false)
+const selectedPaletteIdx = ref(0)
+const paletteItems = reactive([
+  { key: 'mgrs', label: 'Siatka MGRS', color: '#008800' },
+  { key: 'route', label: 'Linie marszu', color: '#888888' },
+  { key: 'marker', label: 'Markery trasy', color: '#808080' }
+])
+const colorMgrsGrid = ref(paletteItems[0].color)
+const colorRouteLine = ref(paletteItems[1].color)
+const colorRouteMarker = ref(paletteItems[2].color)
+
+function openColorPicker (idx) {
+  selectedPaletteIdx.value = idx
+  showColorPickerDialog.value = true
+}
+
+function onPaletteColorChange (val) {
+  // Synchronizuj kolory z resztą aplikacji
+  colorMgrsGrid.value = paletteItems[0].color
+  colorRouteLine.value = paletteItems[1].color
+  colorRouteMarker.value = paletteItems[2].color
+  updateColorsInEditor()
+  // Synchronizuj z edytorem trasy (np. podgląd, mapy, markery)
+  if (selectedPaletteIdx.value === 0) {
+    // Siatka MGRS
+    colorMgrsGrid.value = val
+  } else if (selectedPaletteIdx.value === 1) {
+    // Linie marszu
+    colorRouteLine.value = val
+  } else if (selectedPaletteIdx.value === 2) {
+    // Markery trasy
+    colorRouteMarker.value = val
+  }
+  updateColorsInEditor()
+}
+
+// Dynamiczna maska koloru markerów SVG przez CSS filter
+watch(colorRouteMarker, (val) => {
+  const styleTagId = 'dynamic-marker-filter-style'
+  let styleTag = document.getElementById(styleTagId)
+  if (!styleTag) {
+    styleTag = document.createElement('style')
+    styleTag.id = styleTagId
+    document.head.appendChild(styleTag)
+  }
+  // Filter: czarny SVG + maska koloru
+  styleTag.textContent = `.leaflet-marker-icon[src$='.svg'] { filter: brightness(0) saturate(100%) sepia(1) hue-rotate(0deg) drop-shadow(0 0 0 ${val}); }`
+})
 
 function updateColorsInEditor () {
   // Zmień kolor siatki MGRS
