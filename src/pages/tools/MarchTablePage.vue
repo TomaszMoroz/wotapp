@@ -843,23 +843,20 @@ const MGRSGridLayer = L.GridLayer.extend({
     tile.width = size.x
     tile.height = size.y
     const ctx = tile.getContext('2d')
-    // Przelicz granice kafla na współrzędne geograficzne
     const map = this._map
-    const tileBounds = this._tileCoordsToBounds(coords)
-    const sw = tileBounds.getSouthWest()
-    const ne = tileBounds.getNorthEast()
-    // Ustal strefę UTM na podstawie środka kafla
-    const center = tileBounds.getCenter()
-    const utmCenter = utm.fromLatLon(center.lat, center.lng)
-    const zoneNum = utmCenter.zoneNum
-    const zoneLetter = utmCenter.zoneLetter
-    const utmSW = utm.fromLatLon(sw.lat, sw.lng, zoneNum)
-    const utmNE = utm.fromLatLon(ne.lat, ne.lng, zoneNum)
-    const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
-    const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
-    // Rysuj linie siatki co 1km
+    // Ustal strefę UTM na podstawie środka widocznego obszaru mapy
+    const mapBounds = map.getBounds()
+    const mapSW = mapBounds.getSouthWest()
+    const mapNE = mapBounds.getNorthEast()
+    const utmMapSW = utm.fromLatLon(mapSW.lat, mapSW.lng)
+    const utmMapNE = utm.fromLatLon(mapNE.lat, mapNE.lng)
+    const zoneNum = utmMapSW.zoneNum
+    const zoneLetter = utmMapSW.zoneLetter
+    const minE = Math.floor(Math.min(utmMapSW.easting, utmMapNE.easting) / 1000) * 1000
+    const maxE = Math.ceil(Math.max(utmMapSW.easting, utmMapNE.easting) / 1000) * 1000
+    const minN = Math.floor(Math.min(utmMapSW.northing, utmMapNE.northing) / 1000) * 1000
+    const maxN = Math.ceil(Math.max(utmMapSW.northing, utmMapNE.northing) / 1000) * 1000
+    // Rysuj pionowe linie siatki (easting) przez cały widoczny obszar
     ctx.strokeStyle = '#008800'
     ctx.lineWidth = 1
     ctx.font = 'bold 13px Arial'
@@ -876,10 +873,11 @@ const MGRSGridLayer = L.GridLayer.extend({
       ctx.moveTo(x, p1.y - coords.y * size.y)
       ctx.lineTo(x, p2.y - coords.y * size.y)
       ctx.stroke()
-      // Label easting (na górze kafla, zawsze)
+      // Etykieta easting (na górze kafla)
       const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
       ctx.fillText(label, x, 2)
     }
+    // Rysuj poziome linie siatki (northing) przez cały widoczny obszar
     ctx.textAlign = 'right'
     ctx.textBaseline = 'middle'
     for (let n = minN; n <= maxN; n += 1000) {
@@ -892,7 +890,7 @@ const MGRSGridLayer = L.GridLayer.extend({
       ctx.moveTo(p1.x - coords.x * size.x, y)
       ctx.lineTo(p2.x - coords.x * size.x, y)
       ctx.stroke()
-      // Label northing (po lewej kafla)
+      // Etykieta northing (po lewej kafla)
       if (p1.x - coords.x * size.x <= 5) {
         const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
         ctx.fillText(label, 18, y)
