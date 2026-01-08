@@ -933,10 +933,10 @@ const MGRSGridLayer = L.GridLayer.extend({
     const minN = Math.floor(Math.min(utmMapSW.northing, utmMapNE.northing) / 1000) * 1000
     const maxN = Math.ceil(Math.max(utmMapSW.northing, utmMapNE.northing) / 1000) * 1000
     // Rysuj pionowe linie siatki (easting) przez cały widoczny obszar
-    ctx.strokeStyle = '#008800'
+    ctx.strokeStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
     ctx.lineWidth = 1
     ctx.font = 'bold 13px Arial'
-    ctx.fillStyle = '#008800'
+    ctx.fillStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
     for (let e = minE; e <= maxE; e += 1000) {
