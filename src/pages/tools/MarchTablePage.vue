@@ -748,8 +748,8 @@ function ctxDrawRouteLinesOnCanvas (canvas, map, pins) {
   const ctx = canvas.getContext('2d')
   ctx.save()
   // Synchronize with editor route style
-  // Find the color and width used in L.polyline in calculateRoute
-  const routeColor = '#888' // default, update if dynamic
+  // Use user-selected color
+  const routeColor = (typeof colorRouteLine.value !== 'undefined' && colorRouteLine.value) ? colorRouteLine.value : '#888'
   const routeWidth = 2 // default, update if dynamic
   ctx.strokeStyle = routeColor
   ctx.lineWidth = routeWidth
@@ -769,11 +769,12 @@ function ctxDrawRouteMarkersOnCanvas (canvas, map, pins) {
   if (!pins || pins.length === 0) return
   const ctx = canvas.getContext('2d')
   ctx.save()
-  ctx.fillStyle = 'grey'
+  const markerColor = (typeof colorRouteMarker.value !== 'undefined' && colorRouteMarker.value) ? colorRouteMarker.value : 'grey'
   for (let i = 0; i < pins.length; i++) {
     const p = map.latLngToContainerPoint([pins[i].lat, pins[i].lng])
     ctx.beginPath()
     ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI)
+    ctx.fillStyle = markerColor
     ctx.fill()
     ctx.strokeStyle = 'white'
     ctx.lineWidth = 2
@@ -852,7 +853,8 @@ function handlePdfExport () {
 function drawMgrsGridOnCanvas (canvas, map, bounds) {
   const ctx = canvas.getContext('2d')
   ctx.font = 'bold 14px Arial'
-  ctx.fillStyle = '#008800'
+  const gridColor = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
+  ctx.fillStyle = gridColor
   // Użyj zawsze aktualnych bounds mapy
   // const bounds = map.getBounds()
   const sw = bounds.getSouthWest()
@@ -877,7 +879,7 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
     const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
     const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
     ctx.save()
-    ctx.strokeStyle = '#008800'
+    ctx.strokeStyle = gridColor
     ctx.lineWidth = 1
     ctx.beginPath()
     ctx.moveTo(p1.x, p1.y)
