@@ -291,6 +291,7 @@ const mgrsPrefix = ref('')
 const mgrsEasting = ref('')
 const mgrsNorthing = ref('')
 
+const isLayerLoading = ref(false)
 function handleAddPoint () {
   if (inputMode.value === 'map') {
     enablePinMode()
@@ -650,13 +651,13 @@ function debounce (fn, delay) {
 
 // Debounce dla generowania siatki MGRS i rerenderowania elementów mapy
 const debouncedMapRerender = debounce(() => {
-  if (showMgrsGrid.value && map.value) {
-    // ZAWSZE usuń starą warstwę i utwórz nową (nie tylko _draw)
+  if (!map.value) return
+  if (showMgrsGrid.value) {
+    // Siatka MGRS
     if (map.value._mgrsGridLayer) {
       map.value.removeLayer(map.value._mgrsGridLayer)
       map.value._mgrsGridLayer = null
     }
-    // Dodatkowo usuń wszystkie stare canvasy z overlayPane (na wszelki wypadek)
     const overlayPane = map.value.getPanes().overlayPane
     if (overlayPane) {
       Array.from(overlayPane.querySelectorAll('canvas.leaflet-mgrs-grid')).forEach(c => c.remove())
@@ -665,7 +666,6 @@ const debouncedMapRerender = debounce(() => {
     if (layers && layers.length > 0) {
       map.value._mgrsGridLayer = layers[0]
     }
-    // Fallback: jeśli po 400ms nie ma canvasu siatki, wymuś jej odtworzenie jeszcze raz
     setTimeout(() => {
       const overlayPane2 = map.value.getPanes().overlayPane
       const mgrsCanvas = overlayPane2 && overlayPane2.querySelector('canvas.leaflet-mgrs-grid')
@@ -682,7 +682,7 @@ const debouncedMapRerender = debounce(() => {
     }, 400)
   }
   rerenderMapElements()
-}, 350)
+}, 650)
 
 async function searchArea () {
   if (!search.value) return
@@ -1486,14 +1486,46 @@ function exportGPX () {
 }
 
 watch(selectedMapLayer, (val, oldVal) => {
-  if (map.value && baseLayers[val]) {
+  if (map.value && baseLayers[val] && !isLayerLoading.value) {
+    isLayerLoading.value = true
+    Loading.show({ message: 'Ładowanie warstwy mapy...' })
     if (baseLayer) map.value.removeLayer(baseLayer)
     baseLayer = baseLayers[val]
     baseLayer.addTo(map.value)
+    // Nasłuchuj tileload i tileerror
+    let loadedTiles = 0
+    let errorTiles = 0
+    let expectedTiles = 0
+    const onTileLoad = () => {
+      loadedTiles++
+      if (loadedTiles + errorTiles >= expectedTiles) {
+        finishLayerLoad()
+      }
+    }
+    const onTileError = () => {
+      errorTiles++
+      if (loadedTiles + errorTiles >= expectedTiles) {
+        finishLayerLoad()
+      }
+    }
+    function finishLayerLoad () {
+      baseLayer.off('tileload', onTileLoad)
+      baseLayer.off('tileerror', onTileError)
+      setTimeout(() => {
+        map.value.invalidateSize()
+        debouncedMapRerender()
+        Loading.hide()
+        isLayerLoading.value = false
+      }, 200)
+    }
+    // Określ liczbę kafelków do załadowania
+    expectedTiles = Math.max(8, Math.floor(map.value.getSize().x / 256) * Math.floor(map.value.getSize().y / 256))
+    baseLayer.on('tileload', onTileLoad)
+    baseLayer.on('tileerror', onTileError)
+    // Fallback: jeśli po 3s nie załadowało się nic, odblokuj
     setTimeout(() => {
-      map.value.invalidateSize()
-      debouncedMapRerender()
-    }, 250)
+      if (isLayerLoading.value) finishLayerLoad()
+    }, 3000)
   }
 })
 </script>
