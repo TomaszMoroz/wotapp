@@ -639,6 +639,51 @@ function formatEta (result) {
   return `${h > 0 ? h + 'h ' : ''}${m}min (${result.totalDist.toFixed(2)} km)`
 }
 
+// Prosta funkcja debounce
+function debounce (fn, delay) {
+  let timeout
+  return function (...args) {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => fn.apply(this, args), delay)
+  }
+}
+
+// Debounce dla generowania siatki MGRS i rerenderowania elementów mapy
+const debouncedMapRerender = debounce(() => {
+  if (showMgrsGrid.value && map.value) {
+    // ZAWSZE usuń starą warstwę i utwórz nową (nie tylko _draw)
+    if (map.value._mgrsGridLayer) {
+      map.value.removeLayer(map.value._mgrsGridLayer)
+      map.value._mgrsGridLayer = null
+    }
+    // Dodatkowo usuń wszystkie stare canvasy z overlayPane (na wszelki wypadek)
+    const overlayPane = map.value.getPanes().overlayPane
+    if (overlayPane) {
+      Array.from(overlayPane.querySelectorAll('canvas.leaflet-mgrs-grid')).forEach(c => c.remove())
+    }
+    const layers = drawMgrsGrid(map.value, false)
+    if (layers && layers.length > 0) {
+      map.value._mgrsGridLayer = layers[0]
+    }
+    // Fallback: jeśli po 400ms nie ma canvasu siatki, wymuś jej odtworzenie jeszcze raz
+    setTimeout(() => {
+      const overlayPane2 = map.value.getPanes().overlayPane
+      const mgrsCanvas = overlayPane2 && overlayPane2.querySelector('canvas.leaflet-mgrs-grid')
+      if (!mgrsCanvas && showMgrsGrid.value) {
+        if (map.value._mgrsGridLayer) {
+          map.value.removeLayer(map.value._mgrsGridLayer)
+          map.value._mgrsGridLayer = null
+        }
+        const layers2 = drawMgrsGrid(map.value, false)
+        if (layers2 && layers2.length > 0) {
+          map.value._mgrsGridLayer = layers2[0]
+        }
+      }
+    }, 400)
+  }
+  rerenderMapElements()
+}, 350)
+
 async function searchArea () {
   if (!search.value) return
   // Jeśli wpis wygląda na MGRS (np. 33UXP04)
@@ -673,6 +718,57 @@ function enablePinMode () {
   pinMode.value = true
 }
 
+// Centralny rerender wszystkich elementów mapy
+function rerenderMapElements () {
+  if (!map.value) return
+  // Usuń markery trasy
+  markers.value.forEach(marker => {
+    try { map.value.removeLayer(marker) } catch (e) {}
+  })
+  markers.value = []
+  // Dodaj markery trasy
+  pins.value.forEach((p, idx) => {
+    let icon = iconPin
+    if (idx === 0) icon = iconHome
+    else if (idx === pins.value.length - 1) icon = iconFlag
+    const marker = L.marker([p.lat, p.lng], { icon }).addTo(map.value)
+    markers.value.push(marker)
+  })
+  // Usuń i dodaj markery specjalne
+  pointHistory.value.forEach(entry => {
+    if (entry.type === 'special' && entry.marker) {
+      try { map.value.removeLayer(entry.marker) } catch (e) {}
+    }
+  })
+  specialPoints.value.forEach((pt, idx) => {
+    let icon = iconOther
+    if (pt.type === 'PZPR') icon = iconPzpr
+    else if (pt.type === 'MEDEVAC') icon = iconMedevac
+    else if (pt.type === 'OP') icon = iconOp
+    else if (pt.type === 'BAZA') icon = iconBaza
+    const marker = L.marker([pt.lat, pt.lng], { icon }).addTo(map.value)
+    pointHistory.value.push({ type: 'special', marker, idx })
+  })
+  // Usuń i dodaj linie trasy
+  polylines.value.forEach(l => map.value && map.value.removeLayer(l))
+  polylines.value = []
+  if (pins.value.length > 1) {
+    const latlngs = pins.value.map(p => [p.lat, p.lng])
+    const polyline = L.polyline(latlngs, { color: colorRouteLine.value || '#888', weight: 2 }).addTo(map.value)
+    polylines.value.push(polyline)
+    pins.value.forEach(p => {
+      const greyDot = L.circleMarker([p.lat, p.lng], {
+        radius: 4,
+        color: 'grey',
+        fillColor: 'grey',
+        fillOpacity: 1,
+        weight: 0
+      }).addTo(map.value)
+      polylines.value.push(greyDot)
+    })
+  }
+}
+
 function clearAll () {
   // Usuń wszystkie markery z mapy
   pointHistory.value.forEach(entry => {
@@ -702,14 +798,57 @@ function centerOnUserLocation () {
         // Wymuś przeliczenie rozmiaru mapy i ponowne rysowanie siatki po centrowaniu
         setTimeout(() => {
           map.value.invalidateSize()
+          // Odśwież markery i linie po przeliczeniu rozmiaru mapy
+          markers.value.forEach(marker => {
+            try { map.value.removeLayer(marker) } catch (e) {}
+          })
+          markers.value = []
+          pins.value.forEach((p, idx) => {
+            let icon = iconPin
+            if (idx === 0) icon = iconHome
+            else if (idx === pins.value.length - 1) icon = iconFlag
+            const marker = L.marker([p.lat, p.lng], { icon }).addTo(map.value)
+            markers.value.push(marker)
+          })
+          // Usuwamy i rysujemy ponownie markery specjalne
+          pointHistory.value.forEach(entry => {
+            if (entry.type === 'special' && entry.marker) {
+              try { map.value.removeLayer(entry.marker) } catch (e) {}
+            }
+          })
+          specialPoints.value.forEach((pt, idx) => {
+            let icon = iconOther
+            if (pt.type === 'PZPR') icon = iconPzpr
+            else if (pt.type === 'MEDEVAC') icon = iconMedevac
+            else if (pt.type === 'OP') icon = iconOp
+            else if (pt.type === 'BAZA') icon = iconBaza
+            const marker = L.marker([pt.lat, pt.lng], { icon }).addTo(map.value)
+            pointHistory.value.push({ type: 'special', marker, idx })
+          })
+          polylines.value.forEach(l => map.value && map.value.removeLayer(l))
+          polylines.value = []
+          if (pins.value.length > 1) {
+            const latlngs = pins.value.map(p => [p.lat, p.lng])
+            const polyline = L.polyline(latlngs, { color: colorRouteLine.value || '#888', weight: 2 }).addTo(map.value)
+            polylines.value.push(polyline)
+            pins.value.forEach(p => {
+              const greyDot = L.circleMarker([p.lat, p.lng], {
+                radius: 4,
+                color: 'grey',
+                fillColor: 'grey',
+                fillOpacity: 1,
+                weight: 0
+              }).addTo(map.value)
+              polylines.value.push(greyDot)
+            })
+          }
+          // Reset transformacji canvasu siatki MGRS
           const overlayPane = map.value.getPanes().overlayPane
           if (overlayPane) {
             overlayPane.style.transform = 'none'
           }
-          // Reset transformacji canvasu siatki MGRS
           if (map.value._mgrsGridLayer && map.value._mgrsGridLayer._canvas) {
             map.value._mgrsGridLayer._canvas.style.transform = 'none'
-            console.log('[centerOnUserLocation] Reset transformacji canvasu:', map.value._mgrsGridLayer._canvas.style.transform)
           }
           if (map.value._mgrsGridLayer && typeof map.value._mgrsGridLayer._draw === 'function') {
             map.value._mgrsGridLayer._draw()
@@ -1190,8 +1329,8 @@ onMounted(() => {
     }
   }
 
-  // Debounce dla generowania siatki MGRS po zoomend/moveend/resize
-  const debouncedMgrsGrid = debounce(() => {
+  // Debounce dla generowania siatki MGRS i rerenderowania elementów mapy
+  const debouncedMapRerender = debounce(() => {
     if (showMgrsGrid.value && map.value) {
       // ZAWSZE usuń starą warstwę i utwórz nową (nie tylko _draw)
       if (map.value._mgrsGridLayer) {
@@ -1223,13 +1362,14 @@ onMounted(() => {
         }
       }, 400)
     }
+    rerenderMapElements()
   }, 350)
-  map.value.on('zoomend moveend resize', debouncedMgrsGrid)
+  map.value.on('zoomend moveend resize', debouncedMapRerender)
   // Dodatkowo, jeśli kontener mapy zmienia rozmiar (np. parent resize), nasłuchuj na resize observer
   const mapContainer = document.getElementById('march-map')
   if (window.ResizeObserver && mapContainer) {
     const resizeObserver = new ResizeObserver(() => {
-      debouncedMgrsGrid()
+      debouncedMapRerender()
     })
     resizeObserver.observe(mapContainer)
   }
@@ -1350,6 +1490,10 @@ watch(selectedMapLayer, (val, oldVal) => {
     if (baseLayer) map.value.removeLayer(baseLayer)
     baseLayer = baseLayers[val]
     baseLayer.addTo(map.value)
+    setTimeout(() => {
+      map.value.invalidateSize()
+      debouncedMapRerender()
+    }, 250)
   }
 })
 </script>
