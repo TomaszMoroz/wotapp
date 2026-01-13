@@ -23,6 +23,7 @@ const routes = [
       { path: '/emergency', component: () => import('pages/emergency/EmergencyPage.vue') },
       { path: '/unit', component: () => import('pages/unit/UnitPage.vue') },
       { path: '/equipment', component: () => import('pages/equipment/EquipmentPage.vue') },
+      { path: '/equipment/test', component: () => import('pages/equipment/EquipmentTestPage.vue') },
       { path: '/tools', component: () => import('pages/tools/ToolsPage.vue') },
       { path: '/tools/recon', component: () => import('pages/tools/ReconPage.vue') },
       { path: '/tools/recon/learn', component: () => import('pages/tools/ReconLearnPage.vue') },

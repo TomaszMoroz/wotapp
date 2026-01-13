@@ -19,8 +19,27 @@
         />
       </div>
 
-      <!-- Main weapons view -->
+      <!-- Main view: two tiles -->
       <div v-if="currentView === 'weapons'" class="dashboard-tiles tiles-grid">
+        <q-card class="modern-tile cursor-pointer" @click="showWeaponsList">
+          <q-card-section class="tile-content">
+            <div class="tile-label-row">
+              <span class="tile-label">Broń etatowa</span>
+            </div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Przeglądaj opisy broni</q-chip>
+          </q-card-section>
+        </q-card>
+        <q-card class="modern-tile cursor-pointer" @click="goToTest">
+          <q-card-section class="tile-content">
+            <div class="tile-label-row">
+              <span class="tile-label">Test z broni</span>
+            </div>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Sprawdź swoją wiedzę</q-chip>
+          </q-card-section>
+        </q-card>
+      </div>
+      <!-- Weapons list (old main view) -->
+      <div v-if="currentView === 'list'" class="dashboard-tiles tiles-grid">
         <q-card
           v-for="weapon in weapons"
           :key="weapon.id"
@@ -139,6 +158,14 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+function showWeaponsList () {
+  currentView.value = 'list'
+}
+function goToTest () {
+  router.push('/equipment/test')
+}
 import { ref, computed } from 'vue'
 import visImg from 'assets/vis.png'
 import ukmImg from 'assets/ukm.png'
