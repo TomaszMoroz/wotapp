@@ -272,7 +272,57 @@ const questions = [
       { blankIdx: 2, label: 'do', correct: '8' },
       ' lat.'
     ]
+  },
+  // --- MSBS GROT questions from screenshots ---
+  {
+    question: 'Kaliber lufy MSBS GROT wynosi:',
+    answers: ['5.45 mm', '5.56 mm', '7.62 mm'],
+    correct: 1,
+    type: 'single'
+  },
+  {
+    question: 'W magazynku 5,56 GROT znajduje się:',
+    answers: ['24 nabojów', '12 nabojów', '30 nabojów'],
+    correct: 2,
+    type: 'single'
+  },
+  {
+    question: 'Masa karabinu bez magazynka i celownika optycznego wynosi:',
+    answers: ['3500 g', '3100 g', 'inna (jaka?) 3.800 g'],
+    correct: 2,
+    type: 'single'
+  },
+  {
+    question: 'Odległość strzału bezwzględnego:',
+    answers: ['300 m', '350 m', '400 m'],
+    correct: 1,
+    type: 'single'
+  },
+  {
+    question: 'Jaka jest prędkość początkowa pocisku:',
+    answers: ['700 m/s', '870 m/s', '716 m/s'],
+    correct: 0,
+    type: 'single'
+  },
+  {
+    question: 'Karabinek częściowo rozkłada się do:',
+    answers: ['czyszczenia', 'naprawy', 'przeglądu'],
+    correct: 0,
+    type: 'single'
+  },
+  {
+    question: 'Szybkostrzelność teoretyczna to:',
+    answers: ['ok.600 - 700strz./min', 'ok.550 - 600strz./min', 'ok.700-900 strz./min'],
+    correct: 2,
+    type: 'single'
+  },
+  {
+    question: 'Energia wylotowa pocisku z rdzeniem stalowym:',
+    answers: ['2100 [J]', '1600 [J]', '1900 [J]'],
+    correct: 1,
+    type: 'single'
   }
+  // ...existing code...
 ]
 
 const userAnswers = ref(Array(questions.length).fill(null))
