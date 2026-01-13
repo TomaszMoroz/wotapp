@@ -158,8 +158,9 @@
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
+const route = useRoute()
 function showWeaponsList () {
   currentView.value = 'list'
 }
@@ -184,6 +185,11 @@ defineOptions({
 
 // Navigation state
 const currentView = ref('weapons')
+
+// If navigated with ?view=list, show weapons list directly
+if (route.query.view === 'list') {
+  currentView.value = 'list'
+}
 const selectedWeaponId = ref(null)
 
 // Table columns for technical specifications

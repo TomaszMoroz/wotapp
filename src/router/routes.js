@@ -49,6 +49,7 @@ const routes = [
       { path: '/tccc', component: () => import('pages/tccc/TcccPage.vue') },
       { path: '/tccc/:nr', component: () => import('pages/tccc/TcccChapterPage.vue') },
       { path: '/cargo', component: () => import('pages/cargo/CargoPage.vue') }
+      // Removed invalid cargo equipment routes. Use only /equipment and /equipment/test for equipment section.
     ]
   },
 

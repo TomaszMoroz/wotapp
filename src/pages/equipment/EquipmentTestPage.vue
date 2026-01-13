@@ -1,5 +1,5 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="equipment-test-page-bg q-pa-md">
     <div class="test-header-row">
       <div class="test-header-nav">
         <BackNav color="black"/>
@@ -596,5 +596,13 @@ function resetTest () {
   .test-header-title {
     font-size: 1.5rem;
   }
+}
+/* Match cargo-page background */
+.equipment-test-page-bg {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f6fa 0%, #e9ecef 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

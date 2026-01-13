@@ -154,10 +154,12 @@ const groupedRoutes = [
       { path: '/topography/mgrs', label: 'Siatka MGRS' }
     ]
   },
+  // Wyposażenie: ensure both 'Broń etatowa' and 'Test z wyposażenia' are present and match EquipmentPage.vue menu
   {
     group: 'Wyposażenie',
     children: [
-      { path: '/equipment', label: 'Broń etatowa' }
+      { path: '/equipment?view=list', label: 'Broń etatowa' },
+      { path: '/equipment/test', label: 'Test z wyposażenia' }
     ]
   }
 ]
