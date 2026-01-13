@@ -531,7 +531,7 @@ const $q = useQuasar()
 const pushEnabled = ref(false)
 const pushDialog = ref(false)
 // Dodaj reactive do śledzenia permission
-const pushPermission = ref(Notification.permission)
+const pushPermission = ref(typeof Notification !== 'undefined' ? Notification.permission : 'default')
 
 // Przypomnienie o powiadomieniach po kilku dniach (np. 5 dni)
 const PUSH_REMIND_KEY = 'push-remind-date-v1'
@@ -556,7 +556,7 @@ onMounted(async () => {
       pushEnabled.value = false
     }
   }
-  pushPermission.value = Notification.permission
+  pushPermission.value = typeof Notification !== 'undefined' ? Notification.permission : 'default'
   // Przypomnienie o powiadomieniach push po kilku dniach od odmowy
   if (!pushEnabled.value && shouldRemindPush()) {
     pushDialog.value = true
@@ -608,6 +608,10 @@ async function enablePushNotifications () {
     return
   }
   try {
+    if (typeof Notification === 'undefined') {
+      $q.notify({ type: 'negative', message: 'Twoja przeglądarka nie obsługuje powiadomień push (brak wsparcia Notification API).' })
+      return
+    }
     const permission = await Notification.requestPermission()
     pushPermission.value = permission
     console.log('[PWA] Notification permission:', permission)
