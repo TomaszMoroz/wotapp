@@ -1,15 +1,20 @@
 <template>
   <q-page class="q-pa-md">
-    <BackNav title="Test z broni" />
+    <div class="test-header-row">
+      <div class="test-header-nav">
+        <BackNav color="black"/>
+      </div>
+      <div class="test-header-title text-h4">Test</div>
+    </div>
     <div v-for="cat in categories" :key="cat" class="q-mb-xl">
       <div class="text-subtitle2 q-mb-md" style="color:#222;">{{ cat }}</div>
       <div class="row q-col-gutter-md q-mb-lg">
-        <q-card v-for="(question, idx) in questionsByCategory(cat)" :key="idx" class="q-mb-md full-width">
+        <q-card v-for="(question, idx) in questionsByCategory(cat)" :key="idx" class="q-mb-md full-width" :class="{ 'wrong-answer': showChecked && isQuestionWrong(question) }">
           <q-card-section>
             <div v-if="question.category" class="q-mb-xs text-caption text-weight-bold" style="color:#222; background:#e0e0e0; border-radius:6px; padding:2px 10px; min-width:120px; text-align:left;">
               {{ question.category }}
             </div>
-            <div class="text-h6 q-mb-sm">{{ question._idx + 1 }}. {{ question.question }}</div>
+            <div class="text-h6 q-mb-sm">{{ question.question }}</div>
             <div v-if="question.image" class="q-mb-md equipment-test-image-wrapper">
               <div class="equipment-test-image-container">
                 <img :src="question.image" class="equipment-test-image" @click="showImage(question.image)" />
@@ -34,7 +39,7 @@
                   <template v-else>
                     <q-input v-model="userAnswers[question._idx][part.blankIdx]" dense standout style="display:inline-block;width:120px;margin:0 4px;vertical-align:middle;"
                       :label="part.label"
-                      :class="{ 'wrong-answer-input': showResult && !isFillBlankCorrect(question._idx, part.blankIdx) }"
+                      :class="{ 'wrong-answer-input': showChecked && !isFillBlankCorrect(question._idx, part.blankIdx) }"
                     />
                   </template>
                 </span>
@@ -43,7 +48,7 @@
             <div v-else-if="question.type === 'multiinput-image'">
               <div v-for="(input, iIdx) in question.inputs" :key="iIdx" class="q-mb-sm">
                 <q-input v-model="userAnswers[question._idx][iIdx]" :label="`Element ${input.number}`"
-                  :class="{ 'wrong-answer-input': showResult && !isMultiInputCorrect(question._idx, iIdx) }"
+                  :class="{ 'wrong-answer-input': showChecked && !isMultiInputCorrect(question._idx, iIdx) }"
                 />
               </div>
             </div>
@@ -69,7 +74,7 @@
           <div class="text-h6">Twój wynik: {{ score }} trafnych odpowiedzi na {{ questions.length }} pytań</div>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Zamknij" color="primary" v-close-popup @click="showResult = false" />
+          <q-btn flat label="Zamknij" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -395,6 +400,7 @@ function questionsByCategory (cat) {
 const showModal = ref(false)
 const modalImage = ref('')
 const showResult = ref(false)
+const showChecked = ref(false)
 const score = ref(0)
 
 function showImage (img) {
@@ -409,6 +415,7 @@ function checkResults () {
     // pytania otwarte nie są oceniane automatycznie
   })
   score.value = points
+  showChecked.value = true
   showResult.value = true
 }
 
@@ -432,6 +439,31 @@ function isMultiInputCorrect (qIdx, iIdx) {
   return ans && q.correct[iIdx] && ans[iIdx]?.trim().toLowerCase() === q.correct[iIdx].trim().toLowerCase()
 }
 
+function isQuestionWrong (question) {
+  if (question.type === 'single') {
+    return userAnswers.value[question._idx] !== question.correct
+  }
+  if (question.type === 'open') {
+    return !userAnswers.value[question._idx] || userAnswers.value[question._idx].trim().toLowerCase() !== question.correct.trim().toLowerCase()
+  }
+  if (question.type === 'fillblank' && Array.isArray(question.parts)) {
+    const ans = userAnswers.value[question._idx]
+    let blankCount = 0
+    for (const part of question.parts) {
+      if (typeof part === 'object' && 'blankIdx' in part) {
+        if (!ans || ans[blankCount]?.trim().toLowerCase() !== part.correct.trim().toLowerCase()) return true
+        blankCount++
+      }
+    }
+    return false
+  }
+  if (question.type === 'multiinput-image' && Array.isArray(question.inputs)) {
+    const ans = userAnswers.value[question._idx]
+    return !ans || question.correct.some((c, i) => ans[i]?.trim().toLowerCase() !== c.trim().toLowerCase())
+  }
+  return false
+}
+
 function resetTest () {
   userAnswers.value = Array(questions.length).fill(null)
   questions.forEach((q, idx) => {
@@ -446,6 +478,7 @@ function resetTest () {
   })
   showResult.value = false
   score.value = 0
+  showChecked.value = false
 }
 </script>
 
@@ -481,21 +514,87 @@ function resetTest () {
   border-radius: 8px;
 }
 .wrong-answer {
-  background: #ffeaea !important;
+  background: #d32f2f !important;
 }
 .wrong-answer-input {
-  background: #ffeaea !important;
+  background: #d32f2f !important;
+}
+.q-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.q-mb-xl {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.row.q-col-gutter-md.q-mb-lg {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.full-width.q-mb-md {
+  width: 75vw;
+  max-width: 1200px;
+  min-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+@media (max-width: 1200px) {
+  .full-width.q-mb-md {
+    width: 90vw;
+    max-width: 100vw;
+  }
 }
 @media (max-width: 600px) {
-  .equipment-test-image-wrapper {
+  .full-width.q-mb-md {
+    width: 95vw;
+    max-width: 100vw;
+    min-width: 0;
+  }
+}
+
+.test-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 75vw;
+  max-width: 1200px;
+  min-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 32px;
+}
+.test-header-nav {
+  margin-right: 24px;
+  display: flex;
+  align-items: center;
+}
+.test-header-title {
+  flex: 1 1 auto;
+  text-align: left;
+  font-weight: 700;
+}
+@media (max-width: 1200px) {
+  .test-header-row {
+    width: 90vw;
     max-width: 100vw;
   }
-  .equipment-test-modal-card {
+}
+@media (max-width: 600px) {
+  .test-header-row {
+    width: 95vw;
     max-width: 100vw;
-    max-height: 100vh;
+    min-width: 0;
   }
-  .equipment-test-modal-image {
-    max-height: 70vh;
+  .test-header-title {
+    font-size: 1.5rem;
   }
 }
 </style>
