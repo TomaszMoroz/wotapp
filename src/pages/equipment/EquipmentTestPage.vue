@@ -225,154 +225,53 @@ const questions = [
       'Zamek', 'Lufa', 'Dźwignia zatrzymywania zamka', 'Przyrządy celownicze', 'Kurek', 'Dźwignia zwalniania kurka', 'Nakładki chwytu', 'Wkręt nakładek', 'Uchwyt mocowania smyczy', 'Magazynek', 'Zatrzask magazynka', 'Język spustowy', 'Dźwignia do rozkładania pistoletu', 'Szkielet chwytu', 'Szyna Picatinny', 'Zsp. sprężyny powrotnej'
     ]
   },
-  // 23-40: Fill-in-the-blank legal questions
-  // Przykładowe pytanie z prawa z inline inputami
+  // --- Dodane na podstawie nowych screenów ---
   {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ...',
+    question: 'W instrukcji producent przewiduje pracę naboju moździerzowego z pociskiem oświetleniowym S-LM60 w zakresie temperatur od 243K do 323K. Jakie są temperatury wyrażone w stopniach Celsjusza?',
+    answers: [
+      'od -40 stopni C do +40 stopni C',
+      'od -30 stopni C do +50 stopni C',
+      'od -35 stopni C do +45 stopni C'
+    ],
+    correct: 1,
+    type: 'single'
+  },
+  {
+    question: 'Zgodnie z Art. 358 § 1 i 2 KK żołnierz, który samowolnie dysponuje bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, podlega karze aresztu wojskowego albo pozbawienia wolności do ... lat, a żołnierz, który samowolnie zabiera broń, amunicję, materiał wybuchowy lub inny środek walki, podlega karze pozbawienia wolności od ... do ... lat.',
     type: 'fillblank',
     parts: [
-      'Uzupełnij: Broń palna dzieli się na broń ',
-      { blankIdx: 0, label: 'Typ 1', correct: 'krótką' },
-      ' i ',
-      { blankIdx: 1, label: 'Typ 2', correct: 'długą' }
+      'Zgodnie z Art. 358 § 1 i 2 KK żołnierz, który samowolnie dysponuje bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, podlega karze aresztu wojskowego albo pozbawienia wolności do ',
+      { blankIdx: 0, label: 'lat', correct: '3' },
+      ' lat, a żołnierz, który samowolnie zabiera broń, amunicję, materiał wybuchowy lub inny środek walki, podlega karze pozbawienia wolności od ',
+      { blankIdx: 1, label: 'od', correct: '1' },
+      ' do ',
+      { blankIdx: 2, label: 'do', correct: '10' },
+      ' lat.'
     ]
   },
   {
-    question: 'Uzupełnij: Broń palna to broń, w której energia ... jest wykorzystywana do wystrzelenia pocisku.',
+    question: 'Zgodnie z Art. 359 KK żołnierz, który nie dopełniając obowiązku lub przekraczając uprawnienia w zakresie ochrony lub nadzoru nad bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, powoduje choćby nieumyślnie ich utratę, podlega karze aresztu wojskowego albo pozbawienia wolności od ... miesięcy do ... lat.',
     type: 'fillblank',
     parts: [
-      'Uzupełnij: Broń palna to broń, w której energia ',
-      { blankIdx: 0, label: 'Rodzaj energii', correct: 'gazów' },
-      ' jest wykorzystywana do wystrzelenia pocisku.'
+      'Zgodnie z Art. 359 KK żołnierz, który nie dopełniając obowiązku lub przekraczając uprawnienia w zakresie ochrony lub nadzoru nad bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, powoduje choćby nieumyślnie ich utratę, podlega karze aresztu wojskowego albo pozbawienia wolności od ',
+      { blankIdx: 0, label: 'miesięcy', correct: '3' },
+      ' miesięcy do ',
+      { blankIdx: 1, label: 'lat', correct: '5' },
+      ' lat.'
     ]
   },
-  // Dodaj kolejne pytania z prawa w tym stylu...
   {
-    question: 'Uzupełnij: Broń palna to broń, w której energia ... jest wykorzystywana do wystrzelenia pocisku.',
+    question: 'Zgodnie z Art. 354 § 1 i 2 KK żołnierz, który nieostrożnie obchodzi się z bronią wojskową, amunicją, materiałem wybuchowym lub innym środkiem walki, albo ich nieostrożnie używa i przez to nieumyślnie powoduje naruszenie czynności narządu ciała lub rozstrój zdrowia innej osoby, podlega karze aresztu wojskowego albo pozbawienia wolności do ... lat, a jeżeli następstwem czynu jest śmierć innej osoby lub ciężki uszczerbek na jej zdrowiu, sprawca podlega karze pozbawienia wolności od ... do ... lat.',
     type: 'fillblank',
-    blanks: [
-      { label: 'Rodzaj energii', correct: 'gazów' }
+    parts: [
+      'Zgodnie z Art. 354 § 1 i 2 KK żołnierz, który nieostrożnie obchodzi się z bronią wojskową, amunicją, materiałem wybuchowym lub innym środkiem walki, albo ich nieostrożnie używa i przez to nieumyślnie powoduje naruszenie czynności narządu ciała lub rozstrój zdrowia innej osoby, podlega karze aresztu wojskowego albo pozbawienia wolności do ',
+      { blankIdx: 0, label: 'lat', correct: '3' },
+      ' lat, a jeżeli następstwem czynu jest śmierć innej osoby lub ciężki uszczerbek na jej zdrowiu, sprawca podlega karze pozbawienia wolności od ',
+      { blankIdx: 1, label: 'od', correct: '6' },
+      ' do ',
+      { blankIdx: 2, label: 'do', correct: '8' },
+      ' lat.'
     ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób ładowania.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'jednostrzałową' },
-      { label: 'Typ 2', correct: 'wielostrzałową' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu spustowego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'samopowtarzalną' },
-      { label: 'Typ 2', correct: 'automatyczną' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania zamka.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z zamkiem swobodnym' },
-      { label: 'Typ 2', correct: 'z zamkiem ryglowanym' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób ładowania magazynka.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z magazynkiem stałym' },
-      { label: 'Typ 2', correct: 'z magazynkiem wymiennym' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu uderzeniowego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z mechanizmem kurkowym' },
-      { label: 'Typ 2', correct: 'z mechanizmem iglicznym' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu spustowego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z mechanizmem pojedynczego działania' },
-      { label: 'Typ 2', correct: 'z mechanizmem podwójnego działania' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu zabezpieczającego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z bezpiecznikiem manualnym' },
-      { label: 'Typ 2', correct: 'z bezpiecznikiem automatycznym' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu spustowego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z mechanizmem spustowym pojedynczego działania' },
-      { label: 'Typ 2', correct: 'z mechanizmem spustowym podwójnego działania' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu uderzeniowego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z mechanizmem uderzeniowym kurkowym' },
-      { label: 'Typ 2', correct: 'z mechanizmem uderzeniowym iglicznym' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu zabezpieczającego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z bezpiecznikiem manualnym' },
-      { label: 'Typ 2', correct: 'z bezpiecznikiem automatycznym' }
-    ]
-  },
-  // 35-40: Additional fill-in-the-blank or open questions for completeness
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu spustowego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z mechanizmem spustowym pojedynczego działania' },
-      { label: 'Typ 2', correct: 'z mechanizmem spustowym podwójnego działania' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu uderzeniowego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z mechanizmem uderzeniowym kurkowym' },
-      { label: 'Typ 2', correct: 'z mechanizmem uderzeniowym iglicznym' }
-    ]
-  },
-  {
-    question: 'Uzupełnij: Broń palna dzieli się na broń ... i ... ze względu na sposób działania mechanizmu zabezpieczającego.',
-    type: 'fillblank',
-    blanks: [
-      { label: 'Typ 1', correct: 'z bezpiecznikiem manualnym' },
-      { label: 'Typ 2', correct: 'z bezpiecznikiem automatycznym' }
-    ]
-  },
-  {
-    question: 'Podaj definicję broni palnej.',
-    type: 'open',
-    correct: 'Broń, w której energia gazów powstałych w wyniku spalania materiału miotającego jest wykorzystywana do wystrzelenia pocisku.'
-  },
-  {
-    question: 'Podaj dwa rodzaje broni palnej ze względu na długość lufy.',
-    type: 'open',
-    correct: 'Broń krótka i broń długa.'
-  },
-  {
-    question: 'Podaj dwa rodzaje broni palnej ze względu na sposób ładowania.',
-    type: 'open',
-    correct: 'Broń jednostrzałowa i broń wielostrzałowa.'
   }
 ]
 
