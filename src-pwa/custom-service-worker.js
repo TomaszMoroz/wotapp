@@ -22,21 +22,22 @@ precacheAndRoute(self.__WB_MANIFEST)
 // 2. Automatyczne usuwanie nieaktualnych cache'ów poprzednich wersji aplikacji
 cleanupOutdatedCaches()
 
-// 3. Obsługa nawigacji (SPA Fallback)
-// To rozwiązuje problem białej karty przy "cold starcie" aplikacji z linku na iOS
-if (process.env.MODE !== 'ssr' || process.env.PROD) {
+// 3. Obsługa nawigacji (SPA Fallback) - zawsze fallback do index.html
+try {
   registerRoute(
     new NavigationRoute(
-      createHandlerBoundToURL(process.env.PWA_FALLBACK_HTML),
+      createHandlerBoundToURL('/index.html'),
       {
         denylist: [
           /sw\.js$/,
-          /workbox-(.)*\.js$/,
-          /\.[a-z0-9]+$/i // Nie traktuj bezpośrednich linków do plików jako nawigacji
+          /workbox-(.)*\.js$/
         ]
       }
     )
   )
+} catch (e) {
+  // eslint-disable-next-line no-console
+  console.error('NavigationRoute registration failed:', e)
 }
 
 /**

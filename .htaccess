@@ -1,0 +1,36 @@
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # 1. ZAKAZ CACHOWANIA DLA PLIKÓW KRYTYCZNYCH PWA
+  # Te pliki muszą być zawsze sprawdzane na serwerze
+  <FilesMatch "\.(service-worker\.js|manifest\.json)$">
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+
+  # 2. KRÓTKI CACHE DLA INDEX.HTML
+  # Pozwala na szybką aktualizację wersji SPA
+  <FilesMatch "index\.html">
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+  </FilesMatch>
+
+  # 3. DŁUGI CACHE DLA ASSETÓW (JS, CSS, OBRAZY)
+  # Quasar generuje hashe w nazwach plików (np. main.123abc.js),
+  # więc te pliki mogą być cachowane bezpiecznie.
+  <FilesMatch "\.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$">
+    ExpiresDefault "access plus 1 year"
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# 4. OBSŁUGA ROUTINGU SPA (Hash i History)
+# Przekierowuje wszystkie zapytania na index.html, jeśli plik nie istnieje
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
