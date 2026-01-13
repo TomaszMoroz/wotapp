@@ -47,7 +47,13 @@
             </div>
             <div v-else-if="question.type === 'multiinput-image'">
               <div v-for="(input, iIdx) in question.inputs" :key="iIdx" class="q-mb-sm">
-                <q-input v-model="userAnswers[question._idx][iIdx]" :label="`Element ${input.number}`"
+                <q-select
+                  v-model="userAnswers[question._idx][iIdx]"
+                  :options="question.correct"
+                  :label="`Element ${input.number}`"
+                  dense
+                  emit-value
+                  map-options
                   :class="{ 'wrong-answer-input': showChecked && !isMultiInputCorrect(question._idx, iIdx) }"
                 />
               </div>
@@ -277,7 +283,7 @@ const questions = [
     category: 'Moździerz'
   },
   {
-    question: 'Zgodnie z Art. 358 § 1 i 2 KK żołnierz, który samowolnie dysponuje bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, podlega karze aresztu wojskowego albo pozbawienia wolności do ... lat, a żołnierz, który samowolnie zabiera broń, amunicję, materiał wybuchowy lub inny środek walki, podlega karze pozbawienia wolności od ... do ... lat.',
+    question: '',
     type: 'fillblank',
     parts: [
       'Zgodnie z Art. 358 § 1 i 2 KK żołnierz, który samowolnie dysponuje bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, podlega karze aresztu wojskowego albo pozbawienia wolności do ',
@@ -291,7 +297,7 @@ const questions = [
     category: 'Prawo'
   },
   {
-    question: 'Zgodnie z Art. 359 KK żołnierz, który nie dopełniając obowiązku lub przekraczając uprawnienia w zakresie ochrony lub nadzoru nad bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, powoduje choćby nieumyślnie ich utratę, podlega karze aresztu wojskowego albo pozbawienia wolności od ... miesięcy do ... lat.',
+    question: '',
     type: 'fillblank',
     parts: [
       'Zgodnie z Art. 359 KK żołnierz, który nie dopełniając obowiązku lub przekraczając uprawnienia w zakresie ochrony lub nadzoru nad bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, powoduje choćby nieumyślnie ich utratę, podlega karze aresztu wojskowego albo pozbawienia wolności od ',
@@ -303,7 +309,7 @@ const questions = [
     category: 'Prawo'
   },
   {
-    question: 'Zgodnie z Art. 354 § 1 i 2 KK żołnierz, który nieostrożnie obchodzi się z bronią wojskową, amunicją, materiałem wybuchowym lub innym środkiem walki, albo ich nieostrożnie używa i przez to nieumyślnie powoduje naruszenie czynności narządu ciała lub rozstrój zdrowia innej osoby, podlega karze aresztu wojskowego albo pozbawienia wolności do ... lat, a jeżeli następstwem czynu jest śmierć innej osoby lub ciężki uszczerbek na jej zdrowiu, sprawca podlega karze pozbawienia wolności od ... do ... lat.',
+    question: '',
     type: 'fillblank',
     parts: [
       'Zgodnie z Art. 354 § 1 i 2 KK żołnierz, który nieostrożnie obchodzi się z bronią wojskową, amunicją, materiałem wybuchowym lub innym środkiem walki, albo ich nieostrożnie używa i przez to nieumyślnie powoduje naruszenie czynności narządu ciała lub rozstrój zdrowia innej osoby, podlega karze aresztu wojskowego albo pozbawienia wolności do ',
@@ -333,7 +339,7 @@ const questions = [
   },
   {
     question: 'Masa karabinu bez magazynka i celownika optycznego wynosi:',
-    answers: ['3500 g', '3100 g', 'inna (jaka?) 3.800 g'],
+    answers: ['3500 g', '3100 g', '3.800 g'],
     correct: 2,
     type: 'single',
     category: 'GROT'
