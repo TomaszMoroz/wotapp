@@ -128,7 +128,7 @@ const questions = [
   // 5
   {
     question: 'Jaka jest prędkość początkowa pocisku karabinu wyborowego BOR?',
-    answers: ['360 m/s', '400 m/s', '500 m/s'],
+    answers: ['870 m/s', '770 m/s', '900 m/s'],
     correct: 0,
     type: 'single',
     category: 'BOR'
@@ -353,8 +353,8 @@ const questions = [
   },
   {
     question: 'Jaka jest prędkość początkowa pocisku:',
-    answers: ['700 m/s', '870 m/s', '716 m/s'],
-    correct: 0,
+    answers: ['700 m/s', '890 m/s', '716 m/s'],
+    correct: 1,
     type: 'single',
     category: 'GROT'
   },
