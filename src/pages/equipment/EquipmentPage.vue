@@ -565,6 +565,11 @@ const goBack = () => {
   align-items: flex-start;
   margin-top: 12px;
 }
+@media (max-width: 700px) {
+  .tiles-grid {
+    justify-content: center;
+  }
+}
 .modern-tile {
   background: #fff;
   border-radius: 22px;
