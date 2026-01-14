@@ -70,7 +70,33 @@
           <q-btn round dense flat icon="close" @click="showModal = false" />
         </q-card-section>
         <q-card-section>
-          <img :src="modalImage" class="equipment-test-modal-image" />
+          <div class="modal-image-zoom-controls">
+            <q-btn icon="add" @click="zoomIn" round dense flat />
+            <q-btn icon="remove" @click="zoomOut" round dense flat />
+            <q-btn icon="refresh" @click="resetZoom" round dense flat />
+          </div>
+          <div
+            class="modal-image-pan-container"
+            @mousedown="startDrag"
+            @mousemove="onDrag"
+            @mouseup="endDrag"
+            @mouseleave="endDrag"
+            @touchstart="startDrag"
+            @touchmove="onDrag"
+            @touchend="endDrag"
+            @touchcancel="endDrag"
+          >
+            <img
+              :src="modalImage"
+              class="equipment-test-modal-image"
+              :style="{
+                transform: `scale(${imageScale}) translate(${imageOffset.x / imageScale}px, ${imageOffset.y / imageScale}px)`,
+                cursor: imageScale > 1 ? 'grab' : 'pointer',
+                transition: dragging ? 'none' : 'transform 0.2s'
+              }"
+              draggable="false"
+            />
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -91,6 +117,7 @@
 import { ref } from 'vue'
 import BackNav from 'components/BackNav.vue'
 import visTestImg from 'assets/visTest.png'
+import msbsTestImg from 'assets/msbsTest.jpg'
 
 const questions = [
   // 1
@@ -219,7 +246,7 @@ const questions = [
     answers: ['Oddziaływania na psychikę przeciwnika', 'Łatwiejszego wcelowania się w cel', 'Doświetlania celu'],
     correct: 1,
     type: 'single',
-    category: 'Granatnik'
+    category: 'UKM'
   },
   // 17
   {
@@ -248,15 +275,31 @@ const questions = [
   // 20
   {
     question: 'Jakie bezpieczniki posiada VIS-100?',
-    type: 'open',
-    correct: 'Wewnętrzny blokada iglicy, zewnętrzny bezpiecznik skrzydełkowy, przerywacz',
+    type: 'single',
+    answers: [
+      'Wewnętrzny blokada iglicy, zewnętrzny bezpiecznik skrzydełkowy, przerywacz', // poprawna
+      'Tylko bezpiecznik spustowy',
+      'Wyłącznie bezpiecznik manualny',
+      'Blokada magazynka i bezpiecznik spustowy',
+      'Blokada iglicy i bezpiecznik magazynka',
+      'Brak jakichkolwiek bezpieczników'
+    ],
+    correct: 0,
     category: 'VIS-100'
   },
   // 21
   {
     question: 'Co to jest absolute co-witness?',
-    type: 'open',
-    correct: 'Takie ustawienie muszki względem znaku celowniczego, gdzie znak celowniczy opiera się podstawą o muszkę',
+    type: 'single',
+    answers: [
+      'Takie ustawienie muszki względem znaku celowniczego, gdzie centrum znaku celowniczego pokrywa sie z szczytem muszki', // poprawna
+      'Celownik optyczny ustawiony powyżej przyrządów mechanicznych',
+      'Zjawisko nakładania się obrazu celu na muszkę',
+      'Montaż celownika pod kątem 45 stopni',
+      'Ustawienie przyrządów mechanicznych poniżej linii optyki',
+      'Celowanie przez optykę bez użycia muszki'
+    ],
+    correct: 0,
     category: 'Celowniki'
   },
   // 22
@@ -267,6 +310,24 @@ const questions = [
     inputs: Array.from({ length: 16 }, (_, i) => ({ number: i + 1 })),
     correct: [
       'Zamek', 'Lufa', 'Dźwignia zatrzymywania zamka', 'Przyrządy celownicze', 'Kurek', 'Dźwignia zwalniania kurka', 'Nakładki chwytu', 'Wkręt nakładek', 'Uchwyt mocowania smyczy', 'Magazynek', 'Zatrzask magazynka', 'Język spustowy', 'Dźwignia do rozkładania pistoletu', 'Szkielet chwytu', 'Szyna Picatinny', 'Zsp. sprężyny powrotnej'
+    ],
+    dropdownOptions: [
+      ['Magazynek', 'Zamek', 'Szyna Picatinny', 'Dźwignia zatrzymywania zamka'],
+      ['Lufa', 'Dźwignia zwalniania kurka', 'Nakładki chwytu', 'Język spustowy'],
+      ['Dźwignia zatrzymywania zamka', 'Zsp. sprężyny powrotnej', 'Wkręt nakładek', 'Zamek'],
+      ['Przyrządy celownicze', 'Kurek', 'Szyna Picatinny', 'Szkielet chwytu'],
+      ['Kurek', 'Magazynek', 'Dźwignia do rozkładania pistoletu', 'Lufa'],
+      ['Dźwignia zwalniania kurka', 'Zatrzask magazynka', 'Szyna Picatinny', 'Uchwyt mocowania smyczy'],
+      ['Nakładki chwytu', 'Język spustowy', 'Wkręt nakładek', 'Zsp. sprężyny powrotnej'],
+      ['Wkręt nakładek', 'Szkielet chwytu', 'Dźwignia zatrzymywania zamka', 'Przyrządy celownicze'],
+      ['Uchwyt mocowania smyczy', 'Dźwignia do rozkładania pistoletu', 'Zamek', 'Lufa'],
+      ['Magazynek', 'Szyna Picatinny', 'Dźwignia zwalniania kurka', 'Język spustowy'],
+      ['Zatrzask magazynka', 'Wkręt nakładek', 'Kurek', 'Szkielet chwytu'],
+      ['Język spustowy', 'Nakładki chwytu', 'Zsp. sprężyny powrotnej', 'Dźwignia zatrzymywania zamka'],
+      ['Dźwignia do rozkładania pistoletu', 'Uchwyt mocowania smyczy', 'Szyna Picatinny', 'Zamek'],
+      ['Szkielet chwytu', 'Przyrządy celownicze', 'Lufa', 'Magazynek'],
+      ['Szyna Picatinny', 'Dźwignia zwalniania kurka', 'Wkręt nakładek', 'Język spustowy'],
+      ['Zsp. sprężyny powrotnej', 'Nakładki chwytu', 'Dźwignia zatrzymywania zamka', 'Kurek']
     ],
     category: 'VIS-100'
   },
@@ -289,9 +350,9 @@ const questions = [
       'Zgodnie z Art. 358 § 1 i 2 KK żołnierz, który samowolnie dysponuje bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, podlega karze aresztu wojskowego albo pozbawienia wolności do ',
       { blankIdx: 0, label: 'lat', correct: '3' },
       ' lat, a żołnierz, który samowolnie zabiera broń, amunicję, materiał wybuchowy lub inny środek walki, podlega karze pozbawienia wolności od ',
-      { blankIdx: 1, label: 'od', correct: '1' },
+      { blankIdx: 1, label: '1', correct: '1' },
       ' do ',
-      { blankIdx: 2, label: 'do', correct: '10' },
+      { blankIdx: 2, label: '10', correct: '10' },
       ' lat.'
     ],
     category: 'Prawo'
@@ -315,9 +376,9 @@ const questions = [
       'Zgodnie z Art. 354 § 1 i 2 KK żołnierz, który nieostrożnie obchodzi się z bronią wojskową, amunicją, materiałem wybuchowym lub innym środkiem walki, albo ich nieostrożnie używa i przez to nieumyślnie powoduje naruszenie czynności narządu ciała lub rozstrój zdrowia innej osoby, podlega karze aresztu wojskowego albo pozbawienia wolności do ',
       { blankIdx: 0, label: 'lat', correct: '3' },
       ' lat, a jeżeli następstwem czynu jest śmierć innej osoby lub ciężki uszczerbek na jej zdrowiu, sprawca podlega karze pozbawienia wolności od ',
-      { blankIdx: 1, label: 'od', correct: '6' },
+      { blankIdx: 1, label: '6', correct: '6' },
       ' do ',
-      { blankIdx: 2, label: 'do', correct: '8' },
+      { blankIdx: 2, label: '8', correct: '8' },
       ' lat.'
     ],
     category: 'Prawo'
@@ -378,6 +439,77 @@ const questions = [
     correct: 1,
     type: 'single',
     category: 'GROT'
+  },
+  {
+    question: 'Jaki jest offset (różnica wysokości osi lufy i przyrządu celowniczego) na dystansie 20 m?',
+    answers: ['0 cm', '2 cm', '2 cm'],
+    correct: 0,
+    type: 'single',
+    category: 'GROT'
+  },
+  {
+    question: 'Jaki jest offset na dystansie 50 m?',
+    answers: ['10 cm', '12,5 cm', '15 cm'],
+    correct: 1,
+    type: 'single',
+    category: 'GROT'
+  },
+  {
+    question: 'Jaki jest offset na dystansie 100 m?',
+    answers: ['22 cm', '25 cm', '28 cm'],
+    correct: 1,
+    type: 'single',
+    category: 'GROT'
+  },
+  {
+    question: 'Jaki jest offset na dystansie 200 m?',
+    answers: ['39 cm', '42 cm', '45 cm'],
+    correct: 1,
+    type: 'single',
+    category: 'GROT'
+  },
+  {
+    question: 'Jaki jest offset na dystansie 300 m?',
+    answers: ['36 cm', '39 cm', '42 cm'],
+    correct: 1,
+    type: 'single',
+    category: 'GROT'
+  },
+  {
+    question: 'Jaki jest offset na dystansie 400 m?',
+    answers: ['8 cm', '11 cm', '14 cm'],
+    correct: 1,
+    type: 'single',
+    category: 'GROT'
+  },
+  {
+    question: 'Podaj nazwy elementów karabinka MSBS GROT zgodnie z numeracją na schemacie.',
+    type: 'multiinput-image',
+    image: msbsTestImg,
+    inputs: [
+      { number: 1 }, { number: 2 }, { number: 3 }, { number: 4 }, { number: 5 }, { number: 6 }, { number: 7 }, { number: 8 }
+    ],
+    correct: [
+      'Kolba teleskopowa',
+      'Mechanizm powrotny',
+      'Suwało z zamkiem',
+      'Komora zamkowa',
+      'Lufa',
+      'Magazynek',
+      'Łoże',
+      'Komora spustowa'
+    ],
+    dropdownOptions: [
+      ['Magazynek', 'Kolba teleskopowa', 'Komora zamkowa', 'Łoże'],
+      ['Mechanizm powrotny', 'Komora spustowa', 'Lufa', 'Suwało z zamkiem'],
+      ['Komora zamkowa', 'Suwało z zamkiem', 'Kolba teleskopowa', 'Magazynek'],
+      ['Komora zamkowa', 'Mechanizm powrotny', 'Komora spustowa', 'Łoże'],
+      ['Lufa', 'Magazynek', 'Kolba teleskopowa', 'Komora zamkowa'],
+      ['Magazynek', 'Łoże', 'Komora spustowa', 'Mechanizm powrotny'],
+      ['Łoże', 'Komora zamkowa', 'Lufa', 'Kolba teleskopowa'],
+      ['Komora spustowa', 'Suwało z zamkiem', 'Magazynek', 'Mechanizm powrotny']
+    ],
+    category: 'GROT'
   }
 ]
 
@@ -405,14 +537,110 @@ function questionsByCategory (cat) {
 
 const showModal = ref(false)
 const modalImage = ref('')
-const showResult = ref(false)
-const showChecked = ref(false)
-const score = ref(0)
+const imageScale = ref(1)
+const imageOffset = ref({ x: 0, y: 0 })
+const dragging = ref(false)
+const dragStart = ref({ x: 0, y: 0 })
 
 function showImage (img) {
   modalImage.value = img
   showModal.value = true
+  imageScale.value = 1
+  imageOffset.value = { x: 0, y: 0 }
 }
+
+function zoomIn () {
+  imageScale.value = Math.min(imageScale.value + 0.25, 4)
+}
+function zoomOut () {
+  imageScale.value = Math.max(imageScale.value - 0.25, 1)
+}
+function resetZoom () {
+  imageScale.value = 1
+  imageOffset.value = { x: 0, y: 0 }
+}
+
+function startDrag (e) {
+  if (e.touches && e.touches.length === 2) {
+    // Pinch start
+    dragging.value = false
+    pinchStartDist.value = getPinchDist(e)
+    pinchStartScale.value = imageScale.value
+    pinchStartOffset.value = { ...imageOffset.value }
+    pinchCenter.value = getPinchCenter(e)
+    pinchActive.value = true
+    return
+  }
+  dragging.value = true
+  pinchActive.value = false
+  if (e.type === 'touchstart') {
+    dragStart.value = {
+      x: e.touches[0].clientX - imageOffset.value.x,
+      y: e.touches[0].clientY - imageOffset.value.y
+    }
+  } else {
+    dragStart.value = {
+      x: e.clientX - imageOffset.value.x,
+      y: e.clientY - imageOffset.value.y
+    }
+  }
+}
+
+const pinchActive = ref(false)
+const pinchStartDist = ref(0)
+const pinchStartScale = ref(1)
+const pinchStartOffset = ref({ x: 0, y: 0 })
+const pinchCenter = ref({ x: 0, y: 0 })
+
+function getPinchDist (e) {
+  const dx = e.touches[0].clientX - e.touches[1].clientX
+  const dy = e.touches[0].clientY - e.touches[1].clientY
+  return Math.sqrt(dx * dx + dy * dy)
+}
+function getPinchCenter (e) {
+  return {
+    x: (e.touches[0].clientX + e.touches[1].clientX) / 2,
+    y: (e.touches[0].clientY + e.touches[1].clientY) / 2
+  }
+}
+
+function onDrag (e) {
+  if (e.touches && e.touches.length === 2 && pinchActive.value) {
+    // Pinch zoom
+    const newDist = getPinchDist(e)
+    let newScale = pinchStartScale.value * (newDist / pinchStartDist.value)
+    newScale = Math.max(1, Math.min(newScale, 4))
+    imageScale.value = newScale
+    // Przesuwanie względem centrum pinch
+    const newCenter = getPinchCenter(e)
+    imageOffset.value = {
+      x: pinchStartOffset.value.x + (newCenter.x - pinchCenter.value.x),
+      y: pinchStartOffset.value.y + (newCenter.y - pinchCenter.value.y)
+    }
+    return
+  }
+  if (!dragging.value) return
+  let clientX, clientY
+  if (e.type === 'touchmove') {
+    clientX = e.touches[0].clientX
+    clientY = e.touches[0].clientY
+  } else {
+    clientX = e.clientX
+    clientY = e.clientY
+  }
+  imageOffset.value = {
+    x: clientX - dragStart.value.x,
+    y: clientY - dragStart.value.y
+  }
+}
+function endDrag () {
+  dragging.value = false
+  pinchActive.value = false
+}
+
+const showResult = ref(false)
+const showChecked = ref(false)
+const score = ref(0)
 
 function checkResults () {
   let points = 0
@@ -491,7 +719,12 @@ function resetTest () {
 <style scoped>
 .equipment-test-image-wrapper {
   position: relative;
-  max-width: 320px;
+  max-width: 600px;
+}
+@media (max-width: 700px) {
+  .equipment-test-image-wrapper {
+    max-width: 98vw;
+  }
 }
 .equipment-test-image-container {
   position: relative;
@@ -513,11 +746,32 @@ function resetTest () {
   max-width: 90vw;
   max-height: 90vh;
 }
-.equipment-test-modal-image {
+.modal-image-zoom-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+.modal-image-pan-container {
   width: 100%;
-  max-height: 80vh;
-  object-fit: contain;
+  height: 70vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+  background: #f5f5f5;
   border-radius: 8px;
+}
+.equipment-test-modal-image {
+  max-width: none;
+  max-height: none;
+  width: auto;
+  height: auto;
+  user-select: none;
+  border-radius: 8px;
+  pointer-events: none;
+  display: block;
 }
 .wrong-answer {
   background: #d32f2f !important;
