@@ -48,7 +48,7 @@
               <div v-for="(input, iIdx) in question.inputs" :key="iIdx" class="q-mb-sm">
                 <q-select
                   v-model="userAnswers[question._idx][iIdx]"
-                  :options="question.correct"
+                  :options="question.dropdownOptions ? question.dropdownOptions[iIdx] : []"
                   :label="`Element ${input.number}`"
                   dense
                   emit-value
@@ -512,6 +512,16 @@ const questions = [
   }
 ]
 
+function shuffleArray (array) {
+  // Fisher-Yates shuffle
+  const arr = array.slice()
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
 const userAnswers = ref(Array(questions.length).fill(null))
 
 // Ensure userAnswers is initialized for fillblank and multiinput-image questions
@@ -524,6 +534,18 @@ questions.forEach((q, idx) => {
     userAnswers.value[idx] = Array(q.blanks.length).fill('')
   } else if (q.type === 'multiinput-image' && Array.isArray(q.inputs)) {
     userAnswers.value[idx] = Array(q.inputs.length).fill('')
+    // Zbierz wszystkie możliwe odpowiedzi dla tego pytania
+    const allOptions = Array.isArray(q.correct) ? q.correct.slice() : []
+    // Dodaj także wszystkie unikalne opcje z oryginalnych dropdownOptions (jeśli są)
+    if (Array.isArray(q.dropdownOptions)) {
+      q.dropdownOptions.forEach(opts => {
+        opts.forEach(opt => {
+          if (!allOptions.includes(opt)) allOptions.push(opt)
+        })
+      })
+    }
+    // Dla każdego dropdowna generuj osobno przetasowaną listę wszystkich opcji
+    q.dropdownOptions = q.inputs.map(() => shuffleArray(allOptions))
   }
 })
 
