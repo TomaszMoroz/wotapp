@@ -37,8 +37,7 @@
                 <span v-for="(part, pIdx) in question.parts" :key="pIdx">
                   <template v-if="typeof part === 'string'">{{ part }}</template>
                   <template v-else>
-                    <q-input v-model="userAnswers[question._idx][part.blankIdx]" dense standout style="display:inline-block;width:120px;margin:0 4px;vertical-align:middle;"
-                      :label="part.label"
+                    <q-input dense v-model="userAnswers[question._idx][part.blankIdx]"  standout style="display:inline-block;width:120px;margin:0 4px;vertical-align:middle;"
                       :class="{ 'wrong-answer-input': showChecked && !isFillBlankCorrect(question._idx, part.blankIdx) }"
                     />
                   </template>
@@ -350,9 +349,9 @@ const questions = [
       'Zgodnie z Art. 358 § 1 i 2 KK żołnierz, który samowolnie dysponuje bronią, amunicją, materiałem wybuchowym lub innym środkiem walki, podlega karze aresztu wojskowego albo pozbawienia wolności do ',
       { blankIdx: 0, label: 'lat', correct: '3' },
       ' lat, a żołnierz, który samowolnie zabiera broń, amunicję, materiał wybuchowy lub inny środek walki, podlega karze pozbawienia wolności od ',
-      { blankIdx: 1, label: '1', correct: '1' },
+      { blankIdx: 1, label: 'rok', correct: '1' },
       ' do ',
-      { blankIdx: 2, label: '10', correct: '10' },
+      { blankIdx: 2, label: 'lat', correct: '10' },
       ' lat.'
     ],
     category: 'Prawo'
@@ -376,9 +375,9 @@ const questions = [
       'Zgodnie z Art. 354 § 1 i 2 KK żołnierz, który nieostrożnie obchodzi się z bronią wojskową, amunicją, materiałem wybuchowym lub innym środkiem walki, albo ich nieostrożnie używa i przez to nieumyślnie powoduje naruszenie czynności narządu ciała lub rozstrój zdrowia innej osoby, podlega karze aresztu wojskowego albo pozbawienia wolności do ',
       { blankIdx: 0, label: 'lat', correct: '3' },
       ' lat, a jeżeli następstwem czynu jest śmierć innej osoby lub ciężki uszczerbek na jej zdrowiu, sprawca podlega karze pozbawienia wolności od ',
-      { blankIdx: 1, label: '6', correct: '6' },
+      { blankIdx: 1, label: 'lat', correct: '6' },
       ' do ',
-      { blankIdx: 2, label: '8', correct: '8' },
+      { blankIdx: 2, label: 'lat', correct: '8' },
       ' lat.'
     ],
     category: 'Prawo'
