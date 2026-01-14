@@ -558,10 +558,11 @@ const goBack = () => {
 }
 /* --- Dashboard tile/card styles from IndexPage.vue --- */
 .tiles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
   gap: 36px;
-  justify-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   margin-top: 12px;
 }
 .modern-tile {
