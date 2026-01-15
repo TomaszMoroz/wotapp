@@ -1,5 +1,5 @@
 <template>
-  <q-page class="modern-bg">
+  <q-page class="modern-bg q-pl-md">
     <div class="dashboard-main-container">
       <BackNav color="black"/>
 

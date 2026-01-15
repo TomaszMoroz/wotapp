@@ -189,7 +189,7 @@ const questions = [
     answers: ['Tryb Pracy T', 'Tryb Pracy S', 'Tryb Pracy A'],
     correct: 0,
     type: 'single',
-    category: 'Granatnik'
+    category: 'LMP-60'
   },
   // 10
   {
@@ -312,7 +312,7 @@ const questions = [
     question: 'Co to jest absolute co-witness?',
     type: 'single',
     answers: [
-      'Takie ustawienie muszki względem znaku celowniczego, gdzie centrum znaku celowniczego pokrywa sie z szczytem muszki', // poprawna
+      'Takie ustawienie muszki względem znaku celowniczego, gdzie podstawa znaku celowniczego pokrywa sie ze szczytem muszki', // poprawna
       'Celownik optyczny ustawiony powyżej przyrządów mechanicznych',
       'Zjawisko nakładania się obrazu celu na muszkę',
       'Montaż celownika pod kątem 45 stopni',
@@ -699,8 +699,23 @@ const score = ref(0)
 function checkResults () {
   let points = 0
   questions.forEach((q, i) => {
-    if (q.type === 'single' && userAnswers.value[i] === q.correct) points++
-    // pytania otwarte nie są oceniane automatycznie
+    if (q.type === 'single') {
+      const userAns = userAnswers.value[i]
+      const correctAns = q.correct
+      if (Number(userAns) === Number(correctAns)) points++
+    } else if (q.type === 'open') {
+      // Sprawdzanie liczby w pytaniu otwartym
+      const userAns = userAnswers.value[i]
+      const correctAns = q.correct
+      if (
+        userAns !== undefined && userAns !== null &&
+        String(userAns).replace(/\s/g, '') !== '' &&
+        !isNaN(Number(userAns)) && !isNaN(Number(correctAns)) &&
+        Number(userAns) === Number(correctAns)
+      ) {
+        points++
+      }
+    }
   })
   score.value = points
   showChecked.value = true
@@ -729,10 +744,19 @@ function isMultiInputCorrect (qIdx, iIdx) {
 
 function isQuestionWrong (question) {
   if (question.type === 'single') {
-    return userAnswers.value[question._idx] !== question.correct
+    return Number(userAnswers.value[question._idx]) !== Number(question.correct)
   }
   if (question.type === 'open') {
-    return !userAnswers.value[question._idx] || userAnswers.value[question._idx].trim().toLowerCase() !== question.correct.trim().toLowerCase()
+    const userAns = userAnswers.value[question._idx]
+    const correctAns = question.correct
+    if (
+      userAns === undefined || userAns === null ||
+      String(userAns).replace(/\s/g, '') === '' ||
+      isNaN(Number(userAns)) || isNaN(Number(correctAns))
+    ) {
+      return true
+    }
+    return Number(userAns) !== Number(correctAns)
   }
   if (question.type === 'fillblank' && Array.isArray(question.parts)) {
     const ans = userAnswers.value[question._idx]
