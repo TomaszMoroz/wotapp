@@ -699,22 +699,10 @@ const score = ref(0)
 function checkResults () {
   let points = 0
   questions.forEach((q, i) => {
-    if (q.type === 'single') {
-      const userAns = userAnswers.value[i]
-      const correctAns = q.correct
-      if (Number(userAns) === Number(correctAns)) points++
-    } else if (q.type === 'open') {
-      // Sprawdzanie liczby w pytaniu otwartym
-      const userAns = userAnswers.value[i]
-      const correctAns = q.correct
-      if (
-        userAns !== undefined && userAns !== null &&
-        String(userAns).replace(/\s/g, '') !== '' &&
-        !isNaN(Number(userAns)) && !isNaN(Number(correctAns)) &&
-        Number(userAns) === Number(correctAns)
-      ) {
-        points++
-      }
+    // Użyj tej samej logiki co isQuestionWrong, ale licz punkt jeśli NIE jest błędna
+    const questionWithIdx = { ...q, _idx: i }
+    if (!isQuestionWrong(questionWithIdx)) {
+      points++
     }
   })
   score.value = points
@@ -744,7 +732,9 @@ function isMultiInputCorrect (qIdx, iIdx) {
 
 function isQuestionWrong (question) {
   if (question.type === 'single') {
-    return Number(userAnswers.value[question._idx]) !== Number(question.correct)
+    const ans = userAnswers.value[question._idx]
+    if (ans === null || ans === undefined || String(ans).trim() === '') return true
+    return Number(ans) !== Number(question.correct)
   }
   if (question.type === 'open') {
     const userAns = userAnswers.value[question._idx]
