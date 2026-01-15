@@ -146,7 +146,7 @@ const questions = [
   // 4
   {
     question: 'Jaki jest skok gwintu w lufie karabinu wyborowego BOR?',
-    answers: ['250 mm', '240 mm', '255 mm'],
+    answers: ['305 mm', '240 mm', '255 mm'],
     correct: 0,
     type: 'single',
     category: 'BOR'
@@ -255,6 +255,20 @@ const questions = [
     type: 'single',
     category: 'Granatnik'
   },
+  {
+    question: 'Jaki jest zasięg skuteczny UKM-2000 P?',
+    answers: ['800 m', '1000 m', '1200 m', '1500 m'],
+    correct: 3,
+    type: 'single',
+    category: 'Granatnik'
+  },
+  {
+    question: 'Jaką pojemność ma torba amunicyjna UKM-2000 P?',
+    answers: ['100 nabojów', '200 nabojów', '250 nabojów', '300 nabojów'],
+    correct: 0,
+    type: 'single',
+    category: 'Granatnik'
+  },
   // 18
   {
     question: 'Siła spustu w systemie SA?',
@@ -268,6 +282,13 @@ const questions = [
     question: 'Zasada działania pistoletu VIS-100?',
     answers: ['Krótki odrzut lufy', 'Swobodny odrzut zamka', 'Obrót lufy'],
     correct: 0,
+    type: 'single',
+    category: 'VIS-100'
+  },
+  {
+    question: 'Rodzaj stosowanej amunicji VIS-100?',
+    answers: ['9x18mm', '9x19mm', '7.62x25mm', ' .45 ACP'],
+    correct: 1,
     type: 'single',
     category: 'VIS-100'
   },
@@ -406,8 +427,8 @@ const questions = [
   },
   {
     question: 'Odległość strzału bezwzględnego:',
-    answers: ['300 m', '350 m', '400 m'],
-    correct: 1,
+    answers: ['ok. 300 m', ' ok. 350 m', 'ok. 400 m'],
+    correct: 2,
     type: 'single',
     category: 'GROT'
   },
@@ -436,6 +457,18 @@ const questions = [
     question: 'Energia wylotowa pocisku z rdzeniem stalowym:',
     answers: ['2100 [J]', '1600 [J]', '1900 [J]'],
     correct: 1,
+    type: 'single',
+    category: 'GROT'
+  },
+  {
+    question: 'Czym jest offset w strzelectwie?',
+    answers: [
+      'Przewyższenie toru lotu pocisku względem linii celowania',
+      'Odległość między strzelcem a celem',
+      'Kąt nachylenia lufy względem ziemi',
+      'Prędkość początkowa pocisku'
+    ],
+    correct: 0,
     type: 'single',
     category: 'GROT'
   },
