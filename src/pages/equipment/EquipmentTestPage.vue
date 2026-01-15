@@ -253,21 +253,21 @@ const questions = [
     answers: ['Mechanizm przesuwu taśmy, uruchamiany przez cofającą się rolkę na suwadle', 'Cofający się tłok', 'Cofająca się lufa'],
     correct: 0,
     type: 'single',
-    category: 'Granatnik'
+    category: 'UKM'
   },
   {
     question: 'Jaki jest zasięg skuteczny UKM-2000 P?',
     answers: ['800 m', '1000 m', '1200 m', '1500 m'],
     correct: 3,
     type: 'single',
-    category: 'Granatnik'
+    category: 'UKM'
   },
   {
     question: 'Jaką pojemność ma torba amunicyjna UKM-2000 P?',
     answers: ['100 nabojów', '200 nabojów', '250 nabojów', '300 nabojów'],
     correct: 0,
     type: 'single',
-    category: 'Granatnik'
+    category: 'UKM'
   },
   // 18
   {
