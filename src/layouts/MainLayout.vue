@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="lHh Lpr lFf" class="dashboard-bg">
+  <q-layout :class="themeClass" view="lHh Lpr lFf" class="dashboard-bg" :dark="$q.dark.isActive">
     <q-dialog v-model="pwaUpdateDialog" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -11,7 +11,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-header elevated class="bg-military-primary dashboard-header">
+    <q-header elevated class="bg-military-primary dashboard-header" :dark="$q.dark.isActive">
           <!-- <q-dialog v-model="pushDialog" persistent>
             <q-card>
               <q-card-section>
@@ -53,7 +53,17 @@
   </q-card>
 </q-dialog>
       <q-toolbar class="q-px-md dashboard-toolbar">
-        <q-btn
+                <q-btn
+                  flat
+                  dense
+                  icon="dark_mode"
+                  aria-label="Motyw"
+                  @click="cycleTheme"
+                  class="q-ml-md"
+                >
+                  <q-tooltip anchor="bottom middle">Zmień motyw: {{ themeLabel }}</q-tooltip>
+                </q-btn>
+        <btn
           flat
           dense
           round
@@ -93,7 +103,8 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      class="dashboard-drawer bg-grey-3"
+      :class="['dashboard-drawer', themeClass]"
+      :style="{ background: 'var(--q-bg-secondary)', color: 'var(--q-text-main)' }"
       :width="280"
     >
 
@@ -103,15 +114,16 @@
         <q-item
           clickable
           @click="$router.push('/')"
-          :class="isActiveRoute('/') ? 'bg-military-active text-white' : ''"
+          :class="isActiveRoute('/') ? 'active-menu' : ''"
           class="q-my-xs q-mx-sm rounded-borders"
+          :style="{ background: isActiveRoute('/') ? '#d2b48c' : 'var(--q-bg-secondary)', color: 'var(--q-text-main)' }"
         >
           <q-item-section avatar>
-            <q-icon name="dashboard" :color="isActiveRoute('/') ? 'white' : 'military-primary'" />
+            <q-icon name="dashboard" :color="isActiveRoute('/') ? 'var(--q-icon-main)' : 'var(--q-icon-muted)'" />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-weight-medium">Dashboard</q-item-label>
-            <q-item-label caption :class="isActiveRoute('/') && 'text-white'">Strona główna</q-item-label>
+            <q-item-label class="text-weight-medium" :style="{ color: 'var(--q-text-main)' }">Dashboard</q-item-label>
+            <q-item-label caption :style="{ color: 'var(--q-text-main)' }">Strona główna</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -446,21 +458,65 @@
       </q-list>
     </q-drawer>
 
-    <q-page-container>
+    <q-page-container :dark="$q.dark.isActive">
       <div class="dashboard-content-wrapper">
-        <router-view />
+        <router-view v-slot="{ Component }">
+          <component :is="Component" :dark="$q.dark.isActive" />
+        </router-view>
       </div>
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import pkg from '../../package.json'
 const appVersion = pkg.version
-import { useQuasar } from 'quasar'
+import { useQuasar, Dark } from 'quasar'
 import { useRoute } from 'vue-router'
 import logo721 from 'assets/721.jpeg'
+
+const THEME_KEY = 'wot_theme_mode'
+const themeMode = ref(localStorage.getItem(THEME_KEY) || 'light')
+const themeClass = computed(() => {
+  if (themeMode.value === 'tactical') return 'theme-tactical'
+  return ''
+})
+const themeLabel = computed(() => {
+  if (themeMode.value === 'dark') return 'Ciemny'
+  if (themeMode.value === 'tactical') return 'Taktyczny'
+  return 'Jasny'
+})
+function cycleTheme () {
+  if (themeMode.value === 'light') themeMode.value = 'dark'
+  else if (themeMode.value === 'dark') themeMode.value = 'tactical'
+  else themeMode.value = 'light'
+  localStorage.setItem(THEME_KEY, themeMode.value)
+}
+watch(themeMode, val => {
+  // Control Quasar dark mode and tactical mode
+  if (val === 'dark') {
+    Dark.set(true)
+    document.body.classList.remove('theme-tactical')
+  } else if (val === 'tactical') {
+    Dark.set(false)
+    document.body.classList.add('theme-tactical')
+  } else {
+    Dark.set(false)
+    document.body.classList.remove('theme-tactical')
+  }
+})
+// Initial mode
+if (themeMode.value === 'dark') {
+  Dark.set(true)
+  document.body.classList.remove('theme-tactical')
+} else if (themeMode.value === 'tactical') {
+  Dark.set(false)
+  document.body.classList.add('theme-tactical')
+} else {
+  Dark.set(false)
+  document.body.classList.remove('theme-tactical')
+}
 
 const deferredPrompt = ref(null)
 const showInstall = ref(false)

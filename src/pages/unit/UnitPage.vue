@@ -65,6 +65,8 @@
                 :columns="columns"
                 row-key="id"
                 :pagination="{ rowsPerPage: 5 }"
+                class="unit-table-bg"
+                :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
               >
                 <template v-slot:body-cell-avatar="props">
                   <q-td :props="props">

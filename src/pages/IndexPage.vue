@@ -1,3 +1,31 @@
+.theme-dark .tile-label {
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+.theme-tactical .tile-label {
+  color: var(--q-text-main, #c62828) !important;
+}
+.theme-dark .tile-desc-chip-big {
+  background: var(--q-chip-bg, #232526) !important;
+  color: var(--q-chip-text, #f2f2f2) !important;
+}
+.theme-tactical .tile-desc-chip-big {
+  background: var(--q-chip-bg, #111) !important;
+  color: var(--q-chip-text, #c62828) !important;
+  border: 1px solid #c62828;
+}
+.theme-dark .modern-tile {
+  background: var(--q-card, #232526) !important;
+}
+.theme-tactical .modern-tile {
+  background: var(--q-card, #111) !important;
+  border: 1px solid #c62828;
+}
+.theme-dark .tile-icon-bg {
+  background: var(--q-bg-secondary, #232526) !important;
+}
+.theme-tactical .tile-icon-bg {
+  background: #1a1a1a !important;
+}
 <template>
   <q-page class="modern-bg q-pa-lg">
     <div class="dashboard-main-container">
@@ -70,11 +98,16 @@ function navigateTo (path) {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background: #fff;
+  background: var(--dashboard-title-bg, #fff);
   border-radius: 22px;
   box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
   overflow: hidden;
 }
+
+  /* DARK MODE: jasno szary header dashboard */
+  .theme-dark .dashboard-title-bg {
+    --dashboard-title-bg: #e0e0e0;
+  }
 .dashboard-title-bg::before {
   content: '';
   position: absolute;
@@ -183,5 +216,12 @@ function navigateTo (path) {
   padding: 8px 18px;
   border-radius: 12px;
   min-height: 36px;
+}
+
+.theme-dark .tile-label {
+  color: #f2f2f2 !important;
+}
+.theme-dark .tile-label {
+  color: #f2f2f2 !important;
 }
 </style>

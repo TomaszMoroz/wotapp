@@ -1,3 +1,272 @@
+/* --- QUASAR COMPONENTS: DARK & TACTICAL --- */
+.theme-dark .q-card,
+.theme-dark .modern-content-card,
+.theme-dark .modern-tile {
+  background: var(--q-card, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+.theme-dark .q-list {
+  background: var(--q-bg-secondary, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+.theme-dark .q-chip,
+.theme-dark .tile-desc-chip-big {
+  background: var(--q-chip-bg, #232526) !important;
+  color: var(--q-chip-text, #f2f2f2) !important;
+}
+
+.theme-dark .q-input,
+.theme-dark .q-field__control,
+.theme-dark .q-field__native {
+  background: var(--q-bg-secondary, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+  border-color: #444 !important;
+}
+.theme-dark .q-field__label,
+.theme-dark .q-placeholder,
+.theme-dark input::placeholder,
+.theme-dark textarea::placeholder {
+  color: #e0e0e0 !important;
+  opacity: 1 !important;
+}
+.theme-dark .q-field__native,
+.theme-dark .q-field__input,
+.theme-dark input,
+.theme-dark textarea {
+  color: #f2f2f2 !important;
+}
+
+.theme-dark .q-list {
+  background: var(--q-bg-secondary, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+
+.theme-tactical .q-input,
+.theme-tactical .q-field__control,
+.theme-tactical .q-field__native {
+  background: var(--q-bg-secondary, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+  border-color: #c62828 !important;
+}
+.theme-tactical .q-field__label,
+.theme-tactical .q-placeholder,
+.theme-tactical input::placeholder,
+.theme-tactical textarea::placeholder {
+  color: #c62828 !important;
+  opacity: 1 !important;
+}
+.theme-tactical .q-field__native,
+.theme-tactical .q-field__input,
+.theme-tactical input,
+.theme-tactical textarea {
+  color: #c62828 !important;
+}
+.theme-tactical .q-list {
+  background: var(--q-bg-secondary, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+}
+
+.theme-tactical .q-card,
+.theme-tactical .modern-content-card,
+.theme-tactical .modern-tile {
+  background: var(--q-card, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+  border: 1px solid #c62828 !important;
+}
+.theme-tactical .q-list {
+  background: var(--q-bg-secondary, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+}
+.theme-tactical .q-chip,
+.theme-tactical .tile-desc-chip-big {
+  background: var(--q-chip-bg, #111) !important;
+  color: var(--q-chip-text, #c62828) !important;
+  border: 1px solid #c62828 !important;
+}
+.theme-tactical .q-input,
+.theme-tactical .q-field__control,
+.theme-tactical .q-field__native {
+  background: var(--q-bg-secondary, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+  border-color: #c62828 !important;
+}
+.theme-tactical .q-field__label {
+  color: var(--q-text-main, #c62828) !important;
+}
+/* --- TABLES: DARK & TACTICAL --- */
+.theme-dark .equipment-table-bg,
+.theme-dark .unit-table-bg,
+/* --- QUASAR DARK MODE: use body--dark for all backgrounds and components --- */
+body.body--dark,
+body.body--dark .dashboard-bg,
+body.body--dark .dashboard-content-wrapper,
+body.body--dark .q-page,
+body.body--dark .q-layout,
+body.body--dark .q-header,
+body.body--dark .q-card,
+body.body--dark .q-toolbar,
+body.body--dark .q-drawer,
+body.body--dark .q-list,
+body.body--dark .q-chip,
+body.body--dark .modern-content-card,
+body.body--dark .modern-tile {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .q-table,
+body.body--dark .q-table th,
+body.body--dark .q-table td {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-color: #444 !important;
+}
+body.body--dark .q-table thead th {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .q-btn,
+body.body--dark .q-btn__content {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .q-field__control,
+body.body--dark .q-field__native,
+body.body--dark .q-input {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-color: #444 !important;
+}
+body.body--dark .q-field__label,
+body.body--dark .q-placeholder,
+body.body--dark input::placeholder,
+body.body--dark textarea::placeholder {
+  color: #e0e0e0 !important;
+  opacity: 1 !important;
+}
+body.body--dark .q-field__native,
+body.body--dark .q-field__input,
+body.body--dark input,
+body.body--dark textarea {
+  color: #f2f2f2 !important;
+}
+.theme-dark .recon-test-table-bg,
+.theme-dark .recon-learn-table-bg,
+.theme-dark .q-table,
+.theme-dark .q-table th,
+.theme-dark .q-table td {
+  background: var(--q-bg-secondary, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+  border-color: #444 !important;
+}
+.theme-dark .q-table thead th {
+  background: var(--q-bg-main, #181a1b) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+
+.theme-tactical .equipment-table-bg,
+.theme-tactical .unit-table-bg,
+.theme-tactical .training-table-bg,
+.theme-tactical .recon-test-table-bg,
+.theme-tactical .recon-learn-table-bg,
+.theme-tactical .q-table,
+.theme-tactical .q-table th,
+.theme-tactical .q-table td {
+  background: var(--q-bg-secondary, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+  border-color: #222 !important;
+}
+.theme-tactical .q-table thead th {
+  background: var(--q-bg-main, #050505) !important;
+  color: var(--q-text-main, #c62828) !important;
+}
+/* --- DARK MODES --- */
+
+/* Standardowy dark mode */
+.theme-dark {
+  --q-bg-main: #181a1b;
+  --q-bg-secondary: #232526;
+  --q-text-main: #f2f2f2;
+  --q-accent: #5e81ac;
+  --q-header: #232526;
+  --q-card: #232526;
+  --q-btn: #232526;
+  --q-btn-text: #f2f2f2;
+  --q-chip-bg: #232526;
+  --q-chip-text: #f2f2f2;
+  --q-icon-main: #f2f2f2;
+  --q-icon-accent: #5e81ac;
+  --q-icon-muted: #888;
+  background: var(--q-bg-main) !important;
+  color: var(--q-text-main) !important;
+}
+
+.theme-dark .q-page,
+.theme-dark .q-layout,
+.theme-dark .q-header,
+.theme-dark .q-card,
+.theme-dark .q-toolbar,
+.theme-dark .q-drawer {
+  background: var(--q-bg-main) !important;
+  color: var(--q-text-main) !important;
+}
+.theme-dark .q-btn,
+.theme-dark .q-btn__content {
+  background: var(--q-btn) !important;
+  color: var(--q-btn-text) !important;
+}
+.theme-dark .q-card {
+  background: var(--q-card) !important;
+}
+.theme-dark .q-header {
+  background: var(--q-header) !important;
+}
+.theme-dark .q-item__label,
+.theme-dark .q-item__section {
+  color: var(--q-text-main) !important;
+}
+
+/* Taktyczny dark mode */
+.theme-tactical {
+  --q-bg-main: #050505;
+  --q-bg-secondary: #111;
+  --q-text-main: #c62828;
+  --q-accent: #e53935;
+  --q-header: #111;
+  --q-card: #111;
+  --q-btn: #1a1a1a;
+  --q-btn-text: #c62828;
+  --q-chip-bg: #111;
+  --q-chip-text: #c62828;
+  --q-icon-main: #c62828;
+  --q-icon-accent: #e53935;
+  --q-icon-muted: #444;
+  background: var(--q-bg-main) !important;
+  color: var(--q-text-main) !important;
+}
+.theme-tactical .q-page,
+.theme-tactical .q-layout,
+.theme-tactical .q-header,
+.theme-tactical .q-card,
+.theme-tactical .q-toolbar,
+.theme-tactical .q-drawer {
+  background: var(--q-bg-main) !important;
+  color: var(--q-text-main) !important;
+}
+.theme-tactical .q-btn,
+.theme-tactical .q-btn__content {
+  background: var(--q-btn) !important;
+  color: var(--q-btn-text) !important;
+}
+.theme-tactical .q-card {
+  background: var(--q-card) !important;
+}
+.theme-tactical .q-header {
+  background: var(--q-header) !important;
+}
+.theme-tactical .q-item__label,
+.theme-tactical .q-item__section {
+  color: var(--q-text-main) !important;
+}
 /* app global css */
 
 /* Military Color Palette for Quasar */

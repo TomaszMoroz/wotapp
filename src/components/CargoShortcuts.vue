@@ -1,5 +1,27 @@
+/* Force q-tab-panel background in dark/tactical mode (deep override) */
+.theme-dark :deep(.q-tab-panel),
+.theme-dark :deep(.q-tab-panels) {
+  background: var(--q-card, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+.theme-tactical :deep(.q-tab-panel),
+.theme-tactical :deep(.q-tab-panels) {
+  background: var(--q-card, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+}
+/* DARK & TACTICAL for tab panels */
+.theme-dark .q-tab-panel,
+.theme-dark .q-tab-panels {
+  background: var(--q-card, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+.theme-tactical .q-tab-panel,
+.theme-tactical .q-tab-panels {
+  background: var(--q-card, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+}
 <template>
-  <q-card class="cargo-shortcuts-card q-pa-xl">
+  <q-card class="cargo-shortcuts-card q-pa-xl" :class="[$q.dark.isActive ? 'theme-dark' : '', themeClass]">
     <div class="cargo-header">
       <div class="tile-icon-bg cargo-icon-bg">
         <q-icon name="storage" size="32px" color="white" class="cargo-header-icon" />
@@ -32,7 +54,7 @@
                 v-else
                 :key="item.path"
                 class="route-tile"
-                :class="{ selected: isShortcut(item) }"
+                :class="[{ selected: isShortcut(item) }, $q.dark.isActive ? 'theme-dark' : '', themeClass]"
                 @click="toggleShortcut(item)"
               >
                 <q-card-section class="tile-content">
@@ -56,7 +78,7 @@
             <div class="empty-desc">Dodaj skróty z listy stron.</div>
           </div>
           <div v-else class="tiles-grid">
-            <q-card v-for="shortcut in shortcuts" :key="shortcut.id" class="shortcut-tile" @click="goToShortcut(shortcut)">
+            <q-card v-for="shortcut in shortcuts" :key="shortcut.id" class="shortcut-tile" :class="[$q.dark.isActive ? 'theme-dark' : '', themeClass]" @click="goToShortcut(shortcut)">
               <q-card-section class="tile-content">
                 <div class="tile-label">{{ shortcut.label }}</div>
                 <q-btn icon="delete" color="negative" flat round size="sm" class="tile-remove" @click.stop="removeShortcut(shortcut.id)" />
@@ -243,7 +265,7 @@ loadShortcuts()
   margin: 0 auto;
   box-shadow: 0 4px 32px 0 rgba(60,60,60,0.09);
   border-radius: 20px;
-  background: #fff;
+  background: var(--q-card, #fff);
   padding: 0;
 }
 .cargo-header {
@@ -280,7 +302,7 @@ loadShortcuts()
   border-radius: 16px;
   box-shadow: 0 2px 12px 0 rgba(60,60,60,0.07);
   transition: box-shadow 0.2s, border 0.2s;
-  background: #f7f7fa;
+  background: var(--q-card, #f7f7fa);
   border: 2px solid transparent;
 }
 .shortcut-tile:hover, .route-tile:hover {
@@ -300,7 +322,7 @@ loadShortcuts()
 .tile-label {
   font-size: 1.1rem;
   font-weight: 500;
-  color: #222;
+  color: var(--q-text-main, #222);
 }
 .tile-path {
   font-size: 0.95rem;
@@ -321,7 +343,7 @@ loadShortcuts()
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 12px;
-  color: #222;
+  color: var(--q-text-main, #222);
 }
 .search-input {
   max-width: 400px;
@@ -346,9 +368,23 @@ loadShortcuts()
 .dialog-title {
   font-size: 1.2rem;
   font-weight: 500;
-  color: #222;
+  color: var(--q-text-main, #222);
 }
 .cargo-select-popup {
   min-width: 220px;
+}
+/* DARK & TACTICAL for cargo cards */
+.theme-dark .cargo-shortcuts-card,
+.theme-dark .route-tile,
+.theme-dark .shortcut-tile {
+  background: var(--q-card, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+.theme-tactical .cargo-shortcuts-card,
+.theme-tactical .route-tile,
+.theme-tactical .shortcut-tile {
+  background: var(--q-card, #111) !important;
+  color: var(--q-text-main, #c62828) !important;
+  border: 1px solid #c62828 !important;
 }
 </style>

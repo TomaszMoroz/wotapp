@@ -53,13 +53,14 @@
         <q-btn color="primary" label="Spróbuj ponownie" @click="restartTest" class="q-mt-md" />
         <div class="gt-sm">
           <q-table
-            class="q-mt-xl"
+            class="q-mt-xl recon-test-table-bg"
             :rows="resultsRows"
             :columns="resultsColumns"
             row-key="name"
             flat
             :rows-per-page-options="[0]"
             :rows-per-page="0"
+            :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
           >
             <template v-slot:body-cell-photo="props">
               <q-td :props="props">

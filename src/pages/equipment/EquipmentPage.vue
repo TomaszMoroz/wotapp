@@ -79,7 +79,8 @@
                 no-data-label="Brak danych technicznych"
                 :rows-per-page-options="[0]"
                 rows-per-page="0"
-                class="gt-sm"
+                class="gt-sm equipment-table-bg"
+                :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
               >
                 <template v-slot:body-cell-parameter="props">
                   <q-td :props="props" class="text-weight-medium">

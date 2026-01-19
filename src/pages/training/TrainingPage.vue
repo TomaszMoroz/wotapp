@@ -238,8 +238,9 @@
               :columns="ballisticColumns"
               row-key="distance"
               flat
-              class="modern-table"
+              class="modern-table training-table-bg"
               :pagination="{ rowsPerPage: 0 }"
+              :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
             >
               <template v-slot:body-cell-offset="props">
                 <q-td :props="props">

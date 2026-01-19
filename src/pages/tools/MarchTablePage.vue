@@ -170,25 +170,27 @@
           </div>
           <!-- Tabele marszu z boku na mobile -->
           <div v-else>
-            <q-table
-              v-if="routeTable.length > 0"
-              :rows="routeTable"
-              :columns="columns"
-              row-key="id"
-              flat
-              dense
-              class="march-table-bg shadow-1 q-mb-md"
-            />
-            <q-table
-              v-if="specialPoints.length > 0"
-              :rows="specialPointsTable"
-              :columns="specialColumns"
-              row-key="__rowKey"
-              flat
-              dense
-              class="march-table-bg shadow-1"
-              title="Punkty specjalne"
-            />
+              <q-table
+                v-if="routeTable.length > 0"
+                :rows="routeTable"
+                :columns="columns"
+                row-key="id"
+                flat
+                dense
+                class="march-table-bg shadow-1 q-mb-md"
+                :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
+              />
+              <q-table
+                v-if="specialPoints.length > 0"
+                :rows="specialPointsTable"
+                :columns="specialColumns"
+                row-key="__rowKey"
+                flat
+                dense
+                class="march-table-bg shadow-1"
+                title="Punkty specjalne"
+                :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
+              />
           </div>
         </div>
       </div>
@@ -1711,6 +1713,30 @@ onBeforeUnmount(() => {
 }
 .march-table-bg {
   background: var(--military-light, #F5F5F5) !important;
+}
+.theme-dark .march-table-bg,
+.theme-dark .q-table,
+.theme-dark .q-table th,
+.theme-dark .q-table td {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-color: #444 !important;
+}
+.theme-dark .q-table thead th {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+}
+.theme-tactical .march-table-bg,
+.theme-tactical .q-table,
+.theme-tactical .q-table th,
+.theme-tactical .q-table td {
+  background: #111 !important;
+  color: #c62828 !important;
+  border-color: #222 !important;
+}
+.theme-tactical .q-table thead th {
+  background: #050505 !important;
+  color: #c62828 !important;
 }
 /* Poprawa rozmieszczenia przycisków na mobile */
 .march-btn-row {
