@@ -297,58 +297,69 @@ function drawMgrsGridCanvas (map) {
   overlayPane.appendChild(canvas)
   const ctx = canvas.getContext('2d')
   const bounds = map.getBounds()
-  const center = bounds.getCenter()
-  const utmCenter = utm.fromLatLon(center.lat, center.lng)
   const sw = bounds.getSouthWest()
   const ne = bounds.getNorthEast()
-  // Przelicz easting/northing dla SW i NE w tej samej strefie co center
-  const utmSW = utm.fromLatLon(sw.lat, sw.lng, utmCenter.zoneNum, utmCenter.zoneLetter)
-  const utmNE = utm.fromLatLon(ne.lat, ne.lng, utmCenter.zoneNum, utmCenter.zoneLetter)
-  // Debug: loguj strefy UTM
-  const utmSwNative = utm.fromLatLon(sw.lat, sw.lng)
-  const utmNeNative = utm.fromLatLon(ne.lat, ne.lng)
-  // eslint-disable-next-line no-console
-  console.log('[MGRS grid] zone center:', utmCenter.zoneNum, utmCenter.zoneLetter, 'SW:', utmSwNative.zoneNum, utmSwNative.zoneLetter, 'NE:', utmNeNative.zoneNum, utmNeNative.zoneLetter)
-  const zoneNum = utmCenter.zoneNum
-  const zoneLetter = utmCenter.zoneLetter
-  const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
-  const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
-  const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
-  const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
-  ctx.strokeStyle = paletteItems?.[0]?.color || '#008800'
-  ctx.lineWidth = 1
-  ctx.font = 'bold 13px Arial'
-  ctx.fillStyle = paletteItems?.[0]?.color || '#008800'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'top'
-  for (let e = minE; e <= maxE; e += 1000) {
-    const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
-    const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
-    const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
-    const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
-    ctx.beginPath()
-    ctx.moveTo(p1.x, p1.y)
-    ctx.lineTo(p2.x, p2.y)
-    ctx.stroke()
-    const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
-    ctx.fillText(label, p1.x, 2)
-  }
-  ctx.textAlign = 'right'
-  ctx.textBaseline = 'middle'
-  for (let n = minN; n <= maxN; n += 1000) {
-    const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
-    const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
-    const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
-    const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
-    ctx.beginPath()
-    ctx.moveTo(p1.x, p1.y)
-    ctx.lineTo(p2.x, p2.y)
-    ctx.stroke()
-    if (p1.x <= 5) {
-      const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
-      ctx.fillText(label, 18, p1.y)
+  // Wyznacz wszystkie strefy UTM widoczne na mapie (Polska: 33N, 34N, 35N)
+  const utmZones = []
+  for (let zoneNum = 33; zoneNum <= 35; zoneNum++) {
+    // Dla każdej strefy sprawdź, czy jej środek jest w widoku mapy
+    // Przyjmujemy szerokość strefy 6° długości geograficznej
+    const zoneLonMin = (zoneNum - 1) * 6 - 180
+    const zoneLonMax = zoneNum * 6 - 180
+    // Jeśli jakikolwiek fragment strefy przecina widok mapy, rysuj
+    if (
+      (sw.lng < zoneLonMax && ne.lng > zoneLonMin)
+    ) {
+      utmZones.push(zoneNum)
     }
   }
+  // Dla każdej strefy rysuj siatkę
+  utmZones.forEach(zoneNum => {
+    // Ustal zoneLetter na podstawie środka mapy (Polska: N)
+    const zoneLetter = 'N'
+    // Wyznacz zakres easting/northing w tej strefie
+    // Przelicz SW/NE do tej strefy
+    const utmSW = utm.fromLatLon(sw.lat, sw.lng, zoneNum, zoneLetter)
+    const utmNE = utm.fromLatLon(ne.lat, ne.lng, zoneNum, zoneLetter)
+    const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
+    const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
+    const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
+    const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
+    ctx.strokeStyle = paletteItems?.[0]?.color || '#008800'
+    ctx.lineWidth = 1
+    ctx.font = 'bold 13px Arial'
+    ctx.fillStyle = paletteItems?.[0]?.color || '#008800'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'top'
+    for (let e = minE; e <= maxE; e += 1000) {
+      const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
+      const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
+      const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+      const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
+      ctx.beginPath()
+      ctx.moveTo(p1.x, p1.y)
+      ctx.lineTo(p2.x, p2.y)
+      ctx.stroke()
+      const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
+      ctx.fillText(label, p1.x, 2)
+    }
+    ctx.textAlign = 'right'
+    ctx.textBaseline = 'middle'
+    for (let n = minN; n <= maxN; n += 1000) {
+      const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
+      const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
+      const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+      const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
+      ctx.beginPath()
+      ctx.moveTo(p1.x, p1.y)
+      ctx.lineTo(p2.x, p2.y)
+      ctx.stroke()
+      if (p1.x <= 5) {
+        const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
+        ctx.fillText(label, 18, p1.y)
+      }
+    }
+  })
 }
 
 const $q = useQuasar()
@@ -1468,24 +1479,35 @@ function updateMarkerIcons () {
 function removeLastPin () {
   if (pointHistory.value.length === 0) return
   const last = pointHistory.value.pop()
-  if (last.type === 'pin' && pins.value.length > 0) {
-    pins.value.splice(last.idx, 1)
+  if (last.type === 'pin') {
+    // Usuń z pins
+    if (last.idx >= 0 && last.idx < pins.value.length) {
+      pins.value.splice(last.idx, 1)
+    } else {
+      // fallback: usuń ostatni jeśli coś się rozjechało
+      pins.value.pop()
+    }
+    // Usuń marker z mapy
     if (last.marker && map.value) {
       try { map.value.removeLayer(last.marker) } catch (e) {}
     }
-    markers.value.splice(last.idx, 1)
+    // Usuń marker z tablicy markers (po referencji, nie po idx)
+    const markerIdx = markers.value.indexOf(last.marker)
+    if (markerIdx !== -1) markers.value.splice(markerIdx, 1)
     updateMarkerIcons()
     polylines.value.forEach(l => map.value && map.value.removeLayer(l))
     polylines.value = []
     calculateRoute()
-  } else if (last.type === 'special' && specialPoints.value.length > 0) {
-    specialPoints.value.splice(last.idx, 1)
+  } else if (last.type === 'special') {
+    if (last.idx >= 0 && last.idx < specialPoints.value.length) {
+      specialPoints.value.splice(last.idx, 1)
+    } else {
+      specialPoints.value.pop()
+    }
     if (last.marker && map.value) {
       try { map.value.removeLayer(last.marker) } catch (e) {}
     }
-    // Wymuś odświeżenie tabeli jeśli nie ma już żadnych punktów specjalnych
     if (specialPoints.value.length === 0) {
-      // Trik: Vue czasem nie odświeża computed, więc wymuszamy re-render
       specialPoints.value = []
     }
   }
