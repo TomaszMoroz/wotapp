@@ -127,6 +127,7 @@ import { ref, reactive } from 'vue'
 import { useQuasar, date } from 'quasar'
 import axios from 'axios'
 import BackNav from 'components/BackNav.vue'
+import * as mgrs from 'mgrs'
 
 const $q = useQuasar()
 
@@ -143,20 +144,41 @@ const WEATHER_API_KEY = '0446e39ac5e64d6697684411252001'
 
 const fetchWeatherData = async () => {
   if (!area.value) {
-    $q.notify({ type: 'negative', message: 'Podaj lokalizację.' })
+    $q.notify({ type: 'negative', message: 'Podaj lokalizację lub koordynaty MGRS.' })
     return
   }
   loadingWeather.value = true
   try {
+    const todayDate = date.formatDate(Date.now(), 'YYYY-MM-DD')
+    const diff = date.getDateDiff(todayDate, dateRange.from, 'days')
+    let query = area.value.trim()
+    // Jeśli wpisano MGRS (5+5+5 znaków, bez spacji)
+    if (/^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}[0-9]{4,10}$/i.test(query.replace(/\s/g, ''))) {
+      try {
+        const coords = mgrs.toPoint(query.replace(/\s/g, ''))
+        query = coords[1] + ',' + coords[0] // lat,lon
+      } catch (e) {
+        $q.notify({ type: 'negative', message: 'Nieprawidłowy format MGRS.' })
+        loadingWeather.value = false
+        return
+      }
+    }
     const params = {
       key: WEATHER_API_KEY,
-      q: area.value,
+      q: query,
       dt: dateRange.from,
       lang: 'pl'
     }
-    const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', { params })
+    let response
+    if (diff < 0) {
+      response = await axios.get('https://api.weatherapi.com/v1/history.json', { params })
+    } else {
+      response = await axios.get('https://api.weatherapi.com/v1/forecast.json', { params })
+    }
     weatherData.value = response.data
-    showHourly.value = Array(weatherData.value.forecast.forecastday.length).fill(false)
+    showHourly.value = Array(
+      weatherData.value.forecast?.forecastday?.length || weatherData.value.forecastday?.length || 1
+    ).fill(false)
   } catch (error) {
     console.error('Błąd pobierania pogody:', error)
     $q.notify({ type: 'negative', message: 'Nie udało się pobrać danych pogodowych.' })
@@ -193,7 +215,8 @@ const isValidWeatherDate = dateObj => {
   }
   const todayDate = date.extractDate(today, 'YYYY-MM-DD')
   const diff = date.getDateDiff(picked, todayDate, 'days')
-  return diff >= 0 && diff < 14
+  // Pozwól na wybór od -7 (7 dni wstecz) do +14 (14 dni w przyszłość) względem dzisiaj
+  return diff >= -7 && diff <= 14
 }
 
 // const selectedForecastDay = computed(() => {
