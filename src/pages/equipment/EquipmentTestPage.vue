@@ -139,7 +139,7 @@ const questions = [
   {
     question: 'Podaj wagę Karabinu Wyborowego BOR.',
     answers: ['7,5 kg', '5,7 kg', '6,2 kg'],
-    correct: 0,
+    correct: 1,
     type: 'single',
     category: 'BOR'
   },
