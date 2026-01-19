@@ -1,15 +1,16 @@
 <!-- eslint-disable camelcase -->
 <template>
   <q-page class="q-pa-md flex row">
-    <div class="march-main-container q-mx-auto" style="width:100%;max-width:1500px;">
+    <div class="march-main-container q-mx-auto" :style="mainContainerStyle">
       <BackNav color="black" parentPath="/tools" />
       <div class="text-h5 text-center q-mb-md flex items-center justify-center">
         Tabela marszu
         <q-btn flat round dense icon="info_outline" class="q-ml-sm" @click="showInfoDialog = true" aria-label="Instrukcja" />
       </div>
       <div class="row items-start justify-center">
-        <div class="col-7 flex column q-mr-xs" :class="isMobile ? 'col-12' : ''">
+        <div class="flex column" :class="isMobile ? 'col-12' : ''" style="width:100%;">
           <div class="q-mb-md column q-gutter-sm">
+            <!-- ...istniejące filtry, przyciski, dialogi... -->
             <div class="row items-center q-gutter-xs">
               <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" class="col" />
               <q-select
@@ -73,87 +74,109 @@
             style="width:100%;border-radius:8px;overflow:hidden;"
             class="q-mb-md"
           ></div>
-          <div class="q-mb-md row wrap items-center justify-center justify-between q-gutter-sm">
-              <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" />
-              <q-dialog v-model="showGridDialog">
-                <q-card style="min-width:320px;max-width:95vw;">
-                  <q-card-section class="text-h6">Dodaj punkt przez grid MGRS</q-card-section>
-                  <q-card-section>
-                      <div class="q-mb-md">
-                        <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly />
-                      </div>
-                      <div class="q-mb-md">
-                        <q-input v-model="mgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" />
-                      </div>
-                      <div class="q-mb-md">
-                        <q-input v-model="mgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" />
-                      </div>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn flat label="Anuluj" color="primary" v-close-popup @click="showGridDialog = false" />
-                    <q-btn flat label="OK" color="primary" @click="addGridPoint" />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
-            <q-btn label="Dodaj pkt spec." color="blue-7" @click="showSpecialDialog = true" :disable="false" />
-                  <q-dialog v-model="showSpecialDialog">
-                    <q-card style="min-width:320px;max-width:95vw;">
-                      <q-card-section class="text-h6">Dodaj punkt specjalny</q-card-section>
-                      <q-card-section>
-                          <q-select
-                            v-model="specialType"
-                            :options="specialTypes"
-                            label="Typ punktu"
-                            dense outlined emit-value map-options
-                          />
-                          <q-input
-                            v-if="specialType === 'INNY'"
-                            v-model="specialCustomName"
-                            label="Nazwa własna punktu"
-                            dense outlined class="q-mt-md"
-                          />
-                          <div v-if="inputMode === 'grid'">
-                              <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly class="q-mt-md" />
-                              <q-input v-model="specialMgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
-                              <q-input v-model="specialMgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
-                          </div>
-                      </q-card-section>
-                      <q-card-actions align="right">
-                        <q-btn flat label="Anuluj" color="primary" v-close-popup />
-                        <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk"
-                          :disable="inputMode === 'grid' && (!specialType || specialMgrsPrefix.length !== 5 || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
-                        />
-                      </q-card-actions>
-                    </q-card>
-                  </q-dialog>
-            <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" />
-            <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" />
-            <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" />
-            <q-btn icon="picture_as_pdf" color="grey-9" @click="showPdfDialog = true" />
+          <div class="q-mb-md row items-center" :class="!isMobile ? 'q-gutter-xs' : 'wrap q-gutter-sm'">
+            <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" class="q-mr-md" />
+            <q-dialog v-model="showGridDialog">
+              <q-card style="min-width:320px;max-width:95vw;">
+                <q-card-section class="text-h6">Dodaj punkt przez grid MGRS</q-card-section>
+                <q-card-section>
+                  <div class="q-mb-md">
+                    <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly />
+                  </div>
+                  <div class="q-mb-md">
+                    <q-input v-model="mgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" />
+                  </div>
+                  <div class="q-mb-md">
+                    <q-input v-model="mgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" />
+                  </div>
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="Anuluj" color="primary" v-close-popup @click="showGridDialog = false" />
+                  <q-btn flat label="OK" color="primary" @click="addGridPoint" />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+            <q-btn label="Dodaj pkt spec." color="blue-7" @click="showSpecialDialog = true" :disable="false" class="q-mr-md" />
+            <q-dialog v-model="showSpecialDialog">
+              <q-card style="min-width:320px;max-width:95vw;">
+                <q-card-section class="text-h6">Dodaj punkt specjalny</q-card-section>
+                <q-card-section>
+                  <q-select
+                    v-model="specialType"
+                    :options="specialTypes"
+                    label="Typ punktu"
+                    dense outlined emit-value map-options
+                  />
+                  <q-input
+                    v-if="specialType === 'INNY'"
+                    v-model="specialCustomName"
+                    label="Nazwa własna punktu"
+                    dense outlined class="q-mt-md"
+                  />
+                  <div v-if="inputMode === 'grid'">
+                    <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly class="q-mt-md" />
+                    <q-input v-model="specialMgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
+                    <q-input v-model="specialMgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
+                  </div>
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="Anuluj" color="primary" v-close-popup />
+                  <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk"
+                    :disable="inputMode === 'grid' && (!specialType || specialMgrsPrefix.length !== 5 || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
+                  />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+            <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" class="q-mr-md" />
+            <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" class="q-mr-md" />
+            <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" class="q-mr-md" />
+            <q-btn icon="picture_as_pdf" color="grey-9" @click="showPdfDialog = true" class="q-mr-md" />
             <q-btn icon="delete" color="negative" @click="clearAll" />
           </div>
-        </div>
-        <div class="col-4 flex column q-ml-sm" :class="isMobile ? 'col-12' : ''">
-          <q-table
-            v-if="routeTable.length > 0"
-            :rows="routeTable"
-            :columns="columns"
-            row-key="id"
-            flat
-            dense
-            class="march-table-bg shadow-1 q-mb-md"
-          />
-
-          <q-table
-            v-if="specialPoints.length > 0"
-            :rows="specialPointsTable"
-            :columns="specialColumns"
-            row-key="__rowKey"
-            flat
-            dense
-            class="march-table-bg shadow-1"
-            title="Punkty specjalne"
-          />
+          <!-- Tabele marszu pod mapą na desktopie -->
+          <div v-if="!isMobile">
+            <q-table
+              v-if="routeTable.length > 0"
+              :rows="routeTable"
+              :columns="columns"
+              row-key="id"
+              flat
+              dense
+              class="march-table-bg shadow-1 q-mb-md"
+            />
+            <q-table
+              v-if="specialPoints.length > 0"
+              :rows="specialPointsTable"
+              :columns="specialColumns"
+              row-key="__rowKey"
+              flat
+              dense
+              class="march-table-bg shadow-1"
+              title="Punkty specjalne"
+            />
+          </div>
+          <!-- Tabele marszu z boku na mobile -->
+          <div v-else>
+            <q-table
+              v-if="routeTable.length > 0"
+              :rows="routeTable"
+              :columns="columns"
+              row-key="id"
+              flat
+              dense
+              class="march-table-bg shadow-1 q-mb-md"
+            />
+            <q-table
+              v-if="specialPoints.length > 0"
+              :rows="specialPointsTable"
+              :columns="specialColumns"
+              row-key="__rowKey"
+              flat
+              dense
+              class="march-table-bg shadow-1"
+              title="Punkty specjalne"
+            />
+          </div>
         </div>
       </div>
       <q-dialog v-model="showEtaDialog">
@@ -271,11 +294,12 @@
 </template>
 
 <script setup>
+
 import BackNav from 'components/BackNav.vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-rotate'
-import { ref, onMounted, reactive, computed, watchEffect, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, reactive, computed, watchEffect, watch } from 'vue'
 import { useQuasar, Loading } from 'quasar'
 import * as mgrs from 'mgrs'
 import JsPDF from 'jspdf'
@@ -1642,6 +1666,27 @@ watch(selectedMapLayer, (val, oldVal) => {
       if (isLayerLoading.value) finishLayerLoad()
     }, 3000)
   }
+})
+
+// Dynamiczny styl kontenera mapy na desktopie
+const mainContainerStyle = computed(() => {
+  if (isMobile.value) return 'width:100%;max-width:100vw;'
+  return 'width:95vw;max-width:2500px;'
+})
+
+// Automatyczne przeliczenie rozmiaru mapy po zmianie szerokości kontenera
+let resizeObserver = null
+onMounted(() => {
+  const mapDiv = document.getElementById('march-map')
+  if (mapDiv && map.value) {
+    resizeObserver = new window.ResizeObserver(() => {
+      map.value.invalidateSize()
+    })
+    resizeObserver.observe(mapDiv)
+  }
+})
+onBeforeUnmount(() => {
+  if (resizeObserver) resizeObserver.disconnect()
 })
 </script>
 
