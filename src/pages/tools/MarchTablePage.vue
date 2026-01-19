@@ -1,3 +1,4 @@
+<!-- eslint-disable camelcase -->
 <template>
   <q-page class="q-pa-md flex row">
     <div class="march-main-container q-mx-auto" style="width:100%;max-width:1500px;">
@@ -281,6 +282,74 @@ import JsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import leafletImage from 'leaflet-image'
 import * as utm from 'utm'
+
+// Rysowanie siatki MGRS na jednym canvasie w overlayPane
+function drawMgrsGridCanvas (map) {
+  // Usuń WSZYSTKIE poprzednie canvasy siatki
+  const overlayPane = map.getPanes().overlayPane
+  Array.from(overlayPane.querySelectorAll('canvas.leaflet-mgrs-grid')).forEach(c => c.remove())
+  if (!showMgrsGrid.value) return
+  const size = map.getSize()
+  const canvas = document.createElement('canvas')
+  canvas.width = size.x
+  canvas.height = size.y
+  canvas.className = 'leaflet-mgrs-grid'
+  overlayPane.appendChild(canvas)
+  const ctx = canvas.getContext('2d')
+  const bounds = map.getBounds()
+  const center = bounds.getCenter()
+  const utmCenter = utm.fromLatLon(center.lat, center.lng)
+  const sw = bounds.getSouthWest()
+  const ne = bounds.getNorthEast()
+  // Przelicz easting/northing dla SW i NE w tej samej strefie co center
+  const utmSW = utm.fromLatLon(sw.lat, sw.lng, utmCenter.zoneNum, utmCenter.zoneLetter)
+  const utmNE = utm.fromLatLon(ne.lat, ne.lng, utmCenter.zoneNum, utmCenter.zoneLetter)
+  // Debug: loguj strefy UTM
+  const utmSwNative = utm.fromLatLon(sw.lat, sw.lng)
+  const utmNeNative = utm.fromLatLon(ne.lat, ne.lng)
+  // eslint-disable-next-line no-console
+  console.log('[MGRS grid] zone center:', utmCenter.zoneNum, utmCenter.zoneLetter, 'SW:', utmSwNative.zoneNum, utmSwNative.zoneLetter, 'NE:', utmNeNative.zoneNum, utmNeNative.zoneLetter)
+  const zoneNum = utmCenter.zoneNum
+  const zoneLetter = utmCenter.zoneLetter
+  const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
+  const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
+  const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
+  const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
+  ctx.strokeStyle = paletteItems?.[0]?.color || '#008800'
+  ctx.lineWidth = 1
+  ctx.font = 'bold 13px Arial'
+  ctx.fillStyle = paletteItems?.[0]?.color || '#008800'
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'top'
+  for (let e = minE; e <= maxE; e += 1000) {
+    const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
+    const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
+    const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+    const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
+    ctx.beginPath()
+    ctx.moveTo(p1.x, p1.y)
+    ctx.lineTo(p2.x, p2.y)
+    ctx.stroke()
+    const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
+    ctx.fillText(label, p1.x, 2)
+  }
+  ctx.textAlign = 'right'
+  ctx.textBaseline = 'middle'
+  for (let n = minN; n <= maxN; n += 1000) {
+    const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
+    const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
+    const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
+    const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
+    ctx.beginPath()
+    ctx.moveTo(p1.x, p1.y)
+    ctx.lineTo(p2.x, p2.y)
+    ctx.stroke()
+    if (p1.x <= 5) {
+      const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
+      ctx.fillText(label, 18, p1.y)
+    }
+  }
+}
 
 const $q = useQuasar()
 
@@ -1253,6 +1322,14 @@ function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
 
 onMounted(() => {
   map.value = L.map('march-map', { renderer: L.canvas() }).setView([52.2297, 21.0122], 13)
+  // Rysuj siatkę MGRS na canvasie po każdym przesunięciu, zoomie, resize i zmianie checkboxa
+  function updateMgrsGridCanvas () {
+    if (map.value) drawMgrsGridCanvas(map.value)
+  }
+  map.value.on('moveend zoomend resize', updateMgrsGridCanvas)
+  watch(showMgrsGrid, updateMgrsGridCanvas)
+  // Rysuj siatkę od razu jeśli checkbox aktywny
+  if (showMgrsGrid.value) drawMgrsGridCanvas(map.value)
   baseLayers = {
     osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap',
