@@ -81,7 +81,7 @@
                 <q-card-section class="text-h6">Dodaj punkt przez grid MGRS</q-card-section>
                 <q-card-section>
                   <div class="q-mb-md">
-                    <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly />
+                    <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined />
                   </div>
                   <div class="q-mb-md">
                     <q-input v-model="mgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" />
@@ -143,7 +143,20 @@
               flat
               dense
               class="march-table-bg shadow-1 q-mb-md"
-            />
+            >
+              <template v-slot:body-cell-uwagi="props">
+                <q-td :props="props">
+                  <q-input
+                    v-model="routeTable[props.rowIndex].uwagi"
+                    dense
+                    borderless
+                    type="textarea"
+                    autogrow
+                    style="white-space: pre-line; word-break: break-word; min-width: 120px; max-width: 100%;"
+                  />
+                </q-td>
+              </template>
+            </q-table>
             <q-table
               v-if="specialPoints.length > 0"
               :rows="specialPointsTable"
@@ -557,7 +570,8 @@ const columns = [
   { name: 'lp', label: 'Lp.', field: 'lp', align: 'left' },
   { name: 'mgrs', label: 'MGRS', field: 'mgrs', align: 'left' },
   { name: 'azymut', label: 'Azymut', field: 'azymut', align: 'left' },
-  { name: 'odleglosc', label: 'Odległość (m)', field: 'odleglosc', align: 'left' }
+  { name: 'odleglosc', label: 'Odległość (m)', field: 'odleglosc', align: 'left' },
+  { name: 'uwagi', label: 'Uwagi', field: 'uwagi', align: 'left' }
 ]
 
 // Columns for special points table
@@ -1564,7 +1578,7 @@ watch(showMgrsGrid, (val) => {
       map.value._mgrsGridLayer = null
     }
     // Usuń wszystkie stare canvasy z overlayPane
-    const overlayPane = map.value.getPanes && map.value.getPanes().overlayPane
+    const overlayPane = map.value && map.value.getPanes && map.value.getPanes().overlayPane
     if (overlayPane) {
       Array.from(overlayPane.querySelectorAll('canvas.leaflet-mgrs-grid')).forEach(c => c.remove())
     }
