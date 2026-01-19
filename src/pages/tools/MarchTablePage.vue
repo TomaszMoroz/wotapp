@@ -850,17 +850,26 @@ function rerenderMapElements () {
 }
 
 function clearAll () {
-  // Usuń wszystkie markery z mapy
-  pointHistory.value.forEach(entry => {
-    if (entry.marker && map.value) {
-      try { map.value.removeLayer(entry.marker) } catch (e) {}
-    }
-  })
+  // Usuń wszystkie markery trasowe z mapy
+  if (map.value) {
+    markers.value.forEach(marker => {
+      try { map.value.removeLayer(marker) } catch (e) {}
+    })
+    // Usuń wszystkie markery specjalne z mapy
+    pointHistory.value.forEach(entry => {
+      if (entry.marker) {
+        try { map.value.removeLayer(entry.marker) } catch (e) {}
+      }
+    })
+    // Usuń wszystkie linie z mapy
+    polylines.value.forEach(l => {
+      try { map.value.removeLayer(l) } catch (e) {}
+    })
+  }
   pins.value = []
   specialPoints.value = []
   routeTable.value = []
   markers.value = []
-  polylines.value.forEach(l => map.value && map.value.removeLayer(l))
   polylines.value = []
   pointHistory.value = []
 }
@@ -976,8 +985,13 @@ function calculateRoute () {
     let azymut = '-'
     let odleglosc = '-'
     let mgrsStr = ''
+    let utmE = '-'
+    let utmN = '-'
     try {
       mgrsStr = mgrs.forward([pins.value[i].lng, pins.value[i].lat], 5)
+      const utmRes = utm.fromLatLon(pins.value[i].lat, pins.value[i].lng)
+      utmE = Math.round(utmRes.easting)
+      utmN = Math.round(utmRes.northing)
     } catch (e) {}
     if (i > 0) {
       const prev = pins.value[i - 1]
@@ -1003,6 +1017,8 @@ function calculateRoute () {
     routeTable.value.push({
       lp: i + 1,
       mgrs: mgrsStr,
+      easting: utmE,
+      northing: utmN,
       azymut,
       odleglosc: i === 0 ? '-' : odleglosc
     })
