@@ -20,9 +20,9 @@
       <!-- Main Content Grid -->
       <div class="main-grid">
         <!-- Visualization Section -->
-        <div class="visualization-section">
-          <div class="section-card">
-            <div class="card-header-modern">
+        <div class="visualization-section" :dark="$q.dark.isActive">
+          <div class="section-card" :dark="$q.dark.isActive">
+            <div class="card-header-modern" :dark="$q.dark.isActive">
               <div class="header-left">
                 <h3 class="section-title">Wizualizacja tarczy</h3>
                 <p class="section-subtitle">Punkt celowania na {{ targetDistance }}m</p>
@@ -57,37 +57,37 @@
                   class="target-svg"
                 >
                   <!-- Tło tarczy -->
-                  <circle cx="200" cy="200" r="200" fill="#f8f9fa" stroke="#e9ecef" stroke-width="2"/>
+                  <circle cx="200" cy="200" r="200" :fill="$q.dark.isActive ? '#232526' : '#f8f9fa'" :stroke="$q.dark.isActive ? '#444' : '#e9ecef'" stroke-width="2"/>
 
                   <!-- Koncentryczne okręgi tarczy -->
-                  <circle cx="200" cy="200" r="160" fill="none" stroke="#dee2e6" stroke-width="1"/>
-                  <circle cx="200" cy="200" r="120" fill="none" stroke="#dee2e6" stroke-width="1"/>
-                  <circle cx="200" cy="200" r="80" fill="none" stroke="#dee2e6" stroke-width="1"/>
-                  <circle cx="200" cy="200" r="40" fill="none" stroke="#dee2e6" stroke-width="1"/>
+                  <circle cx="200" cy="200" r="160" fill="none" :stroke="$q.dark.isActive ? '#888' : '#dee2e6'" stroke-width="1"/>
+                  <circle cx="200" cy="200" r="120" fill="none" :stroke="$q.dark.isActive ? '#888' : '#dee2e6'" stroke-width="1"/>
+                  <circle cx="200" cy="200" r="80" fill="none" :stroke="$q.dark.isActive ? '#888' : '#dee2e6'" stroke-width="1"/>
+                  <circle cx="200" cy="200" r="40" fill="none" :stroke="$q.dark.isActive ? '#888' : '#dee2e6'" stroke-width="1"/>
 
                   <!-- Linie pomocnicze -->
-                  <line x1="200" y1="0" x2="200" y2="400" stroke="#f1f3f4" stroke-width="1"/>
-                  <line x1="0" y1="200" x2="400" y2="200" stroke="#f1f3f4" stroke-width="1"/>
+                  <line x1="200" y1="0" x2="200" y2="400" :stroke="$q.dark.isActive ? '#444' : '#f1f3f4'" stroke-width="1"/>
+                  <line x1="0" y1="200" x2="400" y2="200" :stroke="$q.dark.isActive ? '#444' : '#f1f3f4'" stroke-width="1"/>
 
                   <!-- Siatka pomocnicza -->
                   <defs>
                     <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#f8f9fa" stroke-width="0.5"/>
+                      <path d="M 20 0 L 0 0 0 20" fill="none" :stroke="$q.dark.isActive ? '#232526' : '#f8f9fa'" stroke-width="0.5"/>
                     </pattern>
                   </defs>
                   <rect width="400" height="400" fill="url(#grid)" />
 
                   <!-- Środek tarczy (10) -->
-                  <circle cx="200" cy="200" r="20" fill="#fff" stroke="#495057" stroke-width="2"/>
-                  <text x="200" y="205" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="#495057">10</text>
+                  <circle cx="200" cy="200" r="20" :fill="$q.dark.isActive ? '#181a1b' : '#fff'" :stroke="$q.dark.isActive ? '#f2f2f2' : '#495057'" stroke-width="2"/>
+                  <text x="200" y="205" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" :fill="$q.dark.isActive ? '#f2f2f2' : '#495057'">10</text>
 
                   <!-- Strefa 9 -->
-                  <circle cx="200" cy="200" r="40" fill="none" stroke="#6c757d" stroke-width="2"/>
-                  <text x="200" y="245" text-anchor="middle" font-family="Arial" font-size="10" fill="#6c757d">9</text>
+                  <circle cx="200" cy="200" r="40" fill="none" :stroke="$q.dark.isActive ? '#f2f2f2' : '#6c757d'" stroke-width="2"/>
+                  <text x="200" y="245" text-anchor="middle" font-family="Arial" font-size="10" :fill="$q.dark.isActive ? '#f2f2f2' : '#6c757d'">9</text>
 
                   <!-- Strefa 8 -->
-                  <circle cx="200" cy="200" r="60" fill="none" stroke="#adb5bd" stroke-width="1"/>
-                  <text x="200" y="265" text-anchor="middle" font-family="Arial" font-size="10" fill="#adb5bd">8</text>
+                  <circle cx="200" cy="200" r="60" fill="none" :stroke="$q.dark.isActive ? '#888' : '#adb5bd'" stroke-width="1"/>
+                  <text x="200" y="265" text-anchor="middle" font-family="Arial" font-size="10" :fill="$q.dark.isActive ? '#888' : '#adb5bd'">8</text>
 
                   <!-- Linia między centrum a punktem celowania -->
                   <g v-if="aimPoint && offsetValue !== 0">
@@ -129,10 +129,10 @@
                   </g>
 
                   <!-- Etykiety osi -->
-                  <text x="10" y="205" font-family="Arial" font-size="10" fill="#6c757d">-50cm</text>
-                  <text x="390" y="205" font-family="Arial" font-size="10" fill="#6c757d" text-anchor="end">+50cm</text>
-                  <text x="205" y="15" font-family="Arial" font-size="10" fill="#6c757d">+50cm</text>
-                  <text x="205" y="395" font-family="Arial" font-size="10" fill="#6c757d">-50cm</text>
+                  <text x="10" y="205" font-family="Arial" font-size="10" :fill="$q.dark.isActive ? '#888' : '#6c757d'">-50cm</text>
+                  <text x="390" y="205" font-family="Arial" font-size="10" :fill="$q.dark.isActive ? '#888' : '#6c757d'" text-anchor="end">+50cm</text>
+                  <text x="205" y="15" font-family="Arial" font-size="10" :fill="$q.dark.isActive ? '#888' : '#6c757d'">+50cm</text>
+                  <text x="205" y="395" font-family="Arial" font-size="10" :fill="$q.dark.isActive ? '#888' : '#6c757d'">-50cm</text>
                 </svg>
               </div>
             </div>
@@ -140,9 +140,9 @@
         </div>
 
         <!-- Controls Section -->
-        <div class="controls-section">
-          <div class="section-card">
-            <div class="card-header-modern">
+        <div class="controls-section" :dark="$q.dark.isActive">
+          <div class="section-card" :dark="$q.dark.isActive">
+            <div class="card-header-modern" :dark="$q.dark.isActive">
               <div class="header-left">
                 <h3 class="section-title">Ustawienia strzelania</h3>
                 <p class="section-subtitle">Konfiguracja parametrów</p>
@@ -223,9 +223,9 @@
       </div>
 
       <!-- Ballistic Table Section -->
-      <div class="table-section">
-        <div class="section-card">
-          <div class="card-header-modern">
+      <div class="table-section" :dark="$q.dark.isActive">
+        <div class="section-card" :dark="$q.dark.isActive">
+          <div class="card-header-modern" :dark="$q.dark.isActive">
             <div class="header-left">
               <h3 class="section-title">Tabela balistyczna</h3>
               <p class="section-subtitle">Wartości korekcji dla różnych dystansów</p>
@@ -265,10 +265,6 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import BackNav from 'components/BackNav.vue'
-
-defineOptions({
-  name: 'TrainingPage'
-})
 
 const targetDistance = ref(100)
 const offsetValue = ref(0)
@@ -401,6 +397,41 @@ onMounted(() => {
 .grot-page {
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
+}
+body.body--dark .grot-page,
+body.body--dark .page-background {
+  background: #181a1b !important;
+}
+.section-card, .card-header-modern, .controls-section, .results-section, .instruction-card, .result-card, .input-group {
+  background: inherit;
+}
+body.body--dark .section-card,
+body.body--dark .card-header-modern,
+body.body--dark .controls-section,
+body.body--dark .results-section,
+body.body--dark .instruction-card,
+body.body--dark .result-card,
+body.body--dark .input-group {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-color: #333 !important;
+}
+body.body--dark .header-title,
+body.body--dark .header-subtitle,
+body.body--dark .section-title,
+body.body--dark .section-subtitle,
+body.body--dark .results-title,
+body.body--dark .result-label,
+body.body--dark .result-value,
+body.body--dark .instruction-text {
+  color: #f2f2f2 !important;
+}
+body.body--dark .target-container {
+  background: #232526 !important;
+  border-color: #333 !important;
+}
+body.body--dark .target-svg {
+  background: #181a1b !important;
 }
 
 .container {
