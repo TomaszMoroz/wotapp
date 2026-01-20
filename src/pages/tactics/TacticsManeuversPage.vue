@@ -108,6 +108,7 @@
                       W czasie wykonywania każdego elementu baza musi być stale ubezpieczana.
                     </div>
                   </div>
+
                 </div>
 
                 <div v-else-if="selectedManeuver.id === 2">
@@ -412,6 +413,63 @@ const selectManeuver = (maneuver) => {
   font-style: italic;
   padding: 0 16px;
 }
+
+body.body--dark .modern-hero-section,
+body.body--dark .modern-content-list-card,
+body.body--dark .modern-content-card {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-hero-section .text-military-secondary,
+body.body--dark .modern-hero-section .text-military-dark,
+body.body--dark .modern-hero-section .text-h4,
+body.body--dark .modern-hero-section .text-body1 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-content-list-card .text-military-secondary,
+body.body--dark .modern-content-list-card .text-military-dark,
+body.body--dark .modern-content-list-card .text-h6,
+body.body--dark .modern-content-list-card .text-body1,
+body.body--dark .modern-content-list-card .q-item-label,
+body.body--dark .modern-content-list-card .text-caption {
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-content-card .text-military-secondary,
+body.body--dark .modern-content-card .text-military-dark,
+body.body--dark .modern-content-card .text-h5,
+body.body--dark .modern-content-card .text-subtitle2,
+body.body--dark .modern-content-card .text-body1,
+body.body--dark .modern-content-card .q-item-label,
+body.body--dark .modern-content-card .text-caption {
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-content-body,
+body.body--dark .modern-content-body p,
+body.body--dark .modern-content-body li,
+body.body--dark .modern-content-body strong,
+body.body--dark .modern-content-body h4,
+body.body--dark .modern-content-body h5 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .diagram-caption {
+  color: #bdbdbd !important;
+}
+
+  /* DARK MODE: Zasada podstawowa box */
+  body.body--dark .bg-amber-1.rounded-borders {
+    background: #232526 !important;
+    color: #ffe082 !important;
+    border: 1.5px solid #444950 !important;
+  }
+  body.body--dark .bg-amber-1.rounded-borders .text-amber-8 {
+    color: #ffe082 !important;
+  }
+  body.body--dark .bg-amber-1.rounded-borders .text-body2 {
+    color: #f2f2f2 !important;
+  }
+  body.body--dark .bg-amber-1.rounded-borders .q-icon {
+    color: #ffe082 !important;
+  }
 @media (max-width: 1024px) {
   .modern-content-row {
     flex-direction: column;

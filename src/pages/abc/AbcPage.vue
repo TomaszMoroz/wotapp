@@ -1,7 +1,3 @@
-body.body--dark .abc-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="q-pa-md dashboard-bg dashboard-abc-page">
     <div class="dashboard-abc-container">
@@ -148,6 +144,16 @@ function goToKts () {
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
   padding: 24px 32px;
 }
+body.body--dark .dashboard-header-card {
+  background: #232526 !important;
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .dashboard-header-card .text-h4,
+body.body--dark .dashboard-header-card .text-subtitle1 {
+  color: #f2f2f2 !important;
+}
 .dashboard-cards {
   margin-top: 0;
   margin-bottom: 0;
@@ -162,5 +168,23 @@ function goToKts () {
    max-width: 250px;
    margin-left: auto;
    margin-right: auto;
+}
+
+body.body--dark .abc-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
+body.body--dark .modern-tile {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1.5px solid #444950 !important;
+  box-shadow: 0 2px 12px rgba(44,62,47,0.10);
+}
+body.body--dark .modern-tile .text-h6,
+body.body--dark .modern-tile .text-caption {
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-tile .q-icon {
+  color: #b6e07a !important;
 }
 </style>

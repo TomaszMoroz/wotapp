@@ -7,7 +7,7 @@
       <div class="modern-hero q-pa-lg q-mb-lg">
         <div class="row items-center">
           <div class="col">
-            <div class="text-h4 text-weight-bold q-mb-sm" style="color:#111">
+            <div class="text-h4 text-weight-bold q-mb-sm" >
               Optyka i celowniki
             </div>
             <div class="text-subtitle1 text-grey-8">
@@ -24,35 +24,35 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold" style="color:#111">Mil-Dot</div>
+                <div class="text-h5 text-weight-bold" >Mil-Dot</div>
                 <div class="text-subtitle2 text-grey-8">System celowania mil-dot</div>
               </div>
             </div>
           </q-card-section>
           <q-separator />
           <q-card-section class="q-pa-lg">
-            <div class="text-body1 q-mb-md" style="color:#111">
+            <div class="text-body1 q-mb-md" >
               System celowania wykorzystujący punkty mil-dot do określania odległości i kompensacji spadku pocisku. Mil-dot to precyzyjny system pomiarowy używany w optyce wojskowej.
             </div>
             <div class="modern-features-section">
-              <div class="text-h6 text-weight-bold q-mb-md" style="color:#111">Zastosowania:</div>
+              <div class="text-h6 text-weight-bold q-mb-md" >Zastosowania:</div>
               <div class="modern-feature-list">
                 <div class="modern-feature-item q-mb-sm">
-                  <span class="text-body1" style="color:#111"><strong>Pomiar odległości:</strong> Wykorzystanie wzorów mil-dot do określenia dystansu do celu</span>
+                  <span class="text-body1" ><strong>Pomiar odległości:</strong> Wykorzystanie wzorów mil-dot do określenia dystansu do celu</span>
                 </div>
                 <div class="modern-feature-item q-mb-sm">
-                  <span class="text-body1" style="color:#111"><strong>Kompensacja wiatru:</strong> Korekta celowania w zależności od siły i kierunku wiatru</span>
+                  <span class="text-body1" ><strong>Kompensacja wiatru:</strong> Korekta celowania w zależności od siły i kierunku wiatru</span>
                 </div>
                 <div class="modern-feature-item q-mb-sm">
-                  <span class="text-body1" style="color:#111"><strong>Kompensacja spadku:</strong> Uwzględnienie trajektorii pocisku na dużych odległościach</span>
+                  <span class="text-body1" ><strong>Kompensacja spadku:</strong> Uwzględnienie trajektorii pocisku na dużych odległościach</span>
                 </div>
                 <div class="modern-feature-item">
-                  <span class="text-body1" style="color:#111"><strong>Precyzyjne celowanie:</strong> Dokładne naprowadzanie na cele na odległościach powyżej 300m</span>
+                  <span class="text-body1" ><strong>Precyzyjne celowanie:</strong> Dokładne naprowadzanie na cele na odległościach powyżej 300m</span>
                 </div>
               </div>
             </div>
             <div class="modern-info-box q-mt-lg">
-              <div class="text-body2" style="color:#111">
+              <div class="text-body2" >
                 <strong>Wzór podstawowy:</strong> Odległość (m) = (Wysokość celu w metrach × 1000) / Wysokość celu w mil-dot
               </div>
             </div>
@@ -64,35 +64,35 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold" style="color:#111">HWS (Holographic Weapon Sight)</div>
+                <div class="text-h5 text-weight-bold" >HWS (Holographic Weapon Sight)</div>
                 <div class="text-subtitle2 text-grey-8">Holograficzny celownik kolimatorowy</div>
               </div>
             </div>
           </q-card-section>
           <q-separator />
           <q-card-section class="q-pa-lg">
-            <div class="text-body1 q-mb-md" style="color:#111">
+            <div class="text-body1 q-mb-md" >
               Holograficzny celownik kolimatorowy zapewniający szybkie i precyzyjne celowanie w różnych warunkach bojowych. Wykorzystuje technologię holograficzną do projekcji celownika.
             </div>
             <div class="modern-features-section">
-              <div class="text-h6 text-weight-bold q-mb-md" style="color:#111">Zalety HWS:</div>
+              <div class="text-h6 text-weight-bold q-mb-md" >Zalety HWS:</div>
               <div class="modern-feature-list">
                 <div class="modern-feature-item q-mb-sm">
-                  <span class="text-body1" style="color:#111"><strong>Szybkie nabywanie celu:</strong> Natychmiastowe celowanie bez konieczności ustawiania oka</span>
+                  <span class="text-body1" ><strong>Szybkie nabywanie celu:</strong> Natychmiastowe celowanie bez konieczności ustawiania oka</span>
                 </div>
                 <div class="modern-feature-item q-mb-sm">
-                  <span class="text-body1" style="color:#111"><strong>Uniwersalność oświetlenia:</strong> Działanie w jasnym świetle dziennym i przy słabym oświetleniu</span>
+                  <span class="text-body1" ><strong>Uniwersalność oświetlenia:</strong> Działanie w jasnym świetle dziennym i przy słabym oświetleniu</span>
                 </div>
                 <div class="modern-feature-item q-mb-sm">
-                  <span class="text-body1" style="color:#111"><strong>Szeroki widok:</strong> Nie ogranicza pola widzenia strzelca</span>
+                  <span class="text-body1" ><strong>Szeroki widok:</strong> Nie ogranicza pola widzenia strzelca</span>
                 </div>
                 <div class="modern-feature-item">
-                  <span class="text-body1" style="color:#111"><strong>Długa żywotność baterii:</strong> Praca ciągła przez setki godzin</span>
+                  <span class="text-body1" ><strong>Długa żywotność baterii:</strong> Praca ciągła przez setki godzin</span>
                 </div>
               </div>
             </div>
             <div class="modern-info-box q-mt-lg">
-              <div class="text-body2" style="color:#111">
+              <div class="text-body2" >
                 <strong>Zastosowanie:</strong> Idealny do walki w terenie zurbanizowanym (CQB) i na średnich odległościach do 300m
               </div>
             </div>
@@ -104,40 +104,40 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold" style="color:#111">Lunety optyczne</div>
+                <div class="text-h5 text-weight-bold" >Lunety optyczne</div>
                 <div class="text-subtitle2 text-grey-8">Celowniki teleskopowe</div>
               </div>
             </div>
           </q-card-section>
           <q-separator />
           <q-card-section class="q-pa-lg">
-            <div class="text-body1 q-mb-md" style="color:#111">
+            <div class="text-body1 q-mb-md" >
               Teleskopowe celowniki optyczne zapewniające powiększenie obrazu celu i precyzyjne celowanie na dalekich odległościach.
             </div>
             <div class="modern-scope-types q-mb-lg">
-              <div class="text-h6 text-weight-bold q-mb-md" style="color:#111">Typy lunet:</div>
+              <div class="text-h6 text-weight-bold q-mb-md" >Typy lunet:</div>
               <div class="modern-scope-item q-mb-md">
-                <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#111">Lunety o stałym powiększeniu</div>
+                <div class="text-subtitle1 text-weight-bold q-mb-xs" >Lunety o stałym powiększeniu</div>
                 <div class="text-body2 text-grey-7">Np. 4x32 - proste, niezawodne, odporne na uszkodzenia</div>
               </div>
               <div class="modern-scope-item q-mb-md">
-                <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#111">Lunety o zmiennym powiększeniu</div>
+                <div class="text-subtitle1 text-weight-bold q-mb-xs" >Lunety o zmiennym powiększeniu</div>
                 <div class="text-body2 text-grey-7">Np. 1-4x24, 3-9x40 - uniwersalne, dostosowywane do odległości</div>
               </div>
               <div class="modern-scope-item">
-                <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#111">Lunety taktyczne</div>
+                <div class="text-subtitle1 text-weight-bold q-mb-xs" >Lunety taktyczne</div>
                 <div class="text-body2 text-grey-7">Z wieżyczkami regulacyjnymi, siatkami mil-dot lub MOA</div>
               </div>
             </div>
             <div class="modern-feature-list">
               <div class="modern-feature-item q-mb-sm">
-                <span class="text-body1" style="color:#111"><strong>Powiększenie:</strong> Od 1x do 25x w zależności od zastosowania</span>
+                <span class="text-body1" ><strong>Powiększenie:</strong> Od 1x do 25x w zależności od zastosowania</span>
               </div>
               <div class="modern-feature-item q-mb-sm">
-                <span class="text-body1" style="color:#111"><strong>Regulacja:</strong> Wieżyczki korekcyjne do regulacji windażu i elewacji</span>
+                <span class="text-body1" ><strong>Regulacja:</strong> Wieżyczki korekcyjne do regulacji windażu i elewacji</span>
               </div>
               <div class="modern-feature-item">
-                <span class="text-body1" style="color:#111"><strong>Podświetlenie:</strong> Opcjonalne podświetlenie siatki celowniczej</span>
+                <span class="text-body1" ><strong>Podświetlenie:</strong> Opcjonalne podświetlenie siatki celowniczej</span>
               </div>
             </div>
           </q-card-section>
@@ -148,40 +148,40 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold" style="color:#111">Kolimatory (Red Dot)</div>
+                <div class="text-h5 text-weight-bold" >Kolimatory (Red Dot)</div>
                 <div class="text-subtitle2 text-grey-8">Celowniki punktowe</div>
               </div>
             </div>
           </q-card-section>
           <q-separator />
           <q-card-section class="q-pa-lg">
-            <div class="text-body1 q-mb-md" style="color:#111">
+            <div class="text-body1 q-mb-md" >
               Kolimatory to celowniki punktowe wyświetlające czerwoną lub zieloną kropkę, które umożliwiają szybkie celowanie przy zachowaniu otwartych oczu.
             </div>
             <div class="modern-collimator-types q-mb-lg">
-              <div class="text-h6 text-weight-bold q-mb-md" style="color:#111">Rodzaje kolimatorów:</div>
+              <div class="text-h6 text-weight-bold q-mb-md" >Rodzaje kolimatorów:</div>
               <div class="modern-collimator-item q-mb-md">
-                <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#111">Tube-style (rurowe)</div>
+                <div class="text-subtitle1 text-weight-bold q-mb-xs" >Tube-style (rurowe)</div>
                 <div class="text-body2 text-grey-7">Tradycyjna konstrukcja rurowa, wytrzymałe i niezawodne</div>
               </div>
               <div class="modern-collimator-item q-mb-md">
-                <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#111">Open reflex (otwarte)</div>
+                <div class="text-subtitle1 text-weight-bold q-mb-xs" >Open reflex (otwarte)</div>
                 <div class="text-body2 text-grey-7">Kompaktowe, lekkie, szersze pole widzenia</div>
               </div>
               <div class="modern-collimator-item">
-                <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#111">Prism-based</div>
+                <div class="text-subtitle1 text-weight-bold q-mb-xs" >Prism-based</div>
                 <div class="text-body2 text-grey-7">Wykorzystujące pryzmaty, bez potrzeby baterii</div>
               </div>
             </div>
             <div class="modern-feature-list">
               <div class="modern-feature-item q-mb-sm">
-                <span class="text-body1" style="color:#111"><strong>Szybkość celowania:</strong> Natychmiastowe nabywanie celu</span>
+                <span class="text-body1" ><strong>Szybkość celowania:</strong> Natychmiastowe nabywanie celu</span>
               </div>
               <div class="modern-feature-item q-mb-sm">
-                <span class="text-body1" style="color:#111"><strong>Shooting with both eyes open:</strong> Strzelanie z otwartymi oczami</span>
+                <span class="text-body1" ><strong>Shooting with both eyes open:</strong> Strzelanie z otwartymi oczami</span>
               </div>
               <div class="modern-feature-item">
-                <span class="text-body1" style="color:#111"><strong>Regulacja jasności:</strong> Dostosowanie do warunków oświetleniowych</span>
+                <span class="text-body1" ><strong>Regulacja jasności:</strong> Dostosowanie do warunków oświetleniowych</span>
               </div>
             </div>
           </q-card-section>
@@ -243,6 +243,12 @@ import BackNav from 'components/BackNav.vue'
   padding: 16px;
   color: #111;
 }
+
+body.body--dark .modern-feature-list {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border: 1px solid #444950 !important;
+}
 .modern-feature-item {
   display: flex;
   align-items: flex-start;
@@ -287,5 +293,74 @@ import BackNav from 'components/BackNav.vue'
   .modern-info-box {
     padding: 12px;
   }
+}
+
+body.body--dark .modern-bg {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-hero,
+body.body--dark .modern-content-card,
+body.body--dark .modern-features-section,
+body.body--dark .modern-info-box,
+body.body--dark .modern-scope-types,
+body.body--dark .modern-collimator-types,
+body.body--dark .modern-scope-item,
+body.body--dark .modern-collimator-item {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border-color: #444950 !important;
+}
+body.body--dark .modern-card-header {
+  background: #232526 !important;
+  color: #cccccc !important;
+}
+body.body--dark .text-body1,
+body.body--dark .text-body2,
+body.body--dark .text-subtitle2 {
+  color: #cccccc !important;
+}
+body.body--dark .text-grey-7,
+body.body--dark .text-grey-8 {
+  color: #bdbdbd !important;
+}
+body.body--dark .modern-title,
+body.body--dark .text-h4,
+body.body--dark .text-h5,
+body.body--dark .text-h6 {
+  color: #cccccc !important;
+}
+body.body--dark .q-chip {
+  background: #333 !important;
+  color: #ffe082 !important;
+}
+body.body--dark .text-green,
+body.body--dark .text-success,
+body.body--dark .text-positive,
+body.body--dark .text-dark-green,
+body.body--dark .text-light-green,
+body.body--dark .text-primary,
+body.body--dark .text-military-primary,
+body.body--dark .text-military,
+body.body--dark .text-military-dark,
+body.body--dark .text-military-light,
+body.body--dark .text-military-green,
+body.body--dark .text-military-green-dark,
+body.body--dark .text-military-green-light,
+body.body--dark .text-military-brown,
+body.body--dark .text-military-brown-dark,
+body.body--dark .text-military-brown-light,
+body.body--dark .text-military-accent,
+body.body--dark .text-military-accent-dark,
+body.body--dark .text-military-accent-light {
+  color: #cccccc !important;
+}
+body.body--dark [style*="color:#232b23"],
+body.body--dark [style*="color: #232b23"],
+body.body--dark [style*="color:#0f2c05"],
+body.body--dark [style*="color: #0f2c05"],
+body.body--dark [style*="color:#111"],
+body.body--dark [style*="color: #111"] {
+  color: #cccccc !important;
 }
 </style>

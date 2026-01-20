@@ -95,9 +95,9 @@
           <q-card-section class="q-pa-lg">
             <div class="step-header-modern q-mb-sm">
               <q-icon name="pan_tool_alt" color="grey-8" size="md" class="q-mr-sm" />
-              <span class="text-h6 text-weight-bold" style="color:#232b23">Wprowadzenie: Stabilność to Fundament</span>
+              <span class="text-h6 text-weight-bold">Wprowadzenie: Stabilność to Fundament</span>
             </div>
-            <div class="text-body1" style="color:#232b23">
+            <div class="text-body1" >
               W strzelectwie dynamicznym i precyzyjnym kluczem jest nie siła, lecz powtarzalna stabilność i minimalizacja napięcia mięśniowego.
               Prawidłowa postawa i chwyt mają za zadanie stworzyć stabilną "platformę" minimalizującą naturalne drgania ciała,
               co bezpośrednio przekłada się na celność.
@@ -117,31 +117,31 @@
           </q-card-section>
           <q-separator />
           <q-card-section class="q-pa-lg">
-            <div class="text-body1 q-mb-md" style="color:#232b23">
+            <div class="text-body1 q-mb-md" >
               <strong>Postawa powinna być agresywna, ale luźna.</strong>
             </div>
             <div class="stance-img-wrapper q-mb-md">
               <img :src="stanceImg" alt="Trójkąt stabilności - postawa strzelecka" class="stance-img" />
             </div>
             <div class="q-mb-md">
-              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Fundament (Nogi)</div>
-              <div class="text-body2" style="color:#232b23">
+              <div class="text-subtitle1 text-weight-bold q-mb-xs">Fundament (Nogi)</div>
+              <div class="text-body2">
                 Stań w lekkim rozkroku, na szerokości barków lub nieco szerzej. Wysuń nogę od strony ręki wspomagającej w przód (o 1-1.5 długości stopy). Kolana lekko ugięte –
                 to pozwala działać ciału jako naturalny amortyzator. Środek ciężkości powinien być
                 przesunięty delikatnie do przodu, aby przeciwdziałać odrzutowi i kontrolować broń.
               </div>
             </div>
             <div class="q-mb-md">
-              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Balans</div>
-              <div class="text-body2" style="color:#232b23">
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" >Balans</div>
+              <div class="text-body2" >
                 Zbuduj trójkąt stabilności, w którym wierzchołkami są stopy i biodra. Celuj do przodu,
                 stopy trzymając równolegle w kierunku celu, aby były gotowe na szybkie przesunięcie, ale jednocześnie
                 zapewniały pewny balans. Lekko obniż i wysuń do tyłu biodra zachowując frontalne ustawienie tułowia w kierunku celu.
               </div>
             </div>
             <div>
-              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Luźne mięśnie</div>
-              <div class="text-body2" style="color:#232b23">
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" >Luźne mięśnie</div>
+              <div class="text-body2" >
                 Zredukuj napięcie w plecach i ramionach. Im więcej napięcia, tym trudniej o powtarzalność
                 i tym silniejsze są niekontrolowane drgania.
               </div>
@@ -161,36 +161,36 @@
           </q-card-section>
           <q-separator />
           <q-card-section class="q-pa-lg">
-            <div class="text-body1 q-mb-md" style="color:#232b23">Wyróżniamy dwa kluczowe chwyty:</div>
+            <div class="text-body1 q-mb-md" >Wyróżniamy dwa kluczowe chwyty:</div>
             <div class="q-mb-md">
-              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">1. Chwyt Dominujący (Kontrola Spustu)</div>
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" >1. Chwyt Dominujący (Kontrola Spustu)</div>
               <div class="q-mb-xs">
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Pewność, nie siła:</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Pewność, nie siła:</div>
+                <div class="text-body2" >
                   Chwyt pistoletowy ma być pewny, ale nie ma na celu miażdżenia. Zbyt mocny chwyt ręki strzelającej
                   powoduje napięcie, które przenosi się na palec spustowy, zwiększając ryzyko szarpnięcia.
                 </div>
               </div>
               <div>
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Praca na języku spustowym:</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Praca na języku spustowym:</div>
+                <div class="text-body2" >
                   Palec powinien dotykać spustu środkiem opuszka. Cała praca palca musi być izolowana od reszty ręki.
                   Cel to równomierny i ciągły ruch w tył, bez żadnych ruchów bocznych czy pionowych.
                 </div>
               </div>
             </div>
             <div>
-              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">2. Chwyt Wspierający</div>
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" >2. Chwyt Wspierający</div>
               <div class="q-mb-xs">
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Siła w kierunku celu:</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Siła w kierunku celu:</div>
+                <div class="text-body2" >
                   Ręka wspierająca trzymająca łoże karabinka powinna działać jak zacisk. Nie służy do unoszenia broni,
                   lecz do ściągania karabinka w kierunku strzelca, dociskając go delikatnie do tułowia.
                 </div>
               </div>
               <div>
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Chwyt C (C-Clamp):</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Chwyt C (C-Clamp):</div>
+                <div class="text-body2" >
                   W strzelectwie popularny jest chwyt dalekiego zasięgu na łożu, który maksymalizuje
                   stabilność i kontrolę nad odrzutem. Ramię wspierające i dominujące powinny być zgięte, a łokcie skierowany w dół,
                   co pomaga złożyć ramiona w bardziej zwartą i stabilną bryłę.
@@ -216,40 +216,40 @@
           <q-separator />
           <q-card-section class="q-pa-lg">
             <div class="q-mb-md">
-              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Kontrola Oddechu</div>
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" >Kontrola Oddechu</div>
               <div class="q-mb-xs">
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Strefa Czasu Krytycznego:</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Strefa Czasu Krytycznego:</div>
+                <div class="text-body2" >
                   Strzał powinien zostać oddany w naturalnej pauzie oddechowej – po spokojnym wydechu,
                   ale przed rozpoczęciem naturalnej potrzeby kolejnego wdechu. Jest to moment,
                   kiedy ciało jest najbardziej zrelaksowane i nieruchome.
                 </div>
               </div>
               <div>
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Stabilność:</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Stabilność:</div>
+                <div class="text-body2" >
                   Wstrzymywanie oddechu na siłę zwiększa napięcie. Celem jest osiągnięcie naturalnego spokoju na 1-3 sekundy.
                 </div>
               </div>
             </div>
             <div>
-              <div class="text-subtitle1 text-weight-bold q-mb-xs" style="color:#232b23">Praca na Spuście (Sight Picture, Sight Alignment)</div>
+              <div class="text-subtitle1 text-weight-bold q-mb-xs" >Praca na Spuście (Sight Picture, Sight Alignment)</div>
               <div class="q-mb-xs">
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Decyzja:</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Decyzja:</div>
+                <div class="text-body2" >
                   Strzał jest oddawany w momencie, gdy celownik jest idealnie zgrany z celem.
                 </div>
               </div>
               <div class="q-mb-xs">
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Dwa etapy (Two-Stage Trigger):</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Dwa etapy (Two-Stage Trigger):</div>
+                <div class="text-body2" >
                   Naucz się "wybierać luz" (branie wstępne) na spuście, aż poczujesz ścianę (punkt oporu).
                   Dopiero w momencie idealnego zgrania celownika, świadomie i płynnie przełamuj tę ścianę, powodując strzał.
                 </div>
               </div>
               <div>
-                <div class="text-subtitle2 text-weight-bold" style="color:#232b23">Follow-Through:</div>
-                <div class="text-body2" style="color:#232b23">
+                <div class="text-subtitle2 text-weight-bold" >Follow-Through:</div>
+                <div class="text-body2" >
                   Po strzale nie rozluźniaj chwytu i nie ruszaj głową. Utrzymaj celownik na celu przez ułamek sekundy,
                   aby upewnić się, że to nie ruch po strzale wpłynął na trafienie.
                 </div>
@@ -330,6 +330,82 @@ import cclampImg from 'assets/cclamp.png'
 </script>
 
 <style scoped>
+body.body--dark [style*="color:#232b23"],
+body.body--dark [style*="color: #232b23"],
+body.body--dark [style*="color:#0f2c05"],
+body.body--dark [style*="color: #0f2c05"] {
+  color: #cccccc !important;
+}
+
+body.body--dark .text-primary,
+body.body--dark .text-military-primary,
+body.body--dark .text-military,
+body.body--dark .text-military-dark,
+body.body--dark .text-military-light,
+body.body--dark .text-military-green,
+body.body--dark .text-military-green-dark,
+body.body--dark .text-military-green-light,
+body.body--dark .text-military-brown,
+body.body--dark .text-military-brown-dark,
+body.body--dark .text-military-brown-light,
+body.body--dark .text-military-accent,
+body.body--dark .text-military-accent-dark,
+body.body--dark .text-military-accent-light {
+  color: #cccccc !important;
+}
+
+body.body--dark .modern-bg {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-hero-section {
+  background: #232526 !important;
+  color: #fff !important;
+}
+body.body--dark .modern-content-card,
+body.body--dark .blos-item-modern {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .modern-card-header {
+  background: #232526 !important;
+  color: #cccccc !important;
+}
+body.body--dark .text-body1,
+body.body--dark .text-subtitle2 {
+  color: #cccccc !important;
+}
+body.body--dark .blos-rules-modern,
+body.body--dark .blos-reminder-modern,
+body.body--dark .step-item-modern {
+  background: #232526 !important;
+  color: #fff !important;
+}
+body.body--dark .blos-header-modern {
+  color: #fff !important;
+}
+body.body--dark .text-grey-7,
+body.body--dark .text-grey-8 {
+  color: #bdbdbd !important;
+}
+body.body--dark .blos-letter-modern {
+  filter: brightness(0.8) contrast(1.2);
+}
+body.body--dark .q-chip {
+  background: #333 !important;
+  color: #ffe082 !important;
+}
+body.body--dark .text-green,
+body.body--dark .text-success,
+body.body--dark .text-positive,
+body.body--dark .text-dark-green,
+body.body--dark .text-light-green {
+  color: #cccccc !important;
+}
+body.body--dark .modern-title {
+  color: #cccccc !important;
+}
 
 .modern-bg {
   background: #f7f8f9;

@@ -203,7 +203,7 @@
             <div class="practical-tips-modern">
               <div class="tip-item-modern">
                 <div class="tip-header-modern">
-                  <span class="text-h6 text-weight-bold" style="color:#0f2c05">Dobór amunicji</span>
+                  <span class="text-h6 text-weight-bold" >Dobór amunicji</span>
                 </div>
                 <div class="text-body1 q-mt-sm">
                   Jeśli strzelasz na dystansach powyżej 300 m, wybierz amunicję o wyższej masie (np. 69 grany lub 77 grany, jeśli lufa ma skok 1:7). Cięższy pocisk lepiej zachowuje energię i jest mniej podatny na wiatr.
@@ -211,7 +211,7 @@
               </div>
               <div class="tip-item-modern">
                 <div class="tip-header-modern">
-                  <span class="text-h6 text-weight-bold" style="color:#0f2c05">Przystrzelanie (Zerowanie)</span>
+                  <span class="text-h6 text-weight-bold" >Przystrzelanie (Zerowanie)</span>
                 </div>
                 <div class="text-body1 q-mt-sm">
                   Najczęściej stosowany punkt zerowania to ok 20/420 metrów. Ta wiedza pozwala celować centralnie na obu dystansach i używać techniki Holdover/Holdunder w międzyczasie.
@@ -219,7 +219,7 @@
               </div>
               <div class="tip-item-modern">
                 <div class="tip-header-modern">
-                  <span class="text-h6 text-weight-bold" style="color:#0f2c05">Kontrola Spustu</span>
+                  <span class="text-h6 text-weight-bold" >Kontrola Spustu</span>
                 </div>
                 <div class="text-body1 q-mt-sm">
                   Najczęstszym błędem jest "zrywanie" strzału. Koncentracja na płynnej pracy spustu i utrzymaniu muszki/kropki na celu jest ważniejsza niż dokładna wiedza balistyczna.
@@ -227,7 +227,7 @@
               </div>
               <div class="tip-item-modern">
                 <div class="tip-header-modern">
-                  <span class="text-h6 text-weight-bold" style="color:#0f2c05">Odczyt Wiatru</span>
+                  <span class="text-h6 text-weight-bold" >Odczyt Wiatru</span>
                 </div>
                 <div class="text-body1 q-mt-sm">
                   Wiatr jest największą zmienną. Ucz się odczytywać wiatr na całej trasie strzału, ponieważ niska masa pocisku 5,56 mm sprawia, że jest on łatwo znoszony.
@@ -247,6 +247,69 @@ import BackNav from 'components/BackNav.vue'
 </script>
 
 <style scoped>
+body.body--dark .modern-bg {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-hero-section {
+  background: #232526 !important;
+  color: #fff !important;
+}
+body.body--dark .modern-content-card,
+body.body--dark .parameter-item-modern,
+body.body--dark .force-item-modern,
+body.body--dark .condition-item-modern,
+body.body--dark .tip-item-modern {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .modern-card-header {
+  background: #232526 !important;
+  color: #cccccc !important;
+}
+body.body--dark .text-body1,
+body.body--dark .text-subtitle2 {
+  color: #cccccc !important;
+}
+body.body--dark .text-grey-7,
+body.body--dark .text-grey-8 {
+  color: #bdbdbd !important;
+}
+body.body--dark .modern-title {
+  color: #cccccc !important;
+}
+body.body--dark .q-chip {
+  background: #333 !important;
+  color: #ffe082 !important;
+}
+body.body--dark .text-green,
+body.body--dark .text-success,
+body.body--dark .text-positive,
+body.body--dark .text-dark-green,
+body.body--dark .text-light-green,
+body.body--dark .text-primary,
+body.body--dark .text-military-primary,
+body.body--dark .text-military,
+body.body--dark .text-military-dark,
+body.body--dark .text-military-light,
+body.body--dark .text-military-green,
+body.body--dark .text-military-green-dark,
+body.body--dark .text-military-green-light,
+body.body--dark .text-military-brown,
+body.body--dark .text-military-brown-dark,
+body.body--dark .text-military-brown-light,
+body.body--dark .text-military-accent,
+body.body--dark .text-military-accent-dark,
+body.body--dark .text-military-accent-light {
+  color: #cccccc !important;
+}
+body.body--dark [style*="color:#232b23"],
+body.body--dark [style*="color: #232b23"],
+body.body--dark [style*="color:#0f2c05"],
+body.body--dark [style*="color: #0f2c05"] {
+  color: #cccccc !important;
+}
 .page-background {
   background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);
   min-height: 100vh;

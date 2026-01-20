@@ -3,9 +3,9 @@ body.body--dark .emergency-tile {
   background: #2c313a !important;
 }
 <template>
-  <q-page class="modern-bg q-pa-md">
+  <q-page class="modern-bg q-pa-md" :dark="$q.dark.isActive">
     <div class="dashboard-main-container">
-      <BackNav color="black"/>
+      <BackNav :color="$q.dark.isActive ? 'white' : 'black'"/>
       <div class="row items-center justify-between q-mb-xl">
       <div>
         <div class="text-h4 text-weight-bold modern-title">Stopnie, regulamin, prawo</div>
@@ -14,7 +14,7 @@ body.body--dark .emergency-tile {
     </div>
       <div class="dashboard-tiles q-mb-xl">
         <div class="tiles-grid">
-          <q-card class="modern-tile" @click="navigateTo('/ranks')">
+          <q-card class="modern-tile" :dark="$q.dark.isActive" @click="navigateTo('/ranks')">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" style="background: #827858;">
               <q-icon name="military_tech" color="white" size="32px" />
@@ -25,7 +25,7 @@ body.body--dark .emergency-tile {
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Oznaczenia i hierarchia WOT</q-chip>
           </q-card-section>
         </q-card>
-          <q-card class="modern-tile" @click="navigateTo('/regulations')">
+          <q-card class="modern-tile" :dark="$q.dark.isActive" @click="navigateTo('/regulations')">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" style="background: #a2ad59;">
               <q-icon name="gavel" color="white" size="32px" />
@@ -36,7 +36,7 @@ body.body--dark .emergency-tile {
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Przepisy i procedury WOT</q-chip>
           </q-card-section>
         </q-card>
-          <q-card class="modern-tile" @click="navigateTo('/firearms-law')">
+          <q-card class="modern-tile" :dark="$q.dark.isActive" @click="navigateTo('/firearms-law')">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" style="background: #65473f;">
               <q-icon name="security" color="white" size="32px" />
@@ -47,7 +47,7 @@ body.body--dark .emergency-tile {
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Art. 45 - Ustawa o ś.p.</q-chip>
           </q-card-section>
         </q-card>
-          <q-card class="modern-tile" @click="navigateTo('/drill')">
+          <q-card class="modern-tile" :dark="$q.dark.isActive" @click="navigateTo('/drill')">
           <q-card-section class="tile-content">
             <div class="tile-icon-bg" style="background: #8e936d;">
               <q-icon name="flag" color="white" size="32px" />
@@ -74,7 +74,18 @@ function navigateTo (path) {
 </script>
 
 <style scoped>
-
+body.body--dark .modern-tile {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .tile-label {
+  color: #f2f2f2 !important;
+}
+body.body--dark .tile-desc-chip-big {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+}
 .dashboard-main-container {
   max-width: 1500px;
   margin-left: auto;

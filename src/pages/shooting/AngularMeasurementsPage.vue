@@ -158,7 +158,7 @@
                   <strong>odległość [m] = (wielkość celu [m] × 1000) / liczba MIL</strong>
                 </div>
                 <div class="text-body2 text-dark q-mt-xs">
-                  <b>FFP (pierwszy plan):</b> W lunetach FFP siatka zmienia rozmiar wraz z powiększeniem, więc wzór jest zawsze prosty jak powyżej.
+                  <b>FFP (pierwszy plan):</b> W lunetach FFP siatka zmienia rozmiar wraz z powięzeniem, więc wzór jest zawsze prosty jak powyżej.
                 </div>
 
                 <div class="modern-example-calculation q-mt-md">
@@ -900,5 +900,128 @@ import BackNav from 'components/BackNav.vue'
   .application-note, .recommendation-box {
     padding: 12px;
   }
+}
+
+body.body--dark .modern-bg {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-hero,
+body.body--dark .modern-content-card,
+body.body--dark .modern-section-box,
+body.body--dark .modern-definition-box,
+body.body--dark .modern-formula-box,
+body.body--dark .application-note,
+body.body--dark .recommendation-box,
+body.body--dark .parameter-item-modern,
+body.body--dark .force-item-modern,
+body.body--dark .condition-item-modern,
+body.body--dark .tip-item-modern {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .modern-card-header {
+  background: #232526 !important;
+  color: #cccccc !important;
+}
+body.body--dark .text-body1,
+body.body--dark .text-subtitle2 {
+  color: #cccccc !important;
+}
+body.body--dark .text-grey-7,
+body.body--dark .text-grey-8 {
+  color: #bdbdbd !important;
+}
+body.body--dark .modern-title,
+body.body--dark .text-h4,
+body.body--dark .text-h5,
+body.body--dark .text-h6 {
+  color: #cccccc !important;
+}
+body.body--dark .q-chip {
+  background: #333 !important;
+  color: #ffe082 !important;
+}
+body.body--dark .text-green,
+body.body--dark .text-success,
+body.body--dark .text-positive,
+body.body--dark .text-dark-green,
+body.body--dark .text-light-green,
+body.body--dark .text-primary,
+body.body--dark .text-military-primary,
+body.body--dark .text-military,
+body.body--dark .text-military-dark,
+body.body--dark .text-military-light,
+body.body--dark .text-military-green,
+body.body--dark .text-military-green-dark,
+body.body--dark .text-military-green-light,
+body.body--dark .text-military-brown,
+body.body--dark .text-military-brown-dark,
+body.body--dark .text-military-brown-light,
+body.body--dark .text-military-accent,
+body.body--dark .text-military-accent-dark,
+body.body--dark .text-military-accent-light {
+  color: #cccccc !important;
+}
+body.body--dark [style*="color:#232b23"],
+body.body--dark [style*="color: #232b23"],
+body.body--dark [style*="color:#0f2c05"],
+body.body--dark [style*="color: #0f2c05"] {
+  color: #cccccc !important;
+}
+body.body--dark .modern-highlight-box,
+body.body--dark .modern-formula-result,
+body.body--dark .modern-formula-box-main,
+body.body--dark .modern-formula-box-simple,
+body.body--dark .modern-example-calculation,
+body.body--dark .modern-moa-calculation,
+body.body--dark .modern-calculation-steps,
+body.body--dark .modern-result-box,
+body.body--dark .modern-highlight-text,
+body.body--dark .modern-distance-group,
+body.body--dark .modern-distance-title,
+body.body--dark .modern-moa-value,
+body.body--dark .modern-example-scenario,
+body.body--dark .modern-calculation-box,
+body.body--dark .modern-conclusion,
+body.body--dark .modern-relation-formula,
+body.body--dark .distance-table,
+body.body--dark .table-header,
+body.body--dark .table-row,
+body.body--dark .table-cell,
+body.body--dark .moa-value,
+body.body--dark .example-item,
+body.body--dark .comparison-item,
+body.body--dark .moa-item,
+body.body--dark .mil-item,
+body.body--dark .detail-item,
+body.body--dark .radian-explanation,
+body.body--dark .formula-box,
+body.body--dark .calculations-section,
+body.body--dark .calculation-item,
+body.body--dark .highlight-box,
+body.body--dark .math-proof,
+body.body--dark .formula-result,
+body.body--dark .important-note,
+body.body--dark .formula-box-main,
+body.body--dark .formula-box-simple,
+body.body--dark .example-calculation,
+body.body--dark .calculation-result,
+body.body--dark .moa-calculation,
+body.body--dark .calculation-steps,
+body.body--dark .result-box,
+body.body--dark .highlight-text,
+body.body--dark .distance-group,
+body.body--dark .distance-title,
+body.body--dark .moa-values,
+body.body--dark .example-scenario,
+body.body--dark .calculation-box,
+body.body--dark .result,
+body.body--dark .conclusion,
+body.body--dark .relation-formula {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border-color: #444950 !important;
 }
 </style>

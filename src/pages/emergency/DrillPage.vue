@@ -1,9 +1,9 @@
 <template>
-  <q-page class="page-background">
+  <q-page class="page-background" :dark="$q.dark.isActive">
     <div class="container q-pa-md">
-      <BackNav color="black"/>
+      <BackNav :color="$q.dark.isActive ? 'white' : 'black'"/>
 
-      <div class="hero-section q-pa-lg q-mb-lg">
+      <div class="hero-section q-pa-lg q-mb-lg" :class="$q.dark.isActive ? 'hero-dark' : ''">
         <div class="row items-center">
           <div class="col">
             <div class="text-h4 text-weight-bold text-white q-mb-sm">
@@ -20,7 +20,7 @@
         </div>
       </div>
 
-      <div class="content-card q-pa-lg">
+      <div class="content-card q-pa-lg" :class="$q.dark.isActive ? 'content-card-dark' : ''">
         <!-- Nawigacja rozdziałów -->
         <div class="controls-section q-mb-md">
           <q-btn-dropdown
@@ -58,14 +58,14 @@
           <!-- ROZDZIAŁ 1: ZASADY OGÓLNE -->
           <section id="zasady-ogolne" class="regulation-section">
             <div class="section-header">
-              <h2 class="text-h5 text-weight-bold text-black q-mb-md">
+              <h2 class="text-h5 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-white' : 'text-black'">
                 ROZDZIAŁ 1 - ZASADY OGÓLNE
               </h2>
             </div>
 
             <div class="article">
               <div class="article-number">1.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Musztra</strong> - to ćwiczenia wojskowe, które uczą, jak przyjmować postawę zasadniczą i swobodną, oddawać honory, poruszać się z bronią i bez broni, formować szyki oraz zachowywać się w szyku i poza nim.
                 <br><br>
                 Rozróżnia się musztrę indywidualną i zespołową pieszą oraz z pojazdami (wozami bojowymi).
@@ -78,7 +78,7 @@
 
             <div class="article">
               <div class="article-number">2.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 Pododdziały i oddziały występują i działają w odpowiednim ugrupowaniu i szyku.
                 <br><br>
                 <strong>Ugrupowanie w musztrze</strong> - to ustawienie żołnierzy, pododdziałów i oddziałów pieszych lub z pojazdami w szyku odpowiednim do wykonania określonych frontem w jednym kierunku, w nakazanym szyku, w odstępach określonych w regulaminie lub w rozkazie dowódcy.
@@ -91,7 +91,7 @@
 
             <div class="article">
               <div class="article-number">3.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Szyk</strong> - to określone w regulaminie ustawienie żołnierzy (pojazdów) lub pododdziałów - do wspólnego wykonywania czynności — w ugrupowaniu rozwiniętym lub marszowym.
                 <br><br>
                 Żołnierze (pojazdy) ustawiają się w szyku zgodnie z podziałem organizacyjnym lub w sposób nakazany przez dowódcę. Niektóre szyki może już tworzyć dwóch żołnierzy (dwa pojazdy), np.: szereg, rząd.
@@ -114,7 +114,7 @@
 
             <div class="article">
               <div class="article-number">4.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Szereg</strong> - to szyk, w którym:
                 <br>
                 a) żołnierze stoją obok siebie w odstępie równym szerokości dłoni (mierzonym na wysokości łokci), frontem w jednym kierunku, w linii prostej;
@@ -125,7 +125,7 @@
 
             <div class="article">
               <div class="article-number">5.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Dwuszereg</strong> - to szyk, w którym dwa szeregi żołnierzy stoją jeden za drugim, frontem w jednym kierunku, w odległości równej półtorej długości wyciągniętej ręki z wyprostowanymi palcami (około 1,2 m). Żołnierze drugiego szeregu kryją swoich poprzedników.
                 <br><br>
                 Dwuszereg jest pełny, jeżeli żołnierza lewoskrzydłowego pierwszego szeregu kryje żołnierz drugiego szeregu; niepełny - jeżeli nie kryje.
@@ -143,7 +143,7 @@
 
             <div class="article">
               <div class="article-number">10.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Komenda</strong> - to krótki rozkaz - podany słownie lub przez środki łączności - do natychmiastowego wykonania, a gdy dotyczy grupy żołnierzy lub pododdziału (oddziału) - również jednoczesnego i jednolitego.
                 <br><br>
                 Komenda składa się z zapowiedzi i hasła. Jest kilka komend zawierających tylko hasło, np.: „BACZNOŚĆ", „SPOCZNIJ".
@@ -158,7 +158,7 @@
           <!-- ROZDZIAŁ 2: MUSZTRA INDYWIDUALNA -->
           <section id="musztra-indywidualna" class="regulation-section">
             <div class="section-header">
-              <h2 class="text-h5 text-weight-bold text-black q-mb-md">
+              <h2 class="text-h5 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-white' : 'text-black'">
                 ROZDZIAŁ 2 - MUSZTRA INDYWIDUALNA
               </h2>
               <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
@@ -168,13 +168,13 @@
 
             <div class="article">
               <div class="article-number">18.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Postawa zasadnicza</strong> — to pozycja przyjmowana przez żołnierzy do wykonania nakazanych czynności lub do wystąpień służbowych.
                 <br><br>
                 W postawie zasadniczej żołnierz stoi nieruchomo. Ciężar ciała spoczywa równomiernie na obu stopach. Pięty są złączone, stopy zaś rozwarte na szerokość środkowej części podeszwy buta. Nogi w kolanach wyprostowane, mięśnie nóg lekko naprężone. Tułów wyprostowany. Brzuch lekko wciągnięty, ramiona cofnięte do tyłu - na jednakowej wysokości i równolegle do linii frontu. Ręce opuszczone i wyprostowane w łokciach. Palce zwarte i wyprostowane; palec środkowy ułożony wzdłuż szwu spodni. Głowa podniesiona, wzrok skierowany na wprost, usta zamknięte.
                 <br><br>
                 Żołnierz przyjmuje postawę zasadniczą na komendę „BACZNOŚĆ" oraz bez tej komendy w następujących przypadkach:
-                <ul class="regulation-list">
+                <ul class="regulation-list" :class="isDark ? 'text-white' : 'text-black'">
                   <li>na zapowiedź komendy nie poprzedzonej komendą „BACZNOŚĆ"</li>
                   <li>po wykonaniu komendy „ZBIÓRKA" i podczas:</li>
                   <li>wydawania lub przyjmowania rozkazów</li>
@@ -187,7 +187,7 @@
 
             <div class="article">
               <div class="article-number">20.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Postawa swobodna</strong> - to pozycja umożliwiająca żołnierzowi częściowy odpoczynek podczas wykonywania regulaminowych czynności i wystąpień służbowych, przede wszystkim podczas parad i uroczystości wojskowych. Przyjmuje się ją na komendę „SPOCZNIJ" oraz samoczynnie w sytuacjach określonych w regulaminach.
                 <br><br>
                 Na komendę „SPOCZNIJ" żołnierz energicznie wysuwa lewą nogę w lewo w skos na odległość równą połowie długości stopy.
@@ -204,7 +204,7 @@
 
             <div class="article">
               <div class="article-number">22.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 Zwroty w miejscu wykonuje się na komendę: „W lewo (w prawo, w tył) - ZWROT". Zwroty w lewo i w tył wykonuje się w stronę lewej ręki, na obcasie buta lewej nogi i czubku prawego buta, energicznie dostawiając najkrótszą drogą nogę pozostawioną w tyle. Zwrot w prawo - odwrotnie. W czasie zwrotu górna część ciała pozostaje jak w postawie zasadniczej; nóg w kolanach nie zgina się.
               </div>
             </div>
@@ -217,7 +217,7 @@
 
             <div class="article">
               <div class="article-number">24.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 Marsz rozpoczyna się z postawy zasadniczej lewą nogą. Wykonuje się go krokiem defiladowym lub zwykłym, natomiast marsz w miejscu — tylko krokiem zwykłym. Marsz poprzedza komenda np.: „Szeregowy Kalinowski, kierunek na wprost (w lewo, w prawo, w tył na lewo, w tył na prawo, w lewo w skos, w prawo w skos) — MARSZ" lub „Szeregowy Kalinowski, za mną - MARSZ".
                 <br><br>
                 Po każdej komendzie pierwsze trzy kroki wykonuje się krokiem defiladowym na wprost (z wyjątkiem marszu w miejscu).
@@ -226,9 +226,9 @@
 
             <div class="article">
               <div class="article-number">25.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Krok defiladowy</strong> stosuje się:
-                <ul class="regulation-list">
+                <ul class="regulation-list" :class="isDark ? 'text-white' : 'text-black'">
                   <li>rozpoczynając marsz (pierwsze trzy kroki)</li>
                   <li>w marszu po komendzie „BACZNOŚĆ"</li>
                   <li>w marszu po zapowiedzi komendy dotyczącej zatrzymania się</li>
@@ -243,7 +243,7 @@
 
             <div class="article">
               <div class="article-number">26.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Krok zwykły</strong> obowiązuje na terenie koszar, miast, osiedli itp. oraz podczas śpiewu w marszu. Żołnierze, występujący indywidualnie, stosują go również podczas oddawania honorów w marszu, a także w czasie podchodzenia do (odchodzenia od) przełożonego.
                 <br><br>
                 Maszerując krokiem zwykłym żołnierz ma głowę uniesioną, tułów wyprostowany. Wymach rąk swobodny - w takt marszu. Długość kroku - 60-70 cm. Tempo - 112-116 kroków na minutę.
@@ -258,7 +258,7 @@
 
             <div class="article">
               <div class="article-number">63.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W miejscu, w nakryciu głowy i bez broni żołnierz salutuje w postawie zasadniczej. Z chwilą zbliżenia się przełożonego na trzy kroki zwraca głowę w jego stronę („frontuje") oraz wykonuje zwrot głowy) i podnosi szybkim ruchem do daszka czapki (obrzeża hełmu, beretu, furażerki) prawą rękę tak ułożoną, aby przedramię i dłoń oraz złączone palce - wskazujący i środkowy - tworzyły linię prostą; pozostałe palce dłoni są złożone i przyciśnięte kciukiem.
                 <br><br>
                 Wystającą część palca środkowego przykłada - od strony palca wskazującego - do brzegu daszka czapki (do obrzeża hełmu, beretu, furażerki) nad kątem prawego oka; dłoń jest zwrócona ku przodowi, łokieć zaś skierowany w dół i na prawo w skos.
@@ -267,7 +267,7 @@
 
             <div class="article">
               <div class="article-number">64.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W marszu, w nakryciu głowy i bez broni żołnierz salutuje z jednoczesnym zwróceniem głowy w stronę przełożonego, przy czym lewa ręka przyłożona lekko dłonią do uda pozostaje nieruchoma. Palce ręki są złączone i wyprostowane. Salutowanie rozpoczyna trzy kroki przed przełożonym, a kończy po minięciu go.
               </div>
             </div>
@@ -276,7 +276,7 @@
           <!-- ROZDZIAŁ 3: MUSZTRA ZESPOŁOWA -->
           <section id="musztra-zespolowa" class="regulation-section">
             <div class="section-header">
-              <h2 class="text-h5 text-weight-bold text-black q-mb-md">
+              <h2 class="text-h5 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-white' : 'text-black'">
                 ROZDZIAŁ 3 - MUSZTRA ZESPOŁOWA
               </h2>
               <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
@@ -286,7 +286,7 @@
 
             <div class="article">
               <div class="article-number">67.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W ugrupowaniu rozwiniętym drużyna występuje w następujących szykach:
                 <ul class="regulation-list">
                   <li>w szeregu</li>
@@ -297,7 +297,7 @@
 
             <div class="article">
               <div class="article-number">68.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W ugrupowaniu marszowym drużyna występuje w następujących szykach:
                 <ul class="regulation-list">
                   <li>w rzędzie</li>
@@ -308,7 +308,7 @@
 
             <div class="article">
               <div class="article-number">69.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 Aby ustawić żołnierzy w szyku dowódca zarządza zbiórkę.
                 <br><br>
                 Na zapowiedź komendy, np.: „Pierwsza drużyna", lub na komendę „BACZNOŚĆ" żołnierze zwracają się frontem do dowódcy i przyjmują postawę zasadniczą.
@@ -325,9 +325,9 @@
 
             <div class="article">
               <div class="article-number">78.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W ugrupowaniu rozwiniętym pluton występuje w następujących szykach:
-                <ul class="regulation-list">
+                <ul class="regulation-list" :class="isDark ? 'text-white' : 'text-black'">
                   <li>w szeregu</li>
                   <li>w dwuszeregu</li>
                   <li>w trójszeregu</li>
@@ -337,9 +337,9 @@
 
             <div class="article">
               <div class="article-number">79.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W ugrupowaniu marszowym pluton występuje w następujących szykach:
-                <ul class="regulation-list">
+                <ul class="regulation-list" :class="isDark ? 'text-white' : 'text-black'">
                   <li>w rzędzie</li>
                   <li>w kolumnie dwójkowej</li>
                   <li>w kolumnie trójkowej</li>
@@ -356,14 +356,14 @@
 
             <div class="article">
               <div class="article-number">100.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 Marsz rozpoczyna się na komendę, np.: „Pierwsza drużyna, kierunek na wprost (w prawo, w lewo, w tył na prawo, w tył na lewo) - MARSZ" lub „Pierwsza drużyna, za mną - MARSZ". Zatrzymanie następuje na komendę, np.: „Drużyna (pluton itp.) - STÓJ". Czynności te wykonuje się według zasad podanych w części dotyczącej musztry indywidualnej.
               </div>
             </div>
 
             <div class="article">
               <div class="article-number">105.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W ugrupowaniu rozwiniętym pododdział (oddział) bez broni oddaje honory na komendy: „BACZNOŚĆ", „Na prawo (lewo) - PATRZ". Żołnierze zwracają energicznie głowy w nakazanym kierunku, patrzą na przełożonego i prowadzą go wzrokiem. Dowódcy (od dowódcy plutonu wzwyż), oficerowie, chorążowie i inni żołnierze funkcyjni znajdujący się na prawym skrzydle pododdziału oraz szefowie kompanii salutują.
               </div>
             </div>
@@ -372,7 +372,7 @@
           <!-- ROZDZIAŁ 4: MUSZTRA Z POJAZDAMI -->
           <section id="musztra-pojazdy" class="regulation-section">
             <div class="section-header">
-              <h2 class="text-h5 text-weight-bold text-black q-mb-md">
+              <h2 class="text-h5 text-weight-bold q-mb-md" :class="isDark ? 'text-white' : 'text-black'">
                 ROZDZIAŁ 4 - MUSZTRA Z POJAZDAMI
               </h2>
               <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
@@ -382,7 +382,7 @@
 
             <div class="article">
               <div class="article-number">116.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 Pododdziały wyposażone w pojazdy działają w odpowiednim ugrupowaniu i szyku. Rodzaj szyku ustala dowódca w zależności od wielkości rejonu zbiórki, liczby pojazdów i innych warunków.
                 <br><br>
                 Pojazdy ustawia się: w szeregach, w kolumnach lub liniach kolumn. Pojazdy w szeregach ustawia się w odstępach 3 kroków. Odstępy między pododdziałami w szeregu i między kolumnami w liniach kolumn wynoszą 5 kroków. Pojazdy w kolumnach ustawia się w odległości 15 kroków, natomiast odległości między pododdziałami wynoszą 25 kroków.
@@ -391,7 +391,7 @@
 
             <div class="article">
               <div class="article-number">121.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 Wsiadanie do pojazdów następuje na komendę dowódcy „DO POJAZDÓW".
                 <br><br>
                 Przed tą komendą należy podać komendę do rozładowania i zabezpieczenia broni oraz do zdjęcia bagnetów.
@@ -402,7 +402,7 @@
 
             <div class="article">
               <div class="article-number">123.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 Wysiadanie z pojazdów następuje na komendę dowódcy „Z POJAZDÓW". Żołnierze szybko wysiadają (w kolejności odwrotnej niż przy wsiadaniu) i ustawiają się za pojazdami lub wykonują czynności nakazane przez dowódcę.
               </div>
             </div>
@@ -414,7 +414,13 @@
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useQuasar } from 'quasar'
+const $q = useQuasar()
 import BackNav from 'components/BackNav.vue'
+const isDark = computed(() => {
+  return $q.dark.isActive
+})
 
 const scrollToSection = (sectionId) => {
   const element = document.getElementById(sectionId)
@@ -425,6 +431,86 @@ const scrollToSection = (sectionId) => {
 </script>
 
 <style scoped>
+:deep(body.body--dark) .text-brown-4,
+:deep(body.body--dark) .text-green,
+:deep(body.body--dark) .text-success,
+:deep(body.body--dark) .text-positive,
+:deep(body.body--dark) .text-accent,
+:deep(body.body--dark) .text-secondary,
+:deep(body.body--dark) .text-dark-green,
+:deep(body.body--dark) .text-light-green {
+  color: #ffe082 !important;
+}
+
+:deep(body.body--dark) .article-content {
+  color: #cccccc !important;
+}
+
+:deep(body.body--dark) .article-number {
+  color: #ffe082 !important;
+}
+
+body.body--dark .page-background {
+  background: #181a1b !important;
+}
+body.body--dark .content-card-dark {
+  background: #232526 !important;
+  color: #fff !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .hero-dark {
+  background: linear-gradient(135deg, #232526 0%, #232526 100%) !important;
+  color: #fff !important;
+}
+body.body--dark .regulation-section {
+  background: #232526 !important;
+  color: #fff !important;
+}
+body.body--dark .article {
+  background: #232526 !important;
+  color: #fff !important;
+}
+body.body--dark .article:hover {
+  background: #222 !important;
+}
+body.body--dark .q-btn-dropdown {
+  background: #232526 !important;
+  color: #fff !important;
+}
+body.body--dark .q-list {
+  background: #232526 !important;
+  color: #fff !important;
+}
+body.body--dark .q-item {
+  color: #fff !important;
+}
+body.body--dark .content-card-dark h2,
+body.body--dark .content-card-dark h3,
+body.body--dark .content-card-dark p,
+body.body--dark .hero-dark h1,
+body.body--dark .hero-dark h2,
+body.body--dark .hero-dark p {
+  color: #fff !important;
+  font-weight: 600;
+  text-shadow: 0 1px 4px #000a, 0 0px 1px #000a;
+}
+body.body--dark .content-card-dark strong,
+body.body--dark .hero-dark strong {
+  color: #ffe082 !important;
+  font-weight: 700;
+}
+/* Nadpisanie zielonych odcieni w dark mode */
+body.body--dark .text-brown-4,
+body.body--dark .text-green,
+body.body--dark .text-success,
+body.body--dark .text-positive,
+body.body--dark .text-accent,
+body.body--dark .text-secondary,
+body.body--dark .text-dark-green,
+body.body--dark .text-light-green {
+  color: #ffe082 !important;
+}
+
 .page-background {
   background: #f7f8f9;
   min-height: 100vh;

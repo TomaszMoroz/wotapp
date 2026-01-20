@@ -1,7 +1,3 @@
-body.body--dark .topography-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="topography-page">
     <div class="container q-pa-md">
@@ -899,5 +895,132 @@ const goBack = () => {
   .page-header q-icon {
     display: none !important;
   }
+}
+
+body.body--dark .topography-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
+body.body--dark .topography-page {
+  background: #18191a !important;
+}
+body.body--dark .page-header {
+  background: #232526 !important;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+  color: #f2f2f2 !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .page-header .text-h4,
+body.body--dark .page-header .text-primary,
+body.body--dark .page-header .text-subtitle1 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .page-header .text-grey-7 {
+  color: #cccccc !important;
+}
+body.body--dark .topic-card {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1.5px solid #444950 !important;
+  box-shadow: 0 2px 12px rgba(44,62,47,0.10);
+}
+body.body--dark .topic-card .text-h6,
+body.body--dark .topic-card .text-caption,
+body.body--dark .topic-card .text-body2 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .article-modal,
+body.body--dark .content-card {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .article-header {
+  background: #232526 !important;
+  border-radius: 16px 16px 0 0;
+  color: #f2f2f2 !important;
+  border-bottom: 1.5px solid #444950 !important;
+}
+body.body--dark .article-content-section {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .article-header .text-h4,
+body.body--dark .article-header .text-primary,
+body.body--dark .article-header .text-subtitle1 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .article-header .text-grey-7 {
+  color: #cccccc !important;
+}
+body.body--dark .article-header .text-caption {
+  color: #b6e07a !important;
+}
+body.body--dark .article-content .text-h5,
+body.body--dark .article-content .text-h6 {
+  color: #90caf9 !important;
+}
+body.body--dark .article-content .text-caption {
+  color: #b6e07a !important;
+}
+body.body--dark .article-content .text-body2 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .article-header .text-h4,
+body.body--dark .article-header .text-primary,
+body.body--dark .article-header .text-subtitle1 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .article-header .text-grey-7 {
+  color: #cccccc !important;
+}
+body.body--dark .article-content h3,
+body.body--dark .article-content h4,
+body.body--dark .article-content h5 {
+  color: #90caf9 !important;
+}
+body.body--dark .article-content p,
+body.body--dark .article-content li {
+  color: #f2f2f2 !important;
+}
+body.body--dark .article-content strong {
+  color: #b6e07a !important;
+}
+body.body--dark .article-content :deep(h3),
+body.body--dark .article-content :deep(h4),
+body.body--dark .article-content :deep(h5) {
+  color: #f2f2f2 !important;
+}
+body.body--dark .article-content :deep(p),
+body.body--dark .article-content :deep(li) {
+  color: #f2f2f2 !important;
+}
+body.body--dark .article-content :deep(strong) {
+  color: #b6e07a !important;
+}
+body.body--dark .page-header {
+  background: #232526 !important;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+}
+body.body--dark .page-header .text-h4,
+body.body--dark .page-header .text-primary,
+body.body--dark .page-header .text-subtitle1 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .page-header .text-grey-7 {
+  color: #cccccc !important;
+}
+body.body--dark .topic-card {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1.5px solid #444950 !important;
+  box-shadow: 0 2px 12px rgba(44,62,47,0.10);
+}
+body.body--dark .topic-card .text-h6,
+body.body--dark .topic-card .text-caption,
+body.body--dark .topic-card .text-body2 {
+  color: #f2f2f2 !important;
 }
 </style>

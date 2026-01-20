@@ -163,10 +163,10 @@
                 </div>
               </div>
 
-              <!-- OCOKA -->
+              <!-- OCOKA-W -->
               <div v-else-if="selectedTopic?.id === 3">
-                <h4>OCOKA - Analiza terenu</h4>
-                <p>Systematyczna metoda oceny terenu pod kątem prowadzenia działań wojskowych.</p>
+                <h4>OCOKA-W - Analiza terenu i pogody</h4>
+                <p>Systematyczna metoda oceny terenu oraz warunków pogodowych pod kątem prowadzenia działań wojskowych.</p>
 
                 <div class="ocoka-grid q-mb-lg">
                   <div class="ocoka-item">
@@ -218,6 +218,19 @@
                       <li>Manewry oskrzydlające</li>
                     </ul>
                   </div>
+
+                  <div class="ocoka-item">
+                    <h6><strong>W - Weather (Pogoda)</strong></h6>
+                    <ul>
+                      <li>Widoczność i warunki oświetleniowe</li>
+                      <li>Opady (deszcz, śnieg, mgła)</li>
+                      <li>Temperatura i jej wpływ na ludzi oraz sprzęt</li>
+                      <li>Wiatr (kierunek, siła, wpływ na ruch i strzelanie)</li>
+                      <li>Stan gruntu (błoto, lód, śnieg, suchość)</li>
+                      <li>Zmiany pogodowe i ich przewidywanie</li>
+                    </ul>
+                    <p><strong>Pogoda</strong> ma istotny wpływ na prowadzenie działań bojowych: ogranicza widoczność, utrudnia poruszanie się, wpływa na morale i sprawność żołnierzy, a także na funkcjonowanie sprzętu i skuteczność ognia. Analiza warunków pogodowych pozwala lepiej zaplanować działania i przygotować się na ewentualne zagrożenia.</p>
+                  </div>
                 </div>
 
                 <h5>Praktyczne zastosowanie:</h5>
@@ -226,6 +239,7 @@
                   <li>Wybór tras przemieszczania</li>
                   <li>Lokalizacja punktów obserwacyjnych</li>
                   <li>Organizacja działań patrolowych</li>
+                  <li>Dostosowanie działań do warunków pogodowych</li>
                 </ul>
               </div>
 
@@ -633,8 +647,8 @@ const commandTopics = ref([
   },
   {
     id: 3,
-    title: 'OCOKA',
-    description: 'Analiza terenu',
+    title: 'OCOKA-W',
+    description: 'Analiza terenu i pogody',
     icon: 'terrain'
   },
   {
@@ -681,6 +695,18 @@ const selectTopic = (topic) => {
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   border: 1px solid #e0e0e0;
 }
+
+body.body--dark .modern-hero-section {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1px solid #444950 !important;
+}
+body.body--dark .modern-hero-section .text-military-secondary,
+body.body--dark .modern-hero-section .text-military-dark,
+body.body--dark .modern-hero-section .text-h4,
+body.body--dark .modern-hero-section .text-body1 {
+  color: #f2f2f2 !important;
+}
 .modern-content-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -704,6 +730,7 @@ const selectTopic = (topic) => {
   box-shadow: 0 12px 32px rgba(44,62,47,0.13);
   border-color: #4A5D31;
 }
+
 .topic-icon-wrapper {
   background: rgba(74, 93, 49, 0.08);
   border-radius: 50%;
@@ -713,67 +740,6 @@ const selectTopic = (topic) => {
   align-items: center;
   justify-content: center;
   margin: 0 auto;
-}
-
-.mett-tc-grid,
-.ocoka-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.mett-item,
-.ocoka-item,
-.point-item {
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  border-left: 4px solid #8b4513;
-}
-
-.draw-d-flow {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.draw-step {
-  background: #f8f9fa;
-  padding: 16px;
-  border-radius: 8px;
-  border-left: 4px solid #556b2f;
-  position: relative;
-}
-
-.draw-step:not(:last-child)::after {
-  content: '↓';
-  position: absolute;
-  bottom: -24px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 20px;
-  color: #556b2f;
-  font-weight: bold;
-}
-
-.five-point-format {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.example {
-  background: #e8f4f8;
-  padding: 8px 12px;
-  border-radius: 4px;
-  margin-top: 8px;
-  font-style: italic;
-}
-
-.sketch-elements {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
 }
 
 .element-group {
@@ -942,6 +908,143 @@ const selectTopic = (topic) => {
 
 .topic-dialog .q-dialog__inner {
   padding: 0;
+}
+
+body.body--dark .topic-card.modern-content-card {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .topic-card.modern-content-card:hover {
+  background: #2c313a !important;
+  box-shadow: 0 20px 40px rgba(44,62,47,0.18);
+}
+body.body--dark .topic-card .text-military-secondary,
+body.body--dark .topic-card .text-military-dark,
+body.body--dark .topic-card .text-h6,
+body.body--dark .topic-card .text-caption {
+  color: #cccccc !important;
+}
+body.body--dark .topic-icon-wrapper {
+  background: rgba(255,255,255,0.08) !important;
+}
+
+body.body--dark .topic-dialog .q-dialog__inner,
+body.body--dark .topic-dialog .q-card.full-width.full-height {
+  background: #232526 !important;
+  color: #cccccc !important;
+}
+body.body--dark .topic-dialog .bg-military-secondary {
+  background: #232526 !important;
+  color: #cccccc !important;
+}
+body.body--dark .topic-dialog .text-white,
+body.body--dark .topic-dialog .text-military-dark,
+body.body--dark .topic-dialog .text-military-secondary {
+  color: #cccccc !important;
+}
+body.body--dark .topic-dialog .q-btn[icon="close"] {
+  color: #cccccc !important;
+}
+
+/* DARK MODE: Modal content & all topic details */
+body.body--dark .drawd-section {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1.5px solid #444950 !important;
+  box-shadow: 0 4px 24px rgba(44,62,47,0.13);
+}
+body.body--dark .drawd-header {
+  border-bottom: 2px solid #444950 !important;
+}
+body.body--dark .drawd-header .text-h5 {
+  color: #f2f2f2 !important;
+  text-shadow: none !important;
+}
+body.body--dark .drawd-list li {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-left: 4px solid #4A5D31 !important;
+  box-shadow: 0 1px 4px rgba(44,62,47,0.10);
+}
+body.body--dark .drawd-letter {
+  background: #4A5D31 !important;
+  color: #fff !important;
+  border: 2px solid #232526 !important;
+}
+body.body--dark .drawd-list b {
+  color: #f2f2f2 !important;
+}
+body.body--dark .drawd-img-wrap {
+  background: #18191a !important;
+  border-radius: 12px;
+}
+body.body--dark .drawd-scenario {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1.5px solid #444950 !important;
+}
+
+body.body--dark .five-point-format .point-item,
+body.body--dark .mett-tc-grid .mett-item,
+body.body--dark .ocoka-grid .ocoka-item,
+body.body--dark .sketch-elements .element-group,
+body.body--dark .technique-steps .step,
+body.body--dark .symbols-grid .symbol-item,
+body.body--dark .tpd-phases .phase-item,
+body.body--dark .planning-elements .element-group,
+body.body--dark .control-types .control-item {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-left-color: #4A5D31 !important;
+}
+body.body--dark .tpd-phases .phase-item.special {
+  border-left-color: #8b4513 !important;
+  background: #2d2320 !important;
+}
+body.body--dark .phase-item h6,
+body.body--dark .element-group h6,
+body.body--dark .control-item h6 {
+  color: #b6e07a !important;
+}
+body.body--dark .phase-item.special h6 {
+  color: #e0b07a !important;
+}
+body.body--dark .micro-staff {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 2px solid #444950 !important;
+}
+body.body--dark .staff-level h6 {
+  color: #b6e07a !important;
+}
+body.body--dark .battle-order .order-point {
+  background: linear-gradient(90deg, #232526 0%, #2c313a 100%) !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .order-point h6 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .order-point p {
+  color: #e0e0e0 !important;
+}
+body.body--dark .aar-process .aar-step {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-left: 4px solid #1976d2 !important;
+}
+body.body--dark .aar-step h6 {
+  color: #90caf9 !important;
+}
+body.body--dark .aar-step p {
+  color: #e0e0e0 !important;
+}
+body.body--dark .example {
+  background: #1a232a !important;
+  color: #b6e07a !important;
+}
+body.body--dark .source-reference {
+  color: #b6e07a !important;
 }
 
 /* DRAW-D Specific Styles */

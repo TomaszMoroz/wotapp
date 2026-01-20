@@ -1,7 +1,3 @@
-body.body--dark .tactics-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="modern-bg">
     <div class="container q-pa-md">
@@ -112,6 +108,17 @@ const navigateTo = (path) => {
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   border: 1px solid #e0e0e0;
 }
+
+body.body--dark .modern-hero-section {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-hero-section .text-military-secondary,
+body.body--dark .modern-hero-section .text-military-dark,
+body.body--dark .modern-hero-section .text-h3,
+body.body--dark .modern-hero-section .text-body1 {
+  color: #f2f2f2 !important;
+}
 .modern-categories-grid {
   display: flex;
   flex-wrap: wrap;
@@ -148,6 +155,29 @@ const navigateTo = (path) => {
   justify-content: center;
   margin: 0 auto;
   backdrop-filter: blur(10px);
+}
+
+body.body--dark .modern-category-card {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .modern-category-card:hover {
+  background: #2c313a !important;
+  box-shadow: 0 20px 40px rgba(44,62,47,0.18);
+}
+body.body--dark .modern-category-card .text-white,
+body.body--dark .modern-category-card .text-military-light,
+body.body--dark .modern-category-card .text-caption {
+  color: #cccccc !important;
+}
+body.body--dark .modern-card-icon-wrapper {
+  background: rgba(255,255,255,0.08) !important;
+}
+
+body.body--dark .tactics-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 @media (max-width: 640px) {
   .modern-category-card {

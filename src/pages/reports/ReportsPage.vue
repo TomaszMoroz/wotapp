@@ -538,6 +538,23 @@ onMounted(() => {
 </script>
 
 <style scoped>
+body.body--dark .q-card,
+body.body--dark .modern-report-container,
+body.body--dark .report-text-wrapper {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-color: #444950 !important;
+}
+body.body--dark .report-text {
+  background: transparent !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .report-footer {
+  background: #232526 !important;
+  color: #bdbdbd !important;
+  border-top: 1px solid #444950 !important;
+}
+
   .meldunki-dropdown-full {
     max-height: none !important;
     height: auto !important;

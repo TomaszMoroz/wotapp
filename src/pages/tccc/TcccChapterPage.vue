@@ -586,6 +586,42 @@ const chapter = computed(() => chapters[chapterId.value] || { title: 'Nieznany r
   line-height: 1.7;
   color: #222;
 }
+
+body.body--dark .q-page.bg-grey-2 {
+  background: #181a1b !important;
+}
+body.body--dark .tccc-chapter-card {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border-color: #444950 !important;
+}
+body.body--dark .tccc-header {
+  background: #232526 !important;
+  color: #cccccc !important;
+}
+body.body--dark .tccc-title {
+  color: #cccccc !important;
+}
+body.body--dark .tccc-content-section {
+  background: #232526 !important;
+}
+body.body--dark .tccc-content {
+  color: #cccccc !important;
+}
+body.body--dark .tccc-content section.tccc-section {
+  border-bottom: 1px solid #444950 !important;
+}
+body.body--dark .tccc-content h3,
+body.body--dark .tccc-content h4 {
+  color: #90caf9 !important;
+}
+body.body--dark .tccc-content em {
+  color: #b0bec5 !important;
+}
+body.body--dark .tccc-content code {
+  background: #232526 !important;
+  color: #ffe082 !important;
+}
 .tccc-content section.tccc-section {
   margin-bottom: 2.2em;
   padding-bottom: 0.5em;

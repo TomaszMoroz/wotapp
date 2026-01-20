@@ -1,7 +1,3 @@
-body.body--dark .tactics-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="modern-bg">
     <div class="container q-pa-md">
@@ -376,6 +372,18 @@ const selectProcedure = (procedure) => {
   box-shadow: 0 2px 12px rgba(0,0,0,0.07);
   border: 1px solid #e0e0e0;
 }
+
+body.body--dark .modern-hero-section {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border: 1px solid #444950 !important;
+}
+body.body--dark .modern-hero-section .text-military-secondary,
+body.body--dark .modern-hero-section .text-military-dark,
+body.body--dark .modern-hero-section .text-h4,
+body.body--dark .modern-hero-section .text-body1 {
+  color: #f2f2f2 !important;
+}
 .modern-content-grid {
   display: flex;
   flex-direction: row;
@@ -431,5 +439,43 @@ const selectProcedure = (procedure) => {
     min-height: auto;
     margin-bottom: 1rem;
   }
+}
+
+body.body--dark .tactics-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
+
+body.body--dark .modern-content-list-card .bg-military-light {
+  background: #232526 !important;
+  color: #ffe082 !important;
+}
+body.body--dark .modern-content-list-card .bg-military-light .text-military-dark,
+body.body--dark .modern-content-list-card .bg-military-light .text-military-secondary,
+body.body--dark .modern-content-list-card .bg-military-light .q-item-label {
+  color: #ffe082 !important;
+}
+body.body--dark .modern-content-card {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-content-card .text-military-secondary,
+body.body--dark .modern-content-card .text-military-dark,
+body.body--dark .modern-content-card .text-h5,
+body.body--dark .modern-content-card .text-subtitle2,
+body.body--dark .modern-content-card .text-body1,
+body.body--dark .modern-content-card .q-item-label,
+body.body--dark .modern-content-card .text-caption {
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-content-body,
+body.body--dark .modern-content-body p,
+body.body--dark .modern-content-body li,
+body.body--dark .modern-content-body h4,
+body.body--dark .modern-content-body h5 {
+  color: #f2f2f2 !important;
+}
+body.body--dark .modern-content-body strong {
+  color: #ffe082 !important;
 }
 </style>

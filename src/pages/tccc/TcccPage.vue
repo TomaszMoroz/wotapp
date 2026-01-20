@@ -93,4 +93,19 @@ function goToTcccChapter (nr) {
   box-shadow: 0 2px 12px rgba(44,62,47,0.18);
   background: #f5f7fa;
 }
+
+body.body--dark .tccc-chapter-tile {
+  background: #232526 !important;
+  color: #cccccc !important;
+  border: 1.5px solid #444950 !important;
+}
+body.body--dark .tccc-chapter-tile:hover {
+  background: #2c313a !important;
+  box-shadow: 0 2px 12px rgba(44,62,47,0.28);
+}
+body.body--dark .tccc-chapter-tile .text-primary,
+body.body--dark .tccc-chapter-tile .text-grey-7,
+body.body--dark .tccc-chapter-tile .text-caption {
+  color: #cccccc !important;
+}
 </style>

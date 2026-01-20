@@ -53,17 +53,7 @@
   </q-card>
 </q-dialog>
       <q-toolbar class="q-px-md dashboard-toolbar">
-                <q-btn
-                  flat
-                  dense
-                  icon="dark_mode"
-                  aria-label="Motyw"
-                  @click="cycleTheme"
-                  class="q-ml-md"
-                >
-                  <q-tooltip anchor="bottom middle">Zmień motyw: {{ themeLabel }}</q-tooltip>
-                </q-btn>
-        <btn
+        <q-btn
           flat
           dense
           round
@@ -75,6 +65,16 @@
         <q-toolbar-title class="text-weight-bold text-white dashboard-title">
           <div class="row items-center no-wrap">
             <span class="q-ml-sm">Kit Bag App</span>
+            <q-btn
+              flat
+              dense
+              icon="dark_mode"
+              aria-label="Motyw"
+              @click="cycleTheme"
+              class="q-ml-md"
+            >
+              <q-tooltip anchor="bottom middle">Zmień motyw: {{ themeLabel }}</q-tooltip>
+            </q-btn>
           </div>
         </q-toolbar-title>
         <span class="dashboard-version">v{{ appVersion }}</span>
