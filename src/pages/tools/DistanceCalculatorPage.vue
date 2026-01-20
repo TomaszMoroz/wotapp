@@ -4,7 +4,7 @@
       <BackNav color="black"/>
       <div class="row items-center justify-between q-mb-xl">
         <div>
-          <div class="text-h3 text-weight-bold modern-title">Kalkulator odległości</div>
+          <div class="text-h3 text-weight-bold modern-title text-green-8">Kalkulator odległości</div>
           <div class="text-subtitle1 text-grey-7 q-mt-xs">Obliczanie odległości metodą \"DWK1000\"</div>
         </div>
       </div>
@@ -21,12 +21,12 @@
             </div>
             <div class="inputs-grid q-mt-md">
               <div class="input-group">
-                <label class="input-label">Wymiar obiektu (m)</label>
+                <label class="input-label text-green-8">Wymiar obiektu (m)</label>
                 <q-input
                   v-model.number="objectHeight"
                   type="number"
                   filled
-                  placeholder="Np. 1.8"
+                  placeholder=" Np. 1.8"
                   step="0.1"
                   min="0"
                   class="modern-input"
@@ -60,12 +60,12 @@
               </div>
 
               <div class="input-group">
-                <label class="input-label">Wartość w tysięcznych</label>
+                <label class="input-label text-green-8">Wartość w tysięcznych</label>
                 <q-input
                   v-model.number="distanceInMils"
                   type="number"
                   filled
-                  placeholder="Np. 5.2"
+                  placeholder=" Np. 5.2"
                   step="0.1"
                   min="0"
                   class="modern-input"
@@ -82,7 +82,7 @@
     </div>
 
     <!-- Object Selection Dialog -->
-    <q-dialog v-model="showObjectDialog" persistent>
+    <q-dialog v-model="showObjectDialog">
       <q-card class="object-dialog">
         <q-card-section class="dialog-header">
           <div class="text-h6 text-weight-bold">Wybierz obiekt</div>
@@ -98,7 +98,7 @@
             class="filter-input"
           >
             <template v-slot:prepend>
-              <q-icon name="search" />
+              <q-icon name="search" class="filter-search-icon" />
             </template>
           </q-input>
           <!-- Dimension selector -->
@@ -343,7 +343,7 @@ const calculatedDistance = computed(() => {
 .modern-input {
   border-radius: 12px;
 }
-:deep(.q-field--filled .q-field__control) {
+::v-deep .q-field__control {
   background: #f3f4f6 !important;
 }
 :deep(.q-field--filled .q-field__control input) {
@@ -490,5 +490,30 @@ const calculatedDistance = computed(() => {
   .result-value {
     font-size: 1.75rem;
   }
+}
+</style>
+<style scoped>
+.filter-search-icon {
+  color: #827858 !important;
+}
+.theme-dark .filter-search-icon, .body--dark .filter-search-icon {
+  color: #bdbdbd !important;
+}
+</style>
+<style scoped>
+/* DARK MODE: szare tło ikony i poprawka pasków inputów */
+.theme-dark .icon-ruler-bg, .body--dark .icon-ruler-bg {
+  background: #424242 !important;
+}
+.theme-dark ::v-deep .q-field__control,
+.body--dark ::v-deep .q-field__control {
+  background: #23272b !important;
+  border-color: #23272b !important;
+}
+.theme-dark ::v-deep .q-field__control:before,
+.theme-dark ::v-deep .q-field__control:after,
+.body--dark ::v-deep .q-field__control:before,
+.body--dark ::v-deep .q-field__control:after {
+  background: #23272b !important;
 }
 </style>

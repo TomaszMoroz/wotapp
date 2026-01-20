@@ -79,8 +79,8 @@
                 no-data-label="Brak danych technicznych"
                 :rows-per-page-options="[0]"
                 rows-per-page="0"
-                class="gt-sm equipment-table-bg"
-                :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
+                class="gt-sm equipment-table-bg q-mb-md"
+                :dark="$q.dark.isActive"
               >
                 <template v-slot:body-cell-parameter="props">
                   <q-td :props="props" class="text-weight-medium">
@@ -105,7 +105,8 @@
                 >
                   <q-card-section class="row items-center no-wrap">
                     <div class="col">
-                      <div class="text-weight-medium text-primary q-mb-xs">
+                      <div class="text-weight-medium text-primary q-mb-xs equipment-spec-label">
+
                         {{ spec.parameter }}
                       </div>
                       <div class="text-body2">
@@ -116,7 +117,7 @@
                 </q-card>
               </div>
             </div>
-            <div v-if="selectedWeapon.image" class="weapon-image-wrapper">
+            <div v-if="selectedWeapon.image" class="weapon-image-wrapper q-mb-md">
               <img
                 :src="selectedWeapon.image"
                 :alt="selectedWeapon.name"
@@ -554,8 +555,12 @@ const goBack = () => {
   }
 }
 
+/* Szary tytuł strony */
 .text-dashboard-header {
-  color: #0f2c05;
+  color: #757575;
+}
+.theme-dark .text-dashboard-header, .body--dark .text-dashboard-header {
+  color: #f2f2f2 !important;
 }
 /* --- Dashboard tile/card styles from IndexPage.vue --- */
 .tiles-grid {
@@ -603,11 +608,41 @@ const goBack = () => {
   gap: 6px;
   margin-bottom: 2px;
 }
+/* Styl jak na dashboardzie */
 .tile-label {
   text-align: center;
   font-size: 1.13rem;
   font-weight: 600;
-  color: #0f2c05;
+  color: #757575;
+}
+
+/* DARK MODE: jasno szary font na tile */
+.theme-dark .tile-label, .body--dark .tile-label {
+  color: #f2f2f2 !important;
+}
+
+/* Styl tile jak na dashboardzie */
+.modern-tile {
+  background: #fff;
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s;
+  min-height: 170px;
+  width: 100%;
+  max-width: 270px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  border: none;
+}
+.modern-tile:hover {
+  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
+  transform: translateY(-2px) scale(1.03);
+}
+.body--dark .modern-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 .tile-desc-chip-big {
   margin-top: 10px;

@@ -128,6 +128,9 @@ function navigateTo (path) {
   font-weight: 600;
   color: #0f2c05;
 }
+.theme-dark .tile-label, .body--dark .tile-label {
+  color: #bdbdbd !important;
+}
 .tile-desc-chip-big {
   margin-top: 10px;
   font-size: 1.08rem;
@@ -135,5 +138,10 @@ function navigateTo (path) {
   padding: 8px 18px;
   border-radius: 12px;
   min-height: 36px;
+}
+
+body.body--dark .modern-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 </style>

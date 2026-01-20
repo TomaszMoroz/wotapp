@@ -500,13 +500,11 @@ defineComponent({
 }
 
 .chapter-card {
-  background: var(--q-color-surface);
   border-radius: 12px;
   padding: 2rem;
   text-align: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border: 1px solid #e0e0e0;
   cursor: pointer;
 }
 
@@ -546,10 +544,8 @@ defineComponent({
 }
 
 .subchapter-card {
-  background: var(--q-color-surface);
   border-radius: 8px;
   padding: 1.5rem;
-  border: 1px solid #e0e0e0;
   transition: all 0.2s ease;
   cursor: pointer;
 }
@@ -586,9 +582,7 @@ defineComponent({
   gap: 1rem;
   margin-bottom: 2rem;
   padding: 1rem;
-  background: var(--q-color-surface);
   border-radius: 8px;
-  border: 1px solid #e0e0e0;
 }
 
 .breadcrumb-text {
@@ -660,20 +654,72 @@ defineComponent({
 /* Dark mode support */
 body.body--dark {
   .chapter-card,
-  .subchapter-card,
+  .subchapter-card {
+    background: #232526 !important;
+    border: 2px solid #444 !important;
+    color: #f2f2f2 !important;
+  }
+  .chapter-card h3,
+  .subchapter-card h4,
+  .chapter-card p,
+  .subchapter-card p {
+    color: #f2f2f2 !important;
+  }
   .breadcrumb,
   .content-text {
-    background: var(--q-dark);
-    border-color: #444;
+    background: #181a1b !important;
+    color: #f2f2f2 !important;
+    border-color: #444 !important;
   }
-
-  .document-header {
-    background: #2a2a2a;
-  }
-
+  .document-header,
   .document-section {
-    background: #2a2a2a;
+    background: #232526 !important;
+    color: #f2f2f2 !important;
   }
+  .chapter-icon,
+  .subchapter-icon {
+    color: #f2f2f2 !important;
+  }
+}
+
+body.body--dark .chapter-card,
+body.body--dark .subchapter-card {
+  background: #23282f !important;
+  border: 2.5px solid #e0e0e0 !important;
+  color: #f2f2f2 !important;
+  box-shadow: 0 4px 32px 0 rgba(30,40,60,0.25), 0 1.5px 0 0 #101214;
+  position: relative;
+  overflow: hidden;
+}
+body.body--dark .chapter-card::before,
+body.body--dark .subchapter-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(80,90,120,0.10) 0%, rgba(30,40,60,0.13) 100%);
+  z-index: 1;
+}
+body.body--dark .chapter-card h3,
+body.body--dark .subchapter-card h4,
+body.body--dark .chapter-card p,
+body.body--dark .subchapter-card p {
+  color: #f2f2f2 !important;
+}
+body.body--dark .chapter-icon,
+body.body--dark .subchapter-icon {
+  color: #f2f2f2 !important;
+}
+body.body--dark .breadcrumb,
+body.body--dark .content-text {
+  background: #181a1b !important;
+  color: #f2f2f2 !important;
+  border-color: #444 !important;
+}
+body.body--dark .document-header,
+body.body--dark .document-section {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
 }
 
 /* Mobile responsiveness */
@@ -709,5 +755,11 @@ body.body--dark {
     align-items: flex-start;
     gap: 0.5rem;
   }
+}
+
+body.body--dark .chapter-card,
+body.body--dark .subchapter-card {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 </style>

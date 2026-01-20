@@ -1,9 +1,13 @@
+body.body--dark .abc-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="q-pa-md abc-bg">
     <BackNav color="black" parentPath="/abc"/>
     <div class="text-h4 text-weight-bold text-grey-10 q-mb-md">KTS</div>
     <div class="text-subtitle1 text-grey-8 q-mb-lg">Instrukcja odbioru i potwierdzenia KTS</div>
-    <q-card class="abc-card q-mb-lg">
+    <q-card class="modern-tile q-mb-lg">
       <q-card-section>
         <div class="text-body1 text-grey-10 q-mb-sm">
           <b>Zasady bezpieczeństwa informacji</b>
@@ -16,7 +20,7 @@
         </ul>
       </q-card-section>
     </q-card>
-    <q-card class="abc-card q-mt-lg">
+    <q-card class="modern-tile q-mt-lg">
       <q-card-section>
         <div class="text-h6 text-weight-bold text-grey-10 q-mb-md">Instrukcja KTS – krok po kroku</div>
         <div class="q-mb-sm text-grey-8">Przebieg odbioru i potwierdzenia komunikatu:</div>

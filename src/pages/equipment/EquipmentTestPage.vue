@@ -1,3 +1,7 @@
+body.body--dark .equipment-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="equipment-test-page-bg q-pa-md">
     <div class="test-header-row">
@@ -9,7 +13,7 @@
     <div v-for="cat in categories" :key="cat" class="q-mb-xl">
       <div class="text-subtitle2 q-mb-md" style="color:#222;">{{ cat }}</div>
       <div class="row q-col-gutter-md q-mb-lg">
-        <q-card v-for="(question, idx) in questionsByCategory(cat)" :key="idx" class="q-mb-md full-width" :class="{ 'wrong-answer': showChecked && isQuestionWrong(question) }">
+        <q-card v-for="(question, idx) in questionsByCategory(cat)" :key="idx" class="modern-tile q-mb-md full-width" :class="{ 'wrong-answer': showChecked && isQuestionWrong(question) }">
           <q-card-section>
             <div v-if="question.category" class="q-mb-xs text-caption text-weight-bold" style="color:#222; background:#e0e0e0; border-radius:6px; padding:2px 10px; min-width:120px; text-align:left;">
               {{ question.category }}
@@ -64,7 +68,7 @@
     <q-btn color="primary" label="Sprawdź wynik" @click="checkResults" class="full-width q-mb-md" />
     <q-btn color="negative" label="Reset" @click="resetTest" class="full-width q-mb-md" />
     <q-dialog v-model="showModal">
-      <q-card class="equipment-test-modal-card">
+      <q-card class="modern-tile equipment-test-modal-card">
         <q-card-section class="row items-center justify-end">
           <q-btn round dense flat icon="close" @click="showModal = false" />
         </q-card-section>
@@ -100,7 +104,7 @@
       </q-card>
     </q-dialog>
     <q-dialog v-model="showResult">
-      <q-card>
+      <q-card class="modern-tile">
         <q-card-section>
           <div class="text-h6">Twój wynik: {{ score }} trafnych odpowiedzi na {{ questions.length }} pytań</div>
         </q-card-section>

@@ -7,8 +7,8 @@
       <div class="page-header q-mb-lg">
         <div class="row items-center">
           <div>
-            <div class="text-h4 text-weight-bold text-primary">Konwerter MILS - MOA</div>
-            <div class="text-subtitle1 text-grey-7">Przelicznik jednostek pomiarowych celowników</div>
+            <div class="text-primary text-h4 text-weight-bold">Konwerter MILS - MOA</div>
+            <div class="text-grey-7 text-subtitle1">Przelicznik jednostek pomiarowych celowników</div>
           </div>
         </div>
       </div>
@@ -129,7 +129,7 @@
               <q-card class="result-main q-mb-lg" flat bordered>
                 <q-card-section class="text-center">
                   <div class="text-caption text-grey-6">{{ outputLabel }}</div>
-                  <div class="text-h4 text-weight-bold text-primary q-my-sm">
+                  <div class="text-h4 text-weight-bold q-my-sm" :style="{ color: resultColor }">
                     {{ mainResult.toFixed(3) }}
                   </div>
                   <div class="text-subtitle2 text-grey-8">{{ outputSuffix }}</div>
@@ -140,7 +140,7 @@
               <q-card class="result-secondary q-mb-lg" flat bordered>
                 <q-card-section class="text-center">
                   <div class="text-caption text-grey-6">Rozmiar na {{ distance }}m</div>
-                  <div class="text-h5 text-weight-bold q-my-sm" style="color:#111;">
+                  <div class="text-h5 text-weight-bold q-my-sm" :style="{ color: resultColor }">
                     {{ cmResult.toFixed(1) }}
                   </div>
                   <div class="text-subtitle2 text-grey-8">centymetrów</div>
@@ -179,10 +179,23 @@
 import BackNav from 'components/BackNav.vue'
 import { ref, computed } from 'vue'
 
+import { storeToRefs } from 'pinia'
+import { useThemeStore } from 'stores/theme-store'
+
 // Reactive data
 const distance = ref(100) // dystans w metrach
 const inputValue = ref(1) // wartość do przeliczenia
 const conversionDirection = ref('mils-to-moa') // kierunek konwersji
+
+// Theme store
+const themeStore = useThemeStore()
+const { themeMode } = storeToRefs(themeStore)
+
+// Computed for result color
+const resultColor = computed(() => {
+  if (themeMode.value === 'dark') return '#b0b3b8' // szary
+  return '#1976d2' // domyślny primary
+})
 
 // Stałe konwersji
 const MIL_TO_MOA = 3.44 // 1 MIL ≈ 3,44 MOA
@@ -307,6 +320,10 @@ const resetValues = () => {
 .input-large .q-field__control {
   font-size: 1.1rem;
   font-weight: 500;
+  background: #f3f4f6 !important;
+}
+.theme-dark .input-large .q-field__control, .body--dark .input-large .q-field__control {
+  background: #23272b !important;
 }
 .result-main {
   background: #fff;

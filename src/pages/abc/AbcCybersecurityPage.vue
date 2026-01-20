@@ -1,9 +1,13 @@
+body.body--dark .abc-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="q-pa-md">
     <BackNav color="black" parentPath="/abc"/>
     <div class="text-h4 text-weight-bold q-mb-md">Bezpieczeństwo w sieci</div>
     <div class="text-subtitle1 text-grey-7 q-mb-lg">Podstawy cyberbezpieczeństwa dla żołnierza WOT</div>
-    <q-card class="q-mb-lg">
+    <q-card class="modern-tile q-mb-lg">
       <q-card-section>
         <h5>I. Komunikatory i Media Społecznościowe: Mniej Znaczy Bezpieczniej</h5>
         <ol>

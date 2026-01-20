@@ -1,3 +1,7 @@
+body.body--dark .tccc-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="q-pa-md flex flex-center bg-grey-2">
     <q-card class="tccc-chapter-card column q-pa-none" flat bordered>

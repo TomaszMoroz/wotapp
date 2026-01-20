@@ -1,3 +1,7 @@
+body.body--dark .shooting-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="modern-bg q-pa-lg">
     <div class="shooting-content-limiter">

@@ -1,3 +1,7 @@
+body.body--dark .tactics-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="q-pa-lg">
     <div class="text-h4 q-mb-md">⚔️ Taktyka i Procedury</div>

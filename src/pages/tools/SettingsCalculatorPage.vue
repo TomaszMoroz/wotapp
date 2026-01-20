@@ -8,13 +8,19 @@
         <div class="row items-center">
           <div style="display: flex; align-items: center; gap: 12px;">
             <div class="text-h4 text-weight-bold text-primary" style="margin: 0;">Kalkulator nastaw</div>
-            <q-btn flat dense round icon="help_outline" color="primary" aria-label="Instrukcja"
-              @click="showInstruction = true" style="font-size: 1.2rem;" />
+            <q-btn
+              dense round icon="help_outline"
+              :outline="true"
+              :color="$q.dark.isActive ? 'dark' : 'primary'"
+              aria-label="Instrukcja"
+              @click="showInstruction = true"
+              :style="$q.dark.isActive ? 'background:#fff !important;color:#23272b !important;border:1.5px solid #23272b !important;' : 'color:#1976d2;'"
+            />
           </div>
           <q-dialog v-model="showInstruction" persistent>
             <q-card style="max-width: 400px;">
               <q-card-section class="row items-center q-pb-none">
-                <q-icon name="help_outline" color="primary" size="md" class="q-mr-md" />
+                <q-icon name="help_outline" :color="$q.dark.isActive ? 'white' : 'primary'" size="md" class="q-mr-md" :style="$q.dark.isActive ? 'background:#23272b; border-radius:50%;' : ''" />
                 <div class="text-h6">Instrukcja obsługi kalkulatora nastaw</div>
               </q-card-section>
               <q-card-section>

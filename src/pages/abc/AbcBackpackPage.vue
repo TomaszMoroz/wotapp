@@ -1,3 +1,7 @@
+body.body--dark .abc-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="q-pa-md">
     <BackNav color="black" parentPath="/abc"/>
@@ -11,7 +15,7 @@
         class="q-mb-md q-mr-lg"
         fit="contain"
       />
-      <q-card class="q-mb-none" style="flex:1; min-width: 250px;">
+      <q-card class="modern-tile q-mb-none" style="flex:1; min-width: 250px;">
         <q-card-section>
           <h5>Jak efektywnie spakować plecak?</h5>
           <ul>

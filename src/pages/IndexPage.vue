@@ -1,31 +1,3 @@
-.theme-dark .tile-label {
-  color: var(--q-text-main, #f2f2f2) !important;
-}
-.theme-tactical .tile-label {
-  color: var(--q-text-main, #c62828) !important;
-}
-.theme-dark .tile-desc-chip-big {
-  background: var(--q-chip-bg, #232526) !important;
-  color: var(--q-chip-text, #f2f2f2) !important;
-}
-.theme-tactical .tile-desc-chip-big {
-  background: var(--q-chip-bg, #111) !important;
-  color: var(--q-chip-text, #c62828) !important;
-  border: 1px solid #c62828;
-}
-.theme-dark .modern-tile {
-  background: var(--q-card, #232526) !important;
-}
-.theme-tactical .modern-tile {
-  background: var(--q-card, #111) !important;
-  border: 1px solid #c62828;
-}
-.theme-dark .tile-icon-bg {
-  background: var(--q-bg-secondary, #232526) !important;
-}
-.theme-tactical .tile-icon-bg {
-  background: #1a1a1a !important;
-}
 <template>
   <q-page class="modern-bg q-pa-lg">
     <div class="dashboard-main-container">
@@ -223,5 +195,50 @@ function navigateTo (path) {
 }
 .theme-dark .tile-label {
   color: #f2f2f2 !important;
+}
+
+ .body--dark .modern-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
+
+ .modern-tile {
+  border-radius: 22px;
+  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s;
+  min-height: 170px;
+  width: 100%;
+  max-width: 270px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  border: none;
+}
+
+.tile-label {
+  text-align: center;
+  font-size: 1.13rem;
+  font-weight: 600;
+}
+
+.tile-desc-chip-big {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 12px;
+  min-height: 36px;
+}
+
+.tile-icon-bg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
 }
 </style>

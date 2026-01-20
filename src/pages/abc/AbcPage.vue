@@ -1,3 +1,7 @@
+body.body--dark .abc-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="q-pa-md dashboard-bg dashboard-abc-page">
     <div class="dashboard-abc-container">
@@ -10,7 +14,7 @@
       </q-card>
       <div class="row q-col-gutter-md q-row-gutter-md dashboard-cards q-mb-xl">
         <q-col cols="12" sm="6" md="3">
-          <q-card class="dashboard-content-card" style="width:280px; height:200px;" clickable @click="goToRotation">
+            <q-card class="modern-tile" style="width:280px; height:200px;" clickable @click="goToRotation">
             <q-card-section class="text-center flex column justify-center" style="height:100%;">
               <div class="row justify-center items-center q-mb-sm">
                 <q-icon name="backpack" size="2.5rem" color="primary" />
@@ -21,7 +25,7 @@
           </q-card>
         </q-col>
         <q-col cols="12" sm="6" md="3">
-          <q-card class="dashboard-content-card" style="width:280px; height:200px;" clickable @click="goToBackpack">
+          <q-card class="modern-tile" style="width:280px; height:200px;" clickable @click="goToBackpack">
             <q-card-section class="text-center flex column justify-center" style="height:100%;">
               <div class="row justify-center items-center q-mb-sm">
                 <q-icon name="hiking" size="2.5rem" color="primary" />
@@ -32,7 +36,7 @@
           </q-card>
         </q-col>
         <q-col cols="12" sm="6" md="3">
-          <q-card class="dashboard-content-card" style="width:280px; height:200px;" clickable @click="goToChain">
+          <q-card class="modern-tile" style="width:280px; height:200px;" clickable @click="goToChain">
             <q-card-section class="text-center flex column justify-center" style="height:100%;">
               <div class="row justify-center items-center q-mb-sm">
                 <q-icon name="alt_route" size="2.5rem" color="primary" />
@@ -43,7 +47,7 @@
           </q-card>
         </q-col>
         <q-col cols="12" sm="6" md="3">
-          <q-card class="dashboard-content-card" style="width:280px; height:200px;" clickable @click="goToCyber">
+          <q-card class="modern-tile" style="width:280px; height:200px;" clickable @click="goToCyber">
             <q-card-section class="text-center flex column justify-center" style="height:100%;">
               <div class="row justify-center items-center q-mb-sm">
                 <q-icon name="security" size="2.5rem" color="primary" />
@@ -54,7 +58,7 @@
           </q-card>
         </q-col>
         <q-col cols="12" sm="6" md="3">
-          <q-card class="dashboard-content-card" style="width:280px; height:200px;" clickable @click="goToKts">
+          <q-card class="modern-tile" style="width:280px; height:200px;" clickable @click="goToKts">
             <q-card-section class="text-center flex column justify-center" style="height:100%;">
               <div class="row justify-center items-center q-mb-sm">
                 <q-icon name="fact_check" size="2.5rem" color="primary" />
@@ -65,7 +69,7 @@
           </q-card>
         </q-col>
         <q-col cols="12" sm="6" md="3">
-          <q-card class="dashboard-content-card" style="width:280px; height:200px;" clickable @click="goToFitness">
+          <q-card class="modern-tile" style="width:280px; height:200px;" clickable @click="goToFitness">
             <q-card-section class="text-center flex column justify-center" style="height:100%;">
               <div class="row justify-center items-center q-mb-sm">
                 <q-icon name="fitness_center" size="2.5rem" color="primary" />

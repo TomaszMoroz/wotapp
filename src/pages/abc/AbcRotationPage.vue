@@ -3,14 +3,13 @@
     <BackNav color="black" parentPath="/abc"/>
     <div class="text-h4 text-weight-bold q-mb-md">Co zabrać na rotację</div>
     <div class="text-subtitle1 text-grey-7 q-mb-lg">Praktyczna lista rzeczy i dokumentów</div>
-    <q-card class="q-mb-lg">
+    <q-card class="modern-tile q-mb-lg">
       <q-card-section>
         <h5>1. Dokumenty Obowiązkowe</h5>
         <p>Zadbaj o to, by najważniejsze dokumenty były uporządkowane i zabezpieczone (najlepiej w wodoodpornym etui).</p>
         <ul>
           <li><strong>Dokument finansowy:</strong> dokument wskazany przez kancelarię, wypełniony czytelnie i bez skreśleń</li>
           <li><strong>Książeczka wojskowa:</strong> Obowiązkowy dokument identyfikacyjny.</li>
-          <li><strong>Karta służbowa / Przepustka:</strong> Upoważniająca do wstępu i poruszania się po jednostce/bazie.</li>
         </ul>
       </q-card-section>
     </q-card>
@@ -59,4 +58,8 @@ import BackNav from 'components/BackNav.vue'
 </script>
 
 <style scoped>
+  body.body--dark .abc-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 </style>

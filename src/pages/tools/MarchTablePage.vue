@@ -178,7 +178,7 @@
                 flat
                 dense
                 class="march-table-bg shadow-1 q-mb-md"
-                :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
+                :dark="$q.dark.isActive || themeClass === 'theme-dark'"
               />
               <q-table
                 v-if="specialPoints.length > 0"
@@ -189,7 +189,7 @@
                 dense
                 class="march-table-bg shadow-1"
                 title="Punkty specjalne"
-                :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
+                :dark="$q.dark.isActive || themeClass === 'theme-dark'"
               />
           </div>
         </div>
@@ -1200,18 +1200,16 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
   for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
     const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
     const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
-    const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
-    const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
     ctx.save()
     ctx.strokeStyle = gridColor
     ctx.lineWidth = 1
     ctx.beginPath()
-    ctx.moveTo(p1.x, p1.y)
-    ctx.lineTo(p2.x, p2.y)
+    ctx.moveTo(latlng1.lng, latlng1.lat)
+    ctx.lineTo(latlng2.lng, latlng2.lat)
     ctx.stroke()
     // Label easting (na górze canvasu)
     ctx.font = 'bold 14px Arial'
-    ctx.fillText(String(Math.floor(e / 1000)).padStart(2, '0').slice(-2), p1.x, 2)
+    ctx.fillText(String(Math.floor(e / 1000)).padStart(2, '0').slice(-2), latlng1.lng, 2)
     ctx.restore()
   }
   // Draw horizontal grid lines (northing) and labels
@@ -1221,18 +1219,16 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
   for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
     const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
     const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
-    const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
-    const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
     ctx.save()
     ctx.strokeStyle = '#008800'
     ctx.lineWidth = 1
     ctx.beginPath()
-    ctx.moveTo(p1.x, p1.y)
-    ctx.lineTo(p2.x, p2.y)
+    ctx.moveTo(latlng1.lng, latlng1.lat)
+    ctx.lineTo(latlng2.lng, latlng2.lat)
     ctx.stroke()
     // Label northing (po lewej canvasu)
     ctx.font = 'bold 14px Arial'
-    ctx.fillText(String(Math.floor(n / 1000)).padStart(2, '0').slice(-2), 18, p1.y)
+    ctx.fillText(String(Math.floor(n / 1000)).padStart(2, '0').slice(-2), 18, latlng1.lat)
     ctx.restore()
   }
 }
@@ -1725,18 +1721,6 @@ onBeforeUnmount(() => {
 .theme-dark .q-table thead th {
   background: #181a1b !important;
   color: #f2f2f2 !important;
-}
-.theme-tactical .march-table-bg,
-.theme-tactical .q-table,
-.theme-tactical .q-table th,
-.theme-tactical .q-table td {
-  background: #111 !important;
-  color: #c62828 !important;
-  border-color: #222 !important;
-}
-.theme-tactical .q-table thead th {
-  background: #050505 !important;
-  color: #c62828 !important;
 }
 /* Poprawa rozmieszczenia przycisków na mobile */
 .march-btn-row {

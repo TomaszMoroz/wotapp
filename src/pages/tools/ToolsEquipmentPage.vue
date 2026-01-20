@@ -1,3 +1,7 @@
+body.body--dark .tools-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
+}
 <template>
   <q-page class="equipment-bg q-pa-md">
     <BackNav color="black"/>
@@ -464,6 +468,11 @@ watch(equipmentData, saveEquipment, { deep: true })
 .q-select .q-field__control, .q-input .q-field__control {
   border-color: #fff !important;
   color: #fff !important;
+  background: #f3f4f6 !important;
+}
+.theme-dark .q-select .q-field__control, .theme-dark .q-input .q-field__control,
+.body--dark .q-select .q-field__control, .body--dark .q-input .q-field__control {
+  background: #23272b !important;
 }
 .q-select .q-field__native, .q-input .q-field__native,
 .q-select .q-field__input, .q-input .q-field__input {

@@ -1,5 +1,5 @@
 <template>
-  <q-layout :class="themeClass" view="lHh Lpr lFf" class="dashboard-bg" :dark="$q.dark.isActive">
+  <q-layout :class="[themeClass, $q.dark.isActive ? 'theme-dark' : '']" view="lHh Lpr lFf" class="dashboard-bg" :dark="$q.dark.isActive">
     <q-dialog v-model="pwaUpdateDialog" persistent>
       <q-card>
         <q-card-section class="row items-center">
@@ -429,7 +429,10 @@
 
         <!-- Logo 721 -->
         <div class="logo-section q-pa-md text-center">
-          <img :src="logo721" alt="WOT 721 Logo" class="wot-logo-drawer" />
+          <div class="logo-mask-wrapper">
+            <img :src="logo721" alt="WOT 721 Logo" class="wot-logo-drawer" />
+            <div v-if="themeMode === 'tactical'" class="logo-dark-mask"></div>
+          </div>
           <div class="text-caption text-grey-6 q-mt-sm">Aplikacja wewnętrzna</div>
           <div class="text-caption text-grey-7 q-mt-sm">Kontakt: Tomasz Mo 83</div>
         </div>
@@ -471,48 +474,46 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import pkg from '../../package.json'
-const appVersion = pkg.version
 import { useQuasar, Dark } from 'quasar'
 import { useRoute } from 'vue-router'
 import logo721 from 'assets/721.jpeg'
 
+const appVersion = pkg.version
 const THEME_KEY = 'wot_theme_mode'
 const themeMode = ref(localStorage.getItem(THEME_KEY) || 'light')
+
 const themeClass = computed(() => {
   if (themeMode.value === 'tactical') return 'theme-tactical'
   return ''
 })
+
 const themeLabel = computed(() => {
   if (themeMode.value === 'dark') return 'Ciemny'
   if (themeMode.value === 'tactical') return 'Taktyczny'
   return 'Jasny'
 })
+
 function cycleTheme () {
   if (themeMode.value === 'light') themeMode.value = 'dark'
   else if (themeMode.value === 'dark') themeMode.value = 'tactical'
   else themeMode.value = 'light'
   localStorage.setItem(THEME_KEY, themeMode.value)
 }
+
 watch(themeMode, val => {
-  // Control Quasar dark mode and tactical mode
-  if (val === 'dark') {
+  // Wymuś Quasar dark mode dla dark i tactical
+  if (val === 'dark' || val === 'tactical') {
     Dark.set(true)
-    document.body.classList.remove('theme-tactical')
-  } else if (val === 'tactical') {
-    Dark.set(false)
-    document.body.classList.add('theme-tactical')
+    document.body.classList.toggle('theme-tactical', val === 'tactical')
   } else {
     Dark.set(false)
     document.body.classList.remove('theme-tactical')
   }
 })
 // Initial mode
-if (themeMode.value === 'dark') {
+if (themeMode.value === 'dark' || themeMode.value === 'tactical') {
   Dark.set(true)
-  document.body.classList.remove('theme-tactical')
-} else if (themeMode.value === 'tactical') {
-  Dark.set(false)
-  document.body.classList.add('theme-tactical')
+  document.body.classList.toggle('theme-tactical', themeMode.value === 'tactical')
 } else {
   Dark.set(false)
   document.body.classList.remove('theme-tactical')
@@ -785,6 +786,46 @@ function urlBase64ToUint8Array (base64String) {
   background: var(--military-light, #faf6f6);
   min-height: 100vh;
 }
+
+/* Card/Tile universal style for dashboard and all pages */
+.dashboard-card, .q-card, .section-card, .result-card, .modern-content-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border: 1.5px solid #e0e0e0;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+body.body--dark .dashboard-card, body.body--dark .q-card, body.body--dark .section-card, body.body--dark .result-card, body.body--dark .modern-content-card {
+  background: #232526 !important;
+  border: 1.5px solid #444 !important;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+body.body--dark .dashboard-card .q-card__section .q-card__title,
+body.body--dark .dashboard-card .section-title,
+body.body--dark .dashboard-card .q-card__title,
+body.body--dark .section-card .section-title,
+body.body--dark .q-card__title,
+body.body--dark .section-title,
+body.body--dark .q-card__section .q-card__title {
+  color: #f2f2f2 !important;
+}
+body.body--dark .dashboard-card,
+body.body--dark .q-card,
+body.body--dark .section-card,
+body.body--dark .result-card,
+body.body--dark .modern-content-card {
+  background: #202124 !important;
+  border: 2px solid #444 !important;
+}
+/* Add a subtle hover for interactivity */
+.dashboard-card:hover, .q-card:hover, .section-card:hover, .result-card:hover, .modern-content-card:hover {
+  box-shadow: 0 4px 18px rgba(0,0,0,0.13);
+  border-color: #bdbdbd;
+}
+body.body--dark .dashboard-card:hover, body.body--dark .q-card:hover, body.body--dark .section-card:hover, body.body--dark .result-card:hover, body.body--dark .modern-content-card:hover {
+  box-shadow: 0 4px 18px rgba(0,0,0,0.32);
+  border-color: #888;
+}
 .dashboard-header {
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
@@ -852,5 +893,75 @@ function urlBase64ToUint8Array (base64String) {
   --military-brown: #8B4513;
   --military-dark: #1A1A1A;
   --military-light: #F5F5F5;
+}
+/* --- GLOBAL TILE/CARD CONTRAST FOR ALL THEMES --- */
+.q-card, .section-card, .modern-content-card, .result-card {
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+body:not(.body--dark):not(.theme-tactical) .q-card,
+body:not(.body--dark):not(.theme-tactical) .section-card,
+body:not(.body--dark):not(.theme-tactical) .modern-content-card,
+body:not(.body--dark):not(.theme-tactical) .result-card {
+  background: #fff !important;
+  border: 1.5px solid #e0e0e0 !important;
+  color: #232526 !important;
+}
+
+body.body--dark .q-card,
+body.body--dark .section-card,
+body.body--dark .modern-content-card,
+body.body--dark .result-card {
+  background: #232526 !important;
+  border: 2px solid #444 !important;
+  color: #f2f2f2 !important;
+}
+
+body.body--dark .q-page,
+body.body--dark .dashboard-bg {
+  background: #181a1b !important;
+}
+
+.theme-tactical .q-card,
+.theme-tactical .section-card,
+.theme-tactical .modern-content-card,
+.theme-tactical .result-card {
+  background: #111 !important;
+  border: 2px solid #c62828 !important;
+  color: #c62828 !important;
+}
+
+.q-card__title, .section-title, .modern-content-card .q-card__title {
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+body.body--dark .q-card__title,
+body.body--dark .section-title,
+body.body--dark .modern-content-card .q-card__title {
+  color: #f2f2f2 !important;
+}
+.theme-tactical .q-card__title,
+.theme-tactical .section-title,
+.theme-tactical .modern-content-card .q-card__title {
+  color: #c62828 !important;
+}
+/* Tactical dark mode: maska na logo w menu */
+.logo-mask-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.logo-dark-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(20,20,20,0.75);
+  border-radius: 12px;
+  pointer-events: none;
+  z-index: 2;
+}
+.theme-tactical .text-tactical-red {
+  color: #ff5252 !important;
 }
 </style>
