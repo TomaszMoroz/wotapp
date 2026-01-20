@@ -60,7 +60,7 @@
             flat
             :rows-per-page-options="[0]"
             :rows-per-page="0"
-            :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
+            :dark="$q.dark.isActive"
           >
             <template v-slot:body-cell-photo="props">
               <q-td :props="props">

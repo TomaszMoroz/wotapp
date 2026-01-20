@@ -1,24 +1,14 @@
-/* Force q-tab-panel background in dark/tactical mode (deep override) */
+/* Force q-tab-panel background in dark mode (deep override) */
 .theme-dark :deep(.q-tab-panel),
 .theme-dark :deep(.q-tab-panels) {
   background: var(--q-card, #232526) !important;
   color: var(--q-text-main, #f2f2f2) !important;
 }
-.theme-tactical :deep(.q-tab-panel),
-.theme-tactical :deep(.q-tab-panels) {
-  background: var(--q-card, #111) !important;
-  color: var(--q-text-main, #c62828) !important;
-}
-/* DARK & TACTICAL for tab panels */
+/* DARK for tab panels */
 .theme-dark .q-tab-panel,
 .theme-dark .q-tab-panels {
   background: var(--q-card, #232526) !important;
   color: var(--q-text-main, #f2f2f2) !important;
-}
-.theme-tactical .q-tab-panel,
-.theme-tactical .q-tab-panels {
-  background: var(--q-card, #111) !important;
-  color: var(--q-text-main, #c62828) !important;
 }
 <template>
   <q-card class="cargo-shortcuts-card q-pa-xl" :class="[$q.dark.isActive ? 'theme-dark' : '', themeClass]">
@@ -373,18 +363,11 @@ loadShortcuts()
 .cargo-select-popup {
   min-width: 220px;
 }
-/* DARK & TACTICAL for cargo cards */
+/* DARK for cargo cards */
 .theme-dark .cargo-shortcuts-card,
 .theme-dark .route-tile,
 .theme-dark .shortcut-tile {
   background: var(--q-card, #232526) !important;
   color: var(--q-text-main, #f2f2f2) !important;
-}
-.theme-tactical .cargo-shortcuts-card,
-.theme-tactical .route-tile,
-.theme-tactical .shortcut-tile {
-  background: var(--q-card, #111) !important;
-  color: var(--q-text-main, #c62828) !important;
-  border: 1px solid #c62828 !important;
 }
 </style>

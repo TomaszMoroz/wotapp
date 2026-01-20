@@ -57,17 +57,17 @@
                   class="target-svg"
                 >
                   <!-- Tło tarczy -->
-                  <circle cx="200" cy="200" r="200" :fill="$q.dark.isActive ? '#232526' : '#f8f9fa'" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#444' : '#e9ecef')" stroke-width="2"/>
+                  <circle cx="200" cy="200" r="200" :fill="$q.dark.isActive ? '#232526' : '#f8f9fa'" :stroke="($q.dark.isActive ? '#444' : '#e9ecef')" stroke-width="2"/>
 
                   <!-- Koncentryczne okręgi tarczy -->
-                  <circle cx="200" cy="200" r="160" fill="none" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#dee2e6')" stroke-width="1"/>
-                  <circle cx="200" cy="200" r="120" fill="none" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#dee2e6')" stroke-width="1"/>
-                  <circle cx="200" cy="200" r="80" fill="none" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#dee2e6')" stroke-width="1"/>
-                  <circle cx="200" cy="200" r="40" fill="none" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#dee2e6')" stroke-width="1"/>
+                  <circle cx="200" cy="200" r="160" fill="none" :stroke="($q.dark.isActive ? '#888' : '#dee2e6')" stroke-width="1"/>
+                  <circle cx="200" cy="200" r="120" fill="none" :stroke="($q.dark.isActive ? '#888' : '#dee2e6')" stroke-width="1"/>
+                  <circle cx="200" cy="200" r="80" fill="none" :stroke="($q.dark.isActive ? '#888' : '#dee2e6')" stroke-width="1"/>
+                  <circle cx="200" cy="200" r="40" fill="none" :stroke="($q.dark.isActive ? '#888' : '#dee2e6')" stroke-width="1"/>
 
                   <!-- Linie pomocnicze -->
-                  <line x1="200" y1="0" x2="200" y2="400" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#444' : '#f1f3f4')" stroke-width="1"/>
-                  <line x1="0" y1="200" x2="400" y2="200" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#444' : '#f1f3f4')" stroke-width="1"/>
+                  <line x1="200" y1="0" x2="200" y2="400" :stroke="($q.dark.isActive ? '#444' : '#f1f3f4')" stroke-width="1"/>
+                  <line x1="0" y1="200" x2="400" y2="200" :stroke="($q.dark.isActive ? '#444' : '#f1f3f4')" stroke-width="1"/>
 
                   <!-- Siatka pomocnicza -->
                   <defs>
@@ -78,16 +78,16 @@
                   <rect width="400" height="400" fill="url(#grid)" />
 
                   <!-- Środek tarczy (10) -->
-                  <circle cx="200" cy="200" r="20" :fill="$q.dark.isActive ? '#181a1b' : '#fff'" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#f2f2f2' : '#495057')" stroke-width="2"/>
-                  <text x="200" y="205" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" :fill="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#f2f2f2' : '#495057')">10</text>
+                  <circle cx="200" cy="200" r="20" :fill="$q.dark.isActive ? '#181a1b' : '#fff'" :stroke="($q.dark.isActive ? '#f2f2f2' : '#495057')" stroke-width="2"/>
+                  <text x="200" y="205" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" :fill="($q.dark.isActive ? '#f2f2f2' : '#495057')">10</text>
 
                   <!-- Strefa 9 -->
-                  <circle cx="200" cy="200" r="40" fill="none" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#f2f2f2' : '#6c757d')" stroke-width="2"/>
-                  <text x="200" y="245" text-anchor="middle" font-family="Arial" font-size="10" :fill="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#f2f2f2' : '#6c757d')">9</text>
+                  <circle cx="200" cy="200" r="40" fill="none" :stroke="($q.dark.isActive ? '#f2f2f2' : '#6c757d')" stroke-width="2"/>
+                  <text x="200" y="245" text-anchor="middle" font-family="Arial" font-size="10" :fill="($q.dark.isActive ? '#f2f2f2' : '#6c757d')">9</text>
 
                   <!-- Strefa 8 -->
-                  <circle cx="200" cy="200" r="60" fill="none" :stroke="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#adb5bd')" stroke-width="1"/>
-                  <text x="200" y="265" text-anchor="middle" font-family="Arial" font-size="10" :fill="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#adb5bd')">8</text>
+                  <circle cx="200" cy="200" r="60" fill="none" :stroke="($q.dark.isActive ? '#888' : '#adb5bd')" stroke-width="1"/>
+                  <text x="200" y="265" text-anchor="middle" font-family="Arial" font-size="10" :fill="($q.dark.isActive ? '#888' : '#adb5bd')">8</text>
 
                   <!-- Linia między centrum a punktem celowania -->
                   <g v-if="aimPoint && offsetValue !== 0">
@@ -129,10 +129,10 @@
                   </g>
 
                   <!-- Etykiety osi -->
-                  <text x="10" y="205" font-family="Arial" font-size="10" :fill="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#6c757d')">-50cm</text>
-                  <text x="390" y="205" font-family="Arial" font-size="10" :fill="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#6c757d')" text-anchor="end">+50cm</text>
-                  <text x="205" y="15" font-family="Arial" font-size="10" :fill="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#6c757d')">+50cm</text>
-                  <text x="205" y="395" font-family="Arial" font-size="10" :fill="isTacticalDarkMode ? '#ff5252' : ($q.dark.isActive ? '#888' : '#6c757d')">-50cm</text>
+                  <text x="10" y="205" font-family="Arial" font-size="10" :fill="($q.dark.isActive ? '#888' : '#6c757d')">-50cm</text>
+                  <text x="390" y="205" font-family="Arial" font-size="10" :fill="($q.dark.isActive ? '#888' : '#6c757d')" text-anchor="end">+50cm</text>
+                  <text x="205" y="15" font-family="Arial" font-size="10" :fill="($q.dark.isActive ? '#888' : '#6c757d')">+50cm</text>
+                  <text x="205" y="395" font-family="Arial" font-size="10" :fill="($q.dark.isActive ? '#888' : '#6c757d')">-50cm</text>
                 </svg>
               </div>
             </div>
@@ -241,7 +241,7 @@
               flat
               class="modern-table training-table-bg"
               :pagination="{ rowsPerPage: 0 }"
-              :dark="$q.dark.isActive || themeClass === 'theme-dark' || themeClass === 'theme-tactical'"
+              :dark="$q.dark.isActive"
             >
               <template v-slot:body-cell-offset="props">
                 <q-td :props="props">

@@ -483,40 +483,32 @@ const THEME_KEY = 'wot_theme_mode'
 const themeMode = ref(localStorage.getItem(THEME_KEY) || 'light')
 
 const themeClass = computed(() => {
-  if (themeMode.value === 'tactical') return 'theme-tactical'
   return ''
 })
 
 const themeLabel = computed(() => {
   if (themeMode.value === 'dark') return 'Ciemny'
-  if (themeMode.value === 'tactical') return 'Taktyczny'
   return 'Jasny'
 })
 
 function cycleTheme () {
   if (themeMode.value === 'light') themeMode.value = 'dark'
-  else if (themeMode.value === 'dark') themeMode.value = 'tactical'
   else themeMode.value = 'light'
   localStorage.setItem(THEME_KEY, themeMode.value)
 }
 
 watch(themeMode, val => {
-  // Wymuś Quasar dark mode dla dark i tactical
-  if (val === 'dark' || val === 'tactical') {
+  if (val === 'dark') {
     Dark.set(true)
-    document.body.classList.toggle('theme-tactical', val === 'tactical')
   } else {
     Dark.set(false)
-    document.body.classList.remove('theme-tactical')
   }
 })
 // Initial mode
-if (themeMode.value === 'dark' || themeMode.value === 'tactical') {
+if (themeMode.value === 'dark') {
   Dark.set(true)
-  document.body.classList.toggle('theme-tactical', themeMode.value === 'tactical')
 } else {
   Dark.set(false)
-  document.body.classList.remove('theme-tactical')
 }
 
 const deferredPrompt = ref(null)
