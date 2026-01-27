@@ -68,60 +68,55 @@
                 <p>System analizy czynników wpływających na planowanie i prowadzenie działań taktycznych.</p>
 
                 <h5>Składniki METT-TC:</h5>
-                <div class="mett-tc-grid q-mb-lg">
-                  <div class="mett-item">
-                    <h6><strong>M - Mission (Misja)</strong></h6>
-                    <ul>
+                <div class="q-gutter-md flex flex-column flex-md-row flex-wrap items-stretch justify-center q-mb-lg">
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">M - Mission (Misja)</div>
+                    <ul class="q-mb-sm">
                       <li>Cel operacji</li>
                       <li>Zadania do wykonania</li>
                       <li>Oczekiwane rezultaty</li>
                       <li>Kryteria sukcesu</li>
                     </ul>
                   </div>
-
-                  <div class="mett-item">
-                    <h6><strong>E - Enemy (Przeciwnik)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">E - Enemy (Przeciwnik)</div>
+                    <ul class="q-mb-sm">
                       <li>Siły i środki przeciwnika</li>
                       <li>Możliwości i ograniczenia</li>
                       <li>Prawdopodobne działania</li>
                       <li>Słabe punkty</li>
                     </ul>
                   </div>
-
-                  <div class="mett-item">
-                    <h6><strong>T - Terrain (Teren)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">T - Terrain (Teren)</div>
+                    <ul class="q-mb-sm">
                       <li>Warunki terenowe</li>
                       <li>Punkty kluczowe</li>
                       <li>Przeszkody i osłony</li>
                       <li>Drogi i szlaki</li>
                     </ul>
                   </div>
-
-                  <div class="mett-item">
-                    <h6><strong>T - Troops (Wojska)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">T - Troops (Wojska)</div>
+                    <ul class="q-mb-sm">
                       <li>Własne siły i środki</li>
                       <li>Stan gotowości</li>
                       <li>Możliwości operacyjne</li>
                       <li>Wsparcie dostępne</li>
                     </ul>
                   </div>
-
-                  <div class="mett-item">
-                    <h6><strong>T - Time (Czas)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">T - Time (Czas)</div>
+                    <ul class="q-mb-sm">
                       <li>Czas dostępny na planowanie</li>
                       <li>Harmonogram operacji</li>
                       <li>Terminy krytyczne</li>
                       <li>Synchronizacja działań</li>
                     </ul>
                   </div>
-
-                  <div class="mett-item">
-                    <h6><strong>C - Civilians (Ludność cywilna)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">C - Civilians (Ludność cywilna)</div>
+                    <ul class="q-mb-sm">
                       <li>Obecność cywilów</li>
                       <li>Bezpieczeństwo ludności</li>
                       <li>Wpływ na operacje</li>
@@ -168,60 +163,55 @@
                 <h4>OCOKA-W - Analiza terenu i pogody</h4>
                 <p>Systematyczna metoda oceny terenu oraz warunków pogodowych pod kątem prowadzenia działań wojskowych.</p>
 
-                <div class="ocoka-grid q-mb-lg">
-                  <div class="ocoka-item">
-                    <h6><strong>O - Observation (Obserwacja)</strong></h6>
-                    <ul>
+                <div class="q-gutter-md flex flex-column flex-md-row flex-wrap items-stretch justify-center q-mb-lg">
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">O - Observation (Obserwacja)</div>
+                    <ul class="q-mb-sm">
                       <li>Pola obserwacji</li>
                       <li>Punkty obserwacyjne</li>
                       <li>Ograniczenia widoczności</li>
                       <li>Wzajemna obserwacja</li>
                     </ul>
                   </div>
-
-                  <div class="ocoka-item">
-                    <h6><strong>C - Cover (Osłona)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">C - Cover (Osłona)</div>
+                    <ul class="q-mb-sm">
                       <li>Naturalne osłony</li>
                       <li>Sztuczne umocnienia</li>
                       <li>Ochrona przed obserwacją</li>
                       <li>Miejsca bezpieczne</li>
                     </ul>
                   </div>
-
-                  <div class="ocoka-item">
-                    <h6><strong>O - Obstacles (Przeszkody)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">O - Obstacles (Przeszkody)</div>
+                    <ul class="q-mb-sm">
                       <li>Przeszkody naturalne</li>
                       <li>Przeszkody sztuczne</li>
                       <li>Wpływ na ruch</li>
                       <li>Możliwości obejścia</li>
                     </ul>
                   </div>
-
-                  <div class="ocoka-item">
-                    <h6><strong>K - Key terrain (Teren kluczowy)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">K - Key terrain (Teren kluczowy)</div>
+                    <ul class="q-mb-sm">
                       <li>Punkty dominujące</li>
                       <li>Węzły komunikacyjne</li>
                       <li>Miejsca strategiczne</li>
                       <li>Obiekty do kontrolowania</li>
                     </ul>
                   </div>
-
-                  <div class="ocoka-item">
-                    <h6><strong>A - Avenues of approach (Drogi podejścia)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">A - Avenues of approach (Drogi podejścia)</div>
+                    <ul class="q-mb-sm">
                       <li>Kierunki natarcia</li>
                       <li>Szlaki ewakuacji</li>
                       <li>Drogi zaopatrzenia</li>
                       <li>Manewry oskrzydlające</li>
                     </ul>
                   </div>
-
-                  <div class="ocoka-item">
-                    <h6><strong>W - Weather (Pogoda)</strong></h6>
-                    <ul>
+                  <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                    <div class="point-header text-h6 text-weight-bold q-mb-sm">W - Weather (Pogoda)</div>
+                    <ul class="q-mb-sm">
                       <li>Widoczność i warunki oświetleniowe</li>
                       <li>Opady (deszcz, śnieg, mgła)</li>
                       <li>Temperatura i jej wpływ na ludzi oraz sprzęt</li>
@@ -229,7 +219,7 @@
                       <li>Stan gruntu (błoto, lód, śnieg, suchość)</li>
                       <li>Zmiany pogodowe i ich przewidywanie</li>
                     </ul>
-                    <p><strong>Pogoda</strong> ma istotny wpływ na prowadzenie działań bojowych: ogranicza widoczność, utrudnia poruszanie się, wpływa na morale i sprawność żołnierzy, a także na funkcjonowanie sprzętu i skuteczność ognia. Analiza warunków pogodowych pozwala lepiej zaplanować działania i przygotować się na ewentualne zagrożenia.</p>
+                    <p class="q-mt-sm"><strong>Pogoda</strong> ma istotny wpływ na prowadzenie działań bojowych: ogranicza widoczność, utrudnia poruszanie się, wpływa na morale i sprawność żołnierzy, a także na funkcjonowanie sprzętu i skuteczność ognia. Analiza warunków pogodowych pozwala lepiej zaplanować działania i przygotować się na ewentualne zagrożenia.</p>
                   </div>
                 </div>
 
@@ -249,68 +239,56 @@
                 <p>Standardowy format przekazywania informacji w sytuacjach taktycznych.</p>
 
                 <div class="five-point-format q-mb-lg">
-                  <div class="point-item">
-                    <h6><strong>1. Gdzie (Where)</strong></h6>
-                    <ul>
-                      <li>Dokładna lokalizacja zdarzenia</li>
-                      <li>Współrzędne geograficzne</li>
-                      <li>Punkty orientacyjne</li>
-                      <li>Dystans i kierunek</li>
-                    </ul>
-                    <div class="example">
-                      <strong>Przykład:</strong> "100m na północ od checkpoint Charlie, współrzędne 52.2297N, 21.0122E"
+                  <div class="q-gutter-md flex flex-column flex-md-row flex-wrap items-stretch justify-center">
+                    <div class="point-item q-pa-md bg-grey-2 rounded-borders shadow-1 col-12 col-md-6 flex flex-column flex-grow-1" style="min-width:280px;max-width:400px;">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">1. Gdzie (Where)</div>
+                      <ul class="q-mb-sm">
+                        <li>Dokładna lokalizacja zdarzenia</li>
+                        <li>Współrzędne geograficzne</li>
+                        <li>Punkty orientacyjne</li>
+                        <li>Dystans i kierunek</li>
+                      </ul>
+                      <div class="example q-mt-auto"><strong>Przykład:</strong> "100m na północ od checkpoint Charlie, współrzędne 52.2297N, 21.0122E"</div>
                     </div>
-                  </div>
-
-                  <div class="point-item">
-                    <h6><strong>2. Kiedy (When)</strong></h6>
-                    <ul>
-                      <li>Czas zdarzenia</li>
-                      <li>Czas trwania</li>
-                      <li>Częstotliwość występowania</li>
-                      <li>Przewidywany rozwój</li>
-                    </ul>
-                    <div class="example">
-                      <strong>Przykład:</strong> "DTG 061430Z NOV 25, trwające od 15 minut"
+                    <div class="point-item q-pa-md bg-grey-2 rounded-borders shadow-1 col-12 col-md-6 flex flex-column flex-grow-1" style="min-width:280px;max-width:400px;">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">2. Kiedy (When)</div>
+                      <ul class="q-mb-sm">
+                        <li>Czas zdarzenia</li>
+                        <li>Czas trwania</li>
+                        <li>Częstotliwość występowania</li>
+                        <li>Przewidywany rozwój</li>
+                      </ul>
+                      <div class="example q-mt-auto"><strong>Przykład:</strong> "DTG 061430Z NOV 25, trwające od 15 minut"</div>
                     </div>
-                  </div>
-
-                  <div class="point-item">
-                    <h6><strong>3. Co (What)</strong></h6>
-                    <ul>
-                      <li>Rodzaj zdarzenia/działania</li>
-                      <li>Liczba zaangażowanych osób</li>
-                      <li>Typ sprzętu/uzbrojenia</li>
-                      <li>Charakter działania</li>
-                    </ul>
-                    <div class="example">
-                      <strong>Przykład:</strong> "Patrol 4-osobowy z bronią automatyczną, przemieszczający się w kierunku wschodnim"
+                    <div class="point-item q-pa-md bg-grey-2 rounded-borders shadow-1 col-12 col-md-6 flex flex-column flex-grow-1" style="min-width:280px;max-width:400px;">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">3. Co (What)</div>
+                      <ul class="q-mb-sm">
+                        <li>Rodzaj zdarzenia/działania</li>
+                        <li>Liczba zaangażowanych osób</li>
+                        <li>Typ sprzętu/uzbrojenia</li>
+                        <li>Charakter działania</li>
+                      </ul>
+                      <div class="example q-mt-auto"><strong>Przykład:</strong> "Patrol 4-osobowy z bronią automatyczną, przemieszczający się w kierunku wschodnim"</div>
                     </div>
-                  </div>
-
-                  <div class="point-item">
-                    <h6><strong>4. Rozmiar/Siła (Size)</strong></h6>
-                    <ul>
-                      <li>Liczebność przeciwnika</li>
-                      <li>Rodzaj jednostki</li>
-                      <li>Możliwości bojowe</li>
-                      <li>Poziom zagrożenia</li>
-                    </ul>
-                    <div class="example">
-                      <strong>Przykład:</strong> "Szacowana wielkość drużyny (8-12 żołnierzy), uzbrojenie podstawowe plus km"
+                    <div class="point-item q-pa-md bg-grey-2 rounded-borders shadow-1 col-12 col-md-6 flex flex-column flex-grow-1" style="min-width:280px;max-width:400px;">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">4. Rozmiar/Siła (Size)</div>
+                      <ul class="q-mb-sm">
+                        <li>Liczebność przeciwnika</li>
+                        <li>Rodzaj jednostki</li>
+                        <li>Możliwości bojowe</li>
+                        <li>Poziom zagrożenia</li>
+                      </ul>
+                      <div class="example q-mt-auto"><strong>Przykład:</strong> "Szacowana wielkość drużyny (8-12 żołnierzy), uzbrojenie podstawowe plus km"</div>
                     </div>
-                  </div>
-
-                  <div class="point-item">
-                    <h6><strong>5. Działania (Activity)</strong></h6>
-                    <ul>
-                      <li>Bieżące działania</li>
-                      <li>Kierunek przemieszczania</li>
-                      <li>Poziom aktywności</li>
-                      <li>Przewidywane intencje</li>
-                    </ul>
-                    <div class="example">
-                      <strong>Przykład:</strong> "Prowadzą rozpoznanie terenu, zatrzymali się przy mostku na 5 min, kontynuują marsz"
+                    <div class="point-item q-pa-md bg-grey-2 rounded-borders shadow-1 col-12 col-md-6 flex flex-column flex-grow-1" style="min-width:280px;max-width:400px;">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">5. Działania (Activity)</div>
+                      <ul class="q-mb-sm">
+                        <li>Bieżące działania</li>
+                        <li>Kierunek przemieszczania</li>
+                        <li>Poziom aktywności</li>
+                        <li>Przewidywane intencje</li>
+                      </ul>
+                      <div class="example q-mt-auto"><strong>Przykład:</strong> "Prowadzą rozpoznanie terenu, zatrzymali się przy mostku na 5 min, kontynuują marsz"</div>
                     </div>
                   </div>
                 </div>
@@ -331,37 +309,37 @@
 
                 <h5>Elementy szkicu obserwacyjnego:</h5>
                 <div class="sketch-elements q-mb-lg">
-                  <div class="element-group">
-                    <h6><strong>Informacje podstawowe:</strong></h6>
-                    <ul>
-                      <li>Data i godzina obserwacji</li>
-                      <li>Pozycja obserwatora</li>
-                      <li>Kierunek północny</li>
-                      <li>Skala (w przybliżeniu)</li>
-                      <li>Warunki pogodowe</li>
-                    </ul>
-                  </div>
-
-                  <div class="element-group">
-                    <h6><strong>Elementy terenu:</strong></h6>
-                    <ul>
-                      <li>Ukształtowanie terenu (wzgórza, doliny)</li>
-                      <li>Drogi i ścieżki</li>
-                      <li>Budynki i obiekty</li>
-                      <li>Lasy i zadrzewienia</li>
-                      <li>Cieki wodne</li>
-                    </ul>
-                  </div>
-
-                  <div class="element-group">
-                    <h6><strong>Elementy wojskowe:</strong></h6>
-                    <ul>
-                      <li>Pozycje przeciwnika</li>
-                      <li>Pozycje własne</li>
-                      <li>Kierunki ognia</li>
-                      <li>Martwe pola</li>
-                      <li>Punkty kluczowe</li>
-                    </ul>
+                  <div class="q-gutter-md flex flex-column flex-md-row flex-wrap items-stretch justify-center">
+                    <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">Informacje podstawowe</div>
+                      <ul class="q-mb-sm">
+                        <li>Data i godzina obserwacji</li>
+                        <li>Pozycja obserwatora</li>
+                        <li>Kierunek północny</li>
+                        <li>Skala (w przybliżeniu)</li>
+                        <li>Warunki pogodowe</li>
+                      </ul>
+                    </div>
+                    <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">Elementy terenu</div>
+                      <ul class="q-mb-sm">
+                        <li>Ukształtowanie terenu (wzgórza, doliny)</li>
+                        <li>Drogi i ścieżki</li>
+                        <li>Budynki i obiekty</li>
+                        <li>Lasy i zadrzewienia</li>
+                        <li>Cieki wodne</li>
+                      </ul>
+                    </div>
+                    <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">Elementy wojskowe</div>
+                      <ul class="q-mb-sm">
+                        <li>Pozycje przeciwnika</li>
+                        <li>Pozycje własne</li>
+                        <li>Kierunki ognia</li>
+                        <li>Martwe pola</li>
+                        <li>Punkty kluczowe</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 
@@ -425,57 +403,55 @@
 
                 <h5>Struktura TPD - 5 faz:</h5>
                 <div class="tpd-phases q-mb-lg">
-                  <div class="phase-item">
-                    <h6><strong>FAZA I - PLANOWANIE</strong></h6>
-                    <ul>
-                      <li>Przyjęcie zadania od przełożonego</li>
-                      <li>Analiza rozkazu przez dowódcę (METT-TC)</li>
-                      <li>Uruchomienie mikro sztabu</li>
-                      <li>Zarządzenie przygotowawcze</li>
-                      <li>Rekonesans</li>
-                      <li>Opracowanie Rozkazu Bojowego/Planu Walki</li>
-                      <li>Stawianie zadań</li>
-                    </ul>
-                  </div>
-
-                  <div class="phase-item">
-                    <h6><strong>FAZA II - PRZYGOTOWANIE</strong></h6>
-                    <ul>
-                      <li>Przyjęcie wsparcia/zabezpieczenia</li>
-                      <li>Synchronizacja/Trening/Ćwiczenie przygotowawcze</li>
-                      <li>Ostateczne sprawdzenie wyposażenia (PCI)</li>
-                      <li>Kontrola znajomości zadania</li>
-                    </ul>
-                  </div>
-
-                  <div class="phase-item">
-                    <h6><strong>FAZA III - REALIZACJA</strong></h6>
-                    <ul>
-                      <li>Przemieszczenie do rejonu działania</li>
-                      <li>Działanie w rejonie/na obiekcie</li>
-                      <li>Powrót do MSD/MCzP</li>
-                      <li>Ciągła ocena i adaptacja planu</li>
-                    </ul>
-                  </div>
-
-                  <div class="phase-item">
-                    <h6><strong>FAZA IV - ODTWORZENIE GOTOWOŚCI</strong></h6>
-                    <ul>
-                      <li>Omówienie na gorąco (AAR)</li>
-                      <li>Odtworzenie zdolności bojowych</li>
-                      <li>Meldunek do przełożonego (After Action Report)</li>
-                      <li>Przygotowanie do kolejnego zadania</li>
-                    </ul>
-                  </div>
-
-                  <div class="phase-item special">
-                    <h6><strong>FAZA CIĄGŁA - OCENA</strong></h6>
-                    <ul>
-                      <li>Budowanie świadomości sytuacyjnej</li>
-                      <li>Kontrola realizacji zadań</li>
-                      <li>Monitorowanie sytuacji</li>
-                      <li>Ciągła analiza METT-TC</li>
-                    </ul>
+                  <div class="q-gutter-md flex flex-column flex-md-row flex-wrap items-stretch justify-center q-mb-lg">
+                    <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">FAZA I - PLANOWANIE</div>
+                      <ul class="q-mb-sm">
+                        <li>Przyjęcie zadania od przełożonego</li>
+                        <li>Analiza rozkazu przez dowódcę (METT-TC)</li>
+                        <li>Uruchomienie mikro sztabu</li>
+                        <li>Zarządzenie przygotowawcze</li>
+                        <li>Rekonesans</li>
+                        <li>Opracowanie Rozkazu Bojowego/Planu Walki</li>
+                        <li>Stawianie zadań</li>
+                      </ul>
+                    </div>
+                    <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">FAZA II - PRZYGOTOWANIE</div>
+                      <ul class="q-mb-sm">
+                        <li>Przyjęcie wsparcia/zabezpieczenia</li>
+                        <li>Synchronizacja/Trening/Ćwiczenie przygotowawcze</li>
+                        <li>Ostateczne sprawdzenie wyposażenia (PCI)</li>
+                        <li>Kontrola znajomości zadania</li>
+                      </ul>
+                    </div>
+                    <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">FAZA III - REALIZACJA</div>
+                      <ul class="q-mb-sm">
+                        <li>Przemieszczenie do rejonu działania</li>
+                        <li>Działanie w rejonie/na obiekcie</li>
+                        <li>Powrót do MSD/MCzP</li>
+                        <li>Ciągła ocena i adaptacja planu</li>
+                      </ul>
+                    </div>
+                    <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">FAZA IV - ODTWORZENIE GOTOWOŚCI</div>
+                      <ul class="q-mb-sm">
+                        <li>Omówienie na gorąco (AAR)</li>
+                        <li>Odtworzenie zdolności bojowych</li>
+                        <li>Meldunek do przełożonego (After Action Report)</li>
+                        <li>Przygotowanie do kolejnego zadania</li>
+                      </ul>
+                    </div>
+                    <div class="point-item q-pa-md rounded-borders shadow-1 flex flex-column flex-grow-1 bg-grey-2 dark:bg-grey-10 dark:text-white">
+                      <div class="point-header text-h6 text-weight-bold q-mb-sm">FAZA CIĄGŁA - OCENA</div>
+                      <ul class="q-mb-sm">
+                        <li>Budowanie świadomości sytuacyjnej</li>
+                        <li>Kontrola realizacji zadań</li>
+                        <li>Monitorowanie sytuacji</li>
+                        <li>Ciągła analiza METT-TC</li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
 

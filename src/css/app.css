@@ -1,3 +1,34 @@
+/* Force max 3 tiles per row for .point-item in flex container */
+.q-gutter-md.flex.flex-md-row .point-item {
+  min-width: 220px;
+  max-width: 400px;
+  flex: 1 1 100%;
+}
+@media (min-width: 960px) {
+  .q-gutter-md.flex.flex-md-row .point-item {
+    flex-basis: 33.333%;
+    max-width: 33.333%;
+  }
+}
+@media (min-width: 600px) and (max-width: 959px) {
+  .q-gutter-md.flex.flex-md-row .point-item {
+    flex-basis: 50%;
+    max-width: 50%;
+  }
+}
+@media (max-width: 599px) {
+  .q-gutter-md.flex.flex-md-row .point-item {
+    flex-basis: 100%;
+    max-width: 100%;
+  }
+}
+/* Ensure point-item tiles are dark in dark mode */
+.body--dark .point-item,
+.theme-dark .point-item {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-color: #444 !important;
+}
 /* --- QUASAR COMPONENTS: DARK & TACTICAL --- */
 .theme-dark .q-card,
 .theme-dark .modern-content-card,

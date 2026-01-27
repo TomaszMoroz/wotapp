@@ -2,11 +2,11 @@
   <q-page class="modern-bg q-pa-lg">
     <div class="dashboard-main-container">
       <div class="dashboard-title-bg q-mb-xl">
-      <div class="dashboard-title-content">
-        <div class="text-h3 text-weight-bold modern-title q-pa-lg">Dashboard</div>
-        <!-- <div class="text-subtitle1 text-grey-7 q-mt-xs">Wybierz sekcję aby rozpocząć pracę</div> -->
+        <div v-if="$q.dark.isActive" class="dashboard-title-darken"></div>
+        <div class="dashboard-title-content">
+          <div class="text-h3 text-weight-bold modern-title q-pa-lg">Dashboard</div>
+        </div>
       </div>
-    </div>
 
       <div class="dashboard-tiles q-mb-xl">
         <div class="tiles-grid">
@@ -56,6 +56,50 @@ function navigateTo (path) {
 </script>
 
 <style scoped>
+/* Darken dashboard title container in dark mode */
+.dashboard-title-darken {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(154, 151, 151, 0.68);
+  z-index: 2;
+  border-radius: 22px;
+  pointer-events: none;
+}
+.theme-dark .dashboard-title-content {
+  position: relative;
+  z-index: 3;
+}
+/* Overlay for dashboard title in dark mode */
+.dashboard-dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(60, 60, 60, 0.72);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+.dashboard-overlay-logo {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 10px;
+  opacity: 0.92;
+}
+.dashboard-overlay-label {
+  color: #f2f2f2;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 8px #222a;
+}
 
 .dashboard-main-container {
   max-width: 1500px;

@@ -118,7 +118,7 @@
           class="q-my-xs q-mx-sm rounded-borders"
           :style="{ background: isActiveRoute('/') ? '#d2b48c' : 'var(--q-bg-secondary)', color: 'var(--q-text-main)' }"
         >
-          <q-item-section avatar>
+          <q-item-section avatar class="sidebar-logo-avatar">
             <q-icon name="dashboard" :color="isActiveRoute('/') ? 'var(--q-icon-main)' : 'var(--q-icon-muted)'" />
           </q-item-section>
           <q-item-section>
@@ -766,6 +766,37 @@ function urlBase64ToUint8Array (base64String) {
 </script>
 
 <style scoped>
+/* Overlay for sidebar logo in dark mode */
+.sidebar-logo-avatar {
+  position: relative;
+}
+.sidebar-dark-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(60, 60, 60, 0.72);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  pointer-events: none;
+}
+.sidebar-overlay-logo {
+  width: 32px;
+  height: 32px;
+  margin-bottom: 4px;
+  opacity: 0.92;
+}
+.sidebar-overlay-label {
+  color: #f2f2f2;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-shadow: 0 2px 8px #222a;
+}
 :root {
   --active-menu-bg: #4A5D31;
 }
