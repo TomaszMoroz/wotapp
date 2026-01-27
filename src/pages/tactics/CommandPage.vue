@@ -152,7 +152,20 @@
                     <li><span class="drawd-letter">D</span> <b>(DELAY)</b> – potencjał i ograniczenia w zakresie spowalniania</li>
                   </ul>
                   <div class="drawd-img-wrap q-mb-lg flex flex-center">
-                    <q-img src="/src/assets/drawd.png" alt="DRAW-D schemat" style="max-width:700px;min-height:260px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e0e0e0; background:#fff;" />
+                    <div class="drawd-img-container">
+                      <q-img src="/src/assets/drawd.png" alt="DRAW-D schemat" style="max-width:700px;min-height:260px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e0e0e0; background:#fff;" />
+                      <q-btn v-if="$q.screen.width < 600" class="drawd-zoom-btn" round dense flat icon="search" color="primary" @click.stop="showDrawdZoom = true" />
+                    </div>
+                    <q-dialog v-model="showDrawdZoom" maximized>
+                      <q-card class="drawd-zoom-card">
+                        <q-card-section class="drawd-zoom-section">
+                          <q-btn class="drawd-zoom-close" round dense flat icon="close" color="white" @click="showDrawdZoom = false" />
+                          <div class="drawd-zoom-img-wrap">
+                            <img src="/src/assets/drawd.png" alt="DRAW-D powiększenie" class="drawd-zoom-img" />
+                          </div>
+                        </q-card-section>
+                      </q-card>
+                    </q-dialog>
                   </div>
 
                 </div>
@@ -607,6 +620,7 @@ import { ref } from 'vue'
 
 const showTopicDetails = ref(false)
 const selectedTopic = ref(null)
+const showDrawdZoom = ref(false)
 
 const commandTopics = ref([
   {
@@ -1102,40 +1116,87 @@ body.body--dark .source-reference {
 }
 
 .drawd-img-wrap {
+  position: relative;
   width: 100%;
-  min-height: 260px;
-  max-width: 700px;
+  display: flex;
   justify-content: center;
   align-items: center;
+}
+.drawd-img-container {
+  position: relative;
+  width: 100%;
   display: flex;
-  margin-bottom: 32px;
+  justify-content: center;
+  align-items: center;
 }
-
-.drawd-scenario {
-  background: #f5f7fa;
-  border-radius: 10px;
-  border: 1.5px solid #cfd8dc;
-  box-shadow: 0 1px 6px rgba(44,62,47,0.04);
-  text-align: center;
-  padding: 18px 10px;
-  font-size: 1.08rem;
-  color: #2D3E2F;
-  font-weight: 500;
-  margin-top: 12px;
+.drawd-zoom-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  background: rgba(255,255,255,0.85);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
 }
-
-@media (max-width: 900px) {
-  .drawd-section { padding: 18px 4vw 18px 4vw; }
-  .drawd-img-wrap { max-width: 98vw; }
+@media (min-width: 600px) {
+  .drawd-zoom-btn {
+    display: none !important;
+  }
 }
-
+/* Zoom dialog styles */
+.drawd-zoom-card {
+  background: #18191a;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 100vh;
+  min-width: 100vw;
+  padding: 0;
+}
+.drawd-zoom-section {
+  position: relative;
+  padding: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.drawd-zoom-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+  background: rgba(30,30,30,0.7);
+}
+.drawd-zoom-img-wrap {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: auto;
+}
+.drawd-zoom-img {
+  min-width: 700px;
+  min-height: 320px;
+  max-width: none;
+  max-height: none;
+  border-radius: 18px;
+  box-shadow: 0 2px 24px rgba(0,0,0,0.18);
+  border: 2px solid #e0e0e0;
+  background: #fff;
+  margin: 0 auto;
+  display: block;
+}
 @media (max-width: 600px) {
-  .drawd-section { padding: 10px 0 10px 0; }
-  .drawd-list li { font-size: 1rem; padding: 8px 6px; }
-  .drawd-letter { width: 26px; height: 26px; font-size: 1rem; }
+  .drawd-zoom-img {
+    min-width: 100vw;
+    min-height: 60vh;
+    max-width: none;
+    max-height: none;
+  }
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
   .modern-content-grid {
     grid-template-columns: 1fr;
