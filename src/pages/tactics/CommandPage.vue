@@ -153,15 +153,15 @@
                   </ul>
                   <div class="drawd-img-wrap q-mb-lg flex flex-center">
                     <div class="drawd-img-container">
-                      <q-img src="/src/assets/drawd.png" alt="DRAW-D schemat" style="max-width:700px;min-height:260px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e0e0e0; background:#fff;" />
-                      <q-btn v-if="$q.screen.width < 600" class="drawd-zoom-btn" round dense flat icon="search" color="primary" @click.stop="showDrawdZoom = true" />
+                      <q-img src="/src/assets/drawd.png" alt="DRAW-D schemat" style="max-width:700px;min-height:260px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e0e0e0; background:#fff;" @click="openDrawdZoom('/src/assets/drawd.png')" />
+                      <q-btn v-if="$q.screen.width < 600" class="drawd-zoom-btn" round dense flat icon="search" color="primary" @click.stop="openDrawdZoom('/src/assets/drawd.png')" />
                     </div>
                     <q-dialog v-model="showDrawdZoom" maximized>
                       <q-card class="drawd-zoom-card">
                         <q-card-section class="drawd-zoom-section">
                           <q-btn class="drawd-zoom-close" round dense flat icon="close" color="white" @click="showDrawdZoom = false" />
                           <div class="drawd-zoom-img-wrap">
-                            <img src="/src/assets/drawd.png" alt="DRAW-D powiększenie" class="drawd-zoom-img" />
+                            <img :src="drawdZoomImg" alt="DRAW-D powiększenie" class="drawd-zoom-img" v-if="drawdZoomImg" />
                           </div>
                         </q-card-section>
                       </q-card>
@@ -621,6 +621,12 @@ import { ref } from 'vue'
 const showTopicDetails = ref(false)
 const selectedTopic = ref(null)
 const showDrawdZoom = ref(false)
+const drawdZoomImg = ref(null)
+
+function openDrawdZoom (imgSrc) {
+  drawdZoomImg.value = imgSrc
+  showDrawdZoom.value = true
+}
 
 const commandTopics = ref([
   {
