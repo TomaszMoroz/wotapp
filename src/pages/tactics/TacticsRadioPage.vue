@@ -1,13 +1,9 @@
-body.body--dark .tactics-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="modern-bg">
     <div class="container q-pa-md">
       <BackNav color="black"/>
       <div class="text-center q-mb-xl">
-        <div class="modern-hero-section q-pa-lg rounded-borders">
+        <div class="modern-hero-section tactics-tile q-pa-lg rounded-borders">
           <div class="text-h4 text-weight-bold text-military-secondary q-mb-sm">Podręcznik Procedur Radiowych</div>
           <div class="text-body1 text-military-dark">Standardy Pola Walki</div>
         </div>
@@ -171,5 +167,9 @@ pre {
   font-size: 0.98em;
   white-space: pre-wrap;
   margin-bottom: 0;
+}
+body.body--dark .tactics-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 </style>

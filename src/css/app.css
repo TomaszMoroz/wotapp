@@ -300,3 +300,25 @@ body.body--dark textarea {
 /* Override primary colors to military theme */
 .q-primary { background-color: #2D3E2F !important; }
 .text-primary { color: #2D3E2F !important; }
+
+/* --- DARK MODE: poprawa czytelności tytułów i tekstów militarnych --- */
+body.body--dark .text-military-primary,
+body.body--dark .text-military-green,
+body.body--dark .text-military-secondary,
+body.body--dark .text-military-accent,
+.theme-dark .text-military-primary,
+.theme-dark .text-military-green,
+.theme-dark .text-military-secondary,
+.theme-dark .text-military-accent {
+  color: #789c79 !important; /* jaśniejszy, lekko zielony odcień */
+}
+
+body.body--dark .text-military-dark,
+.theme-dark .text-military-dark {
+  color: #e0e0e0 !important;
+}
+
+body.body--dark .text-military-brown,
+.theme-dark .text-military-brown {
+  color: #bcaaa4 !important;
+}

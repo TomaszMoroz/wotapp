@@ -7,7 +7,7 @@
       <div class="modern-hero q-pa-lg q-mb-lg">
         <div class="row items-center">
           <div class="col">
-            <div class="text-h4 text-weight-bold q-mb-sm" >
+            <div :class="['text-h4', 'text-weight-bold', 'q-mb-sm', $q.dark.isActive ? 'text-military-primary' : '']">
               Optyka i celowniki
             </div>
             <div class="text-subtitle1 text-grey-8">
@@ -24,7 +24,7 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold" >Mil-Dot</div>
+                <div :class="['text-h5', 'text-weight-bold', $q.dark.isActive ? 'text-military-primary' : '']">Mil-Dot</div>
                 <div class="text-subtitle2 text-grey-8">System celowania mil-dot</div>
               </div>
             </div>
@@ -64,7 +64,7 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold" >HWS (Holographic Weapon Sight)</div>
+                <div :class="['text-h5', 'text-weight-bold', $q.dark.isActive ? 'text-military-primary' : '']">HWS (Holographic Weapon Sight)</div>
                 <div class="text-subtitle2 text-grey-8">Holograficzny celownik kolimatorowy</div>
               </div>
             </div>
@@ -104,7 +104,7 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold" >Lunety optyczne</div>
+                <div :class="['text-h5', 'text-weight-bold', $q.dark.isActive ? 'text-military-primary' : '']">Lunety optyczne</div>
                 <div class="text-subtitle2 text-grey-8">Celowniki teleskopowe</div>
               </div>
             </div>

@@ -6,7 +6,7 @@
       <div class="modern-hero-section q-pa-lg q-mb-xl">
         <div class="row items-center justify-between">
           <div>
-            <div class="text-h3 text-weight-bold modern-title">Balistyka</div>
+            <div :class="['text-h3', 'text-weight-bold', 'modern-title', $q.dark.isActive ? 'text-military-primary' : '']">Balistyka</div>
             <div class="text-subtitle1 text-grey-7 q-mt-xs">Balistyka naboju 5,56x45 mm NATO w karabinku GROT</div>
           </div>
           <q-avatar size="56px" class="shadow-2">
@@ -21,7 +21,7 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold modern-title">Balistyka Naboju 5,56x45 mm NATO w Karabinku GROT</div>
+                <div :class="['text-h5', 'text-weight-bold', 'modern-title', $q.dark.isActive ? 'text-military-primary' : '']">Balistyka Naboju 5,56x45 mm NATO w Karabinku GROT</div>
                 <div class="text-subtitle2 text-grey-7">Charakterystyka i właściwości balistyczne</div>
               </div>
             </div>
@@ -39,7 +39,7 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold modern-title">I. Balistyka Wewnętrzna i Podstawowe Parametry</div>
+                <div :class="['text-h5', 'text-weight-bold', 'modern-title', $q.dark.isActive ? 'text-military-primary' : '']">I. Balistyka Wewnętrzna i Podstawowe Parametry</div>
                 <div class="text-subtitle2 text-grey-7">Zjawiska zachodzące w lufie karabinka GROT</div>
               </div>
             </div>
@@ -91,7 +91,7 @@
           <q-card-section class="modern-card-header">
             <div class="row items-center">
               <div>
-                <div class="text-h5 text-weight-bold modern-title">II. Kluczowe Siły Balistyki Zewnętrznej</div>
+                <div :class="['text-h5', 'text-weight-bold', 'modern-title', $q.dark.isActive ? 'text-military-primary' : '']">II. Kluczowe Siły Balistyki Zewnętrznej</div>
                 <div class="text-subtitle2 text-grey-7">Siły działające na pocisk po opuszczeniu lufy</div>
               </div>
             </div>
