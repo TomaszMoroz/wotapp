@@ -153,8 +153,8 @@
                   </ul>
                   <div class="drawd-img-wrap q-mb-lg flex flex-center">
                     <div class="drawd-img-container">
-                      <q-img src="/src/assets/drawd.png" alt="DRAW-D schemat" style="max-width:700px;min-height:260px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e0e0e0; background:#fff;" @click="openDrawdZoom('/src/assets/drawd.png')" />
-                      <q-btn v-if="$q.screen.width < 600" class="drawd-zoom-btn" round dense flat icon="search" color="primary" @click.stop="openDrawdZoom('/src/assets/drawd.png')" />
+                      <q-img :src="drawdImg" alt="DRAW-D schemat" style="max-width:700px;min-height:260px; border-radius:12px; box-shadow:0 2px 12px rgba(0,0,0,0.08); border:1px solid #e0e0e0; background:#fff;" @click="openDrawdZoom(drawdImg)" />
+                      <q-btn v-if="$q.screen.width < 600" class="drawd-zoom-btn" round dense flat icon="search" color="primary" @click.stop="openDrawdZoom(drawdImg)" />
                     </div>
                     <q-dialog v-model="showDrawdZoom" maximized>
                       <q-card class="drawd-zoom-card">
@@ -167,6 +167,10 @@
                       </q-card>
                     </q-dialog>
                   </div>
+<script setup>
+import drawdImg from 'src/assets/drawd.png'
+// ...existing code...
+</script>
 
                 </div>
               </div>
