@@ -167,11 +167,6 @@
                       </q-card>
                     </q-dialog>
                   </div>
-<script setup>
-import drawdImg from 'src/assets/drawd.png'
-// ...existing code...
-</script>
-
                 </div>
               </div>
 
@@ -621,6 +616,7 @@ import drawdImg from 'src/assets/drawd.png'
 <script setup>
 import BackNav from 'components/BackNav.vue'
 import { ref } from 'vue'
+import drawdImg from 'src/assets/drawd.png'
 
 const showTopicDetails = ref(false)
 const selectedTopic = ref(null)
