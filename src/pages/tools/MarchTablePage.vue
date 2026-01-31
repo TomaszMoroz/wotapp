@@ -1135,59 +1135,52 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
   const maxSquares = 100
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
-  // pionowe linie (easting)
+  // pionowe linie (easting) – zawsze od górnej do dolnej krawędzi mapy
   for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
     for (let e = minE, eCount = 0; e <= maxE && eCount < maxSquares; e += gridStep, eCount++) {
-      // Dla każdej strefy, rysuj linie w zakresie northing
-      const latlngs = []
-      for (let n = minN; n <= maxN; n += Math.max(gridStep, (maxN - minN) / 10)) {
-        try {
-          const latlng = utm.toLatLon(e, n, zoneNum, 'N')
-          if (latlng.latitude >= minLat && latlng.latitude <= maxLat && latlng.longitude >= minLng && latlng.longitude <= maxLng) {
-            latlngs.push([latlng.lng, latlng.lat])
-          }
-        } catch {}
-      }
-      if (latlngs.length > 1) {
+      try {
+        // Punkt na górnej krawędzi
+        const utmTop = utm.fromLatLon(maxLat, minLng)
+        const top = utm.toLatLon(e, utmTop.northing, zoneNum, 'N')
+        // Punkt na dolnej krawędzi
+        const utmBot = utm.fromLatLon(minLat, minLng)
+        const bot = utm.toLatLon(e, utmBot.northing, zoneNum, 'N')
         ctx.save()
         ctx.strokeStyle = gridColor
         ctx.lineWidth = 1
         ctx.beginPath()
-        ctx.moveTo(latlngs[0][0], latlngs[0][1])
-        for (let i = 1; i < latlngs.length; i++) ctx.lineTo(latlngs[i][0], latlngs[i][1])
+        ctx.moveTo(top.lng, top.lat)
+        ctx.lineTo(bot.lng, bot.lat)
         ctx.stroke()
         ctx.font = 'bold 14px Arial'
-        ctx.fillText(String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2), latlngs[0][0], 2)
+        ctx.fillText(String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2), top.lng, 2)
         ctx.restore()
-      }
+      } catch {}
     }
   }
-  // poziome linie (northing)
+  // poziome linie (northing) – zawsze od lewej do prawej krawędzi mapy
   ctx.textAlign = 'right'
   ctx.textBaseline = 'middle'
   for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
     for (let n = minN, nCount = 0; n <= maxN && nCount < maxSquares; n += gridStep, nCount++) {
-      const latlngs = []
-      for (let e = minE; e <= maxE; e += Math.max(gridStep, (maxE - minE) / 10)) {
-        try {
-          const latlng = utm.toLatLon(e, n, zoneNum, 'N')
-          if (latlng.latitude >= minLat && latlng.latitude <= maxLat && latlng.longitude >= minLng && latlng.longitude <= maxLng) {
-            latlngs.push([latlng.lng, latlng.lat])
-          }
-        } catch {}
-      }
-      if (latlngs.length > 1) {
+      try {
+        // Punkt na lewej krawędzi
+        const utmLeft = utm.fromLatLon(minLat, minLng)
+        const left = utm.toLatLon(utmLeft.easting, n, zoneNum, 'N')
+        // Punkt na prawej krawędzi
+        const utmRight = utm.fromLatLon(minLat, maxLng)
+        const right = utm.toLatLon(utmRight.easting, n, zoneNum, 'N')
         ctx.save()
         ctx.strokeStyle = '#008800'
         ctx.lineWidth = 1
         ctx.beginPath()
-        ctx.moveTo(latlngs[0][0], latlngs[0][1])
-        for (let i = 1; i < latlngs.length; i++) ctx.lineTo(latlngs[i][0], latlngs[i][1])
+        ctx.moveTo(left.lng, left.lat)
+        ctx.lineTo(right.lng, right.lat)
         ctx.stroke()
         ctx.font = 'bold 14px Arial'
-        ctx.fillText(String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2), 18, latlngs[0][1])
+        ctx.fillText(String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2), 18, left.lat)
         ctx.restore()
-      }
+      } catch {}
     }
   }
   ctx.textAlign = 'center'
