@@ -322,85 +322,6 @@ import autoTable from 'jspdf-autotable'
 import leafletImage from 'leaflet-image'
 import * as utm from 'utm'
 
-// Rysowanie siatki MGRS na jednym canvasie w overlayPane
-function drawMgrsGridCanvas (map) {
-  // Usuń WSZYSTKIE poprzednie canvasy siatki
-  const overlayPane = map.getPanes().overlayPane
-  Array.from(overlayPane.querySelectorAll('canvas.leaflet-mgrs-grid')).forEach(c => c.remove())
-  if (!showMgrsGrid.value) return
-  const size = map.getSize()
-  const canvas = document.createElement('canvas')
-  canvas.width = size.x
-  canvas.height = size.y
-  canvas.className = 'leaflet-mgrs-grid'
-  overlayPane.appendChild(canvas)
-  const ctx = canvas.getContext('2d')
-  const bounds = map.getBounds()
-  const sw = bounds.getSouthWest()
-  const ne = bounds.getNorthEast()
-  // Wyznacz wszystkie strefy UTM widoczne na mapie (Polska: 33N, 34N, 35N)
-  const utmZones = []
-  for (let zoneNum = 33; zoneNum <= 35; zoneNum++) {
-    // Dla każdej strefy sprawdź, czy jej środek jest w widoku mapy
-    // Przyjmujemy szerokość strefy 6° długości geograficznej
-    const zoneLonMin = (zoneNum - 1) * 6 - 180
-    const zoneLonMax = zoneNum * 6 - 180
-    // Jeśli jakikolwiek fragment strefy przecina widok mapy, rysuj
-    if (
-      (sw.lng < zoneLonMax && ne.lng > zoneLonMin)
-    ) {
-      utmZones.push(zoneNum)
-    }
-  }
-  // Dla każdej strefy rysuj siatkę
-  utmZones.forEach(zoneNum => {
-    // Ustal zoneLetter na podstawie środka mapy (Polska: N)
-    const zoneLetter = 'N'
-    // Wyznacz zakres easting/northing w tej strefie
-    // Przelicz SW/NE do tej strefy
-    const utmSW = utm.fromLatLon(sw.lat, sw.lng, zoneNum, zoneLetter)
-    const utmNE = utm.fromLatLon(ne.lat, ne.lng, zoneNum, zoneLetter)
-    const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
-    const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
-    const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
-    ctx.strokeStyle = paletteItems?.[0]?.color || '#008800'
-    ctx.lineWidth = 1
-    ctx.font = 'bold 13px Arial'
-    ctx.fillStyle = paletteItems?.[0]?.color || '#008800'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'top'
-    for (let e = minE; e <= maxE; e += 1000) {
-      const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
-      const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
-      const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
-      const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
-      ctx.beginPath()
-      ctx.moveTo(p1.x, p1.y)
-      ctx.lineTo(p2.x, p2.y)
-      ctx.stroke()
-      const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
-      ctx.fillText(label, p1.x, 2)
-    }
-    ctx.textAlign = 'right'
-    ctx.textBaseline = 'middle'
-    for (let n = minN; n <= maxN; n += 1000) {
-      const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
-      const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
-      const p1 = map.latLngToContainerPoint([latlng1.latitude, latlng1.longitude])
-      const p2 = map.latLngToContainerPoint([latlng2.latitude, latlng2.longitude])
-      ctx.beginPath()
-      ctx.moveTo(p1.x, p1.y)
-      ctx.lineTo(p2.x, p2.y)
-      ctx.stroke()
-      if (p1.x <= 5) {
-        const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
-        ctx.fillText(label, 18, p1.y)
-      }
-    }
-  })
-}
-
 const $q = useQuasar()
 
 // Ikony SVG z public/icons/
@@ -1179,58 +1100,99 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
   ctx.font = 'bold 14px Arial'
   const gridColor = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
   ctx.fillStyle = gridColor
-  // Użyj zawsze aktualnych bounds mapy
-  // const bounds = map.getBounds()
+  // Wyznacz globalny zakres easting/northing dla widocznego obszaru mapy
   const sw = bounds.getSouthWest()
   const ne = bounds.getNorthEast()
-  const utmSW = utm.fromLatLon(sw.lat, sw.lng)
-  const utmNE = utm.fromLatLon(ne.lat, ne.lng)
-  const zoneNum = utmSW.zoneNum
-  const zoneLetter = utmSW.zoneLetter
-  // Round easting/northing to 1km
-  const minE = Math.floor(Math.min(utmSW.easting, utmNE.easting) / 1000) * 1000
-  const maxE = Math.ceil(Math.max(utmSW.easting, utmNE.easting) / 1000) * 1000
-  const minN = Math.floor(Math.min(utmSW.northing, utmNE.northing) / 1000) * 1000
-  const maxN = Math.ceil(Math.max(utmSW.northing, utmNE.northing) / 1000) * 1000
-  const maxSquares = 50
-  // Draw vertical grid lines (easting) and labels
+  // Ustal dynamiczny krok siatki wg zoomu
+  const zoom = map.getZoom ? map.getZoom() : 13
+  let gridStep = 1000
+  if (zoom < 6) gridStep = 10000
+  if (zoom < 4) gridStep = 100000
+  // Ustal zakres szerokości/długości
+  const minLat = Math.min(sw.lat, ne.lat)
+  const maxLat = Math.max(sw.lat, ne.lat)
+  const minLng = Math.min(sw.lng, ne.lng)
+  const maxLng = Math.max(sw.lng, ne.lng)
+  // Próbkuj rogi i środek, aby znaleźć minimalny i maksymalny easting/northing oraz strefy
+  let minE = Infinity, maxE = -Infinity, minN = Infinity, maxN = -Infinity
+  let minZone = 60, maxZone = 1
+  for (const lat of [minLat, maxLat]) {
+    for (const lng of [minLng, maxLng]) {
+      const utmPt = utm.fromLatLon(lat, lng)
+      minE = Math.min(minE, utmPt.easting)
+      maxE = Math.max(maxE, utmPt.easting)
+      minN = Math.min(minN, utmPt.northing)
+      maxN = Math.max(maxN, utmPt.northing)
+      minZone = Math.min(minZone, utmPt.zoneNum)
+      maxZone = Math.max(maxZone, utmPt.zoneNum)
+    }
+  }
+  minE = Math.floor(minE / gridStep) * gridStep
+  maxE = Math.ceil(maxE / gridStep) * gridStep
+  minN = Math.floor(minN / gridStep) * gridStep
+  maxN = Math.ceil(maxN / gridStep) * gridStep
+  // Rysuj linie dla wszystkich stref UTM w zakresie
+  const maxSquares = 100
   ctx.textAlign = 'center'
   ctx.textBaseline = 'top'
-  let eCount = 0
-  for (let e = minE; e <= maxE && eCount < maxSquares; e += 1000, eCount++) {
-    const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
-    const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
-    ctx.save()
-    ctx.strokeStyle = gridColor
-    ctx.lineWidth = 1
-    ctx.beginPath()
-    ctx.moveTo(latlng1.lng, latlng1.lat)
-    ctx.lineTo(latlng2.lng, latlng2.lat)
-    ctx.stroke()
-    // Label easting (na górze canvasu)
-    ctx.font = 'bold 14px Arial'
-    ctx.fillText(String(Math.floor(e / 1000)).padStart(2, '0').slice(-2), latlng1.lng, 2)
-    ctx.restore()
+  // pionowe linie (easting)
+  for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
+    for (let e = minE, eCount = 0; e <= maxE && eCount < maxSquares; e += gridStep, eCount++) {
+      // Dla każdej strefy, rysuj linie w zakresie northing
+      const latlngs = []
+      for (let n = minN; n <= maxN; n += Math.max(gridStep, (maxN - minN) / 10)) {
+        try {
+          const latlng = utm.toLatLon(e, n, zoneNum, 'N')
+          if (latlng.latitude >= minLat && latlng.latitude <= maxLat && latlng.longitude >= minLng && latlng.longitude <= maxLng) {
+            latlngs.push([latlng.lng, latlng.lat])
+          }
+        } catch {}
+      }
+      if (latlngs.length > 1) {
+        ctx.save()
+        ctx.strokeStyle = gridColor
+        ctx.lineWidth = 1
+        ctx.beginPath()
+        ctx.moveTo(latlngs[0][0], latlngs[0][1])
+        for (let i = 1; i < latlngs.length; i++) ctx.lineTo(latlngs[i][0], latlngs[i][1])
+        ctx.stroke()
+        ctx.font = 'bold 14px Arial'
+        ctx.fillText(String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2), latlngs[0][0], 2)
+        ctx.restore()
+      }
+    }
   }
-  // Draw horizontal grid lines (northing) and labels
+  // poziome linie (northing)
   ctx.textAlign = 'right'
   ctx.textBaseline = 'middle'
-  let nCount = 0
-  for (let n = minN; n <= maxN && nCount < maxSquares; n += 1000, nCount++) {
-    const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
-    const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
-    ctx.save()
-    ctx.strokeStyle = '#008800'
-    ctx.lineWidth = 1
-    ctx.beginPath()
-    ctx.moveTo(latlng1.lng, latlng1.lat)
-    ctx.lineTo(latlng2.lng, latlng2.lat)
-    ctx.stroke()
-    // Label northing (po lewej canvasu)
-    ctx.font = 'bold 14px Arial'
-    ctx.fillText(String(Math.floor(n / 1000)).padStart(2, '0').slice(-2), 18, latlng1.lat)
-    ctx.restore()
+  for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
+    for (let n = minN, nCount = 0; n <= maxN && nCount < maxSquares; n += gridStep, nCount++) {
+      const latlngs = []
+      for (let e = minE; e <= maxE; e += Math.max(gridStep, (maxE - minE) / 10)) {
+        try {
+          const latlng = utm.toLatLon(e, n, zoneNum, 'N')
+          if (latlng.latitude >= minLat && latlng.latitude <= maxLat && latlng.longitude >= minLng && latlng.longitude <= maxLng) {
+            latlngs.push([latlng.lng, latlng.lat])
+          }
+        } catch {}
+      }
+      if (latlngs.length > 1) {
+        ctx.save()
+        ctx.strokeStyle = '#008800'
+        ctx.lineWidth = 1
+        ctx.beginPath()
+        ctx.moveTo(latlngs[0][0], latlngs[0][1])
+        for (let i = 1; i < latlngs.length; i++) ctx.lineTo(latlngs[i][0], latlngs[i][1])
+        ctx.stroke()
+        ctx.font = 'bold 14px Arial'
+        ctx.fillText(String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2), 18, latlngs[0][1])
+        ctx.restore()
+      }
+    }
   }
+  ctx.textAlign = 'center'
+  ctx.textBaseline = 'top'
+  // Usunięto stare, nieużywane fragmenty gridu (zoneNum/zoneLetter)
 }
 
 // Nowa warstwa siatki MGRS na bazie L.GridLayer
@@ -1242,56 +1204,96 @@ const MGRSGridLayer = L.GridLayer.extend({
     tile.height = size.y
     const ctx = tile.getContext('2d')
     const map = this._map
-    // Ustal strefę UTM na podstawie środka widocznego obszaru mapy
+    // Wyznacz globalny zakres easting/northing dla widocznego obszaru mapy
     const mapBounds = map.getBounds()
     const mapSW = mapBounds.getSouthWest()
     const mapNE = mapBounds.getNorthEast()
-    const utmMapSW = utm.fromLatLon(mapSW.lat, mapSW.lng)
-    const utmMapNE = utm.fromLatLon(mapNE.lat, mapNE.lng)
-    const zoneNum = utmMapSW.zoneNum
-    const zoneLetter = utmMapSW.zoneLetter
-    const minE = Math.floor(Math.min(utmMapSW.easting, utmMapNE.easting) / 1000) * 1000
-    const maxE = Math.ceil(Math.max(utmMapSW.easting, utmMapNE.easting) / 1000) * 1000
-    const minN = Math.floor(Math.min(utmMapSW.northing, utmMapNE.northing) / 1000) * 1000
-    const maxN = Math.ceil(Math.max(utmMapSW.northing, utmMapNE.northing) / 1000) * 1000
-    // Rysuj pionowe linie siatki (easting) przez cały widoczny obszar
+    const zoom = map.getZoom ? map.getZoom() : 13
+    let gridStep = 1000
+    if (zoom < 6) gridStep = 10000
+    if (zoom < 4) gridStep = 100000
+    const minLat = Math.min(mapSW.lat, mapNE.lat)
+    const maxLat = Math.max(mapSW.lat, mapNE.lat)
+    const minLng = Math.min(mapSW.lng, mapNE.lng)
+    const maxLng = Math.max(mapSW.lng, mapNE.lng)
+    let minE = Infinity, maxE = -Infinity, minN = Infinity, maxN = -Infinity
+    let minZone = 60, maxZone = 1
+    for (const lat of [minLat, maxLat]) {
+      for (const lng of [minLng, maxLng]) {
+        const utmPt = utm.fromLatLon(lat, lng)
+        minE = Math.min(minE, utmPt.easting)
+        maxE = Math.max(maxE, utmPt.easting)
+        minN = Math.min(minN, utmPt.northing)
+        maxN = Math.max(maxN, utmPt.northing)
+        minZone = Math.min(minZone, utmPt.zoneNum)
+        maxZone = Math.max(maxZone, utmPt.zoneNum)
+      }
+    }
+    minE = Math.floor(minE / gridStep) * gridStep
+    maxE = Math.ceil(maxE / gridStep) * gridStep
+    minN = Math.floor(minN / gridStep) * gridStep
+    maxN = Math.ceil(maxN / gridStep) * gridStep
+    // maxSquares nieużywane
     ctx.strokeStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
     ctx.lineWidth = 1
     ctx.font = 'bold 13px Arial'
     ctx.fillStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
-    for (let e = minE; e <= maxE; e += 1000) {
-      const latlng1 = utm.toLatLon(e, minN, zoneNum, zoneLetter)
-      const latlng2 = utm.toLatLon(e, maxN, zoneNum, zoneLetter)
-      const p1 = map.project([latlng1.latitude, latlng1.longitude], coords.z)
-      const p2 = map.project([latlng2.latitude, latlng2.longitude], coords.z)
-      const x = p1.x - coords.x * size.x
-      ctx.beginPath()
-      ctx.moveTo(x, p1.y - coords.y * size.y)
-      ctx.lineTo(x, p2.y - coords.y * size.y)
-      ctx.stroke()
-      // Etykieta easting (na górze kafla)
-      const label = String(Math.floor(e / 1000)).padStart(2, '0').slice(-2)
-      ctx.fillText(label, x, 2)
+    for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
+      for (let e = minE; e <= maxE; e += gridStep) {
+        const points = []
+        for (let n = minN; n <= maxN; n += Math.max(gridStep, (maxN - minN) / 10)) {
+          try {
+            const latlng = utm.toLatLon(e, n, zoneNum, 'N')
+            if (latlng.latitude >= minLat && latlng.latitude <= maxLat && latlng.longitude >= minLng && latlng.longitude <= maxLng) {
+              points.push([latlng.latitude, latlng.longitude])
+            }
+          } catch {}
+        }
+        if (points.length > 1) {
+          const p1 = map.project(points[0], coords.z)
+          ctx.beginPath()
+          ctx.moveTo(p1.x - coords.x * size.x, p1.y - coords.y * size.y)
+          for (let i = 1; i < points.length; i++) {
+            const p = map.project(points[i], coords.z)
+            ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
+          }
+          ctx.stroke()
+          // Etykieta easting (na górze kafla)
+          ctx.font = 'bold 13px Arial'
+          ctx.fillText(String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2), p1.x - coords.x * size.x, 2)
+        }
+      }
     }
-    // Rysuj poziome linie siatki (northing) przez cały widoczny obszar
     ctx.textAlign = 'right'
     ctx.textBaseline = 'middle'
-    for (let n = minN; n <= maxN; n += 1000) {
-      const latlng1 = utm.toLatLon(minE, n, zoneNum, zoneLetter)
-      const latlng2 = utm.toLatLon(maxE, n, zoneNum, zoneLetter)
-      const p1 = map.project([latlng1.latitude, latlng1.longitude], coords.z)
-      const p2 = map.project([latlng2.latitude, latlng2.longitude], coords.z)
-      const y = p1.y - coords.y * size.y
-      ctx.beginPath()
-      ctx.moveTo(p1.x - coords.x * size.x, y)
-      ctx.lineTo(p2.x - coords.x * size.x, y)
-      ctx.stroke()
-      // Etykieta northing (po lewej kafla)
-      if (p1.x - coords.x * size.x <= 5) {
-        const label = String(Math.floor(n / 1000)).padStart(2, '0').slice(-2)
-        ctx.fillText(label, 18, y)
+    for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
+      for (let n = minN; n <= maxN; n += gridStep) {
+        const points = []
+        for (let e = minE; e <= maxE; e += Math.max(gridStep, (maxE - minE) / 10)) {
+          try {
+            const latlng = utm.toLatLon(e, n, zoneNum, 'N')
+            if (latlng.latitude >= minLat && latlng.latitude <= maxLat && latlng.longitude >= minLng && latlng.longitude <= maxLng) {
+              points.push([latlng.latitude, latlng.longitude])
+            }
+          } catch {}
+        }
+        if (points.length > 1) {
+          const p1 = map.project(points[0], coords.z)
+          ctx.beginPath()
+          ctx.moveTo(p1.x - coords.x * size.x, p1.y - coords.y * size.y)
+          for (let i = 1; i < points.length; i++) {
+            const p = map.project(points[i], coords.z)
+            ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
+          }
+          ctx.stroke()
+          // Etykieta northing (po lewej kafla)
+          if (p1.x - coords.x * size.x <= 5) {
+            ctx.font = 'bold 13px Arial'
+            ctx.fillText(String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2), 18, p1.y - coords.y * size.y)
+          }
+        }
       }
     }
     return tile
@@ -1385,14 +1387,6 @@ function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
 
 onMounted(() => {
   map.value = L.map('march-map', { renderer: L.canvas() }).setView([52.2297, 21.0122], 13)
-  // Rysuj siatkę MGRS na canvasie po każdym przesunięciu, zoomie, resize i zmianie checkboxa
-  function updateMgrsGridCanvas () {
-    if (map.value) drawMgrsGridCanvas(map.value)
-  }
-  map.value.on('moveend zoomend resize', updateMgrsGridCanvas)
-  watch(showMgrsGrid, updateMgrsGridCanvas)
-  // Rysuj siatkę od razu jeśli checkbox aktywny
-  if (showMgrsGrid.value) drawMgrsGridCanvas(map.value)
   baseLayers = {
     osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenStreetMap',
@@ -1431,7 +1425,6 @@ onMounted(() => {
 
   // Ustaw bearing na starcie i po każdym ruchu/zoomie
   map.value.on('moveend zoomend', updateMapBearingToUtm)
-  // Ustaw od razu po inicjalizacji
   setTimeout(updateMapBearingToUtm, 500)
   map.value.on('click', (e) => {
     if (addSpecialMode) {
@@ -1460,7 +1453,8 @@ onMounted(() => {
     pinMode.value = false
     calculateRoute()
   })
-  // Prosta funkcja debounce
+
+  // Debounce dla generowania siatki MGRS i rerenderowania elementów mapy
   function debounce (fn, delay) {
     let timeout
     return function (...args) {
@@ -1469,38 +1463,20 @@ onMounted(() => {
     }
   }
 
-  // Debounce dla generowania siatki MGRS i rerenderowania elementów mapy
   const debouncedMapRerender = debounce(() => {
     if (showMgrsGrid.value && map.value) {
-      // ZAWSZE usuń starą warstwę i utwórz nową (nie tylko _draw)
+      // ZAWSZE usuń starą warstwę i utwórz nową
       if (map.value._mgrsGridLayer) {
         map.value.removeLayer(map.value._mgrsGridLayer)
         map.value._mgrsGridLayer = null
-      }
-      // Dodatkowo usuń wszystkie stare canvasy z overlayPane (na wszelki wypadek)
-      const overlayPane = map.value.getPanes().overlayPane
-      if (overlayPane) {
-        Array.from(overlayPane.querySelectorAll('canvas.leaflet-mgrs-grid')).forEach(c => c.remove())
       }
       const layers = drawMgrsGrid(map.value, false)
       if (layers && layers.length > 0) {
         map.value._mgrsGridLayer = layers[0]
       }
-      // Fallback: jeśli po 400ms nie ma canvasu siatki, wymuś jej odtworzenie jeszcze raz
-      setTimeout(() => {
-        const overlayPane2 = map.value.getPanes().overlayPane
-        const mgrsCanvas = overlayPane2 && overlayPane2.querySelector('canvas.leaflet-mgrs-grid')
-        if (!mgrsCanvas && showMgrsGrid.value) {
-          if (map.value._mgrsGridLayer) {
-            map.value.removeLayer(map.value._mgrsGridLayer)
-            map.value._mgrsGridLayer = null
-          }
-          const layers2 = drawMgrsGrid(map.value, false)
-          if (layers2 && layers2.length > 0) {
-            map.value._mgrsGridLayer = layers2[0]
-          }
-        }
-      }, 400)
+    } else if (map.value && map.value._mgrsGridLayer) {
+      map.value.removeLayer(map.value._mgrsGridLayer)
+      map.value._mgrsGridLayer = null
     }
     rerenderMapElements()
   }, 350)
@@ -1513,6 +1489,8 @@ onMounted(() => {
     })
     resizeObserver.observe(mapContainer)
   }
+  // Rysuj siatkę od razu jeśli checkbox aktywny
+  if (showMgrsGrid.value) debouncedMapRerender()
 })
 
 // Add this function if missing
