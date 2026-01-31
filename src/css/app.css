@@ -1,3 +1,17 @@
+body.body--dark .text-h1,
+body.body--dark .text-h2,
+body.body--dark .text-h3,
+body.body--dark .text-h4,
+body.body--dark .text-h5,
+body.body--dark .text-h6,
+body.body--dark .modern-title {
+  color: #4c914c !important;
+}
+body.body--dark .q-tab--active,
+body.body--dark .q-tabs__tab--active {
+  color: #232b23 !important;
+  background: #a7f5a7 !important;
+}
 /* Force max 3 tiles per row for .point-item in flex container */
 .q-gutter-md.flex.flex-md-row .point-item {
   min-width: 220px;

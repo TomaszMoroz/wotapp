@@ -5,7 +5,7 @@
 
       <!-- Header with navigation -->
       <div class="page-header q-mb-md">
-        <div :class="['text-h4', 'text-weight-bold', 'text-dashboard-header', $q.dark.isActive ? 'text-military-primary' : '']">Wyposażenie</div>
+        <div class="text-h4 text-weight-bold equipment-title">Wyposażenie</div>
       </div>
 
       <!-- Breadcrumb navigation -->

@@ -168,6 +168,9 @@ function navigateTo (path) {
   color: #0f2c05;
   letter-spacing: -0.5px;
 }
+body.body--dark .modern-title {
+  color: #2c542c !important;
+}
 .dashboard-tiles {
   margin-bottom: 32px;
 }

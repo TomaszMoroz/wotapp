@@ -281,7 +281,7 @@ body.body--dark .modern-title {
 }
 body.body--dark .q-chip {
   background: #333 !important;
-  color: #ffe082 !important;
+  color: #a7f5a7 !important;
 }
 body.body--dark .text-green,
 body.body--dark .text-success,

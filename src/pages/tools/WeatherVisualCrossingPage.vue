@@ -237,8 +237,16 @@ function formatSevereRisk (val) {
 .text-h5 {
   color: var(--military-primary, #2D3E2F);
 }
+body.body--dark .text-h5 {
+  color: #a7f5a7 !important;
+}
 .weather-list {
   max-height: 300px;
   overflow-y: auto;
+}
+body.body--dark .q-tab--active,
+body.body--dark .q-tabs__tab--active {
+  color: #232b23 !important;
+  background: #a7f5a7 !important;
 }
 </style>

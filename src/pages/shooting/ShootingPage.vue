@@ -100,7 +100,7 @@ body.body--dark .tile-icon-bg {
 }
 body.body--dark .tile-desc-chip-big {
   background: #333 !important;
-  color: #ffe082 !important;
+  color: #1d97bfce !important;
 }
 .shooting-content-limiter {
   max-width: 1200px;

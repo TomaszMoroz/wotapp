@@ -99,6 +99,10 @@ function navigateTo (path) {
   box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
   transform: translateY(-2px) scale(1.03);
 }
+
+  body.body--dark .modern-title {
+    color: #4c914c !important;
+  }
 .tile-content {
   display: flex;
   flex-direction: column;
