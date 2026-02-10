@@ -332,6 +332,178 @@ const content = {
     <p><strong>43.</strong> Zasada, o której mowa w pkt 42, nie obowiązuje w miejscach, okolicznościach i sytuacjach uzasadnionych specyfiką wykonywania czynności wymagających koncentracji uwagi lub natychmiastowego działania, np.: na stanowiskach dowodzenia, stacjach radiolokacyjnych, okrętach.</p>
 
     <p><strong>44.</strong> Żołnierz na pytanie przełożonego lub wyższego stopniem wojskowym odpowiada twierdząco: „Tak", „Tak jest", „Wiem", „Zrozumiałem" lub przecząco: „Nie", „Nie wiem", „Nie zrozumiałem".</p>
+
+    <h4>Służbowe przedstawianie się</h4>
+    <p><strong>45.</strong> Służbowe przedstawianie się – to podanie przełożonemu (wyższemu stopniem wojskowym), który nie zna podwładnego (niższego stopniem wojskowym), swojego stanowiska służbowego, nazwy jednostki (instytucji) wojskowej, stopnia wojskowego i nazwiska, np.: „Panie pułkowniku, dowódca 1. batalionu czołgów 1. Brygady Pancernej, podpułkownik Kowalska”. Przełożony (wyższy stopniem wojskowym) postępuje podobnie, jeśli nie ma pewności, że jest znany. Żołnierz nie podaje nazwy jednostki (instytucji) wojskowej, kiedy przedstawia się w macierzystej jednostce (instytucji) wojskowej, a także kiedy jego przełożony osobiście przedstawia go swoim przełożonym (osobom kontrolującym), przedstawicielom innych jednostek (instytucji) wojskowych, np.: „Panie generale, dowódca kompanii czołgów 1. batalionu czołgów”. Wówczas wskazani żołnierze przedstawiają się odpowiadając: „Panie generale, dowódca 1. kompanii czołgów kapitan Kowalski”.</p>
+    <p><strong>46.</strong> Żołnierze będący studentami uczelni wojskowych lub słuchaczami Szkoły Legii Akademickiej, którzy złożyli przysięgę wojskową, przedstawiają się podając stopień wojskowy, posiadany tytuł i nazwisko, np.: „Panie majorze, kapral podchorąży Kowalski”.</p>
+    <p><strong>47.</strong> Żołnierze zwracając się do siebie przedstawiają się. Niższy stopniem wojskowym przedstawia się pierwszy, gdy zwraca się do niego żołnierz wyższy stopniem wojskowym.</p>
+    <p><strong>48.</strong> Żołnierze w służbowych rozmowach telefonicznych przedstawiają się nawzajem, podając swój stopień wojskowy i nazwisko. Pełniący służbę dyżurną podaje również funkcję, np.: „Oficer dyżurny 1. Brygady Zmechanizowanej, kapitan Kowalski”. Żołnierz po uzyskaniu informacji, że będzie rozmawiał z przełożonym, mówi, np.: „Melduję się panie kapitanie”, a po zakończeniu rozmowy – zgodnie z jej przebiegiem odpowiada – „ZROZUMIAŁEM”, „WYKONUJĘ”, „ROZKAZ”.</p>
+    <p><strong>49.</strong> Żołnierz podczas rozmowy telefonicznej z żołnierzem niebędącym przełożonym, po jego przedstawieniu się odpowiada wymieniając stopień wojskowy rozmówcy np.: „Czołem panie kapitanie”.</p>
+    <p><strong>50.</strong> Rozmowę telefoniczną żołnierz kończy słowem (zwrotem) „CZOŁEM...”.</p>
+    <p><strong>51.</strong> Dzwoniąc do przedstawicieli innych jednostek (instytucji) wojskowych podaje się: stanowisko służbowe, nazwę jednostki (instytucji) oraz stopień i nazwisko.</p>
+
+    <h4>Oddawanie honorów przez żołnierza</h4>
+    <p><strong>52.</strong> Oddawanie honorów jest oznaką żołnierskiego szacunku dla tradycji, symboli (barw i znaków) narodowych i wojskowych oraz przełożonych lub wyższych stopniem wojskowym, a także przejawem koleżeństwa, dobrego wychowania, dyscypliny wojskowej i spoistości wojska.</p>
+    <p><strong>53.</strong> Żołnierz oddaje honory:
+    a) Prezydentowi Rzeczypospolitej Polskiej,
+    b) Marszałkowi Sejmu i Marszałkowi Senatu,
+    c) Prezesowi Rady Ministrów,
+    d) Ministrowi Obrony Narodowej,
+    e) przełożonym oraz wyższym i równym stopniem wojskowym,
+    f) sztandarom wojskowym i chorągwi Wojska Polskiego na drzewcu,
+    g) przed Grobem Nieznanego Żołnierza,
+    h) w czasie oficjalnego grania (odtwarzania) hymnu państwowego Rzeczypospolitej Polskiej, hymnu innego państwa, „Hasła Wojska Polskiego”, sygnałów: „Służba Wartownicza”, „Śpij Kolego” lub „Cisza”,
+    i) kombatantom (osobom, które brały udział w wojnach, działaniach zbrojnych i powstaniach narodowych, wchodzących w skład formacji wojskowych lub organizacji walczących o suwerenność i niepodległość Rzeczypospolitej Polskiej),
+    j) podczas podnoszenia (opuszczania) flagi państwowej, proporca Prezydenta Rzeczypospolitej Polskiej, chorągwi Wojska Polskiego, flag: Ministra Obrony Narodowej, Marszałka Polski, Szefa Sztabu Generalnego Wojska Polskiego, rodzajów Sił Zbrojnych (równorzędnych), dowódców rodzajów Sił Zbrojnych (równorzędnych) i bandery wojennej,
+    k) banderze wojennej podczas wchodzenia na okręt i schodzenia z okrętu,
+    l) symbolom i miejscom upamiętniającym bohaterską walkę i męczeństwo narodu polskiego i innych narodów, jeśli są tam wystawione posterunki honorowe,
+    m) osobie zmarłej, w czasie ceremonii pogrzebowej z udziałem wojskowej asysty honorowej.</p>
+    <p><strong>54.</strong> Podwładni i niżsi stopniem wojskowym oddają honory pierwsi, a żołnierze równi stopniem wojskowym – jednocześnie. Wyżsi stopniem wojskowym odwzajemniają honory.</p>
+    <p><strong>55.</strong> W miejscach wykonywania obowiązków służbowych (np.: w pomieszczeniach służbowych) honory oddaje się przełożonym (wyższym stopniem wojskowym) przez powstanie, przyjęcie postawy zasadniczej i skłon głowy – tylko podczas pierwszego ich przybycia.</p>
+    <p><strong>56.</strong> Żołnierz po podejściu przełożonego (wyższego stopniem wojskowym) zobowiązany jest przerwać wykonywanie czynności, zwrócić się w jego stronę i oddać honory, z wyjątkiem sytuacji, o których mowa w pkt 57.</p>
+    <p><strong>57.</strong> Żołnierz nie oddaje honorów w trakcie:
+    a) przechodzenia przez jezdnię oraz mijania się w odległości większej niż 15 kroków,
+    b) prowadzenia pojazdów lub obsługiwania maszyn i urządzeń,
+    c) bezpośredniego udziału w akcjach humanitarnych, poszukiwawczych lub ratowniczych, udzielania pomocy poszkodowanym oraz zabezpieczania (ochrony) miejsc wypadków,
+    d) legitymowania, doprowadzania, konwojowania, pełnienia służby wartowniczej na posterunku oraz uczestniczenia w innych interwencjach porządkowych,
+    e) zabezpieczania uroczystości z udziałem wojska,
+    f) prowadzenia działań prewencyjnych, ochronnych oraz dochodzeniowo - śledczych,
+    g) wykonywania zadań służbowych w strefie działań wojennych, wykonywania zadania bojowego lub ćwiczeń, jeżeli przerwanie związanych z nimi czynności skutkowałoby niewykonaniem otrzymanego rozkazu,
+    h) wykonywania prac porządkowo-gospodarczych,
+    i) przebywania w miejscach zbiorowego żywienia,
+    j) prowadzenia psa służbowego.</p>
+    <p><strong>58.</strong> W sytuacjach nieprzewidzianych w regulaminie, żołnierz zachowuje się w sposób zwyczajowo przyjęty w podobnych okolicznościach, kierując się zasadami dobrego wychowania.</p>
+    <p><strong>59.</strong> Przełożonym lub wyższym stopniem wojskowym występującym w ubiorze cywilnym, którzy są podwładnemu lub niższemu stopniem wojskowym znani, oddaje się honory zgodnie z przepisami wojskowymi. Podwładny lub niższy stopniem wojskowym będący w ubiorze cywilnym, pozdrawia przełożonych lub wyższych stopniem wojskowym w sposób przyjęty w środowisku cywilnym.</p>
+    <p><strong>60.</strong> Żołnierzom innych państw honory oddaje się na zasadach wzajemności.</p>
+
+    <h4>Oddawanie honorów przez pododdział (oddział)</h4>
+    <p><strong>61.</strong> Pododdział (oddział) oddaje honory w ugrupowaniu rozwiniętym lub marszowym:
+    a) Prezydentowi Rzeczypospolitej Polskiej,
+    b) Marszałkowi Sejmu i Marszałkowi Senatu,
+    c) Prezesowi Rady Ministrów,
+    d) Ministrowi Obrony Narodowej,
+    e) Szefowi Sztabu Generalnego Wojska Polskiego,
+    f) na specjalne polecenie – dostojnikom państw obcych, których ranga odpowiada funkcjom sprawowanym przez osoby wymienione w lit. a-e,
+    g) przełożonym od dowódcy kompanii (równorzędnym) wzwyż,
+    h) sztandarom wojskowym i chorągwi Wojska Polskiego na drzewcu,
+    i) przed Grobem Nieznanego Żołnierza,
+    j) w czasie oficjalnego grania (odtwarzania) hymnu państwowego Rzeczypospolitej Polskiej, hymnu innego państwa, „Hasła Wojska Polskiego”, sygnałów „Służba Wartownicza”, „Śpij Kolego” lub „Cisza”,
+    k) podczas podnoszenia (opuszczania) flagi państwowej, proporca Prezydenta Rzeczypospolitej Polskiej, chorągwi Wojska Polskiego, flag: Ministra Obrony Narodowej, Marszałka Polski, Szefa Sztabu Generalnego Wojska Polskiego, rodzajów Sił Zbrojnych (równorzędnych), dowódców rodzajów Sił Zbrojnych (równorzędnych) i bandery wojennej,
+    l) osobie zmarłej, w czasie ceremonii pogrzebowej z udziałem wojskowej asysty honorowej.</p>
+    <p><strong>62.</strong> Salutowanie sztandarem (chorągwią Wojska Polskiego na drzewcu) obowiązuje podczas oddawania honorów osobom wymienionym w pkt 61 lit. a-f oraz przełożonym od dowódcy jednostki (instytucji) wojskowej wzwyż, a także w czasie oficjalnego grania (odtwarzania) hymnów państwowych, „Hasła Wojska Polskiego”, sygnałów: „Służba Wartownicza”, „Śpij Kolego” lub „Cisza” oraz przed Grobem Nieznanego Żołnierza.</p>
+    <p><strong>63.</strong> Jeżeli przedsięwzięcie odbywa się w pomieszczeniu zamkniętym (w sali wykładowej, kinowej, konferencyjnej, tradycji, itp.), po przybyciu przełożonego lub prowadzącego zajęcia – dowódca grupy, uroczystości (wyznaczony żołnierz) podaje komendę „BACZNOŚĆ”. Obecni zwracają się w kierunku przełożonego, prowadzącego zajęcia i przyjmują postawę zasadniczą. Po podejściu do przełożonego lub prowadzącego zajęcia, dowódca grupy, uroczystości (wyznaczony żołnierz) składa meldunek. Przełożony (prowadzący zajęcia) po przyjęciu meldunku i oddaniu honorów, zezwala przyjąć postawę swobodną. Komendy „SPOCZNIJ’’, „ZAJĄĆ MIEJSCA’’ podaje dowódca grupy, uroczystości (wyznaczony żołnierz).</p>
+    <p><strong>64.</strong> Po zakończeniu przedsięwzięcia dowódca grupy, uroczystości (wyznaczony żołnierz) podaje komendę: „POWSTAŃ”, a następnie „BACZNOŚĆ”. Obecni stają frontem do przełożonego (prowadzącego zajęcia) i przyjmują postawę zasadniczą. Po wyjściu przełożonego lub prowadzącego zajęcia podana jest komenda „SPOCZNIJ”.</p>
+    <p><strong>65.</strong> Jeżeli przedsięwzięcie prowadzi żołnierz niższy stopniem wojskowym od starszego grupy lub osoba niebędąca żołnierzem, meldunku nie składa się. Na komendę starszego grupy ,,POWSTAŃ’’ uczestnicy wyrażają szacunek poprzez powstanie podczas jego (jej) wejścia i opuszczenia sali. W sytuacji przybycia przełożonego (osoby kontrolującej) meldunek składa starszy grupy lub najwyższy stopniem wojskowym spośród uczestników przedsięwzięcia.</p>
+    <p><strong>66.</strong> Gdy w sytuacjach opisanych w pkt 63-65 w grupie są osoby niebędące żołnierzami, dowódca grupy (dowódca uroczystości, wyznaczony żołnierz) określa sposób ich zachowania.</p>
+    <p><strong>67.</strong> Komendę „BACZNOŚĆ” służba dyżurna podaje podczas pierwszego przybycia przełożonego (od szczebla dowódcy kompanii – równorzędnego wzwyż) w czasie i miejscu określonym instrukcją pełnienia służby lub decyzją przełożonego.</p>
+    <p><strong>68.</strong> Komendy „BACZNOŚĆ” dla pododdziału (oddziału) nie podaje się podczas:
+    a) alarmu,
+    b) pracy bojowej na sprzęcie,
+    c) lotów na lotniskach,
+    d) manewrowania jednostki pływającej,
+    e) prowadzenia zajęć (ćwiczeń) taktycznych i ogniowych,
+    f) wykonywania czynności realizowanych przez Żandarmerię Wojskową i wojskowe organy porządkowe,
+    g) bezpośredniego udziału w akcjach ratowniczych, likwidacji klęsk żywiołowych i przeciwdziałania skutkom epidemii,
+    h) obsługiwania sprzętu wojskowego,
+    i) wykonywania prac gospodarczych, warsztatowych lub magazynowych,
+    j) wykonywania zadań na stanowisku dowodzenia,
+    k) pobierania i spożywania posiłków,
+    l) odpoczynku nocnego,
+    m) realizacji konkursów lub zawodów,
+    n) w obiektach służby zdrowia.</p>
+
+    <h4>Składanie meldunku</h4>
+    <p><strong>69.</strong> Meldunek jest to zwięzła informacja, którą podwładny składa przełożonemu. W meldunku podaje się kolejno: formę grzecznościową, stopień wojskowy przełożonego lub stanowisko osoby niebędącej żołnierzem, swoje stanowisko, stopień wojskowy, nazwisko i czynność wykonywaną przez pododdział, jednostkę (instytucję) wojskową lub meldującego albo cel przybycia, np.: „Pani major, dowódca 1. kompanii, kapitan Kowalski melduje kompanię podczas ćwiczeń taktycznych...”.</p>
+    <p><strong>70.</strong> Przełożonemu, który zna meldującego (przedstawiającego) można składać meldunek bez podawania stanowiska, stopnia wojskowego i nazwiska. Podobne postępowanie dotyczy nazwy jednostki (instytucji) wojskowej. Jeśli meldunek jest składany jej dowódcy, to nazwę jednostki (instytucji) wojskowej można podać w formie skróconej, np.: brygada, dywizja.</p>
+    <p><strong>71.</strong> Ponadto meldunek jest składany: Prezydentowi Rzeczypospolitej Polskiej, Marszałkowi Sejmu, Marszałkowi Senatu, Prezesowi Rady Ministrów, Ministrowi Obrony Narodowej i Szefowi Sztabu Generalnego Wojska Polskiego. Innym przełożonym – niebędącym żołnierzami, żołnierze przedstawiają informację, używając stosownych zwrotów, np.: „Panie dyrektorze, szef wydziału pierwszego, major Kowalska, przedstawiam (informuję, wyjaśniam), ...”.</p>
+    <p><strong>72.</strong> Meldunek składa się w następujących sytuacjach:
+    a) podczas pełnienia służby dyżurnej – w czasie pierwszego przybycia przełożonego w danym dniu (w terminie i miejscu wynikającym z instrukcji pełnienia służby lub decyzji przełożonego), np.: „Panie pułkowniku, oficer dyżurny brygady, kapitan Nowak melduje brygadę podczas realizacji zajęć programowych. W czasie pełnienia służby nic ważnego nie wydarzyło się” (albo melduje co się wydarzyło),
+    b) przybycia przełożonego (wyższego przełożonego) do pododdziału, jednostki (instytucji) wojskowej,
+    c) na apelu, zbiórce pododdziału, jednostki (instytucji) wojskowej,
+    d) w czasie witania osób przez kompanię honorową,
+    e) po przybyciu do przełożonego – o celu przybycia,
+    f) przed wyjazdem służbowym, na urlop lub leczenie i po powrocie,
+    g) podczas obejmowania i zdawania służby, stanowiska służbowego, np.: zdający: „Panie kapitanie, kapral Kowalski melduję zdanie służby dyżurnego kompanii”, obejmujący: „Panie kapitanie, sierżant Nowak melduję objęcie służby dyżurnego kompanii”,
+    h) po wykonaniu rozkazu,
+    i) w przypadku zaistnienia innych ważnych zdarzeń związanych z naruszeniem zasad dyscypliny wojskowej, bezpieczeństwem oraz określonych przez przełożonego.</p>
+    <p><strong>73.</strong> Meldunku nie składa się w czasie:
+    a) trwania wideokonferencji, akademii, przedstawień teatralnych, koncertów, seansów filmowych i telewizyjnych,
+    b) ładowania i rozładowywania broni,
+    c) strzelania.</p>
+    <p><strong>74.</strong> Osobom kontrolującym (wyższym lub równym stopniem wojskowym) składa meldunek dowódca kontrolowanego pododdziału lub kontrolowanej jednostki (instytucji) wojskowej. Osoba kontrolująca zobowiązana jest poinformować o celu przybycia oraz przedstawić upoważnienie do wykonywania czynności kontrolnych wraz z dokumentem tożsamości.</p>
+    <p><strong>75.</strong> Gdy osoba kontrolująca przybywa do pododdziału lub kontrolowanej jednostki (instytucji) wojskowej razem z przełożonym, a jest ona co najmniej równa mu stopniem wojskowym, meldunek składa się osobie kontrolującej a jeśli ma niższy stopień wojskowy – przełożonemu.</p>
+    <p><strong>76.</strong> Jeżeli w czasie kontroli przybędzie przełożony dowódcy kontrolowanego pododdziału lub kontrolowanej jednostki (instytucji) wojskowej, meldunek składa mu dowódca pododdziału lub kontrolowanej jednostki (instytucji) wojskowej, a osoba kontrolująca przedstawia się.</p>
+    <p><strong>77.</strong> W sytuacjach określonych w pkt 68 meldunek składa właściwy dowódca. Jeżeli dowódca jest nieobecny, meldunek składa żołnierz najwyższy stopniem wojskowym lub żołnierz służby dyżurnej.</p>
+
+    <h4>Zachowanie się żołnierzy w różnych sytuacjach</h4>
+    <p><strong>78.</strong> Żołnierz swoim zachowaniem dba o wizerunek Wojska Polskiego.</p>
+    <p><strong>79.</strong> Podczas wykonywania przez orkiestrę hymnu państwowego Rzeczypospolitej Polskiej i Pieśni Reprezentacyjnej Wojska Polskiego lub ich oficjalnego odtwarzania żołnierze, z wyjątkiem dowódców uroczystości, dowódców kompanii honorowych (pododdziałów honorowych) oraz żołnierzy wchodzących w skład posterunków honorowych, pocztów flagowych, pocztów sztandarowych, orkiestr wojskowych i zabezpieczających uroczystość, odśpiewują tekst hymnu państwowego i Pieśni Reprezentacyjnej Wojska Polskiego. Powyższa reguła nie obowiązuje w czasie uroczystości pogrzebowych. Okoliczności odgrywania (odtwarzania) hymnu państwowego oraz Pieśni Reprezentacyjnej Wojska Polskiego określają odrębne przepisy.</p>
+    <p><strong>80.</strong> W czasie oficjalnego grania (odtwarzania) Pieśni Reprezentacyjnej Wojska Polskiego żołnierz przyjmuje postawę zasadniczą.</p>
+    <p><strong>81.</strong> Żołnierzowi występującemu w umundurowaniu w szczególności zabrania się:
+    a) kupowania napojów alkoholowych,
+    b) spożywania napojów alkoholowych lub środków odurzających, substancji psychotropowych lub innych podobnie działających substancji lub środków.</p>
+    <p><strong>82.</strong> Żołnierzowi występującemu w umundurowaniu zezwala się na palenie tytoniu (e-papierosów), żucia gumy i tytoniu, spożywanie posiłków i napojów w miejscach do tego wyznaczonych.</p>
+    <p><strong>83.</strong> Żołnierz w obecności przełożonego (wyższego stopniem wojskowym) zachowuje się taktownie. Bez jego zgody (poza określonymi miejscami) nie może siedzieć, spożywać posiłków i napojów, używać telefonu (urządzeń elektronicznych), palić tytoniu (w tym e-papierosów), żuć gumy i tytoniu.</p>
+    <p><strong>84.</strong> Żołnierz wykonujący zadania służbowe, może korzystać z mobilnych środków łączności zgodnie z odrębnymi przepisami i ograniczeniami w zakresie ich używania.</p>
+    <p><strong>85.</strong> Żołnierz wchodzi do pomieszczenia służbowego przełożonego (wyższego stopniem wojskowym) za jego zgodą. Jeżeli warunki na to pozwalają przed wejściem pozostawia wierzchnie okrycie i nakrycie głowy lub po wejściu zdejmuje tylko nakrycie głowy, oddaje honory i melduje (przedstawia) cel przybycia. Po otrzymaniu rozkazu lub załatwieniu sprawy oddaje honory, wykonuje zwrot w kierunku wyjścia, nakłada nakrycie głowy i wychodzi.</p>
+    <p><strong>86.</strong> Żołnierz wchodzący do pomieszczenia z bronią nie zmienia jej położenia.</p>
+    <p><strong>87.</strong> Żołnierz pełniący służbę albo będący w nakryciu głowy i trzymający broń w położeniu „na pas” nie zdejmuje nakrycia głowy.</p>
+    <p><strong>88.</strong> Na klatce schodowej, schodach żołnierze oddają honory, zachowując stosowne do okoliczności warunki bezpieczeństwa.</p>
+    <p><strong>89.</strong> W wąskim przejściu (brak możliwości swobodnego minięcia się dwóch osób) żołnierz, który zauważy zbliżającego się przełożonego (wyższego stopniem wojskowym), podaje dla innych żołnierzy komendę „PRZEJŚCIE”. Żołnierze ustawiają się w taki sposób aby umożliwić swobodne przejście przełożonemu (wyższemu stopniem wojskowym) i oddają honory.</p>
+    <p><strong>90.</strong> W wąskim przejściu idący żołnierz, widząc przed sobą stojących wyższych stopniem wojskowym i nie mając możliwości ich obejścia, zatrzymuje się, a następnie zwraca się do najstarszego stopniem wojskowym z prośbą o pozwolenie przejścia np.: „Panie kapralu – proszę o pozwolenie przejścia”.</p>
+    <p><strong>91.</strong> Żołnierz przewożący broń stosuje się do obowiązujących przepisów dotyczących gospodarowania mieniem służby uzbrojenia i elektroniki.</p>
+    <p><strong>92.</strong> Przydzielenie broni żołnierzom udającym się w podróż służbową należy odnotować w dokumencie podróży (skierowaniu), podając rodzaj broni i jej numer oraz rodzaj i ilość amunicji.</p>
+    <p><strong>93.</strong> Żołnierz posiadający broń wchodząc do środka komunikacji trzyma ją zabezpieczoną w najdogodniejszym i bezpiecznym położeniu. W czasie podróży nikomu jej nie odstępuje i nie dopuszcza do powstania sytuacji, w której mógłby ją utracić.</p>
+    <p><strong>94.</strong> Jeżeli po przybyciu do celu podróży służbowej żołnierza okaże się, że broń nie jest potrzebna do wykonywania obowiązków służbowych, należy ją zdać do depozytu w jednostce (instytucji) wojskowej lub w komendzie garnizonu, do której żołnierz został skierowany. Zdanie (pobranie) broni (amunicji) do depozytu (z depozytu) ewidencjonuje się w książce ewidencji zdeponowanych przedmiotów. Jeśli zdanie broni nie jest możliwe, żołnierz obowiązany jest posiadać ją przy sobie przez cały czas wykonywania obowiązków służbowych.</p>
+    <p><strong>95.</strong> Żołnierz w umundurowaniu, podróżujący środkami komunikacji publicznej może zdjąć nakrycie głowy, płaszcz lub kurtkę. Przed wyjściem ze środka komunikacji ubiera się zgodnie z obowiązującymi przepisami ubiorczymi.</p>
+    <p><strong>96.</strong> Żołnierz w mundurze może przenosić paczki lub inne przedmioty opakowane w materiał:
+    a) o jednolitym, stonowanym kolorze,
+    b) nieprześwitujący.</p>
+    <p><strong>97.</strong> Żołnierz ma obowiązek posiadać przy sobie wojskowy dokument osobisty.</p>
+    <p><strong>98.</strong> Żołnierz ma obowiązek niezwłocznie zawiadomić bezpośredniego przełożonego lub oficera dyżurnego jednostki (instytucji) wojskowej o braku możliwości stawienia się (spóźnieniu) do miejsca pełnienia obowiązków służbowych. Informację o przyczynie swojej nieobecności (spóźnieniu) i przewidywanym okresie jej (jego) trwania przekazuje tego samego dnia osobiście lub za pośrednictwem innej osoby, wykorzystując techniczne środki łączności lub drogę pocztową (przy czym za termin zawiadomienia drogą pocztową uznaje się datę stempla pocztowego). W przypadku zaistnienia przyczyny uniemożliwiającej dopełnienie tego obowiązku, żołnierz jest obowiązany obowiązek ten dopełnić po ustaniu przyczyny uniemożliwiającej jego dopełnienie.</p>
+    <p><strong>99.</strong> Nieobecność może wynikać z ważnych przyczyn uniemożliwiających stawienie się w miejscu pełnienia służby w szczególności:
+    a) zachorowania żołnierza,
+    b) zgonu lub ciężkiej choroby najbliższego członka rodziny,
+    c) klęski żywiołowej, która dotknęła rodzinę żołnierza.</p>
+    <p><strong>100.</strong> W przypadku wystawienia dokumentu (zaświadczenia) przez organ administracji publicznej, placówkę służby lub ochrony zdrowia potwierdzającego (usprawiedliwiającego) nieobecność na zwykłym druku, żołnierz niezwłocznie (nie później niż w ciągu 7 dni) przesyła lub dostarcza do jednostki (instytucji) wojskowej oryginał lub kopię tego dokumentu.</p>
+    <p><strong>101.</strong> O przedłużeniu dokumentu podróży żołnierzy w sytuacjach, o których mowa w pkt 99, decyduje dowódca garnizonu, a w garnizonach, w których są etatowi komendanci garnizonu – komendant garnizonu, w którym żołnierz przebywa. Dowódca lub komendant garnizonu, zawiadamia niezwłocznie dowódcę jednostki (instytucji) wojskowej, w której żołnierz pełni lub odbywa czynną służbę wojskową o przedłużeniu dokumentu podróży temu żołnierzowi. W przypadku żołnierzy, którzy przebywają na terenie garnizonu macierzystej jednostki (instytucji) wojskowej przedłużenia dokumentu podróży dokonuje dowódca jednostki (instytucji) wojskowej.</p>
+    <p><strong>102.</strong> Pod nieobecność dowódcy lub komendanta garnizonu, a także po godzinach służbowych przedłużenia ważności dokumentów podróży dokonuje upoważniona przez nich służba dyżurna w sposób określony w instrukcji danej służby.</p>
+    <p><strong>103.</strong> Żołnierz ma obowiązek przerwać urlop lub dzień wolny i niezwłocznie powrócić do miejsca pełnienia służby w przypadku:
+    a) ogłoszenia mobilizacji lub wojny,
+    b) odwołania z urlopu lub dnia wolnego.</p>
+    <p><strong>104.</strong> Żołnierza z urlopu lub dnia wolnego może odwołać dowódca jednostki (instytucji) wojskowej. Fakt odwołania stwierdza się w rozkazie dziennym (decyzji) dowódcy jednostki (instytucji) wojskowej.</p>
+
+    <h4>Dbałość o mundur, wygląd zewnętrzny</h4>
+    <p><strong>105.</strong> Żołnierz swoim wyglądem dba o wizerunek Wojska Polskiego.</p>
+    <p><strong>106.</strong> Żołnierz występując w umundurowaniu jest zobowiązany do przestrzegania przepisów dotyczących noszenia umundurowania i orderów, odznaczeń, oznak wyróżnień i znaków Sił Zbrojnych Rzeczypospolitej Polskiej.</p>
+    <p><strong>107.</strong> Zabrania się stosowania poprawek krawieckich powodujących zmianę parametrów i wzorów umundurowania określonych w odrębnych przepisach.</p>
+    <p><strong>108.</strong> Zabrania się trzymania rąk w kieszeniach. Kieszenie, które posiadają zapięcia, powinny być zapięte. Przedmioty (np.: okulary, okulary przeciwsłoneczne, długopisy, ołówki, breloczki do kluczy) nie mogą wystawać z kieszeni lub być w widoczny sposób zawieszane.</p>
+    <p><strong>109.</strong> Żołnierz – mężczyzna ma mieć ogoloną twarz oraz ostrzyżone włosy, nie dłuższe niż 5 cm, cieniowane w kierunku karku i uszu. Może golić głowę oraz nosić krótko przystrzyżone wąsy. Wąsy mogą sięgać maksymalnie do kącików ust i nie mogą zakrywać górnej linii wargi. Baczki mogą sięgać do linii połowy wysokości uszu. Przykład wyglądu żołnierza przedstawiają rysunki nr 1-5.</p>
+    <p><strong>110.</strong> Żołnierz może nosić zarost nie dłuższy niż 5 mm ze względu na wskazania medyczne (odnotowane w zaświadczeniu wydanym przez lekarza zawierającym termin takiego zwolnienia). Dowódca jednostki (instytucji) wojskowej stwierdza ten fakt w rozkazie dziennym (decyzji). Żołnierz ma obowiązek powiadomić przełożonego o ustaniu wskazań medycznych. Przykład wyglądu żołnierza przedstawiają rysunki nr 6 i 7.</p>
+    <p><strong>111.</strong> Żołnierz – kobieta ma mieć włosy krótkie lub krótko upięte z tyłu głowy sięgające maksymalnie do wysokości linii złożonego kołnierza/stójki bluzy mundurowej, kurtki mundurowej, koszulobluzy. Może golić głowę. Fryzura nie może przeszkadzać w bezpiecznym wykonywaniu zadań służbowych. Przykład wyglądu żołnierza przedstawiają rysunki nr 8-16.</p>
+    <p><strong>112.</strong> Żołnierz – kobieta powinna upinać włosy przy użyciu akcesoriów niezagrażających jej bezpieczeństwu w kolorze dobranym do koloru włosów. Akcesoria powinny pełnić funkcję użytkową a nie dekoracyjną.</p>
+    <p><strong>113.</strong> Żołnierz – kobieta występując wyłącznie w mundurze wyjściowym oraz galowym może nosić po jednym, małym kolczyku w płatku ucha w kolorze złotym lub srebrnym. Kolczyki powinny być wpinane lub wkręcane i nie mogą sięgać poniżej płatka ucha. Kolczyki mają być jednakowe.</p>
+    <p><strong>114.</strong> Żołnierz może stosować środki kosmetyczne i lecznicze preparaty medyczne dobrane do naturalnego koloru cery.</p>
+    <p><strong>115.</strong> Żołnierz nie farbuje włosów na kolor inny niż ich naturalne odcienie.</p>
+    <p><strong>116.</strong> Żołnierz nie maluje paznokci. Może stosować bezbarwne środki kosmetyczne i lecznicze preparaty medyczne. Długość paznokci nie może wykraczać 2 mm poza opuszki palców. Przykład wyglądu paznokci przedstawia rysunek nr 17.</p>
+    <p><strong>117.</strong> Żołnierz występujący w umundurowaniu nie może eksponować w widocznych miejscach tatuaży, zdobień ciała wykonanych poprzez nacinanie, zdrapywanie, wypalanie lub uszkadzanie skóry w celu otrzymania blizn określonego wzoru. Nie nosi piercingu, tuneli w uszach.</p>
+    <p><strong>118.</strong> Żołnierz może nosić obrączkę, zegarek, sygnet (pamiątkowy, absolwenta) pierścionek zaręczynowy, okulary. Kolory paska zegarka i oprawy okularów nie mogą być jaskrawe. Symbole religijne, tabliczki tożsamości nosi się pod umundurowaniem. Przełożony (kierownik zajęć) może zarządzić zdjęcie wskazanych przedmiotów w sytuacjach uzasadnionych realizacją zadań służbowych oraz warunkami bezpieczeństwa.</p>
+    <p><strong>119.</strong> Dowódca jednostki (instytucji) wojskowej, samodzielnie ze względu na charakter wykonywanych zadań lub rodzaj i częstotliwość pełnienia czynnej służby wojskowej, wobec podległych żołnierzy lub na uzasadniony wniosek żołnierza, może czasowo w rozkazie (decyzji) ogłosić inne zasady wyglądu niż określone w regulaminie. Wygląd żołnierza nie może uniemożliwiać lub utrudniać wykonywania zadań służbowych.</p>
+
+    <h4>Opuszczanie jednostki (instytucji) wojskowej, garnizonu</h4>
+    <p><strong>120.</strong> Żołnierz niepełniący zawodowej służby wojskowej (z wyłączeniem żołnierzy pełniących dobrowolne formy czynnej służby wojskowej) ma prawo, za zgodą przełożonego opuszczać teren jednostki (instytucji) wojskowej na podstawie upoważniającego dokumentu, który ma obowiązek posiadać przy sobie przebywając poza terenem jednostki (instytucji) wojskowej.</p>
+    <p><strong>121.</strong> Przepustka stała upoważnia żołnierza, o którym mowa w pkt 120, do przebywania poza terenem jednostki (instytucji) wojskowej:
+    a) w dni powszednie – w czasie wolnym od zajęć do 30 minut przed pobudką dnia następnego,
+    b) w dni ustawowo i dodatkowo wolne od pracy – do 30 minut przed pobudką następnego dnia po dniu wolnym. Wzór przepustki stałej określa załącznik Nr 11 do Regulaminu.</p>
+    <p><strong>122.</strong> Przepustka jednorazowa upoważnia żołnierza, o którym mowa w pkt 120, do przebywania poza terenem jednostki (instytucji) wojskowej za zgodą:
+    a) dowódcy drużyny (równorzędnego) – na czas do 12 godzin,
+    b) dowódcy plutonu – na czas do 24 godzin,
+    c) dowódcy kompanii (równorzędnego) i wyższych przełożonych – na czas do 72 godzin. Wzór przepustki jednorazowej określa załącznik Nr 12 do Regulaminu.</p>
+    <p><strong>123.</strong> Zabrania się łączenia czasu przebywania na przepustkach, o których mowa w pkt 121 i 122.</p>
+    <p><strong>124.</strong> Właściwy dowódca może określać inny sposób korzystania z przepustek (stałych, jednorazowych) kierując się potrzebami jednostki (instytucji) wojskowej.</p>
+    <p><strong>125.</strong> Żołnierz, o którym mowa w pkt 120, melduje o wyjściu na przepustkę, urlop (wyjazd w podróż służbową) służbie dyżurnej pododdziału lub wyznaczonemu żołnierzowi. Fakt opuszczenia jednostki (instytucji) wojskowej odnotowuje się w „Książce opuszczających miejsce przebywania”.</p>
+    <p><strong>126.</strong> Żołnierza, o którym mowa w pkt 120, wychodzącego w mundurze sprawdza się w zakresie wyglądu i znajomości zasad żołnierskiego zachowania się. Czynności te realizuje dyżurny pododdziału lub wyznaczony żołnierz. Żołnierzowi umundurowanemu nieprzepisowo, wyglądającemu niedbale, nie zezwala się na opuszczenie terenu jednostki (instytucji) wojskowej do czasu usunięcia niedociągnięć. Za zaniedbania w tym zakresie żołnierz ponosi odpowiedzialność dyscyplinarną.</p>
+    <p><strong>127.</strong> Po powrocie z przepustki, urlopu (podróży służbowej) żołnierz, o którym mowa w pkt 120, melduje swój powrót służbie dyżurnej pododdziału lub wyznaczonemu żołnierzowi, który odnotowuje czas powrotu w „Książce opuszczających miejsce przebywania”. Uwagi zwrócone mu w czasie pobytu poza terenem jednostki (instytucji) wojskowej melduje przełożonemu.</p>
   `,
   ch1_sub4: `
     <h3>PODROZDZIAŁ IV – ZASADY POSTĘPOWANIA W SPRAWACH SŁUŻBOWYCH</h3>
