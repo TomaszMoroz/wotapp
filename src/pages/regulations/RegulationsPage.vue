@@ -624,6 +624,10 @@ defineComponent({
   background-color: white;
 }
 
+body.body--dark .content-view {
+  background-color: #181a1b !important;
+}
+
 .content-text {
   background: white;
   border-radius: 8px;
