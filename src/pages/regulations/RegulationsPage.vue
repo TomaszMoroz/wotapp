@@ -199,6 +199,29 @@ const content = {
 
       <p><strong>16.</strong> W relacjach z podwładnymi i współpracownikami wyraża szacunek dla drugiego człowieka i jego godności osobistej, kieruje się poczuciem sprawiedliwości oraz dąży do umacniania więzi koleżeńskich.</p>
     </div>
+
+    <div class="document-section">
+      <h3>ŻOŁNIERZ W SYTUACJACH BOJOWYCH&#x2022;</h3>
+      <p><strong>17.</strong> W sytuacjach bojowych postępuje zgodnie z normami międzynarodowego prawa humanitarnego konfliktów zbrojnych.</p>
+      <p><strong>18.</strong> Na polu walki cechuje go męstwo, odwaga i roztropność. Swoją postawą daje przykład innym żołnierzom.</p>
+      <p><strong>19.</strong> Wykazuje szczególną troskę o współtowarzyszy broni, a w sytuacjach zagrożenia życia jest gotów do niesienia im pomocy.</p>
+      <p><strong>20.</strong> W postępowaniu z jeńcami wojennymi i ludnością cywilną kieruje się zasadami humanitaryzmu i poszanowania wartości życia człowieka.</p>
+      <p><strong>21.</strong> W niewoli zachowuje się godnie i dochowuje wierności przysiędze wojskowej. Nie podejmuje i nie uczestniczy w działaniach, mogących szkodzić Ojczyźnie i współtowarzyszom broni.</p>
+    </div>
+
+    <div class="document-section">
+      <h3>ŻOŁNIERZ POZA SŁUŻBĄ&#x2022;</h3>
+      <p><strong>22.</strong> W środowisku społecznym prezentuje najwyższe wartości moralne i obyczajowe. Jest wzorem kultury osobistej i dobrego wychowania.</p>
+      <p><strong>23.</strong> Dąży do umiejętnego łączenia potrzeb służby z troską o dobro swojej rodziny.</p>
+      <p><strong>24.</strong> Odnosi się z szacunkiem i zrozumieniem do obowiązków i potrzeb rodzinnych swoich podwładnych i kolegów.</p>
+      <p><strong>25.</strong> Dąży do integracji swojego środowiska zawodowego, a w kontaktach towarzyskich prezentuje postawę otwartości.</p>
+      <p><strong>26.</strong> Nie jest obojętny wobec negatywnych postaw i poczynań. Udziela pomocy potrzebującym i występuje w obronie pokrzywdzonych.</p>
+      <p><strong>27.</strong> Nie podejmuje działalności, która naruszałaby jego dobre imię i dobre imię Sił Zbrojnych RP.</p>
+    </div>
+
+    <div class="document-section">
+      <p><em>„Regulamin ogólny żołnierza Wojska Polskiego” jest zbiorem postanowień regulujących codzienną działalność służbową. Nakłada na żołnierzy, niezależnie od stopnia wojskowego i stanowiska, obowiązek w zakresie znajomości, przestrzegania i egzekwowania tych przepisów.</em></p>
+    </div>
   `,
   ch1_sub1: `
     <h3>PODROZDZIAŁ I - ZASADY ZALEŻNOŚCI ŻOŁNIERZY</h3>
@@ -408,7 +431,12 @@ const showContent = (contentId) => {
 
 const goBack = () => {
   if (currentView.value === 'content') {
-    currentView.value = 'subchapters'
+    // Jeśli jesteśmy w wstępie, wracamy do tiles ze spisem treści
+    if (currentContentId.value === 'wstep') {
+      currentView.value = 'main'
+    } else {
+      currentView.value = 'subchapters'
+    }
   } else if (currentView.value === 'subchapters') {
     currentView.value = 'main'
   } else {
