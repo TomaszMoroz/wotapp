@@ -42,7 +42,7 @@
 
             <div class="modern-definition-box q-mb-lg">
               <q-icon name="info" color="primary" size="1.5rem" class="q-mr-sm" />
-              <div class="text-body2 text-dark">
+              <div :class="['text-body2', isDarkMode ? 'text-grey-2' : 'text-dark']">
                 <strong>Definicja:</strong> Pierwszy człon słowa pochodzi od miliradiana, czyli 1/1000 rad. W praktyce strzeleckiej 1 MIL = 10 cm na 100 m (zaokrąglenie branżowe).
               </div>
             </div>
@@ -97,10 +97,10 @@
               <div>
                 <div class="text-h6 text-weight-bold text-dark q-mb-sm">Sprawdzenie matematyczne</div>
                 <div class="modern-math-proof">
-                  <div class="text-body2 text-dark q-mb-xs">promień r = 100m</div>
-                  <div class="text-body2 text-dark q-mb-xs">obwód okręgu o = 2πr = 2×π×100 = 628,3185m</div>
-                  <div class="text-body2 text-dark q-mb-xs">1 rad = 57,2957°</div>
-                  <div class="text-body2 text-dark q-mb-xs">1 miliradian = 0,05729°</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">promień r = 100m</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">obwód okręgu o = 2πr = 2×π×100 = 628,3185m</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">1 rad = 57,2957°</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">1 miliradian = 0,05729°</div>
                   <div class="modern-formula-result">
                     <strong>Wynik: x = (628,3185m × 0,05729°) / 360° = 0,099m ≈ 10cm</strong>
                   </div>
@@ -142,12 +142,20 @@
                   <b>Uwaga:</b> "Powiększenie Kalibracyjne" to wartość, dla której siatka jest zgodna z MIL (np. 10x, podane przez producenta, zwykle oznaczone na lunecie). Dotyczy lunet SFP (drugi plan).
                 </div>
 
-                <div class="modern-example-calculation q-mt-md">
+                <div class="modern-example-calculation q-mt-md" :class="isDarkMode ? 'bg-grey-8 text-grey-2' : ''">
                   <div class="text-subtitle1 text-weight-bold text-dark q-mb-sm">Przykład 1:</div>
-                  <div class="text-body2 text-dark q-mb-xs">Obiekt o wymiarze 0,5m zajmuje w krzyżu 1 mil-dot</div>
-                  <div class="text-body2 text-dark q-mb-xs">Luneta ustawiona na zoom 7x (true mil-dot dla 9x)</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Obiekt o wymiarze 0,5m zajmuje w krzyżu 1 mil-dot</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Luneta ustawiona na zoom 7x (true mil-dot dla 9x)</div>
                   <div class="modern-calculation-result">
                     odległość = (0,5m × 1000 × 7/9) / 1 = <strong>388,89m</strong>
+                  </div>
+                </div>
+                <div class="modern-example-calculation q-mt-md" :class="isDarkMode ? 'bg-grey-8 text-grey-2' : ''">
+                  <div class="text-subtitle1 text-weight-bold text-dark q-mb-sm">Przykład 2:</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Obiekt o wymiarze 0,5m zajmuje w krzyżu 1 mil-dot</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Luneta ustawiona na true mil-dot (np. 9x)</div>
+                  <div class="modern-calculation-result">
+                    odległość = (0,5m × 1000) / 1 = <strong>500m</strong>
                   </div>
                 </div>
               </div>
@@ -161,10 +169,10 @@
                   <b>FFP (pierwszy plan):</b> W lunetach FFP siatka zmienia rozmiar wraz z powięzeniem, więc wzór jest zawsze prosty jak powyżej.
                 </div>
 
-                <div class="modern-example-calculation q-mt-md">
+                <div class="modern-example-calculation q-mt-md" :class="isDarkMode ? 'bg-grey-8 text-grey-2' : ''">
                   <div class="text-subtitle1 text-weight-bold text-dark q-mb-sm">Przykład 2:</div>
-                  <div class="text-body2 text-dark q-mb-xs">Obiekt o wymiarze 0,5m zajmuje w krzyżu 1 mil-dot</div>
-                  <div class="text-body2 text-dark q-mb-xs">Luneta ustawiona na true mil-dot (np. 9x)</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Obiekt o wymiarze 0,5m zajmuje w krzyżu 1 mil-dot</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Luneta ustawiona na true mil-dot (np. 9x)</div>
                   <div class="modern-calculation-result">
                     odległość = (0,5m × 1000) / 1 = <strong>500m</strong>
                   </div>
@@ -194,10 +202,10 @@
                   Regulacja krzyża w lunecie często oznaczona jest jako jeden klik to 1/4 MOA lub 1/8 MOA.
                 </div>
                 <div class="modern-moa-calculation">
-                  <div class="text-body2 text-dark q-mb-xs">Kąt pełen ma 360°, a 1° ma 60 minut</div>
-                  <div class="text-body2 text-dark q-mb-xs">360 × 60 = 21600 minut</div>
-                  <div class="text-body2 text-dark q-mb-xs">Bierzemy okrąg o promieniu r = 100m</div>
-                  <div class="text-body2 text-dark">Obwód wynosi o = 2πr = 2 × π × 100 = 628,3185m</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Kąt pełen ma 360°, a 1° ma 60 minut</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">360 × 60 = 21600 minut</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Bierzemy okrąg o promieniu r = 100m</div>
+                  <div :class="['text-body2', isDarkMode ? 'text-grey-2' : 'text-dark']">Obwód wynosi o = 2πr = 2 × π × 100 = 628,3185m</div>
                 </div>
               </div>
 
@@ -247,13 +255,12 @@
               <div class="q-mb-lg">
                 <div class="text-h6 text-weight-bold text-dark q-mb-sm">Przykład praktyczny</div>
                 <div class="modern-example-scenario">
-                  <div class="text-body2 text-dark q-mb-xs">Luneta o regulacji: jeden klik = 1/4 MOA</div>
-                  <div class="text-body2 text-dark q-mb-xs">Odległość: 200m</div>
-                  <div class="text-body2 text-dark q-mb-xs">Średni punkt trafień (ŚPT) jest 2,9cm pod celem</div>
-
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Luneta o regulacji: jeden klik = 1/4 MOA</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Odległość: 200m</div>
+                  <div :class="['text-body2', 'q-mb-xs', isDarkMode ? 'text-grey-2' : 'text-dark']">Średni punkt trafień (ŚPT) jest 2,9cm pod celem</div>
                   <div class="modern-calculation-box q-mt-sm">
-                    <div class="text-body2 text-dark">1 klik = 1,45cm (1/4 MOA na 200m)</div>
-                    <div class="text-body2 text-dark">Korekta = 2,9cm</div>
+                    <div :class="['text-body2', isDarkMode ? 'text-grey-2' : 'text-dark']">1 klik = 1,45cm (1/4 MOA na 200m)</div>
+                    <div :class="['text-body2', isDarkMode ? 'text-grey-2' : 'text-dark']">Korekta = 2,9cm</div>
                     <div class="result">Liczba klików = 2,9 ÷ 1,45 = 2 kliki</div>
                     <div class="modern-conclusion">
                       <strong>Potrzebne korekty: 2 kliki "w górę" na górnym bębnie regulacyjnym</strong>
@@ -281,6 +288,11 @@
 
 <script setup>
 import BackNav from 'components/BackNav.vue'
+import { computed } from 'vue'
+import { useQuasar } from 'quasar'
+
+const $q = useQuasar()
+const isDarkMode = computed(() => $q.dark.isActive)
 </script>
 
 <style scoped>
@@ -379,6 +391,17 @@ import BackNav from 'components/BackNav.vue'
   border: 1px solid #e0e0e0;
   color: #222;
 }
+
+body.body--dark .modern-math-proof {
+  background: #23242a !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  body.body--dark .modern-math-proof {
+    background: #23242a !important;
+  }
+}
+
 .modern-formula-result {
   background: #f0f4f8;
   padding: 12px;
@@ -521,7 +544,7 @@ import BackNav from 'components/BackNav.vue'
   padding: 16px;
   border-radius: 8px;
   text-align: center;
-  border: 2px solid #1976d2;
+  border: 2px solid #ff9800;
   font-size: 1.2rem;
   color: #111;
   font-weight: 600;
