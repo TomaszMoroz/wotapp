@@ -405,7 +405,7 @@ const allTopics = computed(() => [
       <h4>I. Planowanie Trasy: Czynniki Taktyczne</h4>
       <p>Planowanie trasy nie polega tylko na znalezieniu najkrótszej drogi, ale na wyborze drogi najbezpieczniejszej i najbardziej osłoniętej (zasada OCOKA).</p>
 
-      <h5>1. Analiza OCOKA (Krytyczne Punkty)</h5>
+      <h5>1. Analiza OCOKA (Krytyczne Punkty)</h4>
       <p>Przy wyborze trasy, dowódca musi zadać sobie kluczowe pytania:</p>
       <ul>
         <li><strong>Obserwacja (O):</strong> Czy trasa uwzględnia pola obserwacji, punkty obserwacyjne, czy wytepują ograniczenia widoczności?</li>
@@ -415,7 +415,7 @@ const allTopics = computed(() => [
         <li><strong>Drogi Podejścia (A):</strong> Wybierz drogi, które zminimalizują możliwość kontaktu z przeciwnikiem lub zapewnią przewagę w przypadku starcia.</li>
       </ul>
 
-      <h5>2. Wybór Trasy a Tempo</h5>
+      <h5>2. Wybór Trasy a Tempo</h4>
       <ul>
         <li><strong>Trasy Taktyczne (Dłuższe, Bezpieczniejsze):</strong> Często najszybszą drogą jest ta, która zapewnia ciągłą osłonę, nawet jeśli na mapie jest dłuższa. Ruch jest wolniejszy, ale bezpieczniejszy.</li>
         <li><strong>Trasy Logistyczne (Szybsze, Ryzykowne):</strong> Używane tylko w ostateczności lub przy małym ryzyku kontaktu. Pozwalają na szybszy ruch, ale kosztem ekspozycji na ogień.</li>
@@ -424,7 +424,7 @@ const allTopics = computed(() => [
       <h4>II. Tworzenie Tabeli Marszu (Marszruta)</h4>
       <p>Tabela Marszu to ustrukturyzowany harmonogram, który przekłada plan graficzny na mapie na zestaw konkretnych instrukcji dla prowadzącego marsz i reszty pododdziału.</p>
 
-      <h5>1. Elementy Kluczowe</h5>
+      <h5>1. Elementy Kluczowe</h4>
       <table style="width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.9rem;">
         <thead>
           <tr style="background-color: #f5f5f5;">
@@ -468,7 +468,7 @@ const allTopics = computed(() => [
         </tbody>
       </table>
 
-      <h5>2. Szacowanie Czasu (Klucz Nawigacji)</h5>
+      <h5>2. Szacowanie Czasu (Klucz Nawigacji)</h4>
       <p>Dokładne szacowanie czasu marszu jest niezbędne, aby dotrzeć do celu na czas (Time Check).</p>
       <ul>
         <li><strong>Prędkość Bazowa:</strong> Przyjmuje się, że średnia prędkość lekko uzbrojonego żołnierza to ok. 4 km/h na płaskim, dobrym terenie.</li>
@@ -481,7 +481,7 @@ const allTopics = computed(() => [
         <li><strong>Korekta na Teren:</strong> Odejmij 10-30% prędkości bazowej w terenie gęsto zalesionym, podmokłym lub kamienistym.</li>
       </ul>
 
-      <h5>3. Procedura Marszu z Tablicą</h5>
+      <h5>3. Procedura Marszu z Tablicą</h4>
       <ul>
         <li><strong>Nawigator:</strong> Prowadzi marsz, sprawdzając azymut i licząc kroki (lub korzystając z GPS/krokomierza) w celu kontroli odległości.</li>
         <li><strong>Punkt Krytyczny (PK):</strong> Po osiągnięciu PK, dowódca sprawdza zgodność czasu (ETA), zatrzymuje pododdział, koryguje ewentualne błędy i wydaje nowy rozkaz na kolejny odcinek trasy, korzystając z tabeli.</li>
@@ -503,7 +503,7 @@ const allTopics = computed(() => [
       <h4>I. Mierzenie Dystansu Metodą Parokroków</h4>
       <p>Metoda parokroków (ang. pace count) jest najczęściej stosowanym sposobem mierzenia dystansu w terenie, zwłaszcza przy słabej widoczności.</p>
 
-      <h5>1. Kalibracja Własnego Kroku (Krocomierz)</h5>
+      <h5>1. Kalibracja Własnego Kroku (Krocomierz)</h4>
       <ul>
         <li><strong>Definicja Parokroku:</strong> Parokrok to dwa kroki – liczysz tylko wtedy, gdy ta sama stopa (np. lewa) dotyka ziemi.</li>
         <li><strong>Kalibracja:</strong> Nawigator musi znać swoją średnią liczbę parokroków na standardowy dystans (zwykle 100 metrów).</li>
@@ -512,7 +512,7 @@ const allTopics = computed(() => [
         <li><strong>Wpływ Terenu:</strong> Pamiętaj, że liczba parokroków na 100 m wzrośnie na wzniesieniach, w piasku, w błocie oraz przy pełnym obciążeniu. Doświadczony nawigator stosuje korekty.</li>
       </ul>
 
-      <h5>2. Narzędzia Kontrolne</h5>
+      <h5>2. Narzędzia Kontrolne</h4>
       <p>Ponieważ liczenie parokroków w stresie lub zmęczeniu jest trudne, stosuje się narzędzia pomocnicze:</p>
       <ul>
         <li><strong>Sznurki (Pace Cord):</strong> Sznurek z węzłami (np. co 10 węzłów, gdzie każdy węzeł to 100 m). Po przeliczeniu 100 metrów, przesuwa się węzeł na sznurku, co zapewnia prosty rejestr przebytej odległości.</li>
@@ -522,14 +522,14 @@ const allTopics = computed(() => [
       <h4>II. Szacowanie Tempa i Czasu Marszu (ETA)</h4>
       <p>Dokładne szacowanie czasu przybycia (ETA – Estimated Time of Arrival) jest krytyczne dla synchronizacji działań (Time Check).</p>
 
-      <h5>1. Prędkość Marszu Bazowa</h5>
+      <h5>1. Prędkość Marszu Bazowa</h4>
       <p>Przy planowaniu trasy w Tabeli Marszu przyjmuje się standardowe prędkości dla piechoty:</p>
       <ul>
         <li><strong>Marsz Taktyczny</strong> (Pełne obciążenie, teren urozmaicony): 3 - 4 km/h</li>
         <li><strong>Marsz Szybki/Rekonesans</strong> (Lekkie obciążenie, dobry teren): 4 - 5 km/h</li>
       </ul>
 
-      <h5>2. Korekty Terenowe (Wpływ na Czas)</h5>
+      <h5>2. Korekty Terenowe (Wpływ na Czas)</h4>
       <p>Na każdą planowaną odległość należy nałożyć korekty związane z warunkami, które spowalniają tempo:</p>
 
       <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
@@ -564,7 +564,7 @@ const allTopics = computed(() => [
         </tbody>
       </table>
 
-      <h5>3. Wzór Czasu</h5>
+      <h5>3. Wzór Czasu</h4>
       <p>Po zastosowaniu korekt terenowych, czas przejścia danego odcinka jest obliczany według prostego wzoru:</p>
       <p style="text-align: center; font-size: 1.2em; background: #f8f9fa; padding: 1rem; border-radius: 4px; margin: 1rem 0;">
         <strong>Czas Przejścia = Dystans na Mapie (km) / Prędkość (km/h)</strong>
@@ -1022,5 +1022,12 @@ body.body--dark .topic-card .text-h6,
 body.body--dark .topic-card .text-caption,
 body.body--dark .topic-card .text-body2 {
   color: #f2f2f2 !important;
+}
+body.body--dark .article-content table td,
+body.body--dark .article-content table th {
+  color: #e0e0e0 !important;
+}
+body.body--dark .article-content table td {
+  background: #23242a !important;
 }
 </style>
