@@ -55,7 +55,7 @@ body.body--dark .reports-tile {
           <!-- Prezentacja wybranego meldunku -->
           <div v-if="selectedReport" class="q-mt-lg">
             <q-card class="shadow-5">
-              <q-card-section class="bg-primary text-white">
+              <q-card-section :class="[$q.dark.isActive ? 'bg-grey-5 text-white' : 'bg-primary text-white']">
                 <div class="row items-center">
                   <div class="col">
                     <div class="text-h5 q-mb-xs">{{ selectedReport.name }}</div>
@@ -64,7 +64,6 @@ body.body--dark .reports-tile {
                       :color="selectedReport.color"
                       text-color="white"
                       size="sm"
-                    >
                     >
                       {{ selectedReport.category }}
                     </q-chip>
@@ -190,10 +189,6 @@ body.body--dark .reports-tile {
 import BackNav from 'components/BackNav.vue'
 import { ref, computed, onMounted } from 'vue'
 import { useQuasar } from 'quasar'
-
-defineOptions({
-  name: 'ReportsPage'
-})
 
 const $q = useQuasar()
 
@@ -553,6 +548,12 @@ body.body--dark .report-footer {
   background: #232526 !important;
   color: #bdbdbd !important;
   border-top: 1px solid #444950 !important;
+}
+
+body.body--dark .bg-grey-5.text-white,
+body.body--dark .bg-grey-5 .text-h5,
+body.body--dark .bg-grey-5 {
+  color: #2e2e2e !important;
 }
 
   .meldunki-dropdown-full {

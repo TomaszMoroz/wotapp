@@ -93,14 +93,14 @@ body.body--dark .tile-content {
   color: #fff !important;
 }
 body.body--dark .tile-label {
-  color: #fff !important;
+  color: #cfcfcf !important;
 }
 body.body--dark .tile-icon-bg {
   background: #333 !important;
 }
 body.body--dark .tile-desc-chip-big {
   background: #333 !important;
-  color: #1d97bfce !important;
+  color: #20a9d7f1 !important;
 }
 .shooting-content-limiter {
   max-width: 1200px;

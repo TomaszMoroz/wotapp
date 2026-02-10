@@ -129,8 +129,13 @@ const chapters = [
       },
       {
         id: 'ch2_sub3',
-        title: 'PODROZDZIAŁ III - Apel',
-        description: 'Postanowienia ogólne dotyczące przeprowadzania apeli'
+        title: 'PODROZDZIAŁ III – APEL',
+        description: 'Postanowienia ogólne'
+      },
+      {
+        id: 'ch2_sub4',
+        title: 'PODROZDZIAŁ IV - Służba wewnętrzna',
+        description: 'Postanowienia ogólne, organizacja, skład, wyposażenie, wartownia, znaki rozpoznawcze, odprawa, zmiana wart, posterunki.'
       }
     ]
   }
@@ -206,7 +211,7 @@ const content = {
       <p><strong>18.</strong> Na polu walki cechuje go męstwo, odwaga i roztropność. Swoją postawą daje przykład innym żołnierzom.</p>
       <p><strong>19.</strong> Wykazuje szczególną troskę o współtowarzyszy broni, a w sytuacjach zagrożenia życia jest gotów do niesienia im pomocy.</p>
       <p><strong>20.</strong> W postępowaniu z jeńcami wojennymi i ludnością cywilną kieruje się zasadami humanitaryzmu i poszanowania wartości życia człowieka.</p>
-      <p><strong>21.</strong> W niewoli zachowuje się godnie i dochowuje wierności przysiędze wojskowej. Nie podejmuje i nie uczestniczy w działaniach, mogących szkodzić Ojczyźnie i współtowarzyszom broni.</p>
+      <p><strong>21.</strong> W niewoli zachowuje się godnie i dochowuje wierności przysiędze wojskowej. Nie podejmuje i nie uczestniczy w działaniach, mogących szkodzić Ojczyźnie i współtowarzyszy broni.</p>
     </div>
 
     <div class="document-section">
@@ -334,7 +339,7 @@ const content = {
     <p><strong>44.</strong> Żołnierz na pytanie przełożonego lub wyższego stopniem wojskowym odpowiada twierdząco: „Tak", „Tak jest", „Wiem", „Zrozumiałem" lub przecząco: „Nie", „Nie wiem", „Nie zrozumiałem".</p>
 
     <h4>Służbowe przedstawianie się</h4>
-    <p><strong>45.</strong> Służbowe przedstawianie się – to podanie przełożonemu (wyższemu stopniem wojskowym), który nie zna podwładnego (niższego stopniem wojskowym), swojego stanowiska służbowego, nazwy jednostki (instytucji) wojskowej, stopnia wojskowego i nazwiska, np.: „Panie pułkowniku, dowódca 1. batalionu czołgów 1. Brygady Pancernej, podpułkownik Kowalska”. Przełożony (wyższy stopniem wojskowym) postępuje podobnie, jeśli nie ma pewności, że jest znany. Żołnierz nie podaje nazwy jednostki (instytucji) wojskowej, kiedy przedstawia się w macierzystej jednostce (instytucji) wojskowej, a także kiedy jego przełożony osobiście przedstawia go swoim przełożonym (osobom kontrolującym), przedstawicielom innych jednostek (instytucji) wojskowych, np.: „Panie generale, dowódca kompanii czołgów 1. batalionu czołgów”. Wówczas wskazani żołnierze przedstawiają się odpowiadając: „Panie generale, dowódca 1. kompanii czołgów kapitan Kowalski”.</p>
+    <p><strong>45.</strong> Służbowe przedstawianie się – to podanie przełożonemu (wyższemu stopniem wojskowym), który nie zna podwładnego (niższego stopniem wojskowym), swojego stanowiska służbowego, nazwy jednostki (instytucji) wojskowej, stopnia wojskowego i nazwisko, np.: „Panie pułkowniku, dowódca 1. batalionu czołgów 1. Brygady Pancernej, podpułkownik Kowalska". Przełożony (wyższy stopniem wojskowym) postępuje podobnie, jeśli nie ma pewności, że jest znany. Żołnierz nie podaje nazwy jednostki (instytucji) wojskowej, kiedy przedstawia się w macierzystej jednostce (instytucji) wojskowej, a także kiedy jego przełożony osobiście przedstawia go swoim przełożonym (osobom kontrolującym), przedstawicielom innych jednostek (instytucji) wojskowych, np.: „Panie generale, dowódca kompanii czołgów 1. batalionu czołgów". Wówczas wskazani żołnierze przedstawiają się odpowiadając: „Panie generale, dowódca 1. kompanii czołgów kapitan Kowalski”.</p>
     <p><strong>46.</strong> Żołnierze będący studentami uczelni wojskowych lub słuchaczami Szkoły Legii Akademickiej, którzy złożyli przysięgę wojskową, przedstawiają się podając stopień wojskowy, posiadany tytuł i nazwisko, np.: „Panie majorze, kapral podchorąży Kowalski”.</p>
     <p><strong>47.</strong> Żołnierze zwracając się do siebie przedstawiają się. Niższy stopniem wojskowym przedstawia się pierwszy, gdy zwraca się do niego żołnierz wyższy stopniem wojskowym.</p>
     <p><strong>48.</strong> Żołnierze w służbowych rozmowach telefonicznych przedstawiają się nawzajem, podając swój stopień wojskowy i nazwisko. Pełniący służbę dyżurną podaje również funkcję, np.: „Oficer dyżurny 1. Brygady Zmechanizowanej, kapitan Kowalski”. Żołnierz po uzyskaniu informacji, że będzie rozmawiał z przełożonym, mówi, np.: „Melduję się panie kapitanie”, a po zakończeniu rozmowy – zgodnie z jej przebiegiem odpowiada – „ZROZUMIAŁEM”, „WYKONUJĘ”, „ROZKAZ”.</p>
@@ -373,7 +378,7 @@ const content = {
     i) przebywania w miejscach zbiorowego żywienia,
     j) prowadzenia psa służbowego.</p>
     <p><strong>58.</strong> W sytuacjach nieprzewidzianych w regulaminie, żołnierz zachowuje się w sposób zwyczajowo przyjęty w podobnych okolicznościach, kierując się zasadami dobrego wychowania.</p>
-    <p><strong>59.</strong> Przełożonym lub wyższym stopniem wojskowym występującym w ubiorze cywilnym, którzy są podwładnemu lub niższemu stopniem wojskowym znani, oddaje się honory zgodnie z przepisami wojskowymi. Podwładny lub niższy stopniem wojskowym będący w ubiorze cywilnym, pozdrawia przełożonych lub wyższych stopniem wojskowym w sposób przyjęty w środowisku cywilnym.</p>
+    <p><strong>59.</strong> Przełożonym lub wyższym stopniem wojskowym występującym w ubiorze cywilnym, którzy są podwładnym lub niższemu stopniem wojskowym znani, oddaje się honory zgodnie z przepisami wojskowymi. Podwładny lub niższy stopniem wojskowym będący w ubiorze cywilnym, pozdrawia przełożonych lub wyższych stopniem wojskowym w sposób przyjęty w środowisku cywilnym.</p>
     <p><strong>60.</strong> Żołnierzom innych państw honory oddaje się na zasadach wzajemności.</p>
 
     <h4>Oddawanie honorów przez pododdział (oddział)</h4>
@@ -414,7 +419,7 @@ const content = {
 
     <h4>Składanie meldunku</h4>
     <p><strong>69.</strong> Meldunek jest to zwięzła informacja, którą podwładny składa przełożonemu. W meldunku podaje się kolejno: formę grzecznościową, stopień wojskowy przełożonego lub stanowisko osoby niebędącej żołnierzem, swoje stanowisko, stopień wojskowy, nazwisko i czynność wykonywaną przez pododdział, jednostkę (instytucję) wojskową lub meldującego albo cel przybycia, np.: „Pani major, dowódca 1. kompanii, kapitan Kowalski melduje kompanię podczas ćwiczeń taktycznych...”.</p>
-    <p><strong>70.</strong> Przełożonemu, który zna meldującego (przedstawiającego) można składać meldunek bez podawania stanowiska, stopnia wojskowego i nazwiska. Podobne postępowanie dotyczy nazwy jednostki (instytucji) wojskowej. Jeśli meldunek jest składany jej dowódcy, to nazwę jednostki (instytucji) wojskowej można podać w formie skróconej, np.: brygada, dywizja.</p>
+    <p><strong>70.</strong> Przełożonemu, który zna meldującego (przedstawiającego) można składać meldunek bez podawania stanowiska, stopnia wojskowego i nazwisko. Podobne postępowanie dotyczy nazwy jednostki (instytucji) wojskowej. Jeśli meldunek jest składany jej dowódcy, to nazwę jednostki (instytucji) wojskowej można podać w formie skróconej, np.: brygada, dywizja.</p>
     <p><strong>71.</strong> Ponadto meldunek jest składany: Prezydentowi Rzeczypospolitej Polskiej, Marszałkowi Sejmu, Marszałkowi Senatu, Prezesowi Rady Ministrów, Ministrowi Obrony Narodowej i Szefowi Sztabu Generalnego Wojska Polskiego. Innym przełożonym – niebędącym żołnierzami, żołnierze przedstawiają informację, używając stosownych zwrotów, np.: „Panie dyrektorze, szef wydziału pierwszego, major Kowalska, przedstawiam (informuję, wyjaśniam), ...”.</p>
     <p><strong>72.</strong> Meldunek składa się w następujących sytuacjach:
     a) podczas pełnienia służby dyżurnej – w czasie pierwszego przybycia przełożonego w danym dniu (w terminie i miejscu wynikającym z instrukcji pełnienia służby lub decyzji przełożonego), np.: „Panie pułkowniku, oficer dyżurny brygady, kapitan Nowak melduje brygadę podczas realizacji zajęć programowych. W czasie pełnienia służby nic ważnego nie wydarzyło się” (albo melduje co się wydarzyło),
@@ -482,7 +487,7 @@ const content = {
     <p><strong>110.</strong> Żołnierz może nosić zarost nie dłuższy niż 5 mm ze względu na wskazania medyczne (odnotowane w zaświadczeniu wydanym przez lekarza zawierającym termin takiego zwolnienia). Dowódca jednostki (instytucji) wojskowej stwierdza ten fakt w rozkazie dziennym (decyzji). Żołnierz ma obowiązek powiadomić przełożonego o ustaniu wskazań medycznych. Przykład wyglądu żołnierza przedstawiają rysunki nr 6 i 7.</p>
     <p><strong>111.</strong> Żołnierz – kobieta ma mieć włosy krótkie lub krótko upięte z tyłu głowy sięgające maksymalnie do wysokości linii złożonego kołnierza/stójki bluzy mundurowej, kurtki mundurowej, koszulobluzy. Może golić głowę. Fryzura nie może przeszkadzać w bezpiecznym wykonywaniu zadań służbowych. Przykład wyglądu żołnierza przedstawiają rysunki nr 8-16.</p>
     <p><strong>112.</strong> Żołnierz – kobieta powinna upinać włosy przy użyciu akcesoriów niezagrażających jej bezpieczeństwu w kolorze dobranym do koloru włosów. Akcesoria powinny pełnić funkcję użytkową a nie dekoracyjną.</p>
-    <p><strong>113.</strong> Żołnierz – kobieta występując wyłącznie w mundurze wyjściowym oraz galowym może nosić po jednym, małym kolczyku w płatku ucha w kolorze złotym lub srebrnym. Kolczyki powinny być wpinane lub wkręcane i nie mogą sięgać poniżej płatka ucha. Kolczyki mają być jednakowe.</p>
+    <p><strong>113.</strong> Żołnierz – kobieta występująca wyłącznie w mundurze wyjściowym oraz galowym może nosić po jednym, małym kolczyku w płatku ucha w kolorze złotym lub srebrnym. Kolczyki powinny być wpinane lub wkręcane i nie mogą sięgać poniżej płatka ucha. Kolczyki mają być jednakowe.</p>
     <p><strong>114.</strong> Żołnierz może stosować środki kosmetyczne i lecznicze preparaty medyczne dobrane do naturalnego koloru cery.</p>
     <p><strong>115.</strong> Żołnierz nie farbuje włosów na kolor inny niż ich naturalne odcienie.</p>
     <p><strong>116.</strong> Żołnierz nie maluje paznokci. Może stosować bezbarwne środki kosmetyczne i lecznicze preparaty medyczne. Długość paznokci nie może wykraczać 2 mm poza opuszki palców. Przykład wyglądu paznokci przedstawia rysunek nr 17.</p>
@@ -543,7 +548,7 @@ const content = {
 
     <p><strong>138.</strong> Dla kilku jednostek (instytucji) wojskowych mających wspólnego bezpośredniego przełożonego, znajdujących się w jednym kompleksie, porządek dnia ustala ich przełożony.</p>
 
-    <p><strong>139.</strong> Jeżeli kilka jednostek (instytucji) wojskowych, niemających wzajemnej podległości, znajduje się w jednym kompleksie, dowódcy tych jednostek (instytucji) wojskowych ustalają własne porządki dnia w uzgodnieniu z pozostałymi dowódcami.</p>
+    <p><strong>139.</strong> Jeżeli kilka jednostek (instytucji) wojskowych, niemających wzajemnej podległości, znajduje się w jednym kompleksie, dowódcy tych jednostek (instytucji) wojskowych ustalają własne porządku dnia w uzgodnieniu z pozostałymi dowódcami.</p>
 
     <p><strong>140.</strong> W jednostkach (instytucjach) wojskowych, w których w strukturach etatowych nie występują pododdziały, można nie sporządzać porządku dnia.</p>
 
@@ -587,6 +592,185 @@ const content = {
     <p><strong>156.</strong> Dowódca jednostki (instytucji) wojskowej może zezwolić na nierealizowanie apelu popołudniowego, jeśli wymagają tego względy organizacyjne. Zakres czynności przewidziany dla niezrealizowanego apelu popołudniowego realizuje się na apelu porannym.</p>
 
     <p><strong>157.</strong> Organizatorem apelu na szczeblu kompanii (równorzędnej) jest szef pododdziału lub wyznaczony żołnierz.</p>
+  `,
+  ch2_sub4: `
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Postanowienia ogólne</h4>
+    <p><strong>158.</strong> Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</p>
+    <p><strong>159.</strong> Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</p>
+    <p><strong>160.</strong> Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</p>
+    <p><strong>161.</strong> Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</p>
+    <p><strong>162.</strong> Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</p>
+    <p><strong>163.</strong> Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</p>
+    <p><strong>164.</strong> Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</p>
+    <p><strong>165.</strong> Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</p>
+    <p><strong>166.</strong> Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</p>
+    <p><strong>167.</strong> Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</p>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Organizacja służby wartowniczej</h4>
+    <ol>
+      <li>189. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>190. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>191. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>192. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>193. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>194. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>195. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>196. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>197. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>198. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Skład warty wewnętrznej</h4>
+    <ol>
+      <li>207. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>208. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>209. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>210. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>211. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>212. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>213. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>214. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>215. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>216. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Wyposażenie warty wewnętrznej</h4>
+    <ol>
+      <li>217. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>218. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>219. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>220. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>221. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>222. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>223. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>224. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>225. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>226. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Wyposażenie wartowni i posterunków</h4>
+    <ol>
+      <li>227. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>228. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>229. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>230. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>231. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>232. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>233. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>234. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>235. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>236. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Znaki rozpoznawcze</h4>
+    <ol>
+      <li>237. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>238. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>239. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>240. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>241. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>242. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>243. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>244. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>245. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>246. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Skład służby wewnętrznej</h4>
+    <ol>
+      <li>247. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>248. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>249. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>250. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>251. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>252. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>253. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>254. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>255. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>256. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Odprawa służb wewnętrznych</h4>
+    <ol>
+      <li>257. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>258. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>259. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>260. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>261. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>262. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>263. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>264. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>265. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>266. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Zmiana wart</h4>
+    <ol>
+      <li>267. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>268. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>269. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>270. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>271. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>272. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>273. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>274. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>275. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>276. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Zmiana wartowników</h4>
+    <ol>
+      <li>277. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>278. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>279. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>280. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>281. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>282. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>283. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>284. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>285. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>286. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Postępowanie wartownika wobec osób zbliżających się do posterunku</h4>
+    <ol>
+      <li>287. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>288. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>289. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>290. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>291. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>292. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>293. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>294. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>295. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>296. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
+
+    <h3>PODROZDZIAŁ IV – SŁUŻBA WEWNĘTRZNA</h3>
+    <h4>Kontrola wartownika, czyszczenie broni, posiłki</h4>
+    <ol>
+      <li>297. Służba wewnętrzna jednostki (instytucji) wojskowej zapewnia jej dowódcy ciągłość dowodzenia.</li>
+      <li>298. Dowódca jednostki (instytucji) wojskowej ustala skład służb wewnętrznych zgodnie z potrzebami i specyfiką jednostki.</li>
+      <li>299. Służba wewnętrzna obejmuje: służbę dyżurną, służbę wartowniczą, służbę ochrony, służbę medyczną oraz inne służby określone przez dowódcę.</li>
+      <li>300. Skład służby wewnętrznej, jej zadania i zakres odpowiedzialności określa dowódca jednostki (instytucji) wojskowej.</li>
+      <li>301. Służba wewnętrzna pełniona jest w sposób ciągły, zgodnie z harmonogramem ustalonym przez dowódcę.</li>
+      <li>302. Żołnierze pełniący służbę wewnętrzną są zobowiązani do zachowania szczególnej czujności, dbałości o mienie jednostki oraz przestrzegania przepisów bezpieczeństwa.</li>
+      <li>303. Dowódca jednostki (instytucji) wojskowej jest odpowiedzialny za organizację, nadzór i kontrolę służby wewnętrznej.</li>
+      <li>304. Służba wewnętrzna podlega regularnej kontroli przez przełożonych oraz osoby wyznaczone przez dowódcę.</li>
+      <li>305. Wszelkie nieprawidłowości w pełnieniu służby wewnętrznej należy niezwłocznie zgłaszać dowódcy jednostki (instytucji) wojskowej.</li>
+      <li>306. Szczegółowe zasady pełnienia służby wewnętrznej określa regulamin jednostki (instytucji) wojskowej.</li>
+    </ol>
   `
 }
 

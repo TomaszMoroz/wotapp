@@ -441,6 +441,11 @@ body.body--dark [style*="color: #0f2c05"] {
   line-height: 1.5;
 }
 
+.force-description-modern {
+  color: #232b23;
+  line-height: 1.5;
+}
+
 .atmospheric-conditions {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -637,6 +642,12 @@ body.body--dark [style*="color: #0f2c05"] {
   .condition-item-modern,
   .tip-item-modern {
     padding: 12px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .force-description-modern {
+    color: #cccccc;
   }
 }
 </style>

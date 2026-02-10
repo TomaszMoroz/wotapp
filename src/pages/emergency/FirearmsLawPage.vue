@@ -4,7 +4,7 @@
       <BackNav color="black"/>
 
       <!-- Header -->
-      <div class="header-section q-mb-lg">
+      <div class="q-mb-lg">
         <div class="hero-section q-pa-lg rounded-borders">
           <div class="text-h4 text-weight-bold text-primary q-mb-sm">Warunki użycia broni palnej</div>
           <div class="text-body1 text-grey-6">Art. 45 - Środki przymusu bezpośredniego i broń palna</div>
@@ -76,7 +76,7 @@
                     <ul class="sublist">
                       <li>– wobec której użycie broni palnej było dopuszczalne w przypadkach określonych w pkt 1 lit. a-d i pkt 2,</li>
                       <li>– wobec której istnieje uzasadnione podejrzenie, że popełniła przestępstwo, o którym mowa w art. 115 § 20, art. 148, art. 156 § 1, art. 163-165, art. 197, art. 252 i art. 280-282 ustawy z dnia 6 czerwca 1997 r. - Kodeks karny,</li>
-                      <li>– dokonującej zamachu, o którym mowa w pkt 1 lit. d lub e,</li>
+                      <li>– dokonającej zamachu, o którym mowa w pkt 1 lit. d lub e,</li>
                       <li>– jeżeli schroniła się w miejscu trudno dostępnym, a z okoliczności zdarzenia wynika, że może użyć broni palnej lub innego niebezpiecznego przedmiotu,</li>
                     </ul>
                   </li>
@@ -239,6 +239,21 @@ import BackNav from 'components/BackNav.vue'
 
   .sublist {
     margin-left: 0.5rem;
+  }
+}
+
+/* Jasny zielony dla dark mode */
+@media (prefers-color-scheme: dark) {
+  .section-title {
+    color: #3f7856;
+  }
+
+  .sublist li {
+    color: #a3a1a1;
+  }
+
+  .hero-section {
+    background: rgba(255, 255, 255, 0.1);
   }
 }
 </style>

@@ -439,7 +439,7 @@ const scrollToSection = (sectionId) => {
 :deep(body.body--dark) .text-secondary,
 :deep(body.body--dark) .text-dark-green,
 :deep(body.body--dark) .text-light-green {
-  color: #ffe082 !important;
+  color: #60bd6a !important;
 }
 
 :deep(body.body--dark) .article-content {
@@ -490,13 +490,13 @@ body.body--dark .content-card-dark p,
 body.body--dark .hero-dark h1,
 body.body--dark .hero-dark h2,
 body.body--dark .hero-dark p {
-  color: #fff !important;
+  color: #e3e3e3 !important;
   font-weight: 600;
   text-shadow: 0 1px 4px #000a, 0 0px 1px #000a;
 }
 body.body--dark .content-card-dark strong,
 body.body--dark .hero-dark strong {
-  color: #ffe082 !important;
+  color: #4c9957 !important;
   font-weight: 700;
 }
 /* Nadpisanie zielonych odcieni w dark mode */
