@@ -237,7 +237,7 @@ T: Opatrunek uciskowy, podano morfina 10mg`
     name: 'MELDUNEK MEDEVAC',
     category: 'Meldunki medyczne',
     icon: 'emergency',
-    color: 'red-4',
+    color: 'pink',
     content: `MELDUNEK MEDEVAC - EWAKUACJA MEDYCZNA
 
 1. WSPÓŁRZĘDNE PUNKTU PODJĘCIA:
@@ -330,6 +330,22 @@ R (REACTION) - REAKCJA SIŁ WŁASNYCH:
 [OPIS PODEJMOWANYCH DZIAŁAŃ]
 
 Przykład: Zostaliśmy zaatakowani przez przeciwnika w sile drużyny. Przeciwnik prowadzi lekki ogień z broni strzeleckiej oraz prowadzi ostrzał moździerzowy. GRID to 12345 67890. Czas to 0500. Zajęliśmy pozycje obronne, Alfa flankuje przeciwnika od zachodu.`
+  },
+  {
+    id: 15,
+    name: 'SAS',
+    category: 'Meldunki taktyczne',
+    icon: 'report_problem',
+    color: 'red-4',
+    content: `MELDUNEK SAS
+  S – STRATY/STAN:
+    [STRATY W LUDZIACH – ranni, KIA]
+
+  A – AMUNICJA:
+    [STAN AMUNICJI]
+
+  S – SPRZĘT:
+    [STRATY W SPRZĘCIE NIEZBĘDNYM DO WYKONANIA ZADANIA]`
   },
   {
     id: 9,
@@ -433,7 +449,7 @@ Przykład: Ramzes, biorę RTO i kaemistę i idziemy sprawdzić teren pod punkt o
     name: 'UXO/IED SPOTREP - Niewybuch/Ładunek',
     category: 'Meldunki operacyjne',
     icon: 'report_problem',
-    color: 'green-6',
+    color: 'teal-6',
     content: `UXO/IED SPOTREP - RAPORT DOTYCZĄCY ODKRYCIA NIEWYBUCHU / IMPROWIZOWANEGO ŁADUNKU WYBUCHOWEGO
 
 1. WSPÓŁRZĘDNE PUNKTU PODJĘCIA:

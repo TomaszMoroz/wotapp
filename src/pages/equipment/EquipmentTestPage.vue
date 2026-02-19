@@ -301,7 +301,7 @@ const questions = [
     question: 'Jakie bezpieczniki posiada VIS-100?',
     type: 'single',
     answers: [
-      'Wewnętrzny blokada iglicy, zewnętrzny bezpiecznik skrzydełkowy, przerywacz', // poprawna
+      'Przerywacz, zwalniacz kurka, wewnętrzna blokada iglicy', // poprawna
       'Tylko bezpiecznik spustowy',
       'Wyłącznie bezpiecznik manualny',
       'Blokada magazynka i bezpiecznik spustowy',
