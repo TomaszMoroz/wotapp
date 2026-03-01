@@ -1,7 +1,3 @@
-body.body--dark .reports-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="page-background">
     <div class="container q-pa-sm">
@@ -722,5 +718,10 @@ body.body--dark .bg-grey-5 {
 
 .text-caption {
   font-weight: 500;
+}
+
+body.body--dark .reports-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 </style>

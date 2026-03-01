@@ -1,15 +1,3 @@
-/* Force q-tab-panel background in dark mode (deep override) */
-.theme-dark :deep(.q-tab-panel),
-.theme-dark :deep(.q-tab-panels) {
-  background: var(--q-card, #232526) !important;
-  color: var(--q-text-main, #f2f2f2) !important;
-}
-/* DARK for tab panels */
-.theme-dark .q-tab-panel,
-.theme-dark .q-tab-panels {
-  background: var(--q-card, #232526) !important;
-  color: var(--q-text-main, #f2f2f2) !important;
-}
 <template>
   <q-card class="cargo-shortcuts-card q-pa-xl" :class="[$q.dark.isActive ? 'theme-dark' : '', themeClass]">
     <div class="cargo-header">
@@ -367,6 +355,19 @@ loadShortcuts()
 .theme-dark .cargo-shortcuts-card,
 .theme-dark .route-tile,
 .theme-dark .shortcut-tile {
+  background: var(--q-card, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+
+/* Force q-tab-panel background in dark mode (deep override) */
+.theme-dark :deep(.q-tab-panel),
+.theme-dark :deep(.q-tab-panels) {
+  background: var(--q-card, #232526) !important;
+  color: var(--q-text-main, #f2f2f2) !important;
+}
+/* DARK for tab panels */
+.theme-dark .q-tab-panel,
+.theme-dark .q-tab-panels {
   background: var(--q-card, #232526) !important;
   color: var(--q-text-main, #f2f2f2) !important;
 }

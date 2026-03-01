@@ -1,7 +1,3 @@
-body.body--dark .shooting-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="modern-bg q-pa-lg" :dark="$q.dark.isActive">
     <div class="shooting-content-limiter">
@@ -184,5 +180,10 @@ body.body--dark .tile-desc-chip-big {
     min-width: 90vw;
     max-width: 98vw;
   }
+}
+
+body.body--dark .shooting-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 </style>

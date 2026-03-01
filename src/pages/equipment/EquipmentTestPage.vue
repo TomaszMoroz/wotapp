@@ -1,7 +1,3 @@
-body.body--dark .equipment-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="equipment-test-page-bg q-pa-md">
     <div class="test-header-row">
@@ -936,5 +932,10 @@ function resetTest () {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+body.body--dark .equipment-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 </style>
