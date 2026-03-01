@@ -1,7 +1,3 @@
-body.body--dark .tools-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
 <template>
   <q-page class="equipment-bg q-pa-md">
     <BackNav color="black"/>
@@ -26,8 +22,8 @@ body.body--dark .tools-tile {
           color="black"
         />
         <div class="q-mb-md row items-center q-gutter-x-md">
-          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="black" class="text-black" label-color="white" />
-          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="black" class="text-black" label-color="white" />
+          <q-radio v-model="snMode" val="manual" label="Wpisz SN" color="grey-3" class="text-grey-2" />
+          <q-radio v-model="snMode" val="scan" label="Skanuj SN" color="grey-3" class="text-grey-2" />
         </div>
         <q-input
           v-if="snMode === 'manual'"
@@ -483,5 +479,10 @@ watch(equipmentData, saveEquipment, { deep: true })
 }
 .q-select .q-field__marginal, .q-input .q-field__marginal {
   color: #fff !important;
+}
+
+body.body--dark .tools-tile {
+  border: 1.5px solid #444950 !important;
+  background: #2c313a !important;
 }
 </style>
