@@ -1226,95 +1226,148 @@ function handlePdfExport () {
 // Helper to draw MGRS grid on a canvas
 function drawMgrsGridOnCanvas (canvas, map, bounds) {
   const ctx = canvas.getContext('2d')
-  ctx.font = 'bold 14px Arial'
   const gridColor = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
-  ctx.fillStyle = gridColor
-  // Wyznacz globalny zakres easting/northing dla widocznego obszaru mapy
+
+  // 1) Najpierw próbujemy skopiować już narysowaną siatkę z kafli warstwy MGRS
+  // To gwarantuje zgodność 1:1 z widokiem na mapie i eliminuje błędy projekcji.
+  let copiedGridTiles = false
+  const mapEl = map.getContainer && map.getContainer()
+  if (mapEl) {
+    const mapRect = mapEl.getBoundingClientRect()
+    const gridTiles = mapEl.querySelectorAll('.leaflet-mgrs-grid-tile')
+    gridTiles.forEach((tile) => {
+      if (!(tile instanceof HTMLCanvasElement)) return
+      const rect = tile.getBoundingClientRect()
+      if (rect.width <= 0 || rect.height <= 0) return
+      const x = rect.left - mapRect.left
+      const y = rect.top - mapRect.top
+      try {
+        ctx.drawImage(tile, x, y, rect.width, rect.height)
+        copiedGridTiles = true
+      } catch {}
+    })
+  }
+  if (copiedGridTiles) return
+
+  // 2) Fallback: ręczne rysowanie siatki (gdy warstwa MGRS nie jest aktywna na mapie)
   const sw = bounds.getSouthWest()
   const ne = bounds.getNorthEast()
-  // Ustal dynamiczny krok siatki wg zoomu
   const zoom = map.getZoom ? map.getZoom() : 13
   let gridStep = 1000
   if (zoom < 6) gridStep = 10000
   if (zoom < 4) gridStep = 100000
-  // Ustal zakres szerokości/długości
+
   const minLat = Math.min(sw.lat, ne.lat)
   const maxLat = Math.max(sw.lat, ne.lat)
   const minLng = Math.min(sw.lng, ne.lng)
   const maxLng = Math.max(sw.lng, ne.lng)
-  // Próbkuj rogi i środek, aby znaleźć minimalny i maksymalny easting/northing oraz strefy
-  let minE = Infinity, maxE = -Infinity, minN = Infinity, maxN = -Infinity
-  let minZone = 60, maxZone = 1
-  for (const lat of [minLat, maxLat]) {
-    for (const lng of [minLng, maxLng]) {
-      const utmPt = utm.fromLatLon(lat, lng)
+
+  // Dla fallbacku używamy strefy ze środka widoku
+  let zoneNum = 34
+  let zoneLetter = 'U'
+  try {
+    const center = map.getCenter()
+    const centerUtm = utm.fromLatLon(center.lat, center.lng)
+    zoneNum = centerUtm.zoneNum
+    zoneLetter = centerUtm.zoneLetter
+  } catch {}
+
+  let minE = Infinity; let maxE = -Infinity; let minN = Infinity; let maxN = -Infinity
+  const samplePoints = [
+    [minLat, minLng], [minLat, maxLng], [maxLat, minLng], [maxLat, maxLng],
+    [(minLat + maxLat) / 2, (minLng + maxLng) / 2]
+  ]
+  samplePoints.forEach(([lat, lng]) => {
+    try {
+      const utmPt = utm.fromLatLon(lat, lng, zoneNum)
       minE = Math.min(minE, utmPt.easting)
       maxE = Math.max(maxE, utmPt.easting)
       minN = Math.min(minN, utmPt.northing)
       maxN = Math.max(maxN, utmPt.northing)
-      minZone = Math.min(minZone, utmPt.zoneNum)
-      maxZone = Math.max(maxZone, utmPt.zoneNum)
-    }
-  }
+    } catch {}
+  })
+
   minE = Math.floor(minE / gridStep) * gridStep
   maxE = Math.ceil(maxE / gridStep) * gridStep
   minN = Math.floor(minN / gridStep) * gridStep
   maxN = Math.ceil(maxN / gridStep) * gridStep
-  // Rysuj linie dla wszystkich stref UTM w zakresie
-  const maxSquares = 100
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'top'
-  // pionowe linie (easting) – zawsze od górnej do dolnej krawędzi mapy
-  for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
-    for (let e = minE, eCount = 0; e <= maxE && eCount < maxSquares; e += gridStep, eCount++) {
+
+  ctx.strokeStyle = gridColor
+  ctx.fillStyle = gridColor
+  ctx.lineWidth = 1
+  ctx.font = 'bold 12px Arial'
+
+  // Pionowe (easting)
+  let eIdx = 0
+  const eLabelEvery = zoom >= 11 ? 1 : (zoom >= 8 ? 2 : 3)
+  for (let e = minE; e <= maxE; e += gridStep) {
+    const points = []
+    for (let i = 0; i <= 20; i++) {
+      const n = minN + ((maxN - minN) * i / 20)
       try {
-        // Punkt na górnej krawędzi
-        const utmTop = utm.fromLatLon(maxLat, minLng)
-        const top = utm.toLatLon(e, utmTop.northing, zoneNum, 'N')
-        // Punkt na dolnej krawędzi
-        const utmBot = utm.fromLatLon(minLat, minLng)
-        const bot = utm.toLatLon(e, utmBot.northing, zoneNum, 'N')
-        ctx.save()
-        ctx.strokeStyle = gridColor
-        ctx.lineWidth = 1
-        ctx.beginPath()
-        ctx.moveTo(top.lng, top.lat)
-        ctx.lineTo(bot.lng, bot.lat)
-        ctx.stroke()
-        ctx.font = 'bold 14px Arial'
-        ctx.fillText(String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2), top.lng, 2)
-        ctx.restore()
+        const ll = utm.toLatLon(e, n, zoneNum, zoneLetter)
+        points.push([ll.latitude, ll.longitude])
       } catch {}
     }
+    if (points.length < 2) continue
+
+    ctx.beginPath()
+    points.forEach((ll, i) => {
+      const p = map.latLngToContainerPoint(ll)
+      if (i === 0) ctx.moveTo(p.x, p.y)
+      else ctx.lineTo(p.x, p.y)
+    })
+    ctx.stroke()
+
+    if (eIdx % eLabelEvery === 0) {
+      for (let i = 0; i < points.length; i++) {
+        const p = map.latLngToContainerPoint(points[i])
+        if (p.y >= 0 && p.y <= 25 && p.x >= 10 && p.x <= canvas.width - 10) {
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'top'
+          ctx.fillText(String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2), p.x, 2)
+          break
+        }
+      }
+    }
+    eIdx++
   }
-  // poziome linie (northing) – zawsze od lewej do prawej krawędzi mapy
-  ctx.textAlign = 'right'
-  ctx.textBaseline = 'middle'
-  for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
-    for (let n = minN, nCount = 0; n <= maxN && nCount < maxSquares; n += gridStep, nCount++) {
+
+  // Poziome (northing)
+  let nIdx = 0
+  const nLabelEvery = zoom >= 11 ? 1 : (zoom >= 8 ? 2 : 3)
+  for (let n = minN; n <= maxN; n += gridStep) {
+    const points = []
+    for (let i = 0; i <= 20; i++) {
+      const e = minE + ((maxE - minE) * i / 20)
       try {
-        // Punkt na lewej krawędzi
-        const utmLeft = utm.fromLatLon(minLat, minLng)
-        const left = utm.toLatLon(utmLeft.easting, n, zoneNum, 'N')
-        // Punkt na prawej krawędzi
-        const utmRight = utm.fromLatLon(minLat, maxLng)
-        const right = utm.toLatLon(utmRight.easting, n, zoneNum, 'N')
-        ctx.save()
-        ctx.strokeStyle = '#008800'
-        ctx.lineWidth = 1
-        ctx.beginPath()
-        ctx.moveTo(left.lng, left.lat)
-        ctx.lineTo(right.lng, right.lat)
-        ctx.stroke()
-        ctx.font = 'bold 14px Arial'
-        ctx.fillText(String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2), 18, left.lat)
-        ctx.restore()
+        const ll = utm.toLatLon(e, n, zoneNum, zoneLetter)
+        points.push([ll.latitude, ll.longitude])
       } catch {}
     }
+    if (points.length < 2) continue
+
+    ctx.beginPath()
+    points.forEach((ll, i) => {
+      const p = map.latLngToContainerPoint(ll)
+      if (i === 0) ctx.moveTo(p.x, p.y)
+      else ctx.lineTo(p.x, p.y)
+    })
+    ctx.stroke()
+
+    if (nIdx % nLabelEvery === 0) {
+      for (let i = 0; i < points.length; i++) {
+        const p = map.latLngToContainerPoint(points[i])
+        if (p.x >= 0 && p.x <= 25 && p.y >= 10 && p.y <= canvas.height - 10) {
+          ctx.textAlign = 'left'
+          ctx.textBaseline = 'middle'
+          ctx.fillText(String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2), 2, p.y)
+          break
+        }
+      }
+    }
+    nIdx++
   }
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'top'
-  // Usunięto stare, nieużywane fragmenty gridu (zoneNum/zoneLetter)
 }
 
 // Nowa warstwa siatki MGRS na bazie L.GridLayer
