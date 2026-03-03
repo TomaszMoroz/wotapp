@@ -113,8 +113,8 @@
                     label="Nazwa własna punktu"
                     dense outlined class="q-mt-md"
                   />
-                  <div v-if="inputMode === 'grid'">
-                    <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined readonly class="q-mt-md" />
+                  <div v-if="inputMode === 'grid' || showSpecialMgrsInputs">
+                    <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined class="q-mt-md" />
                     <q-input v-model="specialMgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
                     <q-input v-model="specialMgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
                   </div>
@@ -122,7 +122,7 @@
                 <q-card-actions align="right">
                   <q-btn flat label="Anuluj" color="primary" v-close-popup />
                   <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk"
-                    :disable="inputMode === 'grid' && (!specialType || specialMgrsPrefix.length !== 5 || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
+                    :disable="(inputMode === 'grid' || showSpecialMgrsInputs) && (!specialType || specialMgrsPrefix.length !== 5 || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
                   />
                 </q-card-actions>
               </q-card>
@@ -133,6 +133,22 @@
             <q-btn icon="picture_as_pdf" color="grey-9" @click="showPdfDialog = true" class="q-mr-md" />
             <q-btn icon="delete" color="negative" @click="clearAll" />
           </div>
+
+          <!-- Dialog wyboru typu punktu dla lokalizacji użytkownika -->
+          <q-dialog v-model="showUserLocationDialog">
+            <q-card style="min-width:320px;max-width:95vw;">
+              <q-card-section class="text-h6">Dodaj swoją lokalizację</q-card-section>
+              <q-card-section>
+                <p>Wybierz jak chcesz dodać obecną lokalizację do tabeli marszu:</p>
+              </q-card-section>
+              <q-card-actions vertical>
+                <q-btn label="Dodaj jako punkt trasy" color="primary" @click="addUserLocationAsRoute" class="full-width" />
+                <q-btn label="Dodaj jako punkt specjalny" color="blue-7" @click="addUserLocationAsSpecial" class="full-width" />
+                <q-btn label="Anuluj" flat color="grey" v-close-popup class="full-width" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+
           <!-- Tabele marszu pod mapą na desktopie -->
           <div v-if="!isMobile">
             <q-table
@@ -314,7 +330,7 @@ import BackNav from 'components/BackNav.vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-rotate'
-import { ref, onMounted, onBeforeUnmount, reactive, computed, watchEffect, watch } from 'vue'
+import { ref, onMounted, onBeforeUnmount, reactive, computed, watchEffect, watch, nextTick } from 'vue'
 import { useQuasar, Loading } from 'quasar'
 import * as mgrs from 'mgrs'
 import JsPDF from 'jspdf'
@@ -427,9 +443,15 @@ const pointHistory = ref([])
 const pinMode = ref(false)
 const routeTable = ref([])
 
+// Lokalizacja użytkownika
+const userLocationMarker = ref(null)
+const userLocation = ref(null)
+const showUserLocationDialog = ref(false)
+
 const showInfoDialog = ref(false)
 // --- Special Points State ---
 const showSpecialDialog = ref(false)
+const showSpecialMgrsInputs = ref(false)
 const specialType = ref('')
 const specialCustomName = ref('')
 const specialTypes = [
@@ -445,7 +467,7 @@ let addSpecialMode = false
 // Tryb dodawania punktów: 'map' (domyślnie) lub 'grid'
 const inputMode = ref('map')
 function handleSpecialDialogOk () {
-  if (inputMode.value === 'grid') {
+  if (inputMode.value === 'grid' || showSpecialMgrsInputs.value) {
     if (!specialMgrsPrefix.value || specialMgrsPrefix.value.length !== 5 || specialMgrsEasting.value.length < 2 || specialMgrsEasting.value.length > 5 || specialMgrsNorthing.value.length < 2 || specialMgrsNorthing.value.length > 5) {
       $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 5 znaków, easting i northing od 2 do 5 cyfr.' })
       return
@@ -464,6 +486,7 @@ function handleSpecialDialogOk () {
         pointHistory.value.push({ type: 'special', marker, idx: specialPoints.value.length - 1 })
       }
       showSpecialDialog.value = false
+      showSpecialMgrsInputs.value = false
       addSpecialMode = false
       return
     } catch (e) {
@@ -486,6 +509,10 @@ watch(showSpecialDialog, (val) => {
     specialMgrsPrefix.value = mgrsFull.slice(0, 5)
     specialMgrsEasting.value = ''
     specialMgrsNorthing.value = ''
+  }
+  // Resetuj flagę gdy dialog jest zamykany
+  if (!val) {
+    showSpecialMgrsInputs.value = false
   }
 })
 
@@ -826,6 +853,12 @@ function clearAll () {
     polylines.value.forEach(l => {
       try { map.value.removeLayer(l) } catch (e) {}
     })
+    // Usuń marker lokalizacji użytkownika
+    if (userLocationMarker.value) {
+      try { map.value.removeLayer(userLocationMarker.value) } catch (e) {}
+      userLocationMarker.value = null
+      userLocation.value = null
+    }
   }
   pins.value = []
   specialPoints.value = []
@@ -844,6 +877,14 @@ function centerOnUserLocation () {
     navigator.geolocation.getCurrentPosition(
       (pos) => {
         const { latitude, longitude } = pos.coords
+        userLocation.value = { lat: latitude, lng: longitude }
+
+        // Usuń stary marker lokalizacji użytkownika, jeśli istnieje
+        if (userLocationMarker.value) {
+          map.value.removeLayer(userLocationMarker.value)
+          userLocationMarker.value = null
+        }
+
         map.value.setView([latitude, longitude], 15, { animate: false })
         // Wymuś przeliczenie rozmiaru mapy i ponowne rysowanie siatki po centrowaniu
         setTimeout(() => {
@@ -903,6 +944,21 @@ function centerOnUserLocation () {
           if (map.value._mgrsGridLayer && typeof map.value._mgrsGridLayer._draw === 'function') {
             map.value._mgrsGridLayer._draw()
           }
+
+          // Dodaj marker lokalizacji użytkownika z pulsującym efektem
+          const pulsingIcon = L.divIcon({
+            className: 'user-location-marker',
+            html: '<div class="pulse-ring"></div><div class="pulse-dot"></div>',
+            iconSize: [30, 30],
+            iconAnchor: [15, 15]
+          })
+
+          userLocationMarker.value = L.marker([latitude, longitude], { icon: pulsingIcon }).addTo(map.value)
+
+          // Dodaj event listener na kliknięcie markera
+          userLocationMarker.value.on('click', () => {
+            showUserLocationDialog.value = true
+          })
         }, 400)
         locating.value = false
         $q.notify({ type: 'positive', message: 'Ustawiono widok na Twoją lokalizację.' })
@@ -917,6 +973,47 @@ function centerOnUserLocation () {
     locating.value = false
     $q.notify({ type: 'negative', message: 'Geolokalizacja nie jest obsługiwana.' })
   }
+}
+
+function addUserLocationAsRoute () {
+  if (!userLocation.value) return
+  addPinToRoute(userLocation.value.lat, userLocation.value.lng)
+  showUserLocationDialog.value = false
+  $q.notify({ type: 'positive', message: 'Dodano lokalizację jako punkt trasy' })
+}
+
+async function addUserLocationAsSpecial () {
+  if (!userLocation.value) return
+  showUserLocationDialog.value = false
+
+  // Przekonwertuj lokalizację na MGRS
+  const mgrsData = { prefix: '', easting: '', northing: '' }
+  try {
+    const mgrsStr = mgrs.forward([userLocation.value.lng, userLocation.value.lat], 5)
+    mgrsData.prefix = mgrsStr.slice(0, 5)
+    mgrsData.easting = mgrsStr.slice(5, 10)
+    mgrsData.northing = mgrsStr.slice(10, 15)
+  } catch (e) {
+    console.error('Błąd konwersji MGRS:', e)
+    $q.notify({ type: 'negative', message: 'Błąd konwersji współrzędnych na MGRS' })
+    return
+  }
+
+  // Ustaw wartości
+  specialType.value = ''
+  specialCustomName.value = ''
+  specialMgrsPrefix.value = mgrsData.prefix
+  specialMgrsEasting.value = mgrsData.easting
+  specialMgrsNorthing.value = mgrsData.northing
+
+  // Pokaż pola MGRS w dialogu
+  showSpecialMgrsInputs.value = true
+
+  // Czekaj na aktualizację DOM przed otwarciem dialogu
+  await nextTick()
+
+  // Pokaż dialog (watcher zadba o resetowanie flagi po zamknięciu)
+  showSpecialDialog.value = true
 }
 
 function calculateRoute () {
@@ -1728,5 +1825,52 @@ onBeforeUnmount(() => {
 .leaflet-mgrs-grid {
   z-index: 1500 !important;
   pointer-events: none;
+}
+</style>
+
+<style>
+/* Pulsujący marker lokalizacji użytkownika (niezależny od scoped) */
+.user-location-marker {
+  position: relative;
+}
+
+.pulse-dot {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background: #4285F4;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 8px rgba(66, 133, 244, 0.6);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  cursor: pointer;
+}
+
+.pulse-ring {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: rgba(66, 133, 244, 0.3);
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: pulse-animation 2s ease-out infinite;
+  z-index: 1;
+  cursor: pointer;
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
 }
 </style>
