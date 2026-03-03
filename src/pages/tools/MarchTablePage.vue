@@ -331,7 +331,7 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-rotate'
 import { ref, onMounted, onBeforeUnmount, reactive, computed, watchEffect, watch, nextTick } from 'vue'
-import { useQuasar, Loading } from 'quasar'
+import { useQuasar } from 'quasar'
 import * as mgrs from 'mgrs'
 import JsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
@@ -339,6 +339,18 @@ import leafletImage from 'leaflet-image'
 import * as utm from 'utm'
 
 const $q = useQuasar()
+
+const showLoading = (message) => {
+  if ($q?.loading?.show) {
+    $q.loading.show({ message })
+  }
+}
+
+const hideLoading = () => {
+  if ($q?.loading?.hide) {
+    $q.loading.hide()
+  }
+}
 
 // Ikony SVG z public/icons/
 // Dialog do wpisywania gridów
@@ -1126,7 +1138,7 @@ function ctxDrawRouteMarkersOnCanvas (canvas, map, pins) {
 }
 function handlePdfExport () {
   showPdfDialog.value = false
-  Loading.show({ message: 'Generowanie PDF...' })
+  showLoading('Generowanie PDF...')
   let routeName = ''
   if (pdfOptions.value.includes('name')) {
     routeName = pdfCustomName.value || pdfSelectedName.value || 'Tabela marszu'
@@ -1145,6 +1157,20 @@ function handlePdfExport () {
       if (!showMarkers) m.setOpacity(0)
       else m.setOpacity(1)
     })
+
+    // leaflet-image wymaga iconUrl; tymczasowo usuń markery bez obrazka (np. divIcon)
+    const detachedMarkers = []
+    map.value.eachLayer(layer => {
+      if (!(layer instanceof L.Marker)) return
+      const iconUrl = layer?.options?.icon?.options?.iconUrl
+      if (typeof iconUrl !== 'string' || iconUrl.length === 0) {
+        if (map.value.hasLayer(layer)) {
+          map.value.removeLayer(layer)
+          detachedMarkers.push(layer)
+        }
+      }
+    })
+
     map.value.invalidateSize()
     map.value.setZoom(map.value.getZoom()) // force repaint
     map.value.eachLayer(l => {
@@ -1177,8 +1203,14 @@ function handlePdfExport () {
             // Przywróć widoczność linii i markerów
             polylines.value.forEach(l => l.setStyle({ opacity: 1 }))
             markers.value.forEach(m => m.setOpacity(1))
+            detachedMarkers.forEach(marker => marker.addTo(map.value))
+
+            if (err) {
+              $q.notify({ type: 'warning', message: 'Nie udało się dodać obrazu mapy do PDF. Zapisano dokument bez mapy.' })
+            }
+
             exportPDF(routeName, mapImgData, mapImgDims)
-            Loading.hide()
+            hideLoading()
             pdfMapOptions.value = []
           })
         }, 400)
@@ -1187,7 +1219,7 @@ function handlePdfExport () {
   } else {
     // (Brak gridLayers do usuwania w tym bloku)
     exportPDF(routeName, null, null)
-    Loading.hide()
+    hideLoading()
   }
 }
 
@@ -1872,7 +1904,7 @@ function exportGPX () {
 watch(selectedMapLayer, (val, oldVal) => {
   if (map.value && baseLayers[val] && !isLayerLoading.value) {
     isLayerLoading.value = true
-    Loading.show({ message: 'Ładowanie warstwy mapy...' })
+    showLoading('Ładowanie warstwy mapy...')
     if (baseLayer) map.value.removeLayer(baseLayer)
     baseLayer = baseLayers[val]
     baseLayer.addTo(map.value)
@@ -1898,7 +1930,7 @@ watch(selectedMapLayer, (val, oldVal) => {
       setTimeout(() => {
         map.value.invalidateSize()
         debouncedMapRerender()
-        Loading.hide()
+        hideLoading()
         isLayerLoading.value = false
       }, 200)
     }
