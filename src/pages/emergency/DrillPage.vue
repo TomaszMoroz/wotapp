@@ -97,7 +97,7 @@
                 Żołnierze (pojazdy) ustawiają się w szyku zgodnie z podziałem organizacyjnym lub w sposób nakazany przez dowódcę. Niektóre szyki może już tworzyć dwóch żołnierzy (dwa pojazdy), np.: szereg, rząd.
                 <br><br>
                 Na szyk składają się następujące elementy:
-                <ul class="regulation-list">
+                <ul class="regulation-list" :class="isDark ? 'text-white' : 'text-black'">
                   <li><strong>skrzydło</strong> - prawe i lewe zakończenie szyku</li>
                   <li><strong>front</strong> - kierunek ustawienia żołnierzy (pojazdów)</li>
                   <li><strong>odstęp</strong> - oddalenie między żołnierzami (pojazdami), pododdziałami lub oddziałami, mierzone wzdłuż frontu szyku</li>
@@ -134,7 +134,7 @@
 
             <div class="article">
               <div class="article-number">6.</div>
-              <div class="article-content">
+              <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 <strong>Kolumna</strong> - to szyk, w którym żołnierze - stojąc frontem w jednym kierunku, jeden za drugim, w odległości około 1,2 m - tworzą rząd (kolumnę pojedynczą) lub dwa i więcej rzędów (kolumnę dwójkową, trójkową itp.) ustawionych w odstępach równych szerokości dłoni.
                 <br><br>
                 Pojazdy rozmieszcza się jeden za drugim w odległości piętnastu kroków, przodem w jednym kierunku. Odległość między pojazdami w kolumnie mierzy się od tylnej części pojazdu lub holowanego sprzętu do przedniej części następnego pojazdu.
@@ -161,7 +161,7 @@
               <h2 class="text-h5 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-white' : 'text-black'">
                 ROZDZIAŁ 2 - MUSZTRA INDYWIDUALNA
               </h2>
-              <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
+              <h3 class="text-h6 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-yellow-5' : 'text-brown-4'">
                 POSTAWA ZASADNICZA I SWOBODNA
               </h3>
             </div>
@@ -197,7 +197,7 @@
             </div>
 
             <div class="subsection-header">
-              <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
+              <h3 class="text-h6 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-yellow-5' : 'text-brown-4'">
                 ZWROTY
               </h3>
             </div>
@@ -210,7 +210,7 @@
             </div>
 
             <div class="subsection-header">
-              <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
+              <h3 class="text-h6 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-yellow-5' : 'text-brown-4'">
                 MARSZ, BIEG I ZATRZYMYWANIE
               </h3>
             </div>
@@ -251,7 +251,7 @@
             </div>
 
             <div class="subsection-header">
-              <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
+              <h3 class="text-h6 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-yellow-5' : 'text-brown-4'">
                 ODDAWANIE HONORÓW
               </h3>
             </div>
@@ -279,7 +279,7 @@
               <h2 class="text-h5 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-white' : 'text-black'">
                 ROZDZIAŁ 3 - MUSZTRA ZESPOŁOWA
               </h2>
-              <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
+              <h3 class="text-h6 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-yellow-5' : 'text-brown-4'">
                 DRUŻYNA
               </h3>
             </div>
@@ -288,7 +288,7 @@
               <div class="article-number">67.</div>
               <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W ugrupowaniu rozwiniętym drużyna występuje w następujących szykach:
-                <ul class="regulation-list">
+                <ul class="regulation-list" :class="isDark ? 'text-white' : 'text-black'">
                   <li>w szeregu</li>
                   <li>w dwuszeregu</li>
                 </ul>
@@ -299,7 +299,7 @@
               <div class="article-number">68.</div>
               <div class="article-content" :class="isDark ? 'text-white' : 'text-black'">
                 W ugrupowaniu marszowym drużyna występuje w następujących szykach:
-                <ul class="regulation-list">
+                <ul class="regulation-list" :class="isDark ? 'text-white' : 'text-black'">
                   <li>w rzędzie</li>
                   <li>w kolumnie dwójkowej</li>
                 </ul>
@@ -318,7 +318,7 @@
             </div>
 
             <div class="subsection-header">
-              <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
+              <h3 class="text-h6 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-yellow-5' : 'text-brown-4'">
                 PLUTON
               </h3>
             </div>
@@ -349,7 +349,7 @@
             </div>
 
             <div class="subsection-header">
-              <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
+              <h3 class="text-h6 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-yellow-5' : 'text-brown-4'">
                 MARSZ I ZATRZYMYWANIE
               </h3>
             </div>
@@ -375,7 +375,7 @@
               <h2 class="text-h5 text-weight-bold q-mb-md" :class="isDark ? 'text-white' : 'text-black'">
                 ROZDZIAŁ 4 - MUSZTRA Z POJAZDAMI
               </h2>
-              <h3 class="text-h6 text-weight-bold text-brown-4 q-mb-md">
+              <h3 class="text-h6 text-weight-bold q-mb-md" :class="$q.dark.isActive ? 'text-yellow-5' : 'text-brown-4'">
                 ZASADY OGÓLNE
               </h3>
             </div>
@@ -431,17 +431,6 @@ const scrollToSection = (sectionId) => {
 </script>
 
 <style scoped>
-:deep(body.body--dark) .text-brown-4,
-:deep(body.body--dark) .text-green,
-:deep(body.body--dark) .text-success,
-:deep(body.body--dark) .text-positive,
-:deep(body.body--dark) .text-accent,
-:deep(body.body--dark) .text-secondary,
-:deep(body.body--dark) .text-dark-green,
-:deep(body.body--dark) .text-light-green {
-  color: #60bd6a !important;
-}
-
 :deep(body.body--dark) .article-content {
   color: #cccccc !important;
 }
@@ -471,7 +460,7 @@ body.body--dark .article {
   color: #fff !important;
 }
 body.body--dark .article:hover {
-  background: #222 !important;
+  background: #2a2c2d !important;
 }
 body.body--dark .q-btn-dropdown {
   background: #232526 !important;
@@ -496,19 +485,11 @@ body.body--dark .hero-dark p {
 }
 body.body--dark .content-card-dark strong,
 body.body--dark .hero-dark strong {
-  color: #4c9957 !important;
+  color: #60bd6a !important;
   font-weight: 700;
 }
-/* Nadpisanie zielonych odcieni w dark mode */
-body.body--dark .text-brown-4,
-body.body--dark .text-green,
-body.body--dark .text-success,
-body.body--dark .text-positive,
-body.body--dark .text-accent,
-body.body--dark .text-secondary,
-body.body--dark .text-dark-green,
-body.body--dark .text-light-green {
-  color: #ffe082 !important;
+body.body--dark .article-content strong {
+  color: #60bd6a !important;
 }
 
 .page-background {
@@ -565,6 +546,18 @@ body.body--dark .text-light-green {
   background: #827858;
 }
 
+body.body--dark .regulation-content::-webkit-scrollbar-track {
+  background: #1a1c1d;
+}
+
+body.body--dark .regulation-content::-webkit-scrollbar-thumb {
+  background: #60bd6a;
+}
+
+body.body--dark .regulation-content::-webkit-scrollbar-thumb:hover {
+  background: #4c9957;
+}
+
 .regulation-section {
   margin-bottom: 2rem;
   padding: 1.5rem;
@@ -577,6 +570,14 @@ body.body--dark .text-light-green {
   border-bottom: 2px solid #a2ad59;
   padding-bottom: 1rem;
   margin-bottom: 1.5rem;
+}
+
+body.body--dark .section-header {
+  border-bottom: 2px solid #60bd6a;
+}
+
+body.body--dark .subsection-header {
+  border-bottom: 1px solid #60bd6a;
 }
 
 .subsection-header {
@@ -592,6 +593,10 @@ body.body--dark .text-light-green {
   background: #f3f4f6;
   border-radius: 8px;
   border-left: 3px solid #65473f;
+}
+
+body.body--dark .article {
+  border-left: 3px solid #ffe082;
 }
 
 .article-number {

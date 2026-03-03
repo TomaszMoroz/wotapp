@@ -1294,98 +1294,263 @@ const MGRSGridLayer = L.GridLayer.extend({
     tile.height = size.y
     const ctx = tile.getContext('2d')
     const map = this._map
-    // Wyznacz globalny zakres easting/northing dla widocznego obszaru mapy
-    const mapBounds = map.getBounds()
-    const mapSW = mapBounds.getSouthWest()
-    const mapNE = mapBounds.getNorthEast()
+
+    // Oblicz granice TEGO KONKRETNEGO KAFLA zamiast całej mapy
+    const nwPoint = coords.scaleBy(size)
+    const sePoint = nwPoint.add(size)
+    const nw = map.unproject(nwPoint, coords.z)
+    const se = map.unproject(sePoint, coords.z)
+
     const zoom = map.getZoom ? map.getZoom() : 13
     let gridStep = 1000
     if (zoom < 6) gridStep = 10000
     if (zoom < 4) gridStep = 100000
-    const minLat = Math.min(mapSW.lat, mapNE.lat)
-    const maxLat = Math.max(mapSW.lat, mapNE.lat)
-    const minLng = Math.min(mapSW.lng, mapNE.lng)
-    const maxLng = Math.max(mapSW.lng, mapNE.lng)
-    let minE = Infinity, maxE = -Infinity, minN = Infinity, maxN = -Infinity
-    let minZone = 60, maxZone = 1
-    for (const lat of [minLat, maxLat]) {
-      for (const lng of [minLng, maxLng]) {
+
+    // Użyj granic kafla zamiast całej mapy
+    const minLat = Math.min(nw.lat, se.lat)
+    const maxLat = Math.max(nw.lat, se.lat)
+    const minLng = Math.min(nw.lng, se.lng)
+    const maxLng = Math.max(nw.lng, se.lng)
+
+    // Określ dominującą strefę UTM na podstawie środka kafla
+    const centerLat = (minLat + maxLat) / 2
+    const centerLng = (minLng + maxLng) / 2
+    let dominantZone, dominantLetter
+    try {
+      const centerUtm = utm.fromLatLon(centerLat, centerLng)
+      dominantZone = centerUtm.zoneNum
+      dominantLetter = centerUtm.zoneLetter
+    } catch {
+      return tile // Jeśli nie można określić strefy, zwróć pusty kafel
+    }
+
+    // Sprawdź czy kafel przecina granicę strefy UTM
+    const cornerZones = []
+    const sampleCorners = [
+      [minLat, minLng], [minLat, maxLng], [maxLat, minLng], [maxLat, maxLng]
+    ]
+    for (const [lat, lng] of sampleCorners) {
+      try {
         const utmPt = utm.fromLatLon(lat, lng)
+        if (!cornerZones.find(z => z.zoneNum === utmPt.zoneNum)) {
+          cornerZones.push({ zoneNum: utmPt.zoneNum, zoneLetter: utmPt.zoneLetter })
+        }
+      } catch {}
+    }
+    const crossesZoneBoundary = cornerZones.length > 1
+
+    // Oblicz zakres UTM dla tego kafla W DOMINUJĄCEJ STREFIE
+    let minE = Infinity, maxE = -Infinity, minN = Infinity, maxN = -Infinity
+
+    // Próbkuj punkty wzdłuż granic kafla dla dokładniejszego zakresu
+    const samplePoints = [
+      [minLat, minLng], [minLat, maxLng], [maxLat, minLng], [maxLat, maxLng],
+      [(minLat + maxLat) / 2, minLng], [(minLat + maxLat) / 2, maxLng],
+      [minLat, (minLng + maxLng) / 2], [maxLat, (minLng + maxLng) / 2]
+    ]
+
+    for (const [lat, lng] of samplePoints) {
+      try {
+        const utmPt = utm.fromLatLon(lat, lng, dominantZone)
         minE = Math.min(minE, utmPt.easting)
         maxE = Math.max(maxE, utmPt.easting)
         minN = Math.min(minN, utmPt.northing)
         maxN = Math.max(maxN, utmPt.northing)
-        minZone = Math.min(minZone, utmPt.zoneNum)
-        maxZone = Math.max(maxZone, utmPt.zoneNum)
-      }
+      } catch {}
     }
-    minE = Math.floor(minE / gridStep) * gridStep
-    maxE = Math.ceil(maxE / gridStep) * gridStep
-    minN = Math.floor(minN / gridStep) * gridStep
-    maxN = Math.ceil(maxN / gridStep) * gridStep
-    // maxSquares nieużywane
+
+    // Rozszerz zakres o dodatkowy gridStep dla pewności
+    minE = Math.floor(minE / gridStep) * gridStep - gridStep
+    maxE = Math.ceil(maxE / gridStep) * gridStep + gridStep
+    minN = Math.floor(minN / gridStep) * gridStep - gridStep
+    maxN = Math.ceil(maxN / gridStep) * gridStep + gridStep
+
     ctx.strokeStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
     ctx.lineWidth = 1
     ctx.font = 'bold 13px Arial'
     ctx.fillStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
+
+    // Ustal jak często pokazywać etykiety w zależności od zoomu
+    let labelFrequency = 1 // Pokaż każdą etykietę
+    if (zoom < 8) {
+      labelFrequency = 3 // Pokaż co trzecią
+    } else if (zoom < 11) {
+      labelFrequency = 2 // Pokaż co drugą
+    }
+
+    // Rysuj linie pionowe (easting)
     ctx.textAlign = 'center'
     ctx.textBaseline = 'top'
-    for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
-      for (let e = minE; e <= maxE; e += gridStep) {
-        const points = []
-        for (let n = minN; n <= maxN; n += Math.max(gridStep, (maxN - minN) / 10)) {
-          try {
-            const latlng = utm.toLatLon(e, n, zoneNum, 'N')
-            if (latlng.latitude >= minLat && latlng.latitude <= maxLat && latlng.longitude >= minLng && latlng.longitude <= maxLng) {
-              points.push([latlng.latitude, latlng.longitude])
-            }
-          } catch {}
-        }
-        if (points.length > 1) {
-          const p1 = map.project(points[0], coords.z)
-          ctx.beginPath()
-          ctx.moveTo(p1.x - coords.x * size.x, p1.y - coords.y * size.y)
-          for (let i = 1; i < points.length; i++) {
-            const p = map.project(points[i], coords.z)
-            ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
+    let eastingIndex = 0
+    for (let e = minE; e <= maxE; e += gridStep) {
+      const points = []
+      // Generuj więcej punktów dla gładszej krzywej
+      const nSteps = 20
+      for (let i = 0; i <= nSteps; i++) {
+        const n = minN + (maxN - minN) * (i / nSteps)
+        try {
+          const latlng = utm.toLatLon(e, n, dominantZone, dominantLetter)
+          if (latlng.latitude >= minLat - 0.1 && latlng.latitude <= maxLat + 0.1 &&
+              latlng.longitude >= minLng - 0.1 && latlng.longitude <= maxLng + 0.1) {
+            points.push([latlng.latitude, latlng.longitude])
           }
-          ctx.stroke()
-          // Etykieta easting (na górze kafla)
-          ctx.font = 'bold 13px Arial'
-          ctx.fillText(String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2), p1.x - coords.x * size.x, 2)
+        } catch {}
+      }
+      if (points.length > 1) {
+        ctx.beginPath()
+        const firstPoint = map.project(points[0], coords.z)
+        ctx.moveTo(firstPoint.x - coords.x * size.x, firstPoint.y - coords.y * size.y)
+        for (let i = 1; i < points.length; i++) {
+          const p = map.project(points[i], coords.z)
+          ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
         }
+        ctx.stroke()
+
+        // Etykieta easting - szukaj przecięcia z górną krawędzią kafla
+        const shouldShowLabel = eastingIndex % labelFrequency === 0
+        if (shouldShowLabel) {
+          for (let i = 0; i < points.length; i++) {
+            const p = map.project(points[i], coords.z)
+            const tileY = p.y - coords.y * size.y
+            const tileX = p.x - coords.x * size.x
+            // Jeśli punkt jest blisko górnej krawędzi (w zakresie 0-30px) i w granicach kafla
+            if (tileY >= 0 && tileY <= 30 && tileX >= 10 && tileX <= size.x - 10) {
+              const label = String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2)
+              ctx.fillText(label, tileX, 2)
+              break
+            }
+          }
+        }
+        eastingIndex++
       }
     }
-    ctx.textAlign = 'right'
+
+    // Rysuj linie poziome (northing)
+    ctx.textAlign = 'left'
     ctx.textBaseline = 'middle'
-    for (let zoneNum = minZone; zoneNum <= maxZone; zoneNum++) {
-      for (let n = minN; n <= maxN; n += gridStep) {
-        const points = []
-        for (let e = minE; e <= maxE; e += Math.max(gridStep, (maxE - minE) / 10)) {
+    let northingIndex = 0
+    for (let n = minN; n <= maxN; n += gridStep) {
+      const points = []
+      const eSteps = 20
+      for (let i = 0; i <= eSteps; i++) {
+        const e = minE + (maxE - minE) * (i / eSteps)
+        try {
+          const latlng = utm.toLatLon(e, n, dominantZone, dominantLetter)
+          if (latlng.latitude >= minLat - 0.1 && latlng.latitude <= maxLat + 0.1 &&
+              latlng.longitude >= minLng - 0.1 && latlng.longitude <= maxLng + 0.1) {
+            points.push([latlng.latitude, latlng.longitude])
+          }
+        } catch {}
+      }
+      if (points.length > 1) {
+        ctx.beginPath()
+        const firstPoint = map.project(points[0], coords.z)
+        ctx.moveTo(firstPoint.x - coords.x * size.x, firstPoint.y - coords.y * size.y)
+        for (let i = 1; i < points.length; i++) {
+          const p = map.project(points[i], coords.z)
+          ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
+        }
+        ctx.stroke()
+
+        // Etykieta northing - szukaj przecięcia z lewą krawędzią kafla
+        const shouldShowLabel = northingIndex % labelFrequency === 0
+        if (shouldShowLabel) {
+          for (let i = 0; i < points.length; i++) {
+            const p = map.project(points[i], coords.z)
+            const tileX = p.x - coords.x * size.x
+            const tileY = p.y - coords.y * size.y
+            // Jeśli punkt jest blisko lewej krawędzi (w zakresie 0-30px) i w granicach kafla
+            if (tileX >= 0 && tileX <= 30 && tileY >= 10 && tileY <= size.y - 10) {
+              const label = String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2)
+              ctx.fillText(label, 2, tileY)
+              break
+            }
+          }
+        }
+        northingIndex++
+      }
+    }
+
+    // Rysuj granice stref UTM jeśli kafel przecina granicę
+    if (crossesZoneBoundary) {
+      ctx.strokeStyle = '#FF0000'
+      ctx.lineWidth = 2.5
+      ctx.setLineDash([])
+
+      // Rysuj pionową linię granicy strefy
+      const zoneBoundaryPoints = []
+      // Znajdź gdzie dokładnie przebiega granica (różnica w zoneNum)
+      for (let latStep = 0; latStep <= 40; latStep++) {
+        const lat = minLat + (maxLat - minLat) * (latStep / 40)
+        // Próbkuj długości geograficzne aby znaleźć granicę
+        for (let lngStep = 0; lngStep <= 40; lngStep++) {
+          const lng = minLng + (maxLng - minLng) * (lngStep / 40)
           try {
-            const latlng = utm.toLatLon(e, n, zoneNum, 'N')
-            if (latlng.latitude >= minLat && latlng.latitude <= maxLat && latlng.longitude >= minLng && latlng.longitude <= maxLng) {
-              points.push([latlng.latitude, latlng.longitude])
+            const utmHere = utm.fromLatLon(lat, lng)
+            const utmNext = utm.fromLatLon(lat, lng + 0.001)
+            // Jeśli zmienia się strefa, to jest granica
+            if (utmHere.zoneNum !== utmNext.zoneNum) {
+              zoneBoundaryPoints.push([lat, lng])
+              break
             }
           } catch {}
         }
-        if (points.length > 1) {
-          const p1 = map.project(points[0], coords.z)
-          ctx.beginPath()
-          ctx.moveTo(p1.x - coords.x * size.x, p1.y - coords.y * size.y)
-          for (let i = 1; i < points.length; i++) {
-            const p = map.project(points[i], coords.z)
-            ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
-          }
-          ctx.stroke()
-          // Etykieta northing (po lewej kafla)
-          if (p1.x - coords.x * size.x <= 5) {
-            ctx.font = 'bold 13px Arial'
-            ctx.fillText(String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2), 18, p1.y - coords.y * size.y)
-          }
+      }
+
+      if (zoneBoundaryPoints.length > 1) {
+        ctx.beginPath()
+        const firstPt = map.project(zoneBoundaryPoints[0], coords.z)
+        ctx.moveTo(firstPt.x - coords.x * size.x, firstPt.y - coords.y * size.y)
+        for (let i = 1; i < zoneBoundaryPoints.length; i++) {
+          const pt = map.project(zoneBoundaryPoints[i], coords.z)
+          ctx.lineTo(pt.x - coords.x * size.x, pt.y - coords.y * size.y)
+        }
+        ctx.stroke()
+
+        // Dodaj etykiety kwadratów 100km po obu stronach granicy
+        if (zoom >= 8) {
+          ctx.font = 'bold 16px Arial'
+          ctx.fillStyle = '#FF0000'
+          ctx.textAlign = 'center'
+          ctx.textBaseline = 'middle'
+
+          // Znajdź reprezentatywny punkt na granicy w środku kafla
+          const midBoundaryIdx = Math.floor(zoneBoundaryPoints.length / 2)
+          const [midLat, midLng] = zoneBoundaryPoints[midBoundaryIdx]
+
+          // Punkt po lewej stronie granicy
+          try {
+            const leftLng = midLng - 0.01
+            const leftMgrs = mgrs.forward([leftLng, midLat], 0) // 0 = tylko GZD + 100km
+            const leftSquare = leftMgrs.slice(0, 5) // np. "34UEC"
+            const leftPt = map.project([midLat, leftLng], coords.z)
+            const leftX = leftPt.x - coords.x * size.x
+            const leftY = leftPt.y - coords.y * size.y
+            if (leftX >= 0 && leftX <= size.x && leftY >= 0 && leftY <= size.y) {
+              ctx.fillText(leftSquare, leftX, leftY)
+            }
+          } catch {}
+
+          // Punkt po prawej stronie granicy
+          try {
+            const rightLng = midLng + 0.01
+            const rightMgrs = mgrs.forward([rightLng, midLat], 0)
+            const rightSquare = rightMgrs.slice(0, 5) // np. "33UXV"
+            const rightPt = map.project([midLat, rightLng], coords.z)
+            const rightX = rightPt.x - coords.x * size.x
+            const rightY = rightPt.y - coords.y * size.y
+            if (rightX >= 0 && rightX <= size.x && rightY >= 0 && rightY <= size.y) {
+              ctx.fillText(rightSquare, rightX, rightY)
+            }
+          } catch {}
         }
       }
+
+      // Resetuj ustawienia rysowania
+      ctx.setLineDash([])
+      ctx.lineWidth = 1
     }
+
     return tile
   }
 })
