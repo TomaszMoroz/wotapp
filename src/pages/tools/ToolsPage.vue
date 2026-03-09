@@ -34,7 +34,7 @@ const router = useRouter()
 const tools = [
   { title: 'Kalkulator odległości', icon: 'straighten', desc: 'Pomiar DWK1000', route: '/tools/distance' },
   { title: 'GROT Offset', icon: 'gps_fixed', desc: 'Korekta celowania', route: '/training' },
-  { title: 'Alfabet NATO', icon: 'record_voice_over', desc: 'Komunikacja fonetyczna', route: '/communication' },
+  { title: 'Alfabet NATO', icon: 'record_voice_over', desc: 'Znaki fonetyczne', route: '/communication' },
   { title: 'Trening korekty celowania', icon: 'tune', desc: 'Symulacja nastaw', route: '/tools/settings' },
   { title: 'Konwerter MILS - MOA', icon: 'swap_horiz', desc: 'Przelicznik jednostek', route: '/tools/mils-moa' },
   { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment' },

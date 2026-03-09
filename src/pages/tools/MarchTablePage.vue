@@ -193,7 +193,9 @@
                 row-key="id"
                 flat
                 dense
-                class="march-table-bg shadow-1 q-mb-md"
+                grid
+                hide-header
+                class="march-table-bg shadow-1 q-mb-md mobile-march-table"
                 :dark="$q.dark.isActive || themeClass === 'theme-dark'"
               />
               <q-table
@@ -203,7 +205,9 @@
                 row-key="__rowKey"
                 flat
                 dense
-                class="march-table-bg shadow-1"
+                grid
+                hide-header
+                class="march-table-bg shadow-1 mobile-march-table"
                 title="Punkty specjalne"
                 :dark="$q.dark.isActive || themeClass === 'theme-dark'"
               />
@@ -337,6 +341,7 @@ import JsPDF from 'jspdf'
 import autoTable from 'jspdf-autotable'
 import leafletImage from 'leaflet-image'
 import * as utm from 'utm'
+import geomagnetism from 'geomagnetism'
 
 const $q = useQuasar()
 
@@ -535,9 +540,10 @@ watch(showSpecialDialog, (val) => {
 const columns = [
   { name: 'lp', label: 'Lp.', field: 'lp', align: 'left' },
   { name: 'mgrs', label: 'MGRS', field: 'mgrs', align: 'left' },
-  { name: 'easting', label: 'Easting (UTM)', field: 'easting', align: 'left' },
-  { name: 'northing', label: 'Northing (UTM)', field: 'northing', align: 'left' },
+  // { name: 'easting', label: 'Easting (UTM)', field: 'easting', align: 'left' },
+  // { name: 'northing', label: 'Northing (UTM)', field: 'northing', align: 'left' },
   { name: 'azymut', label: 'Azymut', field: 'azymut', align: 'left' },
+  { name: 'azymutBusola', label: 'Azymut busola', field: 'azymutBusola', align: 'left' },
   { name: 'odleglosc', label: 'Odległość (m)', field: 'odleglosc', align: 'left' },
   { name: 'uwagi', label: 'Uwagi', field: 'uwagi', align: 'left' }
 ]
@@ -1038,6 +1044,11 @@ async function addUserLocationAsSpecial () {
 }
 
 function calculateRoute () {
+  const normalizeAzimuth = (value) => {
+    const normalized = ((value % 360) + 360) % 360
+    return Math.round(normalized)
+  }
+
   // Remove existing polylines from the map
   polylines.value.forEach(l => map.value && map.value.removeLayer(l))
   polylines.value = []
@@ -1060,8 +1071,27 @@ function calculateRoute () {
   }
   // Update route table
   routeTable.value = []
+  let areaDeclinationDeg = null
+  try {
+    let lat = null
+    let lng = null
+    if (map.value && typeof map.value.getCenter === 'function') {
+      const center = map.value.getCenter()
+      lat = center.lat
+      lng = center.lng
+    } else if (pins.value.length > 0) {
+      lat = pins.value[0].lat
+      lng = pins.value[0].lng
+    }
+    if (typeof lat === 'number' && typeof lng === 'number') {
+      const model = geomagnetism.model(new Date())
+      areaDeclinationDeg = model.point([lat, lng]).decl
+    }
+  } catch (e) {}
+
   for (let i = 0; i < pins.value.length; i++) {
     let azymut = '-'
+    let azymutBusola = '-'
     let odleglosc = '-'
     let mgrsStr = ''
     let utmE = '-'
@@ -1083,6 +1113,9 @@ function calculateRoute () {
       let brng = Math.atan2(y, x) * 180 / Math.PI
       brng = (brng + 360) % 360
       azymut = Math.round(brng)
+      if (typeof areaDeclinationDeg === 'number') {
+        azymutBusola = normalizeAzimuth(brng - areaDeclinationDeg)
+      }
       // Calculate distance (meters)
       const R = 6371000
       const dLat = (curr.lat - prev.lat) * Math.PI / 180
@@ -1099,6 +1132,7 @@ function calculateRoute () {
       easting: utmE,
       northing: utmN,
       azymut,
+      azymutBusola,
       odleglosc: i === 0 ? '-' : odleglosc,
       uwagi: ''
     })
@@ -2109,6 +2143,24 @@ onBeforeUnmount(() => {
   min-width: 140px;
 }
 @media (max-width: 600px) {
+  .mobile-march-table {
+    width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
+  }
+
+  .mobile-march-table :deep(.q-table__middle),
+  .mobile-march-table :deep(.q-table__grid-content),
+  .mobile-march-table :deep(.q-table__container) {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .mobile-march-table :deep(.q-table__grid-item) {
+    width: 100%;
+  }
+
   .march-btn {
     flex: 1 1 100%;
     min-width: 0;
