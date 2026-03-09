@@ -732,4 +732,50 @@ onUnmounted(() => {
     text-align: center;
   }
 }
+
+/* Dark Mode Styles */
+.body--dark .page-header {
+  background: #1e1e1e;
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #e0e0e0;
+}
+
+.body--dark .alphabet-card {
+  background: #2a2a2a;
+  border-color: #3a3a3a;
+  color: #e0e0e0;
+}
+
+.body--dark .alphabet-card:hover {
+  border-color: #42a5f5;
+  box-shadow: 0 8px 25px rgba(66, 165, 245, 0.3);
+}
+
+.body--dark .word-display {
+  color: #e0e0e0;
+}
+
+.body--dark .phonetic-display {
+  color: #9e9e9e;
+}
+
+.body--dark .test-header {
+  background: #1e1e1e;
+  color: #e0e0e0;
+}
+
+.body--dark .test-card {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+.body--dark .test-letter,
+.body--dark .test-word {
+  color: #42a5f5;
+}
+
+.body--dark .test-results .q-card {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
 </style>
