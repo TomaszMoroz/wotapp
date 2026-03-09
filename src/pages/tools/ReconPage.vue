@@ -2,7 +2,7 @@
   <q-page class="modern-bg q-pa-md">
     <div class="dashboard-main-container">
       <BackNav color="black"/>
-      <div class="row items-center q-mb-xl">
+      <div class="row items-center q-mb-xl top-title-panel">
         <div class="col">
           <div class="text-h4 text-weight-bold modern-title">Rozpoznanie (sprzęt FR)</div>
           <div class="text-subtitle1 text-grey-7 q-mt-xs">Wybierz tryb nauki lub testu</div>

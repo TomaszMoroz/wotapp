@@ -1,7 +1,7 @@
 <template>
   <q-page class="modern-bg q-pa-lg" :dark="$q.dark.isActive">
     <div class="shooting-content-limiter">
-      <div class="row items-center justify-between q-mb-xl">
+      <div class="row items-center justify-between q-mb-xl top-title-panel">
         <BackNav :color="$q.dark.isActive ? 'white' : 'black'"/>
         <div>
           <div class="text-h3 text-weight-bold modern-title" :style="$q.dark.isActive ? 'color:#fff' : ''">Strzelectwo</div>

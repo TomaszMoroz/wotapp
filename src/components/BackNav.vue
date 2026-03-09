@@ -51,6 +51,14 @@ const props = defineProps({
 const navBtnColor = computed(() => props.color === 'black' ? 'black' : 'white')
 const navBtnTextColor = computed(() => props.color === 'black' ? 'black' : 'white')
 
+// Routes that are flat (single-segment) but belong to a subsection menu.
+const SECTION_PARENT_MAP = {
+  '/ranks': '/emergency',
+  '/regulations': '/emergency',
+  '/firearms-law': '/emergency',
+  '/drill': '/emergency'
+}
+
 // Określ, czy można wrócić o jeden poziom wyżej (czyli nie jesteśmy na dashboardzie ani na głównej sekcji)
 
 const canGoBack = computed(() => {
@@ -60,6 +68,10 @@ const canGoBack = computed(() => {
 })
 
 function getParentPath () {
+  if (SECTION_PARENT_MAP[route.path]) {
+    return SECTION_PARENT_MAP[route.path]
+  }
+
   // Ucinamy ostatni segment ścieżki (np. /tools/equipment -> /tools)
   const segments = route.path.split('/').filter(Boolean)
   if (segments.length === 0) return '/'

@@ -238,7 +238,7 @@ function formatSevereRisk (val) {
   color: var(--military-primary, #2D3E2F);
 }
 body.body--dark .text-h5 {
-  color: #a7f5a7 !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 .weather-list {
   max-height: 300px;
@@ -246,7 +246,7 @@ body.body--dark .text-h5 {
 }
 body.body--dark .q-tab--active,
 body.body--dark .q-tabs__tab--active {
-  color: #232b23 !important;
-  background: #a7f5a7 !important;
+  color: var(--g-dark-text, #e8eaed) !important;
+  background: color-mix(in srgb, var(--g-dark-accent, #a8c7fa) 22%, transparent) !important;
 }
 </style>

@@ -11,16 +11,16 @@
             <q-btn
               dense round icon="help_outline"
               :outline="true"
-              :color="$q.dark.isActive ? 'dark' : 'primary'"
+              :color="$q.dark.isActive ? 'grey-8' : 'primary'"
               aria-label="Instrukcja"
               @click="showInstruction = true"
-              :style="$q.dark.isActive ? 'background:#fff !important;color:#23272b !important;border:1.5px solid #23272b !important;' : 'color:#1976d2;'"
+              class="header-help-btn"
             />
           </div>
           <q-dialog v-model="showInstruction" persistent>
             <q-card style="max-width: 400px;">
               <q-card-section class="row items-center q-pb-none">
-                <q-icon name="help_outline" :color="$q.dark.isActive ? 'white' : 'primary'" size="md" class="q-mr-md" :style="$q.dark.isActive ? 'background:#23272b; border-radius:50%;' : ''" />
+                <q-icon name="help_outline" :color="$q.dark.isActive ? 'grey-2' : 'primary'" size="md" class="q-mr-md instruction-help-icon" />
                 <div class="text-h6">Instrukcja obsługi kalkulatora nastaw</div>
               </q-card-section>
               <q-card-section>
@@ -901,6 +901,37 @@ onUnmounted(() => {
   padding: 24px;
   backdrop-filter: blur(10px);
   border: 1px solid rgba(25, 118, 210, 0.1);
+}
+
+body.body--dark .page-header {
+  background: var(--g-dark-surface-2, #303134) !important;
+  border: 1px solid color-mix(in srgb, var(--g-dark-border, #5f6368) 45%, transparent) !important;
+  color: var(--g-dark-text, #e8eaed) !important;
+}
+
+body.body--dark .page-header .text-primary,
+body.body--dark .page-header .text-h4,
+body.body--dark .page-header .text-subtitle1,
+body.body--dark .page-header .text-grey-7 {
+  color: var(--g-dark-text, #e8eaed) !important;
+}
+
+.header-help-btn {
+  color: #1976d2;
+}
+
+body.body--dark .header-help-btn {
+  background: var(--g-dark-surface, #292a2d) !important;
+  color: var(--g-dark-accent, #a8c7fa) !important;
+  border: 1px solid color-mix(in srgb, var(--g-dark-border, #5f6368) 45%, transparent) !important;
+}
+
+.instruction-help-icon {
+  border-radius: 50%;
+}
+
+body.body--dark .instruction-help-icon {
+  background: var(--g-dark-surface, #292a2d) !important;
 }
 
 .controls-card {

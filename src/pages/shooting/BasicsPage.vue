@@ -334,7 +334,7 @@ body.body--dark [style*="color:#232b23"],
 body.body--dark [style*="color: #232b23"],
 body.body--dark [style*="color:#0f2c05"],
 body.body--dark [style*="color: #0f2c05"] {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 
 body.body--dark .text-primary,
@@ -351,7 +351,7 @@ body.body--dark .text-military-brown-light,
 body.body--dark .text-military-accent,
 body.body--dark .text-military-accent-dark,
 body.body--dark .text-military-accent-light {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 
 body.body--dark .modern-bg {
@@ -365,16 +365,16 @@ body.body--dark .modern-hero-section {
 body.body--dark .modern-content-card,
 body.body--dark .blos-item-modern {
   background: #232526 !important;
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
   border: 1.5px solid #444950 !important;
 }
 body.body--dark .modern-card-header {
   background: #232526 !important;
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 body.body--dark .text-body1,
 body.body--dark .text-subtitle2 {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 body.body--dark .blos-rules-modern,
 body.body--dark .blos-reminder-modern,
@@ -387,24 +387,24 @@ body.body--dark .blos-header-modern {
 }
 body.body--dark .text-grey-7,
 body.body--dark .text-grey-8 {
-  color: #bdbdbd !important;
+  color: var(--g-dark-text-muted, #9aa0a6) !important;
 }
 body.body--dark .blos-letter-modern {
   filter: brightness(0.8) contrast(1.2);
 }
 body.body--dark .q-chip {
-  background: #333 !important;
-  color: #ffe082 !important;
+  background: var(--g-dark-surface-2, #303134) !important;
+  color: var(--g-dark-accent, #a8c7fa) !important;
 }
 body.body--dark .text-green,
 body.body--dark .text-success,
 body.body--dark .text-positive,
 body.body--dark .text-dark-green,
 body.body--dark .text-light-green {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 body.body--dark .modern-title {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 
 .modern-bg {

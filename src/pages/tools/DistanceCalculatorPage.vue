@@ -2,7 +2,7 @@
   <q-page class="modern-bg q-pa-lg">
     <div class="section-header-limited">
       <BackNav color="black"/>
-      <div class="row items-center justify-between q-mb-xl">
+      <div class="row items-center justify-between q-mb-xl top-title-panel">
         <div>
           <div class="text-h3 text-weight-bold modern-title text-green-8">Kalkulator odległości</div>
           <div class="text-subtitle1 text-grey-7 q-mt-xs">Obliczanie odległości metodą \"DWK1000\"</div>

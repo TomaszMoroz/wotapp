@@ -6,7 +6,7 @@ body.body--dark .emergency-tile {
   <q-page class="modern-bg q-pa-md" :dark="$q.dark.isActive">
     <div class="dashboard-main-container">
       <BackNav :color="$q.dark.isActive ? 'white' : 'black'"/>
-      <div class="row items-center justify-between q-mb-xl">
+      <div class="row items-center justify-between q-mb-xl top-title-panel">
       <div>
         <div class="text-h4 text-weight-bold modern-title">Stopnie, regulamin, prawo</div>
         <div class="text-subtitle1 text-grey-7 q-mt-xs">Wojskowe oznaczenia i przepisy</div>
@@ -22,7 +22,7 @@ body.body--dark .emergency-tile {
             <div class="tile-label-row">
               <span class="tile-label">Stopnie Wojskowe</span>
             </div>
-            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Oznaczenia i hierarchia WOT</q-chip>
+            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Oznaczenia stopni</q-chip>
           </q-card-section>
         </q-card>
           <q-card class="modern-tile" :dark="$q.dark.isActive" @click="navigateTo('/regulations')">

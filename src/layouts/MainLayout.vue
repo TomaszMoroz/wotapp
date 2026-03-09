@@ -11,7 +11,7 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-header elevated class="bg-military-primary dashboard-header" :dark="$q.dark.isActive">
+    <q-header elevated :class="[$q.dark.isActive ? 'google-dark-header' : 'bg-military-primary', 'dashboard-header']" :dark="$q.dark.isActive">
           <!-- <q-dialog v-model="pushDialog" persistent>
             <q-card>
               <q-card-section>
@@ -435,6 +435,7 @@
           </div>
           <div class="text-caption text-grey-6 q-mt-sm">Aplikacja wewnętrzna</div>
           <div class="text-caption text-grey-7 q-mt-sm">Kontakt: Tomasz Mo 83</div>
+          <div class="text-caption text-grey-7 q-mt-sm">tmoroz688@gmail.com</div>
         </div>
 
         <!-- <q-item-label header class="text-grey-7 text-weight-bold q-px-md">
@@ -477,10 +478,12 @@ import pkg from '../../package.json'
 import { useQuasar, Dark } from 'quasar'
 import { useRoute } from 'vue-router'
 import logo721 from 'assets/721.jpeg'
+import { storeToRefs } from 'pinia'
+import { useThemeStore } from 'stores/theme-store'
 
 const appVersion = pkg.version
-const THEME_KEY = 'wot_theme_mode'
-const themeMode = ref(localStorage.getItem(THEME_KEY) || 'light')
+const themeStore = useThemeStore()
+const { themeMode } = storeToRefs(themeStore)
 
 const themeClass = computed(() => {
   return ''
@@ -492,24 +495,13 @@ const themeLabel = computed(() => {
 })
 
 function cycleTheme () {
-  if (themeMode.value === 'light') themeMode.value = 'dark'
-  else themeMode.value = 'light'
-  localStorage.setItem(THEME_KEY, themeMode.value)
+  if (themeMode.value === 'light') themeStore.setThemeMode('dark')
+  else themeStore.setThemeMode('light')
 }
 
 watch(themeMode, val => {
-  if (val === 'dark') {
-    Dark.set(true)
-  } else {
-    Dark.set(false)
-  }
-})
-// Initial mode
-if (themeMode.value === 'dark') {
-  Dark.set(true)
-} else {
-  Dark.set(false)
-}
+  Dark.set(val === 'dark')
+}, { immediate: true })
 
 const deferredPrompt = ref(null)
 const showInstall = ref(false)

@@ -1,6 +1,6 @@
 import { Dark } from 'quasar'
 
 export default async () => {
-  // Do not enable dark mode automatically; will be controlled by user in MainLayout
-  Dark.set(false)
+  const themeMode = localStorage.getItem('wot_theme_mode') || 'light'
+  Dark.set(themeMode === 'dark')
 }

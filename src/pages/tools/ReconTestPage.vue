@@ -5,7 +5,7 @@
         <BackNav color="black"/>
       </div>
       <div class="test-center-wrap">
-        <div class="row items-center q-mb-xl">
+        <div class="row items-center q-mb-xl top-title-panel">
         <div class="col">
           <div class="text-h4 text-weight-bold modern-title">Test rozpoznania sprzętu FR</div>
           <div class="text-subtitle1 text-grey-7 q-mt-xs">Wpisz nazwę pojazdu i opcjonalnie wymiary</div>

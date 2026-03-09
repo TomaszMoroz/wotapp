@@ -36,7 +36,7 @@ const tiles = [
   { label: 'Stopnie, regulamin, prawo', icon: 'military_tech', desc: 'Informacje', route: '/emergency', title: 'Stopnie, regulamin, prawo' },
   { label: 'Wyposażenie', icon: 'inventory', desc: 'Broń etatowa', route: '/equipment', title: 'Wyposażenie' },
   { label: 'Meldunki', icon: 'description', desc: 'Raporty wojskowe', route: '/reports', title: 'Meldunki' },
-  { label: 'Strzelectwo', icon: 'gps_fixed', desc: 'Balistyka, teoria, technika', route: '/shooting', title: 'Strzelectwo' },
+  { label: 'Strzelectwo', icon: 'gps_fixed', desc: 'Balistyka, teoria, inne', route: '/shooting', title: 'Strzelectwo' },
   { label: 'TCCC', icon: 'medical_services', desc: 'Taktyczna pomoc', route: '/tccc', title: 'TCCC' },
   { label: 'Taktyka, dowodzenie i procedury', icon: 'school', desc: 'Materiały szkoleniowe', route: '/tactics', title: 'Taktyka, dowodzenie, procedury' },
   { label: 'Topografia', icon: 'map', desc: 'Mapy i nawigacja', route: '/topography', title: 'Topografia' },

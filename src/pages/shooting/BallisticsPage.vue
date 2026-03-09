@@ -270,18 +270,18 @@ body.body--dark .modern-card-header {
 }
 body.body--dark .text-body1,
 body.body--dark .text-subtitle2 {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 body.body--dark .text-grey-7,
 body.body--dark .text-grey-8 {
-  color: #bdbdbd !important;
+  color: var(--g-dark-text-muted, #9aa0a6) !important;
 }
 body.body--dark .modern-title {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 body.body--dark .q-chip {
-  background: #333 !important;
-  color: #a7f5a7 !important;
+  background: var(--g-dark-surface-2, #303134) !important;
+  color: var(--g-dark-accent, #a8c7fa) !important;
 }
 body.body--dark .text-green,
 body.body--dark .text-success,
@@ -302,13 +302,13 @@ body.body--dark .text-military-brown-light,
 body.body--dark .text-military-accent,
 body.body--dark .text-military-accent-dark,
 body.body--dark .text-military-accent-light {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 body.body--dark [style*="color:#232b23"],
 body.body--dark [style*="color: #232b23"],
 body.body--dark [style*="color:#0f2c05"],
 body.body--dark [style*="color: #0f2c05"] {
-  color: #cccccc !important;
+  color: var(--g-dark-text, #e8eaed) !important;
 }
 .page-background {
   background: linear-gradient(135deg, #2C2C2C 0%, #1A1A1A 100%);

@@ -2,7 +2,7 @@
   <q-page class="modern-bg q-pa-md">
     <div class="dashboard-main-container">
     <BackNav color="black"/>
-      <div class="row items-center justify-between q-mb-xl">
+      <div class="row items-center justify-between q-mb-xl top-title-panel">
       <div>
         <div class="text-h3 text-weight-bold modern-title">Narzędzia</div>
         <div class="text-subtitle1 text-grey-7 q-mt-xs">Kalkulatory i narzędzia wojskowe</div>
@@ -100,7 +100,7 @@ function navigateTo (path) {
 }
 
   body.body--dark .modern-title {
-    color: #4c914c !important;
+    color: var(--g-dark-text, #e8eaed) !important;
   }
 .tile-content {
   display: flex;
