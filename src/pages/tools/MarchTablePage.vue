@@ -395,7 +395,9 @@ function addGridPoint () {
     $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 5 znaków, easting i northing od 2 do 5 cyfr.' })
     return
   }
-  const mgrsFull = mgrsPrefix.value.slice(0, 5) + mgrsEasting.value + mgrsNorthing.value
+  const eastingPadded = mgrsEasting.value.padStart(5, '0')
+  const northingPadded = mgrsNorthing.value.padStart(5, '0')
+  const mgrsFull = mgrsPrefix.value.slice(0, 5) + eastingPadded + northingPadded
   try {
     const [lng, lat] = mgrs.toPoint(mgrsFull)
     addPinToRoute(lat, lng)
@@ -484,7 +486,9 @@ function handleSpecialDialogOk () {
       $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 5 znaków, easting i northing od 2 do 5 cyfr.' })
       return
     }
-    const mgrsFull = specialMgrsPrefix.value.slice(0, 5) + specialMgrsEasting.value + specialMgrsNorthing.value
+    const eastingPadded = specialMgrsEasting.value.padStart(5, '0')
+    const northingPadded = specialMgrsNorthing.value.padStart(5, '0')
+    const mgrsFull = specialMgrsPrefix.value.slice(0, 5) + eastingPadded + northingPadded
     try {
       const [lng, lat] = mgrs.toPoint(mgrsFull)
       specialPoints.value.push({ lat, lng, type: specialType.value, name: specialCustomName.value || specialType.value })
@@ -531,6 +535,8 @@ watch(showSpecialDialog, (val) => {
 const columns = [
   { name: 'lp', label: 'Lp.', field: 'lp', align: 'left' },
   { name: 'mgrs', label: 'MGRS', field: 'mgrs', align: 'left' },
+  { name: 'easting', label: 'Easting (UTM)', field: 'easting', align: 'left' },
+  { name: 'northing', label: 'Northing (UTM)', field: 'northing', align: 'left' },
   { name: 'azymut', label: 'Azymut', field: 'azymut', align: 'left' },
   { name: 'odleglosc', label: 'Odległość (m)', field: 'odleglosc', align: 'left' },
   { name: 'uwagi', label: 'Uwagi', field: 'uwagi', align: 'left' }
@@ -768,9 +774,12 @@ async function searchArea () {
   if (!search.value) return
   // Jeśli wpis wygląda na MGRS (np. 33UXP04)
   const mgrsPattern = /^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}\d{2,10}$/i
-  if (mgrsPattern.test(search.value.replace(/\s+/g, ''))) {
+  const searchClean = search.value.replace(/\s+/g, '')
+  if (mgrsPattern.test(searchClean)) {
     try {
-      const [lng, lat] = mgrs.toPoint(search.value.replace(/\s+/g, ''))
+      const digitPart = searchClean.slice(5)
+      const mgrsToUse = digitPart.length % 2 === 0 ? searchClean : `${searchClean}0`
+      const [lng, lat] = mgrs.toPoint(mgrsToUse)
       if (map.value) map.value.setView([lat, lng], 15)
       return
     } catch (e) {
@@ -1090,7 +1099,8 @@ function calculateRoute () {
       easting: utmE,
       northing: utmN,
       azymut,
-      odleglosc: i === 0 ? '-' : odleglosc
+      odleglosc: i === 0 ? '-' : odleglosc,
+      uwagi: ''
     })
   }
 }
@@ -1599,35 +1609,83 @@ const MGRSGridLayer = L.GridLayer.extend({
           ctx.textAlign = 'center'
           ctx.textBaseline = 'middle'
 
-          // Znajdź reprezentatywny punkt na granicy w środku kafla
-          const midBoundaryIdx = Math.floor(zoneBoundaryPoints.length / 2)
-          const [midLat, midLng] = zoneBoundaryPoints[midBoundaryIdx]
+          // Szukaj punktu granicy najbardziej zbliżonego do środka kafla,
+          // żeby etykiety były widoczne po obu stronach tej samej linii granicznej.
+          const tileCenterX = size.x / 2
+          const tileCenterY = size.y / 2
+          let anchorIdx = -1
+          let anchorX = 0
+          let anchorY = 0
+          let bestDist = Infinity
 
-          // Punkt po lewej stronie granicy
-          try {
-            const leftLng = midLng - 0.01
-            const leftMgrs = mgrs.forward([leftLng, midLat], 0) // 0 = tylko GZD + 100km
-            const leftSquare = leftMgrs.slice(0, 5) // np. "34UEC"
-            const leftPt = map.project([midLat, leftLng], coords.z)
-            const leftX = leftPt.x - coords.x * size.x
-            const leftY = leftPt.y - coords.y * size.y
-            if (leftX >= 0 && leftX <= size.x && leftY >= 0 && leftY <= size.y) {
-              ctx.fillText(leftSquare, leftX, leftY)
+          for (let i = 0; i < zoneBoundaryPoints.length; i++) {
+            const p = map.project(zoneBoundaryPoints[i], coords.z)
+            const x = p.x - coords.x * size.x
+            const y = p.y - coords.y * size.y
+            if (x < 0 || x > size.x || y < 0 || y > size.y) continue
+            const d = (x - tileCenterX) ** 2 + (y - tileCenterY) ** 2
+            if (d < bestDist) {
+              bestDist = d
+              anchorIdx = i
+              anchorX = x
+              anchorY = y
             }
+          }
+
+          // Fallback: środek listy punktów granicy
+          if (anchorIdx === -1) {
+            anchorIdx = Math.floor(zoneBoundaryPoints.length / 2)
+            const fallbackPt = map.project(zoneBoundaryPoints[anchorIdx], coords.z)
+            anchorX = fallbackPt.x - coords.x * size.x
+            anchorY = fallbackPt.y - coords.y * size.y
+          }
+
+          const [anchorLat, anchorLng] = zoneBoundaryPoints[anchorIdx]
+
+          // Wyznacz lokalną normalną do linii granicy (w pikselach), aby przesunąć napisy
+          // po przeciwnych stronach tej samej granicy.
+          const prevIdx = Math.max(0, anchorIdx - 1)
+          const nextIdx = Math.min(zoneBoundaryPoints.length - 1, anchorIdx + 1)
+          const prevPtPx = map.project(zoneBoundaryPoints[prevIdx], coords.z)
+          const nextPtPx = map.project(zoneBoundaryPoints[nextIdx], coords.z)
+          let dx = nextPtPx.x - prevPtPx.x
+          let dy = nextPtPx.y - prevPtPx.y
+          const len = Math.sqrt(dx * dx + dy * dy) || 1
+          dx /= len
+          dy /= len
+          // normalna do stycznej (dx,dy)
+          let nx = -dy
+          let ny = dx
+          const nLen = Math.sqrt(nx * nx + ny * ny) || 1
+          nx /= nLen
+          ny /= nLen
+
+          const labelOffsetPx = 54
+          const margin = 18
+          const clamp = (v, min, max) => Math.max(min, Math.min(max, v))
+
+          // Odczytaj oznaczenia po lewej/prawej geograficznie od granicy.
+          // Używamy przesunięć po długości geograficznej, bo granica stref UTM jest południkowa.
+          let leftSquare = ''
+          let rightSquare = ''
+          try {
+            leftSquare = mgrs.forward([anchorLng - 0.01, anchorLat], 0).slice(0, 5)
+          } catch {}
+          try {
+            rightSquare = mgrs.forward([anchorLng + 0.01, anchorLat], 0).slice(0, 5)
           } catch {}
 
-          // Punkt po prawej stronie granicy
-          try {
-            const rightLng = midLng + 0.01
-            const rightMgrs = mgrs.forward([rightLng, midLat], 0)
-            const rightSquare = rightMgrs.slice(0, 5) // np. "33UXV"
-            const rightPt = map.project([midLat, rightLng], coords.z)
-            const rightX = rightPt.x - coords.x * size.x
-            const rightY = rightPt.y - coords.y * size.y
-            if (rightX >= 0 && rightX <= size.x && rightY >= 0 && rightY <= size.y) {
-              ctx.fillText(rightSquare, rightX, rightY)
-            }
-          } catch {}
+          if (leftSquare) {
+            const lx = clamp(anchorX - nx * labelOffsetPx, margin, size.x - margin)
+            const ly = clamp(anchorY - ny * labelOffsetPx, margin, size.y - margin)
+            ctx.fillText(leftSquare, lx, ly)
+          }
+
+          if (rightSquare) {
+            const rx = clamp(anchorX + nx * labelOffsetPx, margin, size.x - margin)
+            const ry = clamp(anchorY + ny * labelOffsetPx, margin, size.y - margin)
+            ctx.fillText(rightSquare, rx, ry)
+          }
         }
       }
 
