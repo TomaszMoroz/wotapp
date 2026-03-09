@@ -357,7 +357,20 @@ const startTest = (mode) => {
     testQuestions.value = shuffled.slice(0, 10)
   } else if (mode === 'word-to-letters') {
     // Generate random word (5-8 characters)
-    const words = ['COBRA', 'DELTA', 'FALCON', 'ECHO', 'TIGER', 'VIPER', 'WHISKY', 'ZULU', 'BRAVO', 'TANGO', 'SIERRA', 'YANKEE']
+    // Exclude words that are NATO alphabet names to avoid confusion
+    const words = [
+      'COBRA', 'FALCON', 'TIGER', 'VIPER', 'HAWK', 'RAVEN', 'WOLF', 'BEAR', 'EAGLE', 'PYTHON', 'RAPTOR', 'STORM',
+      'PHANTOM', 'SHADOW', 'STEALTH', 'THUNDER', 'DRAGON', 'WARRIOR', 'SPARTAN', 'KNIGHT', 'ARROW', 'BLADE',
+      'CANNON', 'DAGGER', 'FLAME', 'GHOST', 'HAMMER', 'HUNTER', 'IRON', 'JAGUAR', 'LANCE', 'METEOR',
+      'NIGHT', 'OCELOT', 'PANTHER', 'RAIDER', 'SABER', 'TITAN', 'VIKING', 'WARDEN', 'ZEUS', 'APACHE',
+      'BOXER', 'COUGAR', 'DEMON', 'FINGER', 'GRIZZLY', 'HORNET', 'JAGUAR', 'KOMODO', 'LEOPARD', 'MANTA',
+      'NOMAD', 'ORCA', 'PEGASUS', 'QUASAR', 'RHINO', 'SHARK', 'TALON', 'VENOM', 'WRAITH', 'XENON',
+      'YETI', 'ZENITH', 'ARKON', 'CRATER', 'DRACO', 'FORGE', 'GRIFFIN', 'HAVOC', 'INFERNO', 'KRAKEN',
+      'LYNX', 'MATRIX', 'NEBULA', 'ORBIT', 'PHOENIX', 'RADON', 'SPECTRE', 'TEMPEST', 'VORTEX', 'WIZARD',
+      'BLITZ', 'CHARGE', 'DEFEND', 'ESCORT', 'FLANK', 'GUARD', 'HYDRA', 'IMPACT', 'JUSTICE', 'KEEPER',
+      'LEGION', 'MEDIC', 'NEXUS', 'OMEGA', 'PATROL', 'QUEST', 'RANGER', 'SCOUT', 'TROOP', 'VALOR',
+      'WARLORD', 'XMARK', 'YUKON', 'ZODIAC'
+    ]
     currentWord.value = words[Math.floor(Math.random() * words.length)]
     elapsedTime.value = 0
     startTimer()
