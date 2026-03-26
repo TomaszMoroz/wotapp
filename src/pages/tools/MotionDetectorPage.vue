@@ -6,7 +6,15 @@
         <div class="q-mb-md">
           <q-btn :label="usingCamera ? 'Wyłącz kamerę' : 'Włącz kamerę'" @click="toggleSource" color="primary" class="q-mr-md" />
           <q-btn :label="freezeFrame ? 'Opóźniona klatka' : 'Zamroź klatkę'" @click="toggleFreezeFrame" color="secondary" class="q-mr-md" />
-          <q-select v-if="usingCamera" v-model="selectedFacingMode" :options="cameraOptions" label="Kamera" dense style="max-width:160px;display:inline-block;vertical-align:middle;margin-left:8px;" @update:model-value="switchCamera" />
+          <q-select
+  v-if="usingCamera && cameraListReady"
+  v-model="selectedDeviceId"
+  :options="availableCameras.map(cam => ({ label: cam.label || 'Kamera ' + cam.deviceId.slice(-4), value: cam.deviceId }))"
+  label="Wybierz kamerę"
+  dense
+  style="max-width:220px;display:inline-block;vertical-align:middle;margin-left:8px;"
+  @update:model-value="switchCameraByDevice"
+/>
         </div>
         <div class="q-mb-md">
           <q-slider v-model="resolution" :min="320" :max="1920" :step="100" :label-always="true">
@@ -28,7 +36,10 @@
             <q-btn icon="zoom_out" @click.stop="zoomOut" round flat color="white" size="md" style="margin:4px;" />
           </div>
         </div>
-        <q-banner v-if="cameraError" class="bg-red-2 text-red-10 q-mt-md">Dostęp do kamery został zablokowany przez przeglądarkę.</q-banner>
+        <q-banner v-if="cameraError" class="bg-red-2 text-red-10 q-mt-md">
+          Dostęp do kamery został zablokowany przez przeglądarkę.
+          <span v-if="typeof cameraError === 'string'" style="font-size:0.9em;"> ({{ cameraError }})</span>
+        </q-banner>
       </q-card>
     </div>
   </q-page>
@@ -36,6 +47,10 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
+
+const availableCameras = ref([])
+const selectedDeviceId = ref(null)
+const cameraListReady = ref(false)
 const isFullscreen = ref(false)
 const zoom = ref(1)
 const maxZoom = ref(1)
@@ -46,10 +61,10 @@ function isMobileDevice () {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 }
 const selectedFacingMode = ref(isMobileDevice() ? 'environment' : 'user')
-const cameraOptions = [
-  { label: 'Tylna', value: 'environment' },
-  { label: 'Przednia', value: 'user' }
-]
+// const cameraOptions = [
+//   { label: 'Tylna', value: 'environment' },
+//   { label: 'Przednia', value: 'user' }
+// ]
 const imgStyle = computed(() => ({
   background: '#000',
   width: `${zoom.value * 100}%`,
@@ -61,6 +76,17 @@ const imgStyle = computed(() => ({
   margin: '20px 0 40px 0',
   display: 'block'
 }))
+
+async function updateCameraList () {
+  try {
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    availableCameras.value = devices.filter(d => d.kind === 'videoinput')
+    cameraListReady.value = availableCameras.value.length > 1
+  } catch (e) {
+    availableCameras.value = []
+    cameraListReady.value = false
+  }
+}
 function enterFullscreen () {
   const el = document.querySelector('.motion-preview-container')
   if (el.requestFullscreen) {
@@ -214,23 +240,47 @@ async function toggleSource () {
   }
 }
 
-async function switchCamera () {
-  if (usingCamera.value) {
-    await startCamera(selectedFacingMode.value)
-  }
-}
+// async function switchCamera () {
+//   if (usingCamera.value) {
+//     await startCamera(selectedFacingMode.value)
+//   }
+// }
 
 async function startCamera (facingMode) {
   stopCamera()
   try {
+    let constraints
+    if (selectedDeviceId.value) {
+      constraints = { video: { deviceId: { exact: selectedDeviceId.value } } }
+    } else {
+      constraints = { video: { facingMode: { exact: facingMode } } }
+    }
     let stream
     try {
-      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: facingMode } } })
-    } catch (e) {
+      stream = await navigator.mediaDevices.getUserMedia(constraints)
+    } catch (e1) {
       // fallback na drugą kamerę jeśli wybrana nie jest dostępna
-      const fallback = facingMode === 'environment' ? 'user' : 'environment'
-      selectedFacingMode.value = fallback
-      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: fallback } } })
+      if (!selectedDeviceId.value) {
+        try {
+          const fallback = facingMode === 'environment' ? 'user' : 'environment'
+          selectedFacingMode.value = fallback
+          stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: fallback } } })
+        } catch (e2) {
+          // Ostateczny fallback: { video: true }
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true })
+          } catch (e3) {
+            cameraError.value = e3 && e3.name ? e3.name : true
+            usingCamera.value = false
+            return
+          }
+        }
+      } else {
+        // deviceId wybrany, nie próbuj fallbacków
+        cameraError.value = e1 && e1.name ? e1.name : true
+        usingCamera.value = false
+        return
+      }
     }
     if (video.value) {
       video.value.srcObject = stream
@@ -251,12 +301,20 @@ async function startCamera (facingMode) {
         zoom.value = 1
       }
     }
+    if (!cameraListReady.value) {
+      await updateCameraList()
+    }
   } catch (e) {
-    cameraError.value = true
+    cameraError.value = e && e.name ? e.name : true
     usingCamera.value = false
   }
 }
 
+async function switchCameraByDevice () {
+  if (usingCamera.value && selectedDeviceId.value) {
+    await startCamera(selectedFacingMode.value)
+  }
+}
 function stopCamera () {
   if (video.value) {
     if (video.value.srcObject) {
