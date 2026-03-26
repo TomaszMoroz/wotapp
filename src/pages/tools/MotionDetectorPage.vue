@@ -35,6 +35,16 @@
             <q-btn icon="zoom_in" @click.stop="zoomIn" round flat color="white" size="md" style="margin:4px;" />
             <q-btn icon="zoom_out" @click.stop="zoomOut" round flat color="white" size="md" style="margin:4px;" />
           </div>
+          <div v-if="isIOS && isFullscreen" class="ios-bottom-controls">
+            <q-btn icon="zoom_in" @click.stop="zoomIn" round color="white" size="lg" />
+            <q-btn icon="zoom_out" @click.stop="zoomOut" round color="white" size="lg" />
+            <q-btn icon="close" @click="goToTools" round color="negative" size="lg" />
+          </div>
+        import { useRouter } from 'vue-router'
+        const router = useRouter()
+        function goToTools() {
+          router.push('/tools')
+        }
         </div>
         <q-banner v-if="cameraError" class="bg-red-2 text-red-10 q-mt-md">
           Dostęp do kamery został zablokowany przez przeglądarkę.
@@ -397,6 +407,7 @@ watch([delay, resolution], () => {
   right: 12px;
   z-index: 2010;
 }
+
 .zoom-controls {
   position: absolute;
   bottom: 16px;
@@ -405,5 +416,20 @@ watch([delay, resolution], () => {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.ios-bottom-controls {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2020;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  background: rgba(0,0,0,0.85);
+  padding: 16px 0 24px 0;
 }
 </style>
