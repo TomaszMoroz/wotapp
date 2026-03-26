@@ -32,6 +32,7 @@ const routes = [
       { path: '/tools/settings', component: () => import('pages/tools/SettingsCalculatorPage.vue') },
       { path: '/tools/mils-moa', component: () => import('pages/tools/MilsMoaConverterPage.vue') },
       { path: '/tools/equipment', component: () => import('pages/tools/ToolsEquipmentPage.vue') },
+      { path: '/tools/motion-detector', component: () => import('pages/tools/MotionDetectorPage.vue') },
       // { path: '/tools/weather', component: () => import('pages/tools/WeatherPage.vue') },
       { path: '/tools/weather', component: () => import('pages/tools/WeatherVisualCrossingPage.vue') },
       { path: '/tools/march-table', component: () => import('pages/tools/MarchTablePage.vue') },

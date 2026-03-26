@@ -40,7 +40,8 @@ const tools = [
   { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment' },
   { title: 'Pogoda', icon: 'cloud', desc: 'Prognoza', route: '/tools/weather' },
   { title: 'Tabela marszu', icon: 'table_chart', desc: 'Kreator', route: '/tools/march-table' },
-  { title: 'ROZPOZNANIE (F.R.)', icon: 'visibility', desc: 'Nauka i test', route: '/tools/recon' }
+  { title: 'Rozpoznanie (F.R.)', icon: 'visibility', desc: 'Nauka i test', route: '/tools/recon' },
+  { title: 'Detektor ruchu', icon: 'motion_photos_on', desc: '', route: '/tools/motion-detector' }
   // { title: 'Watch Dog', icon: 'pets', desc: 'Analiza pojazdu', route: '/tools/lifereco' }
 ]
 const iconColors = [
