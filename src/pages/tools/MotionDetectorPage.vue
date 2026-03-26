@@ -42,6 +42,10 @@
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
 const isFullscreen = ref(false)
 const zoom = ref(1)
+const maxZoom = ref(1)
+const minZoom = ref(1)
+const supportsCameraZoom = ref(false)
+let videoTrack = null
 const imgStyle = computed(() => ({
   background: '#000',
   width: `${zoom.value * 100}%`,
@@ -74,11 +78,23 @@ function handleFullscreenChange () {
     document.webkitFullscreenElement
   )
 }
-function zoomIn () {
-  zoom.value = Math.min(zoom.value + 0.2, 3)
+async function zoomIn () {
+  if (supportsCameraZoom.value && videoTrack) {
+    const newZoom = Math.min(zoom.value + 0.2, maxZoom.value)
+    await videoTrack.applyConstraints({ advanced: [{ zoom: newZoom }] })
+    zoom.value = newZoom
+  } else {
+    zoom.value = Math.min(zoom.value + 0.2, 3)
+  }
 }
-function zoomOut () {
-  zoom.value = Math.max(zoom.value - 0.2, 1)
+async function zoomOut () {
+  if (supportsCameraZoom.value && videoTrack) {
+    const newZoom = Math.max(zoom.value - 0.2, minZoom.value)
+    await videoTrack.applyConstraints({ advanced: [{ zoom: newZoom }] })
+    zoom.value = newZoom
+  } else {
+    zoom.value = Math.max(zoom.value - 0.2, 1)
+  }
 }
 onMounted(() => {
   document.addEventListener('fullscreenchange', handleFullscreenChange)
@@ -185,7 +201,7 @@ function toggleFreezeFrame () {
   freezeFrame.value = !freezeFrame.value
 }
 
-function toggleSource () {
+async function toggleSource () {
   usingCamera.value = !usingCamera.value
   if (usingCamera.value) {
     navigator.mediaDevices.getUserMedia({ video: true })
@@ -195,6 +211,20 @@ function toggleSource () {
           video.value.play()
           cameraError.value = false
           videoLoaded.value = false
+          // Obsługa zoomu sprzętowego
+          videoTrack = stream.getVideoTracks()[0]
+          const capabilities = videoTrack.getCapabilities ? videoTrack.getCapabilities() : {}
+          if (capabilities.zoom) {
+            supportsCameraZoom.value = true
+            minZoom.value = capabilities.zoom.min
+            maxZoom.value = capabilities.zoom.max
+            zoom.value = videoTrack.getSettings().zoom || capabilities.zoom.min
+          } else {
+            supportsCameraZoom.value = false
+            minZoom.value = 1
+            maxZoom.value = 3
+            zoom.value = 1
+          }
         }
       })
       .catch(() => {
@@ -208,6 +238,11 @@ function toggleSource () {
       videoLoaded.value = false
     }
     cameraError.value = false
+    supportsCameraZoom.value = false
+    minZoom.value = 1
+    maxZoom.value = 3
+    zoom.value = 1
+    videoTrack = null
   }
 }
 
