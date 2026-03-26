@@ -101,26 +101,26 @@ let previousImage = null
 const video = ref(null)
 const canvas = ref(null)
 
-function invertColors (imageData) {
-  const data = imageData.data
-  for (let i = 0; i < data.length; i += 4) {
-    data[i] = 255 - data[i]
-    data[i + 1] = 255 - data[i + 1]
-    data[i + 2] = 255 - data[i + 2]
-  }
-  return imageData
-}
+// function invertColors (imageData) {
+//   const data = imageData.data
+//   for (let i = 0; i < data.length; i += 4) {
+//     data[i] = 255 - data[i]
+//     data[i + 1] = 255 - data[i + 1]
+//     data[i + 2] = 255 - data[i + 2]
+//   }
+//   return imageData
+// }
 
-function cancelOutColors (prev, curr) {
-  const blended = new ImageData(prev.width, prev.height)
-  for (let i = 0; i < prev.data.length; i += 4) {
-    blended.data[i] = (prev.data[i] + curr.data[i]) / 2
-    blended.data[i + 1] = (prev.data[i + 1] + curr.data[i + 1]) / 2
-    blended.data[i + 2] = (prev.data[i + 2] + curr.data[i + 2]) / 2
-    blended.data[i + 3] = 255
-  }
-  return blended
-}
+// function cancelOutColors (prev, curr) {
+//   const blended = new ImageData(prev.width, prev.height)
+//   for (let i = 0; i < prev.data.length; i += 4) {
+//     blended.data[i] = (prev.data[i] + curr.data[i]) / 2
+//     blended.data[i + 1] = (prev.data[i + 1] + curr.data[i + 1]) / 2
+//     blended.data[i + 2] = (prev.data[i + 2] + curr.data[i + 2]) / 2
+//     blended.data[i + 3] = 255
+//   }
+//   return blended
+// }
 
 function captureFrame () {
   if (!video.value || !canvas.value || !video.value.videoWidth || !video.value.videoHeight) return
@@ -131,12 +131,32 @@ function captureFrame () {
   canvas.value.height = video.value.videoHeight
   const ctx = canvas.value.getContext('2d')
   if (!ctx) return
+  // Wymuś czarne tło przed rysowaniem
+  ctx.fillStyle = '#000'
+  ctx.fillRect(0, 0, canvas.value.width, canvas.value.height)
   ctx.drawImage(video.value, 0, 0, video.value.videoWidth, video.value.videoHeight)
   const currentImage = ctx.getImageData(0, 0, video.value.videoWidth, video.value.videoHeight)
   if (previousImage) {
-    const inverted = invertColors(ctx.getImageData(0, 0, video.value.videoWidth, video.value.videoHeight))
-    const blended = cancelOutColors(previousImage, inverted)
-    ctx.putImageData(blended, 0, 0)
+    // Detekcja ruchu: różnica absolutna, kontury na szaro (#888), reszta czarna
+    const curr = ctx.getImageData(0, 0, video.value.videoWidth, video.value.videoHeight)
+    const diff = ctx.createImageData(curr.width, curr.height)
+    for (let i = 0; i < curr.data.length; i += 4) {
+      const d = Math.abs(curr.data[i] - previousImage.data[i]) +
+                Math.abs(curr.data[i + 1] - previousImage.data[i + 1]) +
+                Math.abs(curr.data[i + 2] - previousImage.data[i + 2])
+      if (d > 40) { // próg czułości
+        diff.data[i] = 68 // #444
+        diff.data[i + 1] = 68
+        diff.data[i + 2] = 68
+        diff.data[i + 3] = 255
+      } else {
+        diff.data[i] = 0
+        diff.data[i + 1] = 0
+        diff.data[i + 2] = 0
+        diff.data[i + 3] = 255
+      }
+    }
+    ctx.putImageData(diff, 0, 0)
   }
   if (!freezeFrame.value) {
     previousImage = currentImage
