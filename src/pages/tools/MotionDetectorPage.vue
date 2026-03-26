@@ -40,11 +40,6 @@
             <q-btn icon="zoom_out" @click.stop="zoomOut" round color="white" size="lg" />
             <q-btn icon="close" @click="goToTools" round color="negative" size="lg" />
           </div>
-        import { useRouter } from 'vue-router'
-        const router = useRouter()
-        function goToTools() {
-          router.push('/tools')
-        }
         </div>
         <q-banner v-if="cameraError" class="bg-red-2 text-red-10 q-mt-md">
           Dostęp do kamery został zablokowany przez przeglądarkę.
@@ -57,6 +52,11 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch, computed } from 'vue'
+import { useRouter } from 'vue-router'
+const router = useRouter()
+function goToTools () {
+  router.push('/tools')
+}
 
 const availableCameras = ref([])
 const selectedDeviceId = ref(null)
