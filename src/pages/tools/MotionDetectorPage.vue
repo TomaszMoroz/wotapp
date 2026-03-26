@@ -4,18 +4,14 @@
       <q-card class="q-pa-lg">
         <div class="text-h5 q-mb-md">Detektor ruchu (Motion Detector)</div>
         <div class="q-mb-md">
-          <q-btn :label="usingCamera ? 'Przełącz na wideo' : 'Przełącz na kamerę'" @click="toggleSource" color="primary" class="q-mr-md" />
+          <q-btn :label="usingCamera ? 'Wyłącz kamerę' : 'Włącz kamerę'" @click="toggleSource" color="primary" class="q-mr-md" />
           <q-btn :label="freezeFrame ? 'Opóźniona klatka' : 'Zamroź klatkę'" @click="toggleFreezeFrame" color="secondary" class="q-mr-md" />
-        </div>
-        <div v-if="!usingCamera" class="q-mb-md">
-          <input type="file" accept="video/*" @change="onVideoUpload" />
-          <div v-if="videoLoaded" class="q-mt-sm">
-            <q-btn label="Restartuj wideo" @click="restartVideo" color="primary" class="q-mr-sm" />
-            <q-btn label="Zatrzymaj wideo" @click="stopVideo" color="negative" />
-          </div>
+          <q-select v-if="usingCamera" v-model="selectedFacingMode" :options="cameraOptions" label="Kamera" dense style="max-width:160px;display:inline-block;vertical-align:middle;margin-left:8px;" @update:model-value="switchCamera" />
         </div>
         <div class="q-mb-md">
-          <q-slider v-model="resolution" :min="320" :max="1920" :step="100" label="Rozdzielczość" :label-always="true" />
+          <q-slider v-model="resolution" :min="320" :max="1920" :step="100" :label-always="true">
+            <template v-slot:label>Rozdzielczość</template>
+          </q-slider>
           <div class="text-caption">Aktualna rozdzielczość: {{ resolution }} px</div>
         </div>
         <div class="q-mb-md" v-show="!freezeFrame">
@@ -46,6 +42,14 @@ const maxZoom = ref(1)
 const minZoom = ref(1)
 const supportsCameraZoom = ref(false)
 let videoTrack = null
+function isMobileDevice () {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+}
+const selectedFacingMode = ref(isMobileDevice() ? 'environment' : 'user')
+const cameraOptions = [
+  { label: 'Tylna', value: 'environment' },
+  { label: 'Przednia', value: 'user' }
+]
 const imgStyle = computed(() => ({
   background: '#000',
   width: `${zoom.value * 100}%`,
@@ -204,75 +208,80 @@ function toggleFreezeFrame () {
 async function toggleSource () {
   usingCamera.value = !usingCamera.value
   if (usingCamera.value) {
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        if (video.value) {
-          video.value.srcObject = stream
-          video.value.play()
-          cameraError.value = false
-          videoLoaded.value = false
-          // Obsługa zoomu sprzętowego
-          videoTrack = stream.getVideoTracks()[0]
-          const capabilities = videoTrack.getCapabilities ? videoTrack.getCapabilities() : {}
-          if (capabilities.zoom) {
-            supportsCameraZoom.value = true
-            minZoom.value = capabilities.zoom.min
-            maxZoom.value = capabilities.zoom.max
-            zoom.value = videoTrack.getSettings().zoom || capabilities.zoom.min
-          } else {
-            supportsCameraZoom.value = false
-            minZoom.value = 1
-            maxZoom.value = 3
-            zoom.value = 1
-          }
-        }
-      })
-      .catch(() => {
-        cameraError.value = true
-        usingCamera.value = false
-      })
+    await startCamera(selectedFacingMode.value)
   } else {
-    if (video.value) {
-      video.value.srcObject = null
-      video.value.pause()
-      videoLoaded.value = false
+    stopCamera()
+  }
+}
+
+async function switchCamera () {
+  if (usingCamera.value) {
+    await startCamera(selectedFacingMode.value)
+  }
+}
+
+async function startCamera (facingMode) {
+  stopCamera()
+  try {
+    let stream
+    try {
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: facingMode } } })
+    } catch (e) {
+      // fallback na drugą kamerę jeśli wybrana nie jest dostępna
+      const fallback = facingMode === 'environment' ? 'user' : 'environment'
+      selectedFacingMode.value = fallback
+      stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: fallback } } })
     }
-    cameraError.value = false
-    supportsCameraZoom.value = false
-    minZoom.value = 1
-    maxZoom.value = 3
-    zoom.value = 1
-    videoTrack = null
+    if (video.value) {
+      video.value.srcObject = stream
+      video.value.play()
+      cameraError.value = false
+      videoLoaded.value = false
+      videoTrack = stream.getVideoTracks()[0]
+      const capabilities = videoTrack.getCapabilities ? videoTrack.getCapabilities() : {}
+      if (capabilities.zoom) {
+        supportsCameraZoom.value = true
+        minZoom.value = capabilities.zoom.min
+        maxZoom.value = capabilities.zoom.max
+        zoom.value = videoTrack.getSettings().zoom || capabilities.zoom.min
+      } else {
+        supportsCameraZoom.value = false
+        minZoom.value = 1
+        maxZoom.value = 3
+        zoom.value = 1
+      }
+    }
+  } catch (e) {
+    cameraError.value = true
+    usingCamera.value = false
   }
 }
 
-function onVideoUpload (e) {
-  const input = e.target
-  const file = input.files && input.files[0]
-  if (file && video.value) {
-    const url = URL.createObjectURL(file)
-    video.value.src = url
-    video.value.play()
-    videoLoaded.value = true
-    startCapturing()
-  }
-}
-
-function restartVideo () {
-  if (video.value && video.value.src) {
-    video.value.currentTime = 0
-    video.value.play()
-  }
-}
-
-function stopVideo () {
-  if (video.value && video.value.src) {
+function stopCamera () {
+  if (video.value) {
+    if (video.value.srcObject) {
+      const tracks = video.value.srcObject.getTracks()
+      tracks.forEach(track => track.stop())
+    }
+    video.value.srcObject = null
     video.value.pause()
+    videoLoaded.value = false
   }
+  cameraError.value = false
+  supportsCameraZoom.value = false
+  minZoom.value = 1
+  maxZoom.value = 3
+  zoom.value = 1
+  videoTrack = null
 }
 
 onMounted(() => {
   startCapturing()
+  // Automatyczne żądanie kamery przy wejściu na stronę
+  if (!usingCamera.value) {
+    usingCamera.value = true
+    startCamera(selectedFacingMode.value)
+  }
 })
 
 onBeforeUnmount(() => {
