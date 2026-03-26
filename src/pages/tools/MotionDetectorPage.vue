@@ -29,8 +29,8 @@
           <video ref="video" autoplay playsinline muted style="display:none"></video>
           <canvas ref="canvas" style="display:none"></canvas>
           <img :src="snapshot" alt="Podgląd" class="motion-preview-img" :style="imgStyle" />
-          <q-btn v-if="!isFullscreen" icon="fullscreen" color="primary" class="fullscreen-btn" @click.stop="enterFullscreen" round flat size="lg" />
-          <q-btn v-if="isFullscreen" icon="fullscreen_exit" color="negative" class="exit-fullscreen-btn" @click.stop="exitFullscreen" round flat size="lg" />
+          <q-btn v-if="!isFullscreen && !isIOS" icon="fullscreen" color="primary" class="fullscreen-btn" @click.stop="enterFullscreen" round flat size="lg" />
+          <q-btn v-if="isFullscreen && !isIOS" icon="fullscreen_exit" color="negative" class="exit-fullscreen-btn" @click.stop="exitFullscreen" round flat size="lg" />
           <div v-if="isFullscreen" class="zoom-controls">
             <q-btn icon="zoom_in" @click.stop="zoomIn" round flat color="white" size="md" style="margin:4px;" />
             <q-btn icon="zoom_out" @click.stop="zoomOut" round flat color="white" size="md" style="margin:4px;" />
@@ -52,6 +52,7 @@ const availableCameras = ref([])
 const selectedDeviceId = ref(null)
 const cameraListReady = ref(false)
 const isFullscreen = ref(false)
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
 const zoom = ref(1)
 const maxZoom = ref(1)
 const minZoom = ref(1)
@@ -129,6 +130,15 @@ async function zoomOut () {
 onMounted(() => {
   document.addEventListener('fullscreenchange', handleFullscreenChange)
   document.addEventListener('webkitfullscreenchange', handleFullscreenChange)
+  // Na iOS domyślnie tryb fullscreen (bez API)
+  if (isIOS) {
+    isFullscreen.value = true
+  }
+  // Automatyczne żądanie kamery przy wejściu na stronę
+  if (!usingCamera.value) {
+    usingCamera.value = true
+    startCamera(selectedFacingMode.value)
+  }
 })
 onBeforeUnmount(() => {
   document.removeEventListener('fullscreenchange', handleFullscreenChange)
