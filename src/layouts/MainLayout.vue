@@ -1027,8 +1027,8 @@ body.body--dark .dashboard-header {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.14);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .dashboard-brand__copy {
@@ -1145,6 +1145,33 @@ body.body--dark .dashboard-drawer .q-item.bg-military-active .q-icon {
 }
 
 @media (max-width: 640px) {
+  .dashboard-toolbar {
+    min-height: 58px;
+    gap: 4px;
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
+
+  .dashboard-brand {
+    gap: 8px;
+  }
+
+  .dashboard-brand__mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 11px;
+  }
+
+  .dashboard-brand__title {
+    font-size: 0.95rem;
+  }
+
+  .dashboard-toolbar-btn {
+    min-width: 36px;
+    min-height: 36px;
+    padding: 0;
+  }
+
   .dashboard-brand__subtitle {
     display: none;
   }

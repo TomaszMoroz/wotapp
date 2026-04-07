@@ -1,5 +1,5 @@
 <template>
-  <q-page class="modern-bg page-shell q-pa-md q-pa-lg-lg">
+  <q-page class="modern-bg page-shell dashboard-page-shell">
     <section class="page-hero dashboard-hero q-mb-lg">
       <div class="dashboard-hero__bg-logo" aria-hidden="true">
         <img :src="logo721" alt="" class="dashboard-hero__logo" />
@@ -72,13 +72,23 @@ function navigateTo (path) {
   margin: 0 auto;
 }
 
+.dashboard-page-shell {
+  padding: 16px;
+}
+
+body.body--dark .dashboard-page-shell {
+  background: var(--app-surface) !important;
+}
+
 .dashboard-hero {
-  min-height: 240px;
+  min-height: 228px;
   background: linear-gradient(135deg, #fbfcfd 0%, #f2f5f8 58%, #eef2f4 100%);
 }
 
 body.body--dark .dashboard-hero {
-  background: linear-gradient(135deg, #202124 0%, #25272b 58%, #2b2f34 100%) !important;
+  background: var(--app-surface) !important;
+  border: 1px solid var(--app-border) !important;
+  box-shadow: var(--app-shadow-soft) !important;
 }
 
 .dashboard-hero__inner {
@@ -94,13 +104,17 @@ body.body--dark .dashboard-hero {
   transform: translateY(-50%);
   width: clamp(170px, 34vw, 300px);
   height: clamp(170px, 34vw, 300px);
-  opacity: 0.14;
+  padding: 14px;
+  opacity: 0.12;
   pointer-events: none;
+  border-radius: 36px;
+  overflow: hidden;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.74) 0%, rgba(255, 255, 255, 0.3) 52%, rgba(255, 255, 255, 0) 76%);
 }
 
 body.body--dark .dashboard-hero__bg-logo {
-  opacity: 0.12;
-  filter: brightness(1.15) contrast(1.05);
+  opacity: 0.1;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 52%, rgba(255, 255, 255, 0) 76%);
 }
 
 .dashboard-hero__logo {
@@ -108,33 +122,60 @@ body.body--dark .dashboard-hero__bg-logo {
   height: 100%;
   object-fit: contain;
   display: block;
+  filter: grayscale(1) saturate(0.15) contrast(1.08) brightness(0.94);
+  border-radius: inherit;
 }
 
 @media (max-width: 820px) {
   .dashboard-hero {
-    min-height: 270px;
+    min-height: 196px;
   }
 
   .dashboard-hero__bg-logo {
-    right: -34px;
-    top: 46%;
-    width: 220px;
-    height: 220px;
-    opacity: 0.12;
+    right: -24px;
+    top: 48%;
+    width: 180px;
+    height: 180px;
+    opacity: 0.09;
+  }
+
+  .dashboard-page-shell {
+    padding: 14px;
   }
 }
 
 @media (max-width: 520px) {
   .dashboard-hero {
-    min-height: 290px;
+    min-height: 176px;
+    padding: 20px;
   }
 
   .dashboard-hero__bg-logo {
-    right: -42px;
-    top: 42%;
-    width: 240px;
-    height: 240px;
-    opacity: 0.1;
+    right: -20px;
+    top: 50%;
+    width: 180px;
+    height: 180px;
+    padding: 10px;
+    opacity: 0.08;
+    border-radius: 30px;
+  }
+
+  .dashboard-page-shell {
+    padding: 12px;
+  }
+
+  .page-hero__title {
+    font-size: clamp(1.65rem, 8vw, 2.1rem);
+  }
+
+  .page-hero__subtitle {
+    margin-top: 8px;
+    font-size: 0.95rem;
+  }
+
+  .page-hero__meta {
+    margin-top: 12px;
+    gap: 8px;
   }
 }
 </style>
