@@ -1,291 +1,140 @@
 <template>
-  <q-page class="modern-bg q-pa-lg">
-    <div class="dashboard-main-container">
-      <div class="dashboard-title-bg q-mb-xl">
-        <div v-if="$q.dark.isActive" class="dashboard-title-darken"></div>
-        <div class="dashboard-title-content">
-          <div class="text-h3 text-weight-bold modern-title q-pa-lg">Dashboard</div>
-        </div>
+  <q-page class="modern-bg page-shell q-pa-md q-pa-lg-lg">
+    <section class="page-hero dashboard-hero q-mb-lg">
+      <div class="dashboard-hero__bg-logo" aria-hidden="true">
+        <img :src="logo721" alt="" class="dashboard-hero__logo" />
       </div>
 
-      <div class="dashboard-tiles q-mb-xl">
-        <div class="tiles-grid">
-          <q-card v-for="(tile, i) in tiles" :key="tile.label" class="modern-tile" @click="navigateTo(tile.route)">
-            <q-card-section class="tile-content">
-              <div class="tile-icon-bg" :style="{ background: iconColors[i % iconColors.length] }">
-                <q-icon :name="tile.icon" color="white" size="32px" />
-              </div>
-              <div class="tile-label-row">
-                <span class="tile-label">{{ tile.title }}</span>
-              </div>
-              <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ tile.desc }}</q-chip>
-            </q-card-section>
-          </q-card>
+      <div class="dashboard-hero__inner">
+        <div class="page-hero__content">
+          <h1 class="page-hero__title">Dashboard</h1>
+          <p class="page-hero__subtitle">
+            Dostęp do modułów, narzędzi, materiałów szkoleniowych.
+          </p>
+          <div class="page-hero__meta">
+            <q-chip dense class="feature-chip">
+              <q-icon name="bolt" size="14px" class="q-mr-xs" />
+              10 sekcji
+            </q-chip>
+            <q-chip dense class="feature-chip">
+              <q-icon name="offline_pin" size="14px" class="q-mr-xs" />
+              Gotowa do działania offline
+            </q-chip>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <section class="dashboard-tiles q-mb-xl">
+      <div class="feature-grid">
+        <q-card v-for="tile in tiles" :key="tile.label" class="feature-card" flat bordered @click="navigateTo(tile.route)">
+          <q-card-section class="feature-card__body">
+            <div class="feature-icon" :class="tile.tone">
+              <q-icon :name="tile.icon" color="white" size="28px" />
+            </div>
+            <div class="feature-kicker">{{ tile.label }}</div>
+            <div class="feature-title">{{ tile.title }}</div>
+            <div class="feature-description">{{ tile.desc }}</div>
+          </q-card-section>
+        </q-card>
+      </div>
+    </section>
   </q-page>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
+import logo721 from 'assets/721.jpeg'
+
 const router = useRouter()
+
 const tiles = [
-  { label: 'Cargo', icon: 'storage', desc: 'Moje skróty', route: '/cargo', title: 'Cargo' },
-  { label: 'Narzędzia', icon: 'build', desc: 'Pomoce, kalkulatory', route: '/tools', title: 'Narzędzia' },
-  { label: 'Stopnie, regulamin, prawo', icon: 'military_tech', desc: 'Informacje', route: '/emergency', title: 'Stopnie, regulamin, prawo' },
-  { label: 'Wyposażenie', icon: 'inventory', desc: 'Broń etatowa', route: '/equipment', title: 'Wyposażenie' },
-  { label: 'Meldunki', icon: 'description', desc: 'Raporty wojskowe', route: '/reports', title: 'Meldunki' },
-  { label: 'Strzelectwo', icon: 'gps_fixed', desc: 'Balistyka, teoria, inne', route: '/shooting', title: 'Strzelectwo' },
-  { label: 'TCCC', icon: 'medical_services', desc: 'Taktyczna pomoc', route: '/tccc', title: 'TCCC' },
-  { label: 'Taktyka, dowodzenie i procedury', icon: 'school', desc: 'Materiały szkoleniowe', route: '/tactics', title: 'Taktyka, dowodzenie, procedury' },
-  { label: 'Topografia', icon: 'map', desc: 'Mapy i nawigacja', route: '/topography', title: 'Topografia' },
-  { label: 'ABC', icon: 'info', desc: 'Dla nowo wcielonych', route: '/abc', title: 'ABC' }
+  { label: 'Cargo', icon: 'storage', desc: 'Moje skróty i szybkie przejścia', route: '/cargo', title: 'Cargo', tone: 'tone-earth' },
+  { label: 'Narzędzia', icon: 'build', desc: 'Pomoce, kalkulatory i utility', route: '/tools', title: 'Narzędzia', tone: 'tone-forest' },
+  { label: 'Stopnie i prawo', icon: 'military_tech', desc: 'Regulamin, prawo, procedury', route: '/emergency', title: 'Stopnie, regulamin i prawo', tone: 'tone-khaki' },
+  { label: 'Wyposażenie', icon: 'inventory', desc: 'Broń etatowa i materiały', route: '/equipment', title: 'Wyposażenie', tone: 'tone-stone' },
+  { label: 'Meldunki', icon: 'description', desc: 'Raporty i wzory dokumentów', route: '/reports', title: 'Meldunki', tone: 'tone-sky' },
+  { label: 'Strzelectwo', icon: 'gps_fixed', desc: 'Balistyka, teoria i technika', route: '/shooting', title: 'Strzelectwo', tone: 'tone-earth' },
+  { label: 'TCCC', icon: 'medical_services', desc: 'Taktyczna pomoc poszkodowanym', route: '/tccc', title: 'TCCC', tone: 'tone-sky' },
+  { label: 'Taktyka', icon: 'school', desc: 'Dowodzenie, procedury, manewry', route: '/tactics', title: 'Taktyka i dowodzenie', tone: 'tone-forest' },
+  { label: 'Topografia', icon: 'map', desc: 'Mapy, MGRS i nawigacja', route: '/topography', title: 'Topografia', tone: 'tone-khaki' },
+  { label: 'ABC', icon: 'info', desc: 'Podstawowe informacje dla nowych', route: '/abc', title: 'ABC', tone: 'tone-stone' }
 ]
-const iconColors = [
-  '#827858', // Cargo
-  '#0f2c05',
-  '#65473f',
-  '#827858',
-  '#8e936d',
-  '#a2ad59'
-]
+
 function navigateTo (path) {
   router.push(path).catch(() => {})
 }
 </script>
 
 <style scoped>
-/* Darken dashboard title container in dark mode */
-.dashboard-title-darken {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(154, 151, 151, 0.68);
-  z-index: 2;
-  border-radius: 22px;
-  pointer-events: none;
-}
-.theme-dark .dashboard-title-content {
-  position: relative;
-  z-index: 3;
-}
-/* Overlay for dashboard title in dark mode */
-.dashboard-dark-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(60, 60, 60, 0.72);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-  pointer-events: none;
-}
-.dashboard-overlay-logo {
-  width: 54px;
-  height: 54px;
-  margin-bottom: 10px;
-  opacity: 0.92;
-}
-.dashboard-overlay-label {
-  color: #f2f2f2;
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-shadow: 0 2px 8px #222a;
+.page-shell {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.dashboard-main-container {
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
+.dashboard-hero {
+  min-height: 240px;
+  background: linear-gradient(135deg, #fbfcfd 0%, #f2f5f8 58%, #eef2f4 100%);
 }
 
-.dashboard-title-bg {
-  position: relative;
-  min-height: 110px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  background: var(--dashboard-title-bg, #fff);
-  border-radius: 22px;
-  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
-  overflow: hidden;
+body.body--dark .dashboard-hero {
+  background: linear-gradient(135deg, #202124 0%, #25272b 58%, #2b2f34 100%) !important;
 }
 
-  /* DARK MODE: jasno szary header dashboard */
-  .theme-dark .dashboard-title-bg {
-    --dashboard-title-bg: #e0e0e0;
-  }
-.dashboard-title-bg::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: url('/src/assets/721.jpeg');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: right center;
-  opacity: 0.4;
-  pointer-events: none;
-  z-index: 1;
-}
-.dashboard-title-content {
+.dashboard-hero__inner {
   position: relative;
   z-index: 2;
-  padding: 32px 32px 24px 32px;
+  display: block;
 }
-@media (max-width: 600px) {
-  .dashboard-title-bg {
-    min-height: 90px;
-    border-radius: 16px;
-    overflow: hidden;
-  }
-  .dashboard-title-content {
-    padding: 22px 12px 16px 12px;
-    text-align: center;
-  }
-  .dashboard-title-bg::before {
-    background-size: 220px auto;
-    background-position: center 60%;
-    opacity: 0.19;
-  }
+
+.dashboard-hero__bg-logo {
+  position: absolute;
+  right: -18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: clamp(170px, 34vw, 300px);
+  height: clamp(170px, 34vw, 300px);
+  opacity: 0.14;
+  pointer-events: none;
 }
-.modern-bg {
-  background: #f7f8f9;
-  min-height: 100vh;
+
+body.body--dark .dashboard-hero__bg-logo {
+  opacity: 0.12;
+  filter: brightness(1.15) contrast(1.05);
 }
-.modern-title {
-  color: #0f2c05;
-  letter-spacing: -0.5px;
-}
-body.body--dark .modern-title {
-  color: #2c542c !important;
-}
-.dashboard-tiles {
-  margin-bottom: 32px;
-}
-.tiles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 36px;
-  justify-items: center;
-}
-.modern-tile {
-  background: #fff;
-  border-radius: 22px;
-  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
-  cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s;
-  min-height: 170px;
+
+.dashboard-hero__logo {
   width: 100%;
-  max-width: 270px;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  border: none;
-}
-.modern-tile:hover {
-  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
-  transform: translateY(-2px) scale(1.03);
-}
-.tile-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100%;
-  padding: 38px 0 28px 0;
-}
-.tile-icon-bg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
-}
-.tile-label-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 2px;
-}
-.tile-label {
-  text-align: center;
-  font-size: 1.13rem;
-  font-weight: 600;
-  color: #0f2c05;
-}
-.tile-desc-chip-big {
-  margin-top: 10px;
-  font-size: 1.08rem;
-  font-weight: 500;
-  padding: 8px 18px;
-  border-radius: 12px;
-  min-height: 36px;
+  object-fit: contain;
+  display: block;
 }
 
-.theme-dark .tile-label {
-  color: #f2f2f2 !important;
-}
-.theme-dark .tile-label {
-  color: #f2f2f2 !important;
+@media (max-width: 820px) {
+  .dashboard-hero {
+    min-height: 270px;
+  }
+
+  .dashboard-hero__bg-logo {
+    right: -34px;
+    top: 46%;
+    width: 220px;
+    height: 220px;
+    opacity: 0.12;
+  }
 }
 
- .body--dark .modern-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
-}
+@media (max-width: 520px) {
+  .dashboard-hero {
+    min-height: 290px;
+  }
 
- .modern-tile {
-  border-radius: 22px;
-  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
-  cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s;
-  min-height: 170px;
-  width: 100%;
-  max-width: 270px;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  border: none;
-}
-
-.tile-label {
-  text-align: center;
-  font-size: 1.13rem;
-  font-weight: 600;
-}
-
-.tile-desc-chip-big {
-  margin-top: 10px;
-  font-size: 1.08rem;
-  font-weight: 500;
-  padding: 8px 18px;
-  border-radius: 12px;
-  min-height: 36px;
-}
-
-.tile-icon-bg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
+  .dashboard-hero__bg-logo {
+    right: -42px;
+    top: 42%;
+    width: 240px;
+    height: 240px;
+    opacity: 0.1;
+  }
 }
 </style>

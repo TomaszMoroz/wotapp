@@ -1,28 +1,32 @@
 <template>
-  <q-page class="modern-bg q-pa-md">
-    <div class="dashboard-main-container">
-    <BackNav color="black"/>
-      <div class="row items-center justify-between q-mb-xl top-title-panel">
-      <div>
-        <div class="text-h3 text-weight-bold modern-title">Narzędzia</div>
-        <div class="text-subtitle1 text-grey-7 q-mt-xs">Kalkulatory i narzędzia wojskowe</div>
-      </div>
-    </div>
-      <div class="dashboard-tiles q-mb-xl">
-        <div class="tiles-grid">
-          <q-card v-for="(tool, i) in tools" :key="tool.title" class="modern-tile" @click="navigateTo(tool.route)">
-          <q-card-section class="tile-content">
-            <div class="tile-icon-bg" :style="{ background: iconColors[i % iconColors.length] }">
-              <q-icon :name="tool.icon" color="white" size="32px" />
-            </div>
-            <div class="tile-label-row">
-              <span class="tile-label">{{ tool.title }}</span>
-            </div>
-            <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>{{ tool.desc }}</q-chip>
-          </q-card-section>
-        </q-card>
+  <q-page class="modern-bg page-shell q-pa-md">
+    <div class="page-shell__inner">
+      <BackNav color="black" />
+
+      <section class="page-hero q-mb-lg">
+        <div class="page-hero__content">
+          <div class="page-hero__eyebrow">Zestaw narzędzi</div>
+          <h1 class="page-hero__title">Narzędzia</h1>
+          <p class="page-hero__subtitle">
+            Kalkulatory i utility zaprojektowane do szybkiego użycia w szkoleniu i działaniach terenowych.
+          </p>
         </div>
-      </div>
+      </section>
+
+      <section class="dashboard-tiles q-mb-xl">
+        <div class="feature-grid">
+          <q-card v-for="tool in tools" :key="tool.title" class="feature-card" flat bordered @click="navigateTo(tool.route)">
+            <q-card-section class="feature-card__body">
+              <div class="feature-icon" :class="tool.tone">
+                <q-icon :name="tool.icon" color="white" size="28px" />
+              </div>
+              <div class="feature-kicker">{{ tool.category }}</div>
+              <div class="feature-title">{{ tool.title }}</div>
+              <div class="feature-description">{{ tool.desc || 'Praktyczne narzędzie pomocnicze' }}</div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </section>
     </div>
   </q-page>
 </template>
@@ -30,123 +34,30 @@
 <script setup>
 import BackNav from 'components/BackNav.vue'
 import { useRouter } from 'vue-router'
+
 const router = useRouter()
+
 const tools = [
-  { title: 'Kalkulator odległości', icon: 'straighten', desc: 'Pomiar DWK1000', route: '/tools/distance' },
-  { title: 'GROT Offset', icon: 'gps_fixed', desc: 'Korekta celowania', route: '/training' },
-  { title: 'Alfabet NATO', icon: 'record_voice_over', desc: 'Znaki fonetyczne', route: '/communication' },
-  { title: 'Trening korekty celowania', icon: 'tune', desc: 'Symulacja nastaw', route: '/tools/settings' },
-  { title: 'Konwerter MILS - MOA', icon: 'swap_horiz', desc: 'Przelicznik jednostek', route: '/tools/mils-moa' },
-  { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment' },
-  { title: 'Pogoda', icon: 'cloud', desc: 'Prognoza', route: '/tools/weather' },
-  { title: 'Tabela marszu', icon: 'table_chart', desc: 'Kreator', route: '/tools/march-table' },
-  { title: 'Rozpoznanie (F.R.)', icon: 'visibility', desc: 'Nauka i test', route: '/tools/recon' },
-  { title: 'Detektor ruchu', icon: 'motion_photos_on', desc: '', route: '/tools/motion-detector' }
-  // { title: 'Watch Dog', icon: 'pets', desc: 'Analiza pojazdu', route: '/tools/lifereco' }
+  { title: 'Kalkulator odległości', icon: 'straighten', desc: 'Pomiar przez DWK1000', route: '/tools/distance', tone: 'tone-forest', category: 'Pomiar' },
+  { title: 'GROT Offset', icon: 'gps_fixed', desc: 'Korekta celowania', route: '/training', tone: 'tone-earth', category: 'Strzelectwo' },
+  { title: 'Alfabet NATO', icon: 'record_voice_over', desc: 'Znaki fonetyczne', route: '/communication', tone: 'tone-sky', category: 'Łączność' },
+  { title: 'Trening korekty celowania', icon: 'tune', desc: 'Symulacja nastaw', route: '/tools/settings', tone: 'tone-khaki', category: 'Trening' },
+  { title: 'Konwerter MILS - MOA', icon: 'swap_horiz', desc: 'Przelicznik jednostek', route: '/tools/mils-moa', tone: 'tone-stone', category: 'Przeliczenia' },
+  { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment', tone: 'tone-earth', category: 'Logistyka' },
+  { title: 'Pogoda', icon: 'cloud', desc: 'Prognoza i warunki', route: '/tools/weather', tone: 'tone-sky', category: 'Warunki' },
+  { title: 'Tabela marszu', icon: 'table_chart', desc: 'Kreator marszu', route: '/tools/march-table', tone: 'tone-khaki', category: 'Planowanie' },
+  { title: 'Rozpoznanie (F.R.)', icon: 'visibility', desc: 'Nauka i test', route: '/tools/recon', tone: 'tone-forest', category: 'Szkolenie' },
+  { title: 'Detektor ruchu', icon: 'motion_photos_on', desc: 'Monitoring obrazu', route: '/tools/motion-detector', tone: 'tone-stone', category: 'Obserwacja' }
 ]
-const iconColors = [
-  '#0f2c05',
-  '#65473f',
-  '#827858',
-  '#8e936d',
-  '#a2ad59'
-]
+
 function navigateTo (path) {
-  router.push(path)
+  router.push(path).catch(() => {})
 }
 </script>
 
 <style scoped>
-
-.dashboard-main-container {
-  max-width: 1500px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
-}
-.modern-bg {
-  background: #f7f8f9;
-  min-height: 100vh;
-}
-.modern-title {
-  color: #0f2c05;
-  letter-spacing: -0.5px;
-}
-.dashboard-tiles {
-  margin-bottom: 32px;
-}
-.tiles-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 36px;
-  justify-items: center;
-}
-.modern-tile {
-  background: #fff;
-  border-radius: 22px;
-  box-shadow: 0 4px 24px 0 rgba(15,44,5,0.10);
-  cursor: pointer;
-  transition: box-shadow 0.18s, transform 0.18s;
-  min-height: 170px;
-  width: 100%;
-  max-width: 270px;
-  display: flex;
-  align-items: stretch;
-  justify-content: center;
-  border: none;
-}
-.modern-tile:hover {
-  box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
-  transform: translateY(-2px) scale(1.03);
-}
-
-  body.body--dark .modern-title {
-    color: var(--g-dark-text, #e8eaed) !important;
-  }
-.tile-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 38px 0 28px 0;
-}
-.tile-icon-bg {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
-  margin-bottom: 16px;
-  box-shadow: 0 2px 8px 0 rgba(130,120,88,0.13);
-}
-.tile-label-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-bottom: 2px;
-}
-.tile-label {
-  text-align: center;
-  font-size: 1.13rem;
-  font-weight: 600;
-  color: #0f2c05;
-}
-.theme-dark .tile-label, .body--dark .tile-label {
-  color: #bdbdbd !important;
-}
-.tile-desc-chip-big {
-  margin-top: 10px;
-  font-size: 1.08rem;
-  font-weight: 500;
-  padding: 8px 18px;
-  border-radius: 12px;
-  min-height: 36px;
-}
-
-body.body--dark .modern-tile {
-  border: 1.5px solid #444950 !important;
-  background: #2c313a !important;
+.page-shell {
+  max-width: 1400px;
+  margin: 0 auto;
 }
 </style>

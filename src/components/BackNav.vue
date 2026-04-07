@@ -8,6 +8,8 @@
       :color="navBtnColor"
       :text-color="navBtnTextColor"
       size="md"
+      class="back-nav-btn"
+      :class="{ 'back-nav-btn--dark': $q.dark.isActive }"
       @click="goBack"
       aria-label="Powrót poziom wyżej"
     />
@@ -18,6 +20,8 @@
       :color="navBtnColor"
       :text-color="navBtnTextColor"
       size="md"
+      class="back-nav-btn"
+      :class="{ 'back-nav-btn--dark': $q.dark.isActive }"
       @click="goDashboard"
       aria-label="Powrót do dashboardu"
     />
@@ -27,8 +31,12 @@
 <script setup>
 import { useRouter, useRoute } from 'vue-router'
 import { computed } from 'vue'
+import { useQuasar } from 'quasar'
+
 const router = useRouter()
 const route = useRoute()
+const $q = useQuasar()
+
 const props = defineProps({
   color: {
     type: String,
@@ -48,8 +56,15 @@ const props = defineProps({
   }
 })
 
-const navBtnColor = computed(() => props.color === 'black' ? 'black' : 'white')
-const navBtnTextColor = computed(() => props.color === 'black' ? 'black' : 'white')
+const navBtnColor = computed(() => {
+  if ($q.dark.isActive) return 'grey-3'
+  return props.color === 'black' ? 'grey-10' : 'white'
+})
+
+const navBtnTextColor = computed(() => {
+  if ($q.dark.isActive) return 'grey-2'
+  return props.color === 'black' ? 'grey-10' : 'white'
+})
 
 // Routes that are flat (single-segment) but belong to a subsection menu.
 const SECTION_PARENT_MAP = {
@@ -59,11 +74,8 @@ const SECTION_PARENT_MAP = {
   '/drill': '/emergency'
 }
 
-// Określ, czy można wrócić o jeden poziom wyżej (czyli nie jesteśmy na dashboardzie ani na głównej sekcji)
-
 const canGoBack = computed(() => {
   if (!props.showBack) return false
-  // Nie pokazuj strzałki na dashboardzie
   return route.path !== '/'
 })
 
@@ -72,7 +84,6 @@ function getParentPath () {
     return SECTION_PARENT_MAP[route.path]
   }
 
-  // Ucinamy ostatni segment ścieżki (np. /tools/equipment -> /tools)
   const segments = route.path.split('/').filter(Boolean)
   if (segments.length === 0) return '/'
   segments.pop()
@@ -80,7 +91,6 @@ function getParentPath () {
 }
 
 function goBack () {
-  // Jeśli użytkownik wszedł przez skrót z Cargo, wróć do Cargo i wyczyść flagę
   if (sessionStorage.getItem('fromCargoShortcut') === '1') {
     sessionStorage.removeItem('fromCargoShortcut')
     router.push('/cargo')
@@ -98,7 +108,6 @@ function goBack () {
   }
   const parent = getParentPath()
   if (parent === route.path || route.path === '/') {
-    // Jeśli już jesteśmy na root lub nie ma gdzie wracać, nie rób nic
     return
   }
   router.push(parent)
@@ -117,6 +126,25 @@ function goDashboard () {
   align-items: center;
   justify-content: flex-start;
 }
+
+.back-nav-btn {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+  backdrop-filter: blur(10px);
+}
+
+.back-nav-btn--dark {
+  background: rgba(48, 49, 52, 0.92);
+  border-color: rgba(232, 234, 237, 0.12);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+}
+
+.back-nav-btn :deep(.q-icon),
+.back-nav-btn :deep(.q-btn__content) {
+  color: inherit !important;
+}
+
 @media (max-width: 600px) {
   .back-nav {
     gap: 0.25rem;

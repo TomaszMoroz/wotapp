@@ -52,7 +52,7 @@
     </q-card-actions>
   </q-card>
 </q-dialog>
-      <q-toolbar class="q-px-md dashboard-toolbar">
+      <q-toolbar class="q-px-sm q-px-md-md dashboard-toolbar">
         <q-btn
           flat
           dense
@@ -60,21 +60,17 @@
           icon="menu"
           aria-label="Menu"
           @click="toggleLeftDrawer"
-          class="q-mr-sm text-white"
+          class="q-mr-sm dashboard-toolbar-btn"
         />
-        <q-toolbar-title class="text-weight-bold text-white dashboard-title">
-          <div class="row items-center no-wrap">
-            <span class="q-ml-sm">Kit Bag App</span>
-            <q-btn
-              flat
-              dense
-              icon="dark_mode"
-              aria-label="Motyw"
-              @click="cycleTheme"
-              class="q-ml-md"
-            >
-              <q-tooltip anchor="bottom middle">Zmień motyw: {{ themeLabel }}</q-tooltip>
-            </q-btn>
+        <q-toolbar-title class="dashboard-title">
+          <div class="dashboard-brand">
+            <div class="dashboard-brand__mark">
+              <q-icon name="shield" size="20px" />
+            </div>
+            <div class="dashboard-brand__copy">
+              <span class="dashboard-brand__title">Kit Bag App</span>
+              <span class="dashboard-brand__subtitle">szkolenie i narzędzia WOT</span>
+            </div>
           </div>
         </q-toolbar-title>
         <span class="dashboard-version">v{{ appVersion }}</span>
@@ -84,16 +80,26 @@
           dense
           icon="download"
           label="Zainstaluj aplikację"
-          class="q-ml-md text-white"
+          class="q-ml-sm dashboard-toolbar-btn"
           @click="installPwa"
         />
+        <q-btn
+          flat
+          dense
+          icon="dark_mode"
+          aria-label="Motyw"
+          @click="cycleTheme"
+          class="q-ml-sm dashboard-toolbar-btn"
+        >
+          <q-tooltip anchor="bottom middle">Zmień motyw: {{ themeLabel }}</q-tooltip>
+        </q-btn>
         <q-btn
           flat
           dense
           :icon="(pushEnabled || pushPermission === 'granted') ? 'notifications_off' : 'notifications'"
           :aria-label="(pushEnabled || pushPermission === 'granted') ? 'Wyłącz powiadomienia push' : 'Włącz powiadomienia push'"
           @click="pushDialog = true"
-          class="q-ml-md text-white"
+          class="q-ml-sm dashboard-toolbar-btn"
         />
       </q-toolbar>
       <!-- Usunięto komunikaty z górnego paska -->
@@ -104,7 +110,6 @@
       show-if-above
       bordered
       :class="['dashboard-drawer', themeClass]"
-      :style="{ background: 'var(--q-bg-secondary)', color: 'var(--q-text-main)' }"
       :width="280"
     >
 
@@ -115,15 +120,14 @@
           clickable
           @click="$router.push('/')"
           :class="isActiveRoute('/') ? 'active-menu' : ''"
-          class="q-my-xs q-mx-sm rounded-borders"
-          :style="{ background: isActiveRoute('/') ? '#d2b48c' : 'var(--q-bg-secondary)', color: 'var(--q-text-main)' }"
+          class="q-my-xs q-mx-sm rounded-borders nav-home-item"
         >
           <q-item-section avatar class="sidebar-logo-avatar">
-            <q-icon name="dashboard" :color="isActiveRoute('/') ? 'var(--q-icon-main)' : 'var(--q-icon-muted)'" />
+            <q-icon name="dashboard" />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-weight-medium" :style="{ color: 'var(--q-text-main)' }">Dashboard</q-item-label>
-            <q-item-label caption :style="{ color: 'var(--q-text-main)' }">Strona główna</q-item-label>
+            <q-item-label class="text-weight-medium nav-item__label">Dashboard</q-item-label>
+            <q-item-label caption class="nav-item__caption">Strona główna</q-item-label>
           </q-item-section>
         </q-item>
 
@@ -882,17 +886,23 @@ body.body--dark .dashboard-card:hover, body.body--dark .q-card:hover, body.body-
 .wot-logo-drawer {
   width: 120px;
   height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-  border: 2px solid #2D3E2F;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   transition: transform 0.2s ease;
   display: block;
   margin-left: auto;
   margin-right: auto;
+  padding: 8px;
 }
 .wot-logo-drawer:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
+}
+body.body--dark .wot-logo-drawer {
+  background: #f7f8fa;
+  border-color: rgba(232, 234, 237, 0.12);
 }
 @media (min-width: 600px) {
   .wot-logo-drawer {
@@ -963,20 +973,184 @@ body.body--dark .modern-content-card .q-card__title {
 /* Tactical dark mode: maska na logo w menu */
 .logo-mask-wrapper {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border-radius: 22px;
 }
 .logo-dark-mask {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(20,20,20,0.75);
-  border-radius: 12px;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 6px;
+  background: rgba(20,20,20,0.18);
+  border-radius: 16px;
   pointer-events: none;
   z-index: 2;
 }
 .theme-tactical .text-tactical-red {
   color: #ff5252 !important;
+}
+
+/* --- 2026 UI refresh --- */
+.dashboard-header {
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body.body--dark .dashboard-header {
+  background: rgba(48, 49, 52, 0.92) !important;
+  border-bottom-color: rgba(232, 234, 237, 0.12);
+}
+
+.dashboard-toolbar {
+  min-height: 72px;
+  gap: 8px;
+}
+
+.dashboard-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
+}
+
+.dashboard-brand__mark {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.dashboard-brand__copy {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.dashboard-brand__title {
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.dashboard-brand__subtitle {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+.dashboard-toolbar-btn {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  color: inherit !important;
+}
+
+.dashboard-toolbar-btn :deep(.q-icon),
+.dashboard-toolbar-btn :deep(.q-btn__content) {
+  color: inherit !important;
+}
+
+body.body--dark .dashboard-toolbar-btn {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--app-text, #e8eaed) !important;
+}
+
+.dashboard-version {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+body.body--dark .dashboard-version {
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--app-text-muted, #9aa0a6) !important;
+}
+
+.dashboard-drawer {
+  background: var(--app-surface, #fff) !important;
+  color: var(--app-text, #18212f) !important;
+  border-right: 1px solid var(--app-border, rgba(15, 23, 42, 0.08));
+}
+
+.dashboard-drawer .q-list {
+  padding: 8px 6px 12px;
+}
+
+.dashboard-drawer .q-item {
+  min-height: 58px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: transparent !important;
+  transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;
+}
+
+.dashboard-drawer .q-item:hover {
+  background: var(--app-surface-2, #f3f6fa) !important;
+  transform: translateX(2px);
+}
+
+.dashboard-drawer .q-item__label,
+.dashboard-drawer .q-item__section {
+  color: var(--app-text, #18212f) !important;
+}
+
+.dashboard-drawer .q-item__label--caption,
+.dashboard-drawer .text-caption {
+  color: var(--app-text-muted, #617080) !important;
+}
+
+.dashboard-drawer .q-item .q-icon {
+  color: var(--app-text-muted, #617080) !important;
+}
+
+.dashboard-drawer .q-item.active-menu,
+.dashboard-drawer .q-item.bg-military-active {
+  background: color-mix(in srgb, var(--app-primary, #2f5d50) 16%, transparent) !important;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--app-primary, #2f5d50) 20%, transparent);
+}
+
+.dashboard-drawer .q-item.active-menu .q-item__label,
+.dashboard-drawer .q-item.bg-military-active .q-item__label,
+.dashboard-drawer .q-item.active-menu .q-icon,
+.dashboard-drawer .q-item.bg-military-active .q-icon {
+  color: var(--app-primary-strong, #1f453b) !important;
+}
+
+body.body--dark .dashboard-drawer .q-item.active-menu,
+body.body--dark .dashboard-drawer .q-item.bg-military-active {
+  background: color-mix(in srgb, var(--app-accent, #a8c7fa) 18%, transparent) !important;
+  box-shadow: inset 0 0 0 1px rgba(168, 199, 250, 0.16);
+}
+
+body.body--dark .dashboard-drawer .q-item.active-menu .q-item__label,
+body.body--dark .dashboard-drawer .q-item.bg-military-active .q-item__label,
+body.body--dark .dashboard-drawer .q-item.active-menu .q-icon,
+body.body--dark .dashboard-drawer .q-item.bg-military-active .q-icon {
+  color: var(--app-text, #e8eaed) !important;
+}
+
+.logo-section {
+  border-top: 1px solid var(--app-border, rgba(15, 23, 42, 0.08));
+}
+
+@media (max-width: 640px) {
+  .dashboard-brand__subtitle {
+    display: none;
+  }
+
+  .dashboard-version {
+    display: none;
+  }
 }
 </style>
