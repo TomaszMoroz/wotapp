@@ -267,6 +267,11 @@ const resetValues = () => {
   min-height: 100vh;
 }
 
+body.body--dark .page-background {
+  background: linear-gradient(135deg, #202124 0%, #17181a 100%) !important;
+  color: #e8eaed;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -286,6 +291,57 @@ const resetValues = () => {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(25, 118, 210, 0.1);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+body.body--dark .page-header,
+body.body--dark .controls-card,
+body.body--dark .result-main,
+body.body--dark .result-secondary,
+body.body--dark .info-card {
+  background: #232526 !important;
+  border-color: #444950 !important;
+  color: #f2f2f2 !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28) !important;
+}
+
+body.body--dark .page-header .text-primary {
+  color: #a8c7fa !important;
+}
+
+body.body--dark .page-header .text-grey-6,
+body.body--dark .page-header .text-grey-7,
+body.body--dark .page-header .text-grey-8,
+body.body--dark .controls-card .text-grey-6,
+body.body--dark .controls-card .text-grey-7,
+body.body--dark .controls-card .text-grey-8,
+body.body--dark .result-main .text-grey-6,
+body.body--dark .result-main .text-grey-8,
+body.body--dark .result-secondary .text-grey-6,
+body.body--dark .result-secondary .text-grey-8,
+body.body--dark .info-card .text-grey-6,
+body.body--dark .info-card .text-grey-7 {
+  color: #9aa0a6 !important;
+}
+
+body.body--dark .result-main:hover,
+body.body--dark .result-secondary:hover {
+  background: #303134 !important;
+  border-color: #5f6368 !important;
+}
+
+body.body--dark .conversion-btn,
+body.body--dark .distance-btn {
+  color: #e8eaed !important;
+  border-color: #5f6368 !important;
+}
+
+body.body--dark .conversion-direction .q-btn--outline,
+body.body--dark .q-btn--outline.distance-btn {
+  background: transparent !important;
+}
+
+body.body--dark .info-card .text-subtitle2 {
+  color: #e8eaed !important;
 }
 
 .results-grid {

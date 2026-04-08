@@ -32,7 +32,6 @@
             <div class="feature-icon" :class="tile.tone">
               <q-icon :name="tile.icon" color="white" size="28px" />
             </div>
-            <div class="feature-kicker">{{ tile.label }}</div>
             <div class="feature-title">{{ tile.title }}</div>
             <div class="feature-description">{{ tile.desc }}</div>
           </q-card-section>
@@ -77,7 +76,7 @@ function navigateTo (path) {
 }
 
 body.body--dark .dashboard-page-shell {
-  background: var(--app-surface) !important;
+  background: rgb(24, 26, 27) !important;
 }
 
 .dashboard-hero {
@@ -86,7 +85,7 @@ body.body--dark .dashboard-page-shell {
 }
 
 body.body--dark .dashboard-hero {
-  background: var(--app-surface) !important;
+  background: rgb(24, 26, 27) !important;
   border: 1px solid var(--app-border) !important;
   box-shadow: var(--app-shadow-soft) !important;
 }

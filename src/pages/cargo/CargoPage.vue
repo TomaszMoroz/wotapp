@@ -65,6 +65,19 @@ import BackNav from 'src/components/BackNav.vue'
   display: flex;
   justify-content: center;
 }
+.theme-dark .cargo-page,
+body.body--dark .cargo-page {
+  background: linear-gradient(135deg, #202124 0%, #17181a 100%) !important;
+  color: #e8eaed !important;
+}
+.theme-dark .cargo-title,
+body.body--dark .cargo-title {
+  color: #e8eaed !important;
+}
+.theme-dark .cargo-subtitle,
+body.body--dark .cargo-subtitle {
+  color: #9aa0a6 !important;
+}
 .tile-icon-bg.cargo-icon-bg {
   background: #827858;
   width: 64px;

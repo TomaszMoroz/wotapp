@@ -4,7 +4,7 @@
       <BackNav color="black"/>
 
       <!-- Header with navigation -->
-      <div class="page-header q-mb-md">
+      <div class="equipment-hero q-mb-md">
         <div class="text-h4 text-weight-bold equipment-title">Wyposażenie</div>
       </div>
 
@@ -21,7 +21,7 @@
 
       <!-- Main view: two tiles -->
       <div v-if="currentView === 'weapons'" class="dashboard-tiles tiles-grid">
-        <q-card class="modern-tile cursor-pointer" @click="showWeaponsList">
+        <q-card class="modern-tile equipment-tile cursor-pointer" @click="showWeaponsList">
           <q-card-section class="tile-content">
             <div class="tile-label-row">
               <span class="tile-label">Broń etatowa</span>
@@ -29,7 +29,7 @@
             <q-chip class="tile-desc-chip-big" color="grey-3" text-color="grey-8" dense>Przeglądaj opisy broni</q-chip>
           </q-card-section>
         </q-card>
-        <q-card class="modern-tile cursor-pointer" @click="goToTest">
+        <q-card class="modern-tile equipment-tile cursor-pointer" @click="goToTest">
           <q-card-section class="tile-content">
             <div class="tile-label-row">
               <span class="tile-label">Test z broni</span>
@@ -43,7 +43,7 @@
         <q-card
           v-for="weapon in weapons"
           :key="weapon.id"
-          class="modern-tile cursor-pointer"
+          class="modern-tile equipment-tile cursor-pointer"
           @click="showWeaponDetails(weapon.id)"
         >
           <q-card-section class="tile-content">
@@ -562,6 +562,34 @@ const goBack = () => {
 .theme-dark .text-dashboard-header, .body--dark .text-dashboard-header {
   color: #f2f2f2 !important;
 }
+
+.equipment-hero {
+  max-width: 1500px;
+  margin: 0 auto 24px auto;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-radius: var(--app-radius-lg);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(244, 247, 251, 0.92));
+  border: 1px solid var(--app-border);
+  box-shadow: var(--app-shadow-soft);
+}
+
+.equipment-title {
+  color: var(--app-text);
+}
+
+body.body--dark .equipment-hero {
+  background: var(--app-surface) !important;
+  border-color: var(--app-border) !important;
+  color: var(--app-text) !important;
+}
+
+body.body--dark .equipment-title {
+  color: var(--app-text) !important;
+}
+
 /* --- Dashboard tile/card styles from IndexPage.vue --- */
 .tiles-grid {
   display: flex;
@@ -594,6 +622,45 @@ const goBack = () => {
   box-shadow: 0 8px 32px 0 rgba(101,71,63,0.18);
   transform: translateY(-2px) scale(1.03);
 }
+
+.equipment-tile {
+  background: var(--app-surface, #fff);
+  border-radius: 22px;
+  box-shadow: var(--app-shadow-soft);
+  border: 1px solid var(--app-border);
+}
+
+.equipment-tile:hover {
+  box-shadow: var(--app-shadow-hover);
+  border-color: color-mix(in srgb, var(--app-primary) 30%, transparent);
+}
+
+.equipment-tile .tile-label {
+  color: var(--app-text);
+}
+
+.equipment-tile .tile-desc-chip-big {
+  background: var(--app-surface-2, #eef3f8) !important;
+  color: var(--app-text-muted, #617080) !important;
+  border: 1px solid var(--app-border);
+}
+
+body.body--dark .equipment-tile {
+  background: var(--app-surface) !important;
+  border: 1px solid var(--app-border) !important;
+  color: var(--app-text) !important;
+}
+
+body.body--dark .equipment-tile .tile-label {
+  color: var(--app-text) !important;
+}
+
+body.body--dark .equipment-tile .tile-desc-chip-big {
+  background: var(--app-surface-2) !important;
+  color: var(--app-text-muted) !important;
+  border: 1px solid var(--app-border) !important;
+}
+
 .tile-content {
   display: flex;
   flex-direction: column;

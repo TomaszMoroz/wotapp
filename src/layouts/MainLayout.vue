@@ -875,6 +875,11 @@ body.body--dark .dashboard-card:hover, body.body--dark .q-card:hover, body.body-
   padding: 24px 0 0 0;
   min-height: 100vh;
 }
+
+body.body--dark .dashboard-content-wrapper {
+  background: rgb(24, 26, 27) !important;
+}
+
 .text-military-secondary {
   color: var(--military-secondary, #4A5D31) !important;
 }

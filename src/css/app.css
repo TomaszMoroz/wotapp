@@ -7,6 +7,12 @@ body.body--dark .text-h6,
 body.body--dark .modern-title {
   color: #e8eaed !important;
 }
+body.body--dark .text-grey-6,
+body.body--dark .text-grey-7,
+body.body--dark .text-grey-8,
+body.body--dark .q-item__label--caption {
+  color: #9aa0a6 !important;
+}
 body.body--dark .q-tab--active,
 body.body--dark .q-tabs__tab--active {
   color: #e8eaed !important;
@@ -370,7 +376,7 @@ body.body--dark .text-military-brown,
 
 /* --- GOOGLE-LIKE DARK LAYER (global, dark only) --- */
 body.body--dark {
-  --g-dark-bg: #202124;
+  --g-dark-bg: rgb(24, 26, 27);
   --g-dark-surface: #292a2d;
   --g-dark-surface-2: #303134;
   --g-dark-border: #5f6368;
@@ -693,7 +699,7 @@ body.body--dark .q-chip.tile-desc-chip-big {
 }
 
 body.body--dark {
-  --app-bg: #202124;
+  --app-bg: rgb(24, 26, 27);
   --app-surface: #292a2d;
   --app-surface-2: #303134;
   --app-border: rgba(232, 234, 237, 0.12);

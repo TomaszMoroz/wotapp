@@ -359,6 +359,42 @@ loadShortcuts()
   color: var(--q-text-main, #f2f2f2) !important;
 }
 
+body.body--dark .cargo-shortcuts-card,
+body.body--dark .route-tile,
+body.body--dark .shortcut-tile {
+  background: #232526 !important;
+  color: #f2f2f2 !important;
+  border-color: #444950 !important;
+}
+
+body.body--dark .cargo-header {
+  border-bottom-color: #444950;
+}
+
+body.body--dark .cargo-title,
+body.body--dark .section-title,
+body.body--dark .tile-label,
+body.body--dark .dialog-title,
+body.body--dark .route-group-label {
+  color: #f2f2f2 !important;
+}
+
+body.body--dark .cargo-subtitle,
+body.body--dark .tile-path,
+body.body--dark .empty-desc,
+body.body--dark .empty-state {
+  color: #9aa0a6 !important;
+}
+
+body.body--dark .empty-title {
+  color: #e8eaed !important;
+}
+
+body.body--dark .route-tile.selected {
+  border-color: #8ab4f8 !important;
+  background: #303134 !important;
+}
+
 /* Force q-tab-panel background in dark mode (deep override) */
 .theme-dark :deep(.q-tab-panel),
 .theme-dark :deep(.q-tab-panels) {
@@ -370,5 +406,11 @@ loadShortcuts()
 .theme-dark .q-tab-panels {
   background: var(--q-card, #232526) !important;
   color: var(--q-text-main, #f2f2f2) !important;
+}
+
+body.body--dark .cargo-tabs :deep(.q-tab),
+body.body--dark .cargo-tabs :deep(.q-tab__label),
+body.body--dark .cargo-tabs :deep(.q-tab__icon) {
+  color: #e8eaed !important;
 }
 </style>

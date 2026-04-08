@@ -7,11 +7,11 @@
       <div class="test-header-title text-h4">Test</div>
     </div>
     <div v-for="cat in categories" :key="cat" class="q-mb-xl">
-      <div class="text-subtitle2 q-mb-md" style="color:#222;">{{ cat }}</div>
+      <div class="text-subtitle2 q-mb-md equipment-test-category">{{ cat }}</div>
       <div class="row q-col-gutter-md q-mb-lg">
         <q-card v-for="(question, idx) in questionsByCategory(cat)" :key="idx" class="modern-tile q-mb-md full-width" :class="{ 'wrong-answer': showChecked && isQuestionWrong(question) }">
           <q-card-section>
-            <div v-if="question.category" class="q-mb-xs text-caption text-weight-bold" style="color:#222; background:#e0e0e0; border-radius:6px; padding:2px 10px; min-width:120px; text-align:left;">
+            <div v-if="question.category" class="q-mb-xs text-caption text-weight-bold equipment-test-category-badge">
               {{ question.category }}
             </div>
             <div class="text-h6 q-mb-sm">{{ question.question }}</div>
@@ -810,6 +810,53 @@ function resetTest () {
   background: rgba(255,255,255,0.85);
   z-index: 2;
 }
+.equipment-test-category {
+  color: #222;
+}
+
+.equipment-test-category-badge {
+  color: #222;
+  background: #e0e0e0;
+  border-radius: 6px;
+  padding: 2px 10px;
+  min-width: 120px;
+  text-align: left;
+}
+
+.theme-dark .equipment-test-category,
+body.body--dark .equipment-test-category,
+.theme-dark .equipment-test-category-badge,
+body.body--dark .equipment-test-category-badge {
+  color: #e8eaed !important;
+}
+
+.theme-dark .equipment-test-category-badge,
+body.body--dark .equipment-test-category-badge {
+  background: #303134 !important;
+  border: 1px solid #5f6368;
+}
+
+.theme-dark .equipment-test-page-bg,
+body.body--dark .equipment-test-page-bg {
+  color: #e8eaed;
+}
+
+.theme-dark .equipment-test-page-bg .text-h4,
+.theme-dark .equipment-test-page-bg .text-h6,
+body.body--dark .equipment-test-page-bg .text-h4,
+body.body--dark .equipment-test-page-bg .text-h6 {
+  color: #e8eaed !important;
+}
+
+.theme-dark .equipment-test-page-bg :deep(.q-field__label),
+body.body--dark .equipment-test-page-bg :deep(.q-field__label) {
+  color: #9aa0a6 !important;
+}
+
+.theme-dark .equipment-test-page-bg :deep(.q-card),
+body.body--dark .equipment-test-page-bg :deep(.q-card) {
+  color: #f2f2f2;
+}
 .equipment-test-modal-card {
   max-width: 90vw;
   max-height: 90vh;
@@ -937,5 +984,15 @@ function resetTest () {
 body.body--dark .equipment-tile {
   border: 1.5px solid #444950 !important;
   background: #2c313a !important;
+}
+
+.theme-dark .wrong-answer,
+body.body--dark .wrong-answer {
+  background: #d32f2f !important;
+}
+
+.theme-dark .wrong-answer-input,
+body.body--dark .wrong-answer-input {
+  background: #d32f2f !important;
 }
 </style>
