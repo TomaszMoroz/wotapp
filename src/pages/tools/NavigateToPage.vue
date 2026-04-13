@@ -81,6 +81,21 @@
               </div>
             </q-card-section>
           </q-card>
+
+          <q-card class="navigate-card q-mb-md" flat bordered>
+            <q-card-section>
+              <div class="text-h6">Mapa</div>
+              <div class="text-caption text-grey-6 q-mt-xs">Wybierz warstwę najlepiej dopasowaną do warunków terenowych.</div>
+            </q-card-section>
+            <q-card-section class="q-pt-none">
+              <q-select
+                v-model="selectedMapLayer"
+                :options="mapLayerOptions"
+                label="Rodzaj mapy"
+                dense outlined emit-value map-options
+              />
+            </q-card-section>
+          </q-card>
         </div>
 
         <div class="col-12 col-lg-8">
@@ -125,7 +140,7 @@
             <q-separator />
             <q-card-section class="q-pa-none">
               <div class="map-wrap">
-                <div id="navigate-map" class="navigate-map"></div>
+                <div id="navigate-map" :class="['navigate-map', { 'navigate-map--night': selectedMapLayer === 'night' }]" ></div>
                 <div class="map-overlay map-overlay--north">
                   <div class="north-arrow">↑</div>
                   <div class="north-label">N</div>
@@ -180,9 +195,21 @@ const targetInput = ref('')
 const target = ref(navigationStore.target || null)
 const pickMode = ref(false)
 const showMobileStatsPanel = ref(true)
+const selectedMapLayer = ref('osm')
+const mapLayerOptions = [
+  { label: 'Standardowa', value: 'osm' },
+  { label: 'Topograficzna', value: 'topo' },
+  { label: 'Nocna', value: 'night' }
+]
 let watchId = null
 let markerLayer = null
+let baseLayer = null
+let baseLayers = {}
 const navigationRenderer = L.canvas({ padding: 0.5 })
+
+function resolveBaseLayerKey (layerKey) {
+  return layerKey === 'night' ? 'osm' : layerKey
+}
 
 function formatMeters (value) {
   if (!Number.isFinite(value)) return '-'
@@ -307,9 +334,21 @@ function clearTarget () {
   updateMapGraphics()
 }
 
+function refreshBaseLayer () {
+  if (!map.value || !baseLayer) return
+  map.value.invalidateSize()
+  if (typeof baseLayer.redraw === 'function') {
+    baseLayer.redraw()
+  }
+}
+
 function centerOnDevice () {
   if (!currentPosition.value || !map.value) return
-  map.value.setView([currentPosition.value.lat, currentPosition.value.lng], 15)
+  map.value.setView([currentPosition.value.lat, currentPosition.value.lng], 15, { animate: false })
+  requestAnimationFrame(() => {
+    refreshBaseLayer()
+    updateMapGraphics()
+  })
 }
 
 function updateCurrentPosition (position) {
@@ -395,10 +434,18 @@ function onMapClick (event) {
 onMounted(() => {
   syncTargetFromStore()
   map.value = L.map('navigate-map', { zoomControl: true }).setView([52.2297, 21.0122], 13)
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap',
-    maxZoom: 19
-  }).addTo(map.value)
+  baseLayers = {
+    osm: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap',
+      maxZoom: 19
+    }),
+    topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenTopoMap',
+      maxZoom: 17
+    })
+  }
+  baseLayer = baseLayers[resolveBaseLayerKey(selectedMapLayer.value)]
+  baseLayer.addTo(map.value)
   markerLayer = L.layerGroup().addTo(map.value)
   map.value.on('click', onMapClick)
   map.value.on('zoomend moveend resize', updateMapGraphics)
@@ -423,6 +470,20 @@ onMounted(() => {
 
 watch(() => navigationStore.target, () => {
   syncTargetFromStore()
+})
+
+watch(selectedMapLayer, (value) => {
+  const resolvedLayerKey = resolveBaseLayerKey(value)
+  if (!map.value || !baseLayers[resolvedLayerKey]) return
+  if (baseLayer) {
+    map.value.removeLayer(baseLayer)
+  }
+  baseLayer = baseLayers[resolvedLayerKey]
+  baseLayer.addTo(map.value)
+  requestAnimationFrame(() => {
+    refreshBaseLayer()
+    updateMapGraphics()
+  })
 })
 
 onBeforeUnmount(() => {
@@ -488,6 +549,19 @@ onBeforeUnmount(() => {
 .navigate-map {
   width: 100%;
   height: 620px;
+}
+
+.navigate-map--night {
+  background: #0b1117;
+}
+
+.navigate-map--night :deep(.leaflet-tile-pane) {
+  filter: invert(1) hue-rotate(180deg) saturate(0.75) brightness(0.82) contrast(1.1);
+}
+
+.navigate-map--night :deep(.leaflet-control-container),
+.navigate-map--night :deep(.leaflet-control-attribution) {
+  filter: none;
 }
 
 .map-overlay {
