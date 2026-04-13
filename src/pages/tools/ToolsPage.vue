@@ -45,6 +45,7 @@ const tools = [
   { title: 'Konwerter MILS - MOA', icon: 'swap_horiz', desc: 'Przelicznik jednostek', route: '/tools/mils-moa', tone: 'tone-stone', category: 'Przeliczenia' },
   { title: 'Pobrany sprzęt', icon: 'inventory_2', desc: 'Lista kontrolna', route: '/tools/equipment', tone: 'tone-earth', category: 'Logistyka' },
   { title: 'Pogoda', icon: 'cloud', desc: 'Prognoza i warunki', route: '/tools/weather', tone: 'tone-sky', category: 'Warunki' },
+  { title: 'Nawiguj do', icon: 'navigation', desc: 'Cel MGRS i prowadzenie do punktu', route: '/tools/navigate-to', tone: 'tone-forest', category: 'Nawigacja' },
   { title: 'Tabela marszu', icon: 'table_chart', desc: 'Kreator marszu', route: '/tools/march-table', tone: 'tone-khaki', category: 'Planowanie' },
   { title: 'Rozpoznanie (F.R.)', icon: 'visibility', desc: 'Nauka i test', route: '/tools/recon', tone: 'tone-forest', category: 'Szkolenie' },
   { title: 'Detektor ruchu', icon: 'motion_photos_on', desc: 'Monitoring obrazu', route: '/tools/motion-detector', tone: 'tone-stone', category: 'Obserwacja' }

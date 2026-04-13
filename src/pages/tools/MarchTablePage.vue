@@ -26,6 +26,7 @@
             <div class="row items-center q-gutter-xs">
               <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
               <q-checkbox v-model="showMgrsGrid" label="Grid MGRS" color="green" class="q-ml-md" />
+              <q-checkbox v-model="preserveTable24h" label="Zachowaj tabelę 24h" color="amber-8" class="q-ml-md" />
               <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
               <q-toggle
                 v-model="inputMode"
@@ -68,6 +69,29 @@
                 </q-card>
               </q-dialog>
             </div>
+            <div class="row items-center q-gutter-xs q-mt-xs">
+              <q-select
+                v-model="mgrsZoneMode"
+                :options="mgrsZoneModeOptions"
+                label="Kontekst strefy"
+                dense outlined emit-value map-options
+                style="min-width: 150px; max-width: 200px;"
+              />
+              <q-select
+                v-if="mgrsZoneMode === 'manual'"
+                v-model="manualMgrsZoneLabel"
+                :options="mgrsZoneOptions"
+                label="Strefa robocza"
+                dense outlined
+                style="min-width: 170px; max-width: 220px;"
+              />
+              <q-chip dense square color="green-9" text-color="white">
+                Aktywna: {{ activeMgrsZoneLabel || 'auto' }}
+              </q-chip>
+              <q-chip dense square color="grey-8" text-color="white">
+                Granica strefy nie nadpisuje punktów
+              </q-chip>
+            </div>
           </div>
           <div id="march-map"
             :style="isMobile ? 'height: 60vh; min-height: 320px; max-height: 80vh' : 'height: 600px'"
@@ -76,12 +100,13 @@
           ></div>
           <div class="q-mb-md row items-center" :class="!isMobile ? 'q-gutter-xs' : 'wrap q-gutter-sm'">
             <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" class="q-mr-md" />
+            <q-btn label="Dodaj z MGRS" color="green-9" outline @click="showRouteMgrsDialog = true" class="q-mr-md" />
             <q-dialog v-model="showGridDialog">
               <q-card style="min-width:320px;max-width:95vw;">
                 <q-card-section class="text-h6">Dodaj punkt przez grid MGRS</q-card-section>
                 <q-card-section>
                   <div class="q-mb-md">
-                    <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined />
+                    <q-input v-model="mgrsPrefix" label="Prefix MGRS (np. 34UEC lub EC)" dense outlined />
                   </div>
                   <div class="q-mb-md">
                     <q-input v-model="mgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" />
@@ -93,6 +118,27 @@
                 <q-card-actions align="right">
                   <q-btn flat label="Anuluj" color="primary" v-close-popup @click="showGridDialog = false" />
                   <q-btn flat label="OK" color="primary" @click="addGridPoint" />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
+            <q-dialog v-model="showRouteMgrsDialog">
+              <q-card style="min-width:320px;max-width:95vw;">
+                <q-card-section class="text-h6">Dodaj punkt do trasy z MGRS</q-card-section>
+                <q-card-section>
+                  <q-input
+                    v-model="routeMgrsInput"
+                    label="MGRS (np. 34UEC1234512345 lub EC1234512345)"
+                    dense outlined
+                    autofocus
+                    @keyup.enter="addRoutePointFromMgrs"
+                  />
+                  <div class="text-caption q-mt-sm">
+                    Pełny MGRS działa zawsze. Skrót bez numeru strefy wymaga aktywnego kontekstu strefy.
+                  </div>
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="Anuluj" color="primary" v-close-popup @click="showRouteMgrsDialog = false" />
+                  <q-btn flat label="Dodaj" color="primary" @click="addRoutePointFromMgrs" />
                 </q-card-actions>
               </q-card>
             </q-dialog>
@@ -114,7 +160,7 @@
                     dense outlined class="q-mt-md"
                   />
                   <div v-if="inputMode === 'grid' || showSpecialMgrsInputs">
-                    <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC)" dense outlined class="q-mt-md" />
+                    <q-input v-model="specialMgrsPrefix" label="Prefix MGRS (np. 34UEC lub EC)" dense outlined class="q-mt-md" />
                     <q-input v-model="specialMgrsEasting" label="Easting (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
                     <q-input v-model="specialMgrsNorthing" label="Northing (2–5 cyfr)" dense outlined maxlength="5" class="q-mt-md" />
                   </div>
@@ -122,7 +168,7 @@
                 <q-card-actions align="right">
                   <q-btn flat label="Anuluj" color="primary" v-close-popup />
                   <q-btn flat label="OK" color="primary" @click="handleSpecialDialogOk"
-                    :disable="(inputMode === 'grid' || showSpecialMgrsInputs) && (!specialType || specialMgrsPrefix.length !== 5 || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
+                    :disable="(inputMode === 'grid' || showSpecialMgrsInputs) && (!specialType || !canResolveMgrsPrefix(specialMgrsPrefix) || specialMgrsEasting.length < 2 || specialMgrsEasting.length > 5 || specialMgrsNorthing.length < 2 || specialMgrsNorthing.length > 5)"
                   />
                 </q-card-actions>
               </q-card>
@@ -149,6 +195,71 @@
             </q-card>
           </q-dialog>
 
+          <q-dialog v-model="showPointActionsDialog">
+            <q-card style="min-width:320px;max-width:95vw;">
+              <q-card-section class="text-h6">Punkt na mapie</q-card-section>
+              <q-card-section v-if="selectedPointContext">
+                <div class="text-body1">{{ selectedPointContext.label }}</div>
+                <div class="q-mt-sm">
+                  <q-chip dense square color="green-9" text-color="white">{{ selectedPointContext.mgrs || 'Brak MGRS' }}</q-chip>
+                </div>
+                <div class="text-caption q-mt-sm">
+                  {{ selectedPointContext.lat.toFixed(6) }}, {{ selectedPointContext.lng.toFixed(6) }}
+                </div>
+                <div class="text-caption text-grey-6 q-mt-sm">
+                  {{ selectedPointContext.note || 'Brak opisu' }}
+                </div>
+              </q-card-section>
+              <q-card-actions align="right" class="q-gutter-sm">
+                <q-btn flat label="Nawiguj do" color="primary" @click="navigateToSelectedPoint" />
+                <q-btn flat label="Opis" color="secondary" @click="openPointNoteDialog" />
+                <q-btn flat label="Edycja" color="orange" @click="openPointEditDialog" />
+                <q-btn flat label="Zamknij" color="grey" v-close-popup />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+
+          <q-dialog v-model="showPointNoteDialog">
+            <q-card style="min-width:320px;max-width:95vw;">
+              <q-card-section class="text-h6">Opis punktu</q-card-section>
+              <q-card-section>
+                <q-input
+                  v-model="pointNoteDraft"
+                  type="textarea"
+                  autogrow
+                  dense outlined
+                  label="Notatka"
+                />
+              </q-card-section>
+              <q-card-actions align="right">
+                <q-btn flat label="Anuluj" color="grey" v-close-popup @click="showPointNoteDialog = false" />
+                <q-btn flat label="Zapisz" color="primary" @click="savePointNote" />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+
+          <q-dialog v-model="showPointEditDialog">
+            <q-card style="min-width:320px;max-width:95vw;">
+              <q-card-section class="text-h6">Edycja punktu</q-card-section>
+              <q-card-section>
+                <q-input
+                  v-model="pointEditDraft"
+                  type="textarea"
+                  autogrow
+                  dense outlined
+                  label="Opis / uwagi"
+                />
+              </q-card-section>
+              <q-card-actions align="between">
+                <q-btn flat label="Usuń punkt" color="negative" @click="deleteSelectedPoint" />
+                <div class="row q-gutter-sm">
+                  <q-btn flat label="Anuluj" color="grey" v-close-popup @click="showPointEditDialog = false" />
+                  <q-btn flat label="Zapisz" color="primary" @click="savePointEdit" />
+                </div>
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+
           <!-- Tabele marszu pod mapą na desktopie -->
           <div v-if="!isMobile">
             <q-table
@@ -163,11 +274,12 @@
               <template v-slot:body-cell-uwagi="props">
                 <q-td :props="props">
                   <q-input
-                    v-model="routeTable[props.rowIndex].uwagi"
+                    v-model="pins[props.rowIndex].note"
                     dense
                     borderless
                     type="textarea"
                     autogrow
+                    @blur="calculateRoute()"
                     style="white-space: pre-line; word-break: break-word; min-width: 120px; max-width: 100%;"
                   />
                 </q-td>
@@ -301,7 +413,7 @@
                   <li><b>Punkty na mapie:</b> Domyślny tryb. Kliknij „Dodaj punkt”, a następnie wskaż miejsce na mapie.</li>
                   <li><b>Wpisz gridy (MGRS):</b> Przełącz tryb, kliknij „Dodaj punkt” i wpisz współrzędne MGRS w dialogu. Punkt zostanie dodany do trasy i wyświetlony na mapie.</li>
                 </ul>
-                Możesz przełączać tryby w dowolnym momencie. Wszystkie punkty są uwzględniane w trasie i eksporcie do PDF.
+                Możesz też kliknąć „Dodaj z MGRS” i wkleić pełny zapis MGRS albo skrót zgodny z aktywną strefą. Wszystkie punkty są uwzględniane w trasie i eksporcie do PDF.
               </li>
               <li><b>Dodawanie punktów specjalnych:</b> Kliknij „Dodaj pkt spec.”, wybierz typ punktu (np. PZPR, MEDEVAC, OP, BAZA lub INNY), a następnie wskaż miejsce na mapie lub wpisz grid w zależności od trybu.</li>
               <li><b>Usuwanie punktów:</b> Kliknij „Usuń ostatni”, aby usunąć ostatnio dodany punkt (trasy lub specjalny).</li>
@@ -334,7 +446,7 @@ import BackNav from 'components/BackNav.vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-rotate'
-import { ref, onMounted, onBeforeUnmount, reactive, computed, watchEffect, watch, nextTick } from 'vue'
+import { ref, onMounted, onBeforeUnmount, reactive, computed, watchEffect, watch } from 'vue'
 import { useQuasar } from 'quasar'
 import * as mgrs from 'mgrs'
 import JsPDF from 'jspdf'
@@ -342,8 +454,14 @@ import autoTable from 'jspdf-autotable'
 import leafletImage from 'leaflet-image'
 import * as utm from 'utm'
 import geomagnetism from 'geomagnetism'
+import { useRouter } from 'vue-router'
+import { useNavigationStore } from 'stores/navigation-store'
+import { useMarchTableSessionStore } from 'stores/march-table-session-store'
 
 const $q = useQuasar()
+const router = useRouter()
+const navigationStore = useNavigationStore()
+const marchTableSessionStore = useMarchTableSessionStore()
 
 const showLoading = (message) => {
   if ($q?.loading?.show) {
@@ -363,6 +481,13 @@ const showGridDialog = ref(false)
 const mgrsPrefix = ref('')
 const mgrsEasting = ref('')
 const mgrsNorthing = ref('')
+const showRouteMgrsDialog = ref(false)
+const routeMgrsInput = ref('')
+const preserveTable24h = computed({
+  get: () => marchTableSessionStore.keep24h,
+  set: (value) => marchTableSessionStore.setKeep24h(value)
+})
+let isRestoringMarchTable = false
 
 const isLayerLoading = ref(false)
 function handleAddPoint () {
@@ -383,31 +508,304 @@ function handleAddPoint () {
     showGridDialog.value = true
   }
 }
+
+function buildMgrsReference (prefix, easting, northing) {
+  const cleanPrefix = (prefix || '').trim().toUpperCase().replace(/\s+/g, '')
+  const cleanEasting = (easting || '').trim()
+  const cleanNorthing = (northing || '').trim()
+
+  const resolvedPrefix = resolveMgrsPrefix(cleanPrefix)
+  if (!resolvedPrefix) return null
+  if (!/^\d+$/.test(cleanEasting) || !/^\d+$/.test(cleanNorthing)) return null
+
+  const precision = Math.max(cleanEasting.length, cleanNorthing.length)
+  if (precision < 2 || precision > 5) return null
+
+  return resolvedPrefix + cleanEasting.padStart(precision, '0') + cleanNorthing.padStart(precision, '0')
+}
+
+function parseMgrsRouteReference (rawValue) {
+  const cleanValue = (rawValue || '').trim().toUpperCase().replace(/\s+/g, '')
+  if (!cleanValue) return null
+
+  if (/^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}\d{2,10}$/.test(cleanValue)) {
+    const digitsMatch = /^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}(\d+)$/.exec(cleanValue)
+    if (!digitsMatch || digitsMatch[1].length % 2 !== 0) return null
+    return cleanValue
+  }
+
+  const shortMatch = /^([A-HJ-NP-Z]{2})(\d{2,10})$/.exec(cleanValue)
+  if (!shortMatch || shortMatch[2].length % 2 !== 0) return null
+
+  const resolvedPrefix = resolveMgrsPrefix(shortMatch[1])
+  if (!resolvedPrefix) return null
+
+  return `${resolvedPrefix}${shortMatch[2]}`
+}
+
+function getPointMgrs (lat, lng) {
+  try {
+    return mgrs.forward([lng, lat], 5)
+  } catch {
+    return ''
+  }
+}
+
+function getRoutePointMarkerIcon (index) {
+  if (index === 0) return iconHome
+  if (index === pins.value.length - 1) return iconFlag
+  return iconPin
+}
+
+function getSpecialPointMarkerIcon (type) {
+  if (type === 'PZPR') return iconPzpr
+  if (type === 'MEDEVAC') return iconMedevac
+  if (type === 'OP') return iconOp
+  if (type === 'BAZA') return iconBaza
+  return iconOther
+}
+
+function buildPointContext (kind, index) {
+  const source = kind === 'route' ? pins.value[index] : specialPoints.value[index]
+  if (!source) return null
+  const mgrsAddress = getPointMgrs(source.lat, source.lng)
+  const label = kind === 'route'
+    ? `Punkt trasy ${index + 1}`
+    : `${source.type}${source.name && source.name !== source.type ? ` - ${source.name}` : ''}`
+  return {
+    kind,
+    index,
+    lat: source.lat,
+    lng: source.lng,
+    mgrs: mgrsAddress,
+    label,
+    note: source.note || source.uwagi || '',
+    type: source.type || 'route'
+  }
+}
+
+function removePointHistoryEntry (kind, index) {
+  pointHistory.value = pointHistory.value
+    .filter(entry => !(entry.type === kind && entry.idx === index))
+    .map(entry => {
+      if (entry.type === kind && entry.idx > index) {
+        return { ...entry, idx: entry.idx - 1 }
+      }
+      return entry
+    })
+}
+
+function openPointActions (kind, index) {
+  const context = buildPointContext(kind, index)
+  if (!context) return
+  selectedPointContext.value = context
+  showPointActionsDialog.value = true
+}
+
+function navigateToSelectedPoint () {
+  if (!selectedPointContext.value) return
+  const context = selectedPointContext.value
+  if (map.value && typeof map.value.getCenter === 'function' && typeof map.value.getZoom === 'function') {
+    const center = map.value.getCenter()
+    navigationStore.setMarchTableMapView({
+      lat: center.lat,
+      lng: center.lng,
+      zoom: map.value.getZoom()
+    })
+  }
+  navigationStore.setTarget({
+    lat: context.lat,
+    lng: context.lng,
+    mgrs: context.mgrs,
+    label: context.label,
+    note: context.note,
+    kind: context.kind,
+    type: context.type
+  })
+  showPointActionsDialog.value = false
+  router.push('/tools/navigate-to').catch(() => {})
+}
+
+function openPointNoteDialog () {
+  if (!selectedPointContext.value) return
+  pointNoteDraft.value = selectedPointContext.value.note || ''
+  showPointActionsDialog.value = false
+  showPointNoteDialog.value = true
+}
+
+function openPointEditDialog () {
+  if (!selectedPointContext.value) return
+  pointEditDraft.value = selectedPointContext.value.note || ''
+  showPointActionsDialog.value = false
+  showPointEditDialog.value = true
+}
+
+function savePointNote () {
+  if (!selectedPointContext.value) return
+  const context = selectedPointContext.value
+  if (context.kind === 'route' && pins.value[context.index]) {
+    pins.value[context.index].note = pointNoteDraft.value.trim()
+  } else if (context.kind === 'special' && specialPoints.value[context.index]) {
+    specialPoints.value[context.index].note = pointNoteDraft.value.trim()
+  }
+  showPointNoteDialog.value = false
+  calculateRoute()
+}
+
+function savePointEdit () {
+  if (!selectedPointContext.value) return
+  const context = selectedPointContext.value
+  if (context.kind === 'route' && pins.value[context.index]) {
+    pins.value[context.index].note = pointEditDraft.value.trim()
+  } else if (context.kind === 'special' && specialPoints.value[context.index]) {
+    specialPoints.value[context.index].note = pointEditDraft.value.trim()
+  }
+  showPointEditDialog.value = false
+  calculateRoute()
+}
+
+function deleteSelectedPoint () {
+  if (!selectedPointContext.value) return
+  const context = selectedPointContext.value
+  if (context.kind === 'route') {
+    pins.value.splice(context.index, 1)
+    removePointHistoryEntry('pin', context.index)
+  } else if (context.kind === 'special') {
+    specialPoints.value.splice(context.index, 1)
+    removePointHistoryEntry('special', context.index)
+  }
+  showPointEditDialog.value = false
+  showPointActionsDialog.value = false
+  selectedPointContext.value = null
+  calculateRoute()
+}
+
+function buildMarchTableSnapshot () {
+  const mapCenter = map.value && typeof map.value.getCenter === 'function' ? map.value.getCenter() : null
+  return {
+    pins: pins.value.map(pin => ({
+      lat: pin.lat,
+      lng: pin.lng,
+      note: pin.note || ''
+    })),
+    specialPoints: specialPoints.value.map(point => ({
+      lat: point.lat,
+      lng: point.lng,
+      type: point.type,
+      name: point.name,
+      note: point.note || ''
+    })),
+    history: pointHistory.value.map(entry => ({
+      type: entry.type,
+      idx: entry.idx
+    })),
+    inputMode: inputMode.value,
+    showMgrsGrid: showMgrsGrid.value,
+    mgrsZoneMode: mgrsZoneMode.value,
+    manualMgrsZoneLabel: manualMgrsZoneLabel.value,
+    selectedMapLayer: selectedMapLayer.value,
+    search: search.value,
+    mapView: mapCenter
+      ? {
+          lat: mapCenter.lat,
+          lng: mapCenter.lng,
+          zoom: typeof map.value.getZoom === 'function' ? map.value.getZoom() : 13
+        }
+      : null
+  }
+}
+
+function applyMarchTableSnapshot (snapshot) {
+  if (!snapshot) return false
+
+  pins.value = Array.isArray(snapshot.pins)
+    ? snapshot.pins.map(pin => ({
+      lat: Number(pin.lat),
+      lng: Number(pin.lng),
+      note: pin.note || ''
+    }))
+    : []
+
+  specialPoints.value = Array.isArray(snapshot.specialPoints)
+    ? snapshot.specialPoints.map(point => ({
+      lat: Number(point.lat),
+      lng: Number(point.lng),
+      type: point.type || 'INNY',
+      name: point.name || point.type || 'INNY',
+      note: point.note || ''
+    }))
+    : []
+
+  pointHistory.value = Array.isArray(snapshot.history)
+    ? snapshot.history.map(entry => ({
+      type: entry.type,
+      idx: entry.idx,
+      marker: null
+    }))
+    : [
+        ...pins.value.map((_, idx) => ({ type: 'pin', marker: null, idx })),
+        ...specialPoints.value.map((_, idx) => ({ type: 'special', marker: null, idx }))
+      ]
+
+  inputMode.value = snapshot.inputMode || 'map'
+  showMgrsGrid.value = !!snapshot.showMgrsGrid
+  mgrsZoneMode.value = snapshot.mgrsZoneMode || 'auto'
+  manualMgrsZoneLabel.value = snapshot.manualMgrsZoneLabel || ''
+  search.value = snapshot.search || ''
+
+  if (snapshot.selectedMapLayer && snapshot.selectedMapLayer !== selectedMapLayer.value) {
+    selectedMapLayer.value = snapshot.selectedMapLayer
+  }
+
+  calculateRoute()
+  return true
+}
+
+function persistMarchTableSession () {
+  if (isRestoringMarchTable) return
+  marchTableSessionStore.saveSnapshot(buildMarchTableSnapshot())
+}
+
 // Dodaje punkt do trasy i aktualizuje mapę/tabelę
 function addPinToRoute (lat, lng) {
   pins.value.push({ lat, lng })
-  if (map.value) {
-    const marker = L.marker([lat, lng], { icon: iconPin }).addTo(map.value)
-    markers.value.push(marker)
-    pointHistory.value.push({ type: 'pin', marker, idx: pins.value.length - 1 })
-    if (typeof updateMarkerIcons === 'function') updateMarkerIcons()
-  }
+  pointHistory.value.push({ type: 'pin', marker: null, idx: pins.value.length - 1 })
   calculateRoute()
 }
 
 function addGridPoint () {
-  if (!mgrsPrefix.value || mgrsPrefix.value.length !== 5 || mgrsEasting.value.length < 2 || mgrsEasting.value.length > 5 || mgrsNorthing.value.length < 2 || mgrsNorthing.value.length > 5) {
-    $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 5 znaków, easting i northing od 2 do 5 cyfr.' })
+  if (!mgrsPrefix.value || !canResolveMgrsPrefix(mgrsPrefix.value) || mgrsEasting.value.length < 2 || mgrsEasting.value.length > 5 || mgrsNorthing.value.length < 2 || mgrsNorthing.value.length > 5) {
+    $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 2 lub 5 znaków, easting i northing od 2 do 5 cyfr.' })
     return
   }
-  const eastingPadded = mgrsEasting.value.padStart(5, '0')
-  const northingPadded = mgrsNorthing.value.padStart(5, '0')
-  const mgrsFull = mgrsPrefix.value.slice(0, 5) + eastingPadded + northingPadded
+  const mgrsFull = buildMgrsReference(mgrsPrefix.value, mgrsEasting.value, mgrsNorthing.value)
+  if (!mgrsFull) {
+    $q.notify({ type: 'negative', message: 'Nieprawidłowy adres MGRS!' })
+    return
+  }
   try {
     const [lng, lat] = mgrs.toPoint(mgrsFull)
     addPinToRoute(lat, lng)
     showGridDialog.value = false
   } catch (e) {
+    $q.notify({ type: 'negative', message: 'Nieprawidłowy adres MGRS!' })
+  }
+}
+
+function addRoutePointFromMgrs () {
+  const mgrsFull = parseMgrsRouteReference(routeMgrsInput.value)
+  if (!mgrsFull) {
+    $q.notify({ type: 'negative', message: 'Podaj pełny MGRS albo skrót zgodny z aktywną strefą.' })
+    return
+  }
+
+  try {
+    const [lng, lat] = mgrs.toPoint(mgrsFull)
+    addPinToRoute(lat, lng)
+    showRouteMgrsDialog.value = false
+    routeMgrsInput.value = ''
+    $q.notify({ type: 'positive', message: 'Dodano punkt do trasy.' })
+  } catch (error) {
     $q.notify({ type: 'negative', message: 'Nieprawidłowy adres MGRS!' })
   }
 }
@@ -468,6 +866,12 @@ const userLocation = ref(null)
 const showUserLocationDialog = ref(false)
 
 const showInfoDialog = ref(false)
+const showPointActionsDialog = ref(false)
+const showPointNoteDialog = ref(false)
+const showPointEditDialog = ref(false)
+const pointNoteDraft = ref('')
+const pointEditDraft = ref('')
+const selectedPointContext = ref(null)
 // --- Special Points State ---
 const showSpecialDialog = ref(false)
 const showSpecialMgrsInputs = ref(false)
@@ -487,28 +891,23 @@ let addSpecialMode = false
 const inputMode = ref('map')
 function handleSpecialDialogOk () {
   if (inputMode.value === 'grid' || showSpecialMgrsInputs.value) {
-    if (!specialMgrsPrefix.value || specialMgrsPrefix.value.length !== 5 || specialMgrsEasting.value.length < 2 || specialMgrsEasting.value.length > 5 || specialMgrsNorthing.value.length < 2 || specialMgrsNorthing.value.length > 5) {
-      $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 5 znaków, easting i northing od 2 do 5 cyfr.' })
+    if (!specialMgrsPrefix.value || !canResolveMgrsPrefix(specialMgrsPrefix.value) || specialMgrsEasting.value.length < 2 || specialMgrsEasting.value.length > 5 || specialMgrsNorthing.value.length < 2 || specialMgrsNorthing.value.length > 5) {
+      $q.notify({ type: 'negative', message: 'Wypełnij wszystkie pola MGRS! Prefix musi mieć 2 lub 5 znaków, easting i northing od 2 do 5 cyfr.' })
       return
     }
-    const eastingPadded = specialMgrsEasting.value.padStart(5, '0')
-    const northingPadded = specialMgrsNorthing.value.padStart(5, '0')
-    const mgrsFull = specialMgrsPrefix.value.slice(0, 5) + eastingPadded + northingPadded
+    const mgrsFull = buildMgrsReference(specialMgrsPrefix.value, specialMgrsEasting.value, specialMgrsNorthing.value)
+    if (!mgrsFull) {
+      $q.notify({ type: 'negative', message: 'Nieprawidłowy adres MGRS!' })
+      return
+    }
     try {
       const [lng, lat] = mgrs.toPoint(mgrsFull)
-      specialPoints.value.push({ lat, lng, type: specialType.value, name: specialCustomName.value || specialType.value })
-      if (map.value) {
-        let icon = iconOther
-        if (specialType.value === 'PZPR') icon = iconPzpr
-        else if (specialType.value === 'MEDEVAC') icon = iconMedevac
-        else if (specialType.value === 'OP') icon = iconOp
-        else if (specialType.value === 'BAZA') icon = iconBaza
-        const marker = L.marker([lat, lng], { icon }).addTo(map.value)
-        pointHistory.value.push({ type: 'special', marker, idx: specialPoints.value.length - 1 })
-      }
+      specialPoints.value.push({ lat, lng, type: specialType.value, name: specialCustomName.value || specialType.value, note: '' })
+      pointHistory.value.push({ type: 'special', marker: null, idx: specialPoints.value.length - 1 })
       showSpecialDialog.value = false
       showSpecialMgrsInputs.value = false
       addSpecialMode = false
+      calculateRoute()
       return
     } catch (e) {
       $q.notify({ type: 'negative', message: 'Nieprawidłowy adres MGRS!' })
@@ -539,6 +938,7 @@ watch(showSpecialDialog, (val) => {
 
 const columns = [
   { name: 'lp', label: 'Lp.', field: 'lp', align: 'left' },
+  { name: 'strefa', label: 'Strefa', field: 'zoneLabel', align: 'left' },
   { name: 'mgrs', label: 'MGRS', field: 'mgrs', align: 'left' },
   // { name: 'easting', label: 'Easting (UTM)', field: 'easting', align: 'left' },
   // { name: 'northing', label: 'Northing (UTM)', field: 'northing', align: 'left' },
@@ -551,6 +951,7 @@ const columns = [
 // Columns for special points table
 const specialColumns = [
   { name: 'type', label: 'Typ', field: 'type', align: 'left' },
+  { name: 'strefa', label: 'Strefa', field: 'zoneLabel', align: 'left' },
   { name: 'mgrs', label: 'MGRS', field: 'mgrs', align: 'left' }
 ]
 
@@ -559,12 +960,15 @@ const specialPointsTable = computed(() => {
   return specialPoints.value.map((pt, idx) => {
     // MGRS conversion
     let mgrsStr = ''
+    let zoneLabel = ''
     try {
       mgrsStr = mgrs.forward([pt.lng, pt.lat], 5)
+      zoneLabel = getZoneLabelFromLatLng(pt.lat, pt.lng)
     } catch (e) {}
     return {
       __rowKey: pt.__rowKey,
       type: pt.type,
+      zoneLabel,
       name: pt.name,
       mgrs: mgrsStr,
       azymut: '-',
@@ -618,6 +1022,86 @@ const breakEvery = ref(60)
 const breakLength = ref(10)
 const breakEveryOptions = [30, 45, 60, 90]
 const breakLengthOptions = [5, 10, 15]
+
+const currentMapZoneLabel = ref('')
+const mgrsZoneMode = ref('auto')
+const manualMgrsZoneLabel = ref('')
+const mgrsZoneModeOptions = [
+  { label: 'Auto', value: 'auto' },
+  { label: 'Ręczna', value: 'manual' }
+]
+
+function formatZoneLabel (zoneNum, zoneLetter) {
+  if (typeof zoneNum !== 'number' || !zoneLetter) return ''
+  return `${zoneNum}${zoneLetter}`
+}
+
+function compareZoneLabels (left, right) {
+  const leftMatch = /^([0-9]{1,2})([A-Z])$/.exec(left || '')
+  const rightMatch = /^([0-9]{1,2})([A-Z])$/.exec(right || '')
+  const leftZone = leftMatch ? Number(leftMatch[1]) : 0
+  const rightZone = rightMatch ? Number(rightMatch[1]) : 0
+  if (leftZone !== rightZone) return leftZone - rightZone
+  return (leftMatch ? leftMatch[2].charCodeAt(0) : 0) - (rightMatch ? rightMatch[2].charCodeAt(0) : 0)
+}
+
+function getZoneLabelFromLatLng (lat, lng) {
+  try {
+    const utmPoint = utm.fromLatLon(lat, lng)
+    return formatZoneLabel(utmPoint.zoneNum, utmPoint.zoneLetter)
+  } catch {
+    return ''
+  }
+}
+
+function resolveMgrsPrefix (prefix) {
+  const cleanPrefix = (prefix || '').trim().toUpperCase().replace(/\s+/g, '')
+  if (/^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}$/.test(cleanPrefix)) {
+    return cleanPrefix
+  }
+  if (/^[A-HJ-NP-Z]{2}$/.test(cleanPrefix)) {
+    const zoneLabel = activeMgrsZoneLabel.value || currentMapZoneLabel.value
+    if (!zoneLabel) return null
+    return `${zoneLabel}${cleanPrefix}`
+  }
+  return null
+}
+
+function canResolveMgrsPrefix (prefix) {
+  return !!resolveMgrsPrefix(prefix)
+}
+
+function normalizeMgrsSearchInput (rawValue) {
+  const cleanValue = (rawValue || '').trim().toUpperCase().replace(/\s+/g, '')
+  if (/^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}\d+$/.test(cleanValue)) {
+    return cleanValue
+  }
+
+  const shortMatch = /^([A-HJ-NP-Z]{2})(\d+)$/.exec(cleanValue)
+  if (!shortMatch) return null
+
+  const resolvedPrefix = resolveMgrsPrefix(shortMatch[1])
+  if (!resolvedPrefix) return null
+
+  return `${resolvedPrefix}${shortMatch[2]}`
+}
+
+const activeMgrsZoneLabel = computed(() => {
+  if (mgrsZoneMode.value === 'manual' && manualMgrsZoneLabel.value) {
+    return manualMgrsZoneLabel.value
+  }
+  return currentMapZoneLabel.value || manualMgrsZoneLabel.value || ''
+})
+
+const mgrsZoneOptions = computed(() => {
+  const labels = new Set()
+  if (currentMapZoneLabel.value) labels.add(currentMapZoneLabel.value)
+  routeTable.value.forEach(row => {
+    if (row.zoneLabel) labels.add(row.zoneLabel)
+  })
+  if (manualMgrsZoneLabel.value) labels.add(manualMgrsZoneLabel.value)
+  return Array.from(labels).sort(compareZoneLabels)
+})
 
 // Synchronizuj etaSegments z routeTable
 watchEffect(() => {
@@ -778,18 +1262,19 @@ const debouncedMapRerender = debounce(() => {
 
 async function searchArea () {
   if (!search.value) return
-  // Jeśli wpis wygląda na MGRS (np. 33UXP04)
-  const mgrsPattern = /^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}\d{2,10}$/i
-  const searchClean = search.value.replace(/\s+/g, '')
-  if (mgrsPattern.test(searchClean)) {
+  const normalizedMgrs = normalizeMgrsSearchInput(search.value)
+  if (normalizedMgrs) {
     try {
-      const digitPart = searchClean.slice(5)
-      const mgrsToUse = digitPart.length % 2 === 0 ? searchClean : `${searchClean}0`
-      const [lng, lat] = mgrs.toPoint(mgrsToUse)
+      const digitPart = normalizedMgrs.slice(normalizedMgrs.match(/^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}/)?.[0].length || 0)
+      if (digitPart.length % 2 !== 0) {
+        $q.notify({ type: 'negative', message: 'MGRS musi mieć parzystą liczbę cyfr po strefie i kwadracie 100 km.' })
+        return
+      }
+      const [lng, lat] = mgrs.toPoint(normalizedMgrs)
       if (map.value) map.value.setView([lat, lng], 15)
       return
     } catch (e) {
-      // Możesz dodać powiadomienie o błędnym MGRS
+      $q.notify({ type: 'negative', message: 'Nie udało się odczytać MGRS dla wybranej strefy roboczej.' })
       return
     }
   }
@@ -821,13 +1306,13 @@ function rerenderMapElements () {
     try { map.value.removeLayer(marker) } catch (e) {}
   })
   markers.value = []
+  const routeMarkersByIndex = []
   // Dodaj markery trasy
   pins.value.forEach((p, idx) => {
-    let icon = iconPin
-    if (idx === 0) icon = iconHome
-    else if (idx === pins.value.length - 1) icon = iconFlag
-    const marker = L.marker([p.lat, p.lng], { icon }).addTo(map.value)
+    const marker = L.marker([p.lat, p.lng], { icon: getRoutePointMarkerIcon(idx) }).addTo(map.value)
+    marker.on('click', () => openPointActions('route', idx))
     markers.value.push(marker)
+    routeMarkersByIndex[idx] = marker
   })
   // Usuń i dodaj markery specjalne
   pointHistory.value.forEach(entry => {
@@ -835,14 +1320,19 @@ function rerenderMapElements () {
       try { map.value.removeLayer(entry.marker) } catch (e) {}
     }
   })
+  const specialMarkersByIndex = []
   specialPoints.value.forEach((pt, idx) => {
-    let icon = iconOther
-    if (pt.type === 'PZPR') icon = iconPzpr
-    else if (pt.type === 'MEDEVAC') icon = iconMedevac
-    else if (pt.type === 'OP') icon = iconOp
-    else if (pt.type === 'BAZA') icon = iconBaza
-    const marker = L.marker([pt.lat, pt.lng], { icon }).addTo(map.value)
-    pointHistory.value.push({ type: 'special', marker, idx })
+    const marker = L.marker([pt.lat, pt.lng], { icon: getSpecialPointMarkerIcon(pt.type) }).addTo(map.value)
+    marker.on('click', () => openPointActions('special', idx))
+    specialMarkersByIndex[idx] = marker
+  })
+  pointHistory.value.forEach(entry => {
+    if (entry.type === 'pin' && routeMarkersByIndex[entry.idx]) {
+      entry.marker = routeMarkersByIndex[entry.idx]
+    }
+    if (entry.type === 'special' && specialMarkersByIndex[entry.idx]) {
+      entry.marker = specialMarkersByIndex[entry.idx]
+    }
   })
   // Usuń i dodaj linie trasy
   polylines.value.forEach(l => map.value && map.value.removeLayer(l))
@@ -893,6 +1383,14 @@ function clearAll () {
   markers.value = []
   polylines.value = []
   pointHistory.value = []
+  showPointActionsDialog.value = false
+  showPointNoteDialog.value = false
+  showPointEditDialog.value = false
+  selectedPointContext.value = null
+  pointNoteDraft.value = ''
+  pointEditDraft.value = ''
+  navigationStore.setMarchTableMapView(null)
+  marchTableSessionStore.clearSnapshot()
 }
 
 const locating = ref(false)
@@ -916,50 +1414,7 @@ function centerOnUserLocation () {
         // Wymuś przeliczenie rozmiaru mapy i ponowne rysowanie siatki po centrowaniu
         setTimeout(() => {
           map.value.invalidateSize()
-          // Odśwież markery i linie po przeliczeniu rozmiaru mapy
-          markers.value.forEach(marker => {
-            try { map.value.removeLayer(marker) } catch (e) {}
-          })
-          markers.value = []
-          pins.value.forEach((p, idx) => {
-            let icon = iconPin
-            if (idx === 0) icon = iconHome
-            else if (idx === pins.value.length - 1) icon = iconFlag
-            const marker = L.marker([p.lat, p.lng], { icon }).addTo(map.value)
-            markers.value.push(marker)
-          })
-          // Usuwamy i rysujemy ponownie markery specjalne
-          pointHistory.value.forEach(entry => {
-            if (entry.type === 'special' && entry.marker) {
-              try { map.value.removeLayer(entry.marker) } catch (e) {}
-            }
-          })
-          specialPoints.value.forEach((pt, idx) => {
-            let icon = iconOther
-            if (pt.type === 'PZPR') icon = iconPzpr
-            else if (pt.type === 'MEDEVAC') icon = iconMedevac
-            else if (pt.type === 'OP') icon = iconOp
-            else if (pt.type === 'BAZA') icon = iconBaza
-            const marker = L.marker([pt.lat, pt.lng], { icon }).addTo(map.value)
-            pointHistory.value.push({ type: 'special', marker, idx })
-          })
-          polylines.value.forEach(l => map.value && map.value.removeLayer(l))
-          polylines.value = []
-          if (pins.value.length > 1) {
-            const latlngs = pins.value.map(p => [p.lat, p.lng])
-            const polyline = L.polyline(latlngs, { color: colorRouteLine.value || '#888', weight: 2 }).addTo(map.value)
-            polylines.value.push(polyline)
-            pins.value.forEach(p => {
-              const greyDot = L.circleMarker([p.lat, p.lng], {
-                radius: 4,
-                color: 'grey',
-                fillColor: 'grey',
-                fillOpacity: 1,
-                weight: 0
-              }).addTo(map.value)
-              polylines.value.push(greyDot)
-            })
-          }
+          rerenderMapElements()
           // Reset transformacji canvasu siatki MGRS
           const overlayPane = map.value.getPanes().overlayPane
           if (overlayPane) {
@@ -1012,62 +1467,22 @@ function addUserLocationAsRoute () {
 async function addUserLocationAsSpecial () {
   if (!userLocation.value) return
   showUserLocationDialog.value = false
-
-  // Przekonwertuj lokalizację na MGRS
-  const mgrsData = { prefix: '', easting: '', northing: '' }
-  try {
-    const mgrsStr = mgrs.forward([userLocation.value.lng, userLocation.value.lat], 5)
-    mgrsData.prefix = mgrsStr.slice(0, 5)
-    mgrsData.easting = mgrsStr.slice(5, 10)
-    mgrsData.northing = mgrsStr.slice(10, 15)
-  } catch (e) {
-    console.error('Błąd konwersji MGRS:', e)
-    $q.notify({ type: 'negative', message: 'Błąd konwersji współrzędnych na MGRS' })
-    return
-  }
-
-  // Ustaw wartości
-  specialType.value = ''
-  specialCustomName.value = ''
-  specialMgrsPrefix.value = mgrsData.prefix
-  specialMgrsEasting.value = mgrsData.easting
-  specialMgrsNorthing.value = mgrsData.northing
-
-  // Pokaż pola MGRS w dialogu
-  showSpecialMgrsInputs.value = true
-
-  // Czekaj na aktualizację DOM przed otwarciem dialogu
-  await nextTick()
-
-  // Pokaż dialog (watcher zadba o resetowanie flagi po zamknięciu)
-  showSpecialDialog.value = true
+  specialPoints.value.push({
+    lat: userLocation.value.lat,
+    lng: userLocation.value.lng,
+    type: 'INNY',
+    name: 'Lokalizacja użytkownika',
+    note: ''
+  })
+  pointHistory.value.push({ type: 'special', marker: null, idx: specialPoints.value.length - 1 })
+  calculateRoute()
+  $q.notify({ type: 'positive', message: 'Dodano lokalizację jako punkt specjalny' })
 }
 
 function calculateRoute () {
   const normalizeAzimuth = (value) => {
     const normalized = ((value % 360) + 360) % 360
     return Math.round(normalized)
-  }
-
-  // Remove existing polylines from the map
-  polylines.value.forEach(l => map.value && map.value.removeLayer(l))
-  polylines.value = []
-  // Draw new polylines between pins
-  if (pins.value.length > 1 && map.value) {
-    const latlngs = pins.value.map(p => [p.lat, p.lng])
-    const polyline = L.polyline(latlngs, { color: '#888', weight: 2 }).addTo(map.value)
-    polylines.value.push(polyline)
-    // Add grey points on the line
-    pins.value.forEach(p => {
-      const greyDot = L.circleMarker([p.lat, p.lng], {
-        radius: 4,
-        color: 'grey',
-        fillColor: 'grey',
-        fillOpacity: 1,
-        weight: 0
-      }).addTo(map.value)
-      polylines.value.push(greyDot)
-    })
   }
   // Update route table
   routeTable.value = []
@@ -1084,6 +1499,7 @@ function calculateRoute () {
       lng = pins.value[0].lng
     }
     if (typeof lat === 'number' && typeof lng === 'number') {
+      currentMapZoneLabel.value = getZoneLabelFromLatLng(lat, lng)
       const model = geomagnetism.model(new Date())
       areaDeclinationDeg = model.point([lat, lng]).decl
     }
@@ -1096,11 +1512,13 @@ function calculateRoute () {
     let mgrsStr = ''
     let utmE = '-'
     let utmN = '-'
+    let zoneLabel = ''
     try {
       mgrsStr = mgrs.forward([pins.value[i].lng, pins.value[i].lat], 5)
       const utmRes = utm.fromLatLon(pins.value[i].lat, pins.value[i].lng)
       utmE = Math.round(utmRes.easting)
       utmN = Math.round(utmRes.northing)
+      zoneLabel = formatZoneLabel(utmRes.zoneNum, utmRes.zoneLetter)
     } catch (e) {}
     if (i > 0) {
       const prev = pins.value[i - 1]
@@ -1128,15 +1546,19 @@ function calculateRoute () {
     }
     routeTable.value.push({
       lp: i + 1,
+      zoneLabel,
       mgrs: mgrsStr,
       easting: utmE,
       northing: utmN,
       azymut,
       azymutBusola,
       odleglosc: i === 0 ? '-' : odleglosc,
-      uwagi: ''
+      uwagi: pins.value[i].note || ''
     })
   }
+
+  rerenderMapElements()
+  persistMarchTableSession()
 }
 
 // Eksport PDF
@@ -1468,137 +1890,213 @@ const MGRSGridLayer = L.GridLayer.extend({
     }
     const crossesZoneBoundary = cornerZones.length > 1
 
-    // Oblicz zakres UTM dla tego kafla W DOMINUJĄCEJ STREFIE
-    let minE = Infinity, maxE = -Infinity, minN = Infinity, maxN = -Infinity
-
-    // Próbkuj punkty wzdłuż granic kafla dla dokładniejszego zakresu
     const samplePoints = [
       [minLat, minLng], [minLat, maxLng], [maxLat, minLng], [maxLat, maxLng],
       [(minLat + maxLat) / 2, minLng], [(minLat + maxLat) / 2, maxLng],
       [minLat, (minLng + maxLng) / 2], [maxLat, (minLng + maxLng) / 2]
     ]
 
-    for (const [lat, lng] of samplePoints) {
-      try {
-        const utmPt = utm.fromLatLon(lat, lng, dominantZone)
-        minE = Math.min(minE, utmPt.easting)
-        maxE = Math.max(maxE, utmPt.easting)
-        minN = Math.min(minN, utmPt.northing)
-        maxN = Math.max(maxN, utmPt.northing)
-      } catch {}
+    const renderZones = []
+    const registerZone = (zoneNum, zoneLetter) => {
+      if (typeof zoneNum !== 'number' || !zoneLetter) return
+      if (!renderZones.some(zone => zone.zoneNum === zoneNum && zone.zoneLetter === zoneLetter)) {
+        renderZones.push({ zoneNum, zoneLetter })
+      }
     }
 
-    // Rozszerz zakres o dodatkowy gridStep dla pewności
-    minE = Math.floor(minE / gridStep) * gridStep - gridStep
-    maxE = Math.ceil(maxE / gridStep) * gridStep + gridStep
-    minN = Math.floor(minN / gridStep) * gridStep - gridStep
-    maxN = Math.ceil(maxN / gridStep) * gridStep + gridStep
+    registerZone(dominantZone, dominantLetter)
+    cornerZones.forEach(zone => registerZone(zone.zoneNum, zone.zoneLetter))
 
-    ctx.strokeStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
-    ctx.lineWidth = 1
-    ctx.font = 'bold 13px Arial'
-    ctx.fillStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
+    const drawZoneGrid = (zoneNum, zoneLetter) => {
+      let minE = Infinity
+      let maxE = -Infinity
+      let minN = Infinity
+      let maxN = -Infinity
 
-    // Ustal jak często pokazywać etykiety w zależności od zoomu
-    let labelFrequency = 1 // Pokaż każdą etykietę
-    if (zoom < 8) {
-      labelFrequency = 3 // Pokaż co trzecią
-    } else if (zoom < 11) {
-      labelFrequency = 2 // Pokaż co drugą
-    }
-
-    // Rysuj linie pionowe (easting)
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'top'
-    let eastingIndex = 0
-    for (let e = minE; e <= maxE; e += gridStep) {
-      const points = []
-      // Generuj więcej punktów dla gładszej krzywej
-      const nSteps = 20
-      for (let i = 0; i <= nSteps; i++) {
-        const n = minN + (maxN - minN) * (i / nSteps)
+      for (const [lat, lng] of samplePoints) {
         try {
-          const latlng = utm.toLatLon(e, n, dominantZone, dominantLetter)
-          if (latlng.latitude >= minLat - 0.1 && latlng.latitude <= maxLat + 0.1 &&
-              latlng.longitude >= minLng - 0.1 && latlng.longitude <= maxLng + 0.1) {
-            points.push([latlng.latitude, latlng.longitude])
-          }
+          const utmPt = utm.fromLatLon(lat, lng, zoneNum)
+          minE = Math.min(minE, utmPt.easting)
+          maxE = Math.max(maxE, utmPt.easting)
+          minN = Math.min(minN, utmPt.northing)
+          maxN = Math.max(maxN, utmPt.northing)
         } catch {}
       }
-      if (points.length > 1) {
-        ctx.beginPath()
-        const firstPoint = map.project(points[0], coords.z)
-        ctx.moveTo(firstPoint.x - coords.x * size.x, firstPoint.y - coords.y * size.y)
-        for (let i = 1; i < points.length; i++) {
-          const p = map.project(points[i], coords.z)
-          ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
-        }
-        ctx.stroke()
 
-        // Etykieta easting - szukaj przecięcia z górną krawędzią kafla
-        const shouldShowLabel = eastingIndex % labelFrequency === 0
-        if (shouldShowLabel) {
-          for (let i = 0; i < points.length; i++) {
+      if (![minE, maxE, minN, maxN].every(Number.isFinite)) return
+
+      minE = Math.floor(minE / gridStep) * gridStep - gridStep
+      maxE = Math.ceil(maxE / gridStep) * gridStep + gridStep
+      minN = Math.floor(minN / gridStep) * gridStep - gridStep
+      maxN = Math.ceil(maxN / gridStep) * gridStep + gridStep
+
+      ctx.strokeStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
+      ctx.lineWidth = 1
+      ctx.font = 'bold 13px Arial'
+      ctx.fillStyle = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
+
+      const drawBadge = (text, x, y, options = {}) => {
+        const badgeFont = options.font || 'bold 12px Arial'
+        const badgeBackground = options.background || 'rgba(17, 24, 39, 0.82)'
+        const badgeTextColor = options.color || '#f8fafc'
+        const paddingX = options.paddingX ?? 5
+        const paddingY = options.paddingY ?? 3
+
+        ctx.save()
+        ctx.font = badgeFont
+        const metrics = ctx.measureText(text)
+        const fontSizeMatch = /^(?:bold\s+)?(\d+(?:\.\d+)?)px/.exec(badgeFont)
+        const fontSize = fontSizeMatch ? Number(fontSizeMatch[1]) : 12
+        const boxWidth = Math.ceil(metrics.width + paddingX * 2)
+        const boxHeight = Math.ceil(fontSize + paddingY * 2)
+        const boxX = Math.round(x - boxWidth / 2)
+        const boxY = Math.round(y - boxHeight / 2)
+
+        ctx.fillStyle = badgeBackground
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)'
+        ctx.lineWidth = 1
+        ctx.fillRect(boxX, boxY, boxWidth, boxHeight)
+        ctx.strokeRect(boxX, boxY, boxWidth, boxHeight)
+        ctx.fillStyle = badgeTextColor
+        ctx.textAlign = 'center'
+        ctx.textBaseline = 'middle'
+        ctx.fillText(text, x, y + 0.5)
+        ctx.restore()
+      }
+
+      let labelFrequency = 1
+      if (zoom < 8) {
+        labelFrequency = 3
+      } else if (zoom < 11) {
+        labelFrequency = 2
+      }
+
+      ctx.textAlign = 'center'
+      ctx.textBaseline = 'top'
+      let eastingIndex = 0
+      for (let e = minE; e <= maxE; e += gridStep) {
+        const points = []
+        const nSteps = 20
+        for (let i = 0; i <= nSteps; i++) {
+          const n = minN + (maxN - minN) * (i / nSteps)
+          try {
+            const latlng = utm.toLatLon(e, n, zoneNum, zoneLetter)
+            if (latlng.latitude >= minLat - 0.1 && latlng.latitude <= maxLat + 0.1 &&
+                latlng.longitude >= minLng - 0.1 && latlng.longitude <= maxLng + 0.1) {
+              points.push([latlng.latitude, latlng.longitude])
+            }
+          } catch {}
+        }
+        if (points.length > 1) {
+          ctx.beginPath()
+          const firstPoint = map.project(points[0], coords.z)
+          ctx.moveTo(firstPoint.x - coords.x * size.x, firstPoint.y - coords.y * size.y)
+          for (let i = 1; i < points.length; i++) {
             const p = map.project(points[i], coords.z)
-            const tileY = p.y - coords.y * size.y
-            const tileX = p.x - coords.x * size.x
-            // Jeśli punkt jest blisko górnej krawędzi (w zakresie 0-30px) i w granicach kafla
-            if (tileY >= 0 && tileY <= 30 && tileX >= 10 && tileX <= size.x - 10) {
-              const label = String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2)
-              ctx.fillText(label, tileX, 2)
-              break
+            ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
+          }
+          ctx.stroke()
+
+          const shouldShowLabel = eastingIndex % labelFrequency === 0
+          if (shouldShowLabel) {
+            for (let i = 0; i < points.length; i++) {
+              const p = map.project(points[i], coords.z)
+              const tileY = p.y - coords.y * size.y
+              const tileX = p.x - coords.x * size.x
+              if (tileY >= 0 && tileY <= 30 && tileX >= 10 && tileX <= size.x - 10) {
+                const label = String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2)
+                drawBadge(label, tileX, 12, {
+                  font: 'bold 11px Arial',
+                  paddingX: 4,
+                  paddingY: 2
+                })
+                break
+              }
+            }
+          }
+          eastingIndex++
+        }
+      }
+
+      ctx.textAlign = 'left'
+      ctx.textBaseline = 'middle'
+      let northingIndex = 0
+      for (let n = minN; n <= maxN; n += gridStep) {
+        const points = []
+        const eSteps = 20
+        for (let i = 0; i <= eSteps; i++) {
+          const e = minE + (maxE - minE) * (i / eSteps)
+          try {
+            const latlng = utm.toLatLon(e, n, zoneNum, zoneLetter)
+            if (latlng.latitude >= minLat - 0.1 && latlng.latitude <= maxLat + 0.1 &&
+                latlng.longitude >= minLng - 0.1 && latlng.longitude <= maxLng + 0.1) {
+              points.push([latlng.latitude, latlng.longitude])
+            }
+          } catch {}
+        }
+        if (points.length > 1) {
+          ctx.beginPath()
+          const firstPoint = map.project(points[0], coords.z)
+          ctx.moveTo(firstPoint.x - coords.x * size.x, firstPoint.y - coords.y * size.y)
+          for (let i = 1; i < points.length; i++) {
+            const p = map.project(points[i], coords.z)
+            ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
+          }
+          ctx.stroke()
+
+          const shouldShowLabel = northingIndex % labelFrequency === 0
+          if (shouldShowLabel) {
+            for (let i = 0; i < points.length; i++) {
+              const p = map.project(points[i], coords.z)
+              const tileX = p.x - coords.x * size.x
+              const tileY = p.y - coords.y * size.y
+              if (tileX >= 0 && tileX <= 30 && tileY >= 10 && tileY <= size.y - 10) {
+                const label = String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2)
+                drawBadge(label, 14, tileY, {
+                  font: 'bold 11px Arial',
+                  paddingX: 4,
+                  paddingY: 2
+                })
+                break
+              }
+            }
+          }
+          northingIndex++
+        }
+
+        if (zoom >= 10) {
+          const squareStep = 100000
+          const minSquareE = Math.floor(minE / squareStep) * squareStep
+          const maxSquareE = Math.ceil(maxE / squareStep) * squareStep
+          const minSquareN = Math.floor(minN / squareStep) * squareStep
+          const maxSquareN = Math.ceil(maxN / squareStep) * squareStep
+
+          ctx.font = 'bold 13px Arial'
+          for (let squareE = minSquareE; squareE <= maxSquareE; squareE += squareStep) {
+            for (let squareN = minSquareN; squareN <= maxSquareN; squareN += squareStep) {
+              try {
+                const centerLatLng = utm.toLatLon(squareE + (squareStep / 2), squareN + (squareStep / 2), zoneNum, zoneLetter)
+                const centerPoint = map.project([centerLatLng.latitude, centerLatLng.longitude], coords.z)
+                const tileX = centerPoint.x - coords.x * size.x
+                const tileY = centerPoint.y - coords.y * size.y
+                if (tileX < 18 || tileX > size.x - 18 || tileY < 18 || tileY > size.y - 18) continue
+
+                const squareLabel = mgrs.forward([centerLatLng.longitude, centerLatLng.latitude], 0).slice(0, 5)
+                drawBadge(squareLabel, tileX, tileY, {
+                  font: 'bold 13px Arial',
+                  background: 'rgba(11, 18, 32, 0.84)',
+                  color: '#ffffff',
+                  paddingX: 7,
+                  paddingY: 4
+                })
+              } catch {}
             }
           }
         }
-        eastingIndex++
       }
     }
 
-    // Rysuj linie poziome (northing)
-    ctx.textAlign = 'left'
-    ctx.textBaseline = 'middle'
-    let northingIndex = 0
-    for (let n = minN; n <= maxN; n += gridStep) {
-      const points = []
-      const eSteps = 20
-      for (let i = 0; i <= eSteps; i++) {
-        const e = minE + (maxE - minE) * (i / eSteps)
-        try {
-          const latlng = utm.toLatLon(e, n, dominantZone, dominantLetter)
-          if (latlng.latitude >= minLat - 0.1 && latlng.latitude <= maxLat + 0.1 &&
-              latlng.longitude >= minLng - 0.1 && latlng.longitude <= maxLng + 0.1) {
-            points.push([latlng.latitude, latlng.longitude])
-          }
-        } catch {}
-      }
-      if (points.length > 1) {
-        ctx.beginPath()
-        const firstPoint = map.project(points[0], coords.z)
-        ctx.moveTo(firstPoint.x - coords.x * size.x, firstPoint.y - coords.y * size.y)
-        for (let i = 1; i < points.length; i++) {
-          const p = map.project(points[i], coords.z)
-          ctx.lineTo(p.x - coords.x * size.x, p.y - coords.y * size.y)
-        }
-        ctx.stroke()
-
-        // Etykieta northing - szukaj przecięcia z lewą krawędzią kafla
-        const shouldShowLabel = northingIndex % labelFrequency === 0
-        if (shouldShowLabel) {
-          for (let i = 0; i < points.length; i++) {
-            const p = map.project(points[i], coords.z)
-            const tileX = p.x - coords.x * size.x
-            const tileY = p.y - coords.y * size.y
-            // Jeśli punkt jest blisko lewej krawędzi (w zakresie 0-30px) i w granicach kafla
-            if (tileX >= 0 && tileX <= 30 && tileY >= 10 && tileY <= size.y - 10) {
-              const label = String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2)
-              ctx.fillText(label, 2, tileY)
-              break
-            }
-          }
-        }
-        northingIndex++
-      }
-    }
+    renderZones.forEach(zone => drawZoneGrid(zone.zoneNum, zone.zoneLetter))
 
     // Rysuj granice stref UTM jeśli kafel przecina granicę
     if (crossesZoneBoundary) {
@@ -1836,9 +2334,39 @@ onMounted(() => {
   baseLayer = baseLayers[selectedMapLayer.value]
   baseLayer.addTo(map.value)
 
+  const storedMarchTableSnapshot = marchTableSessionStore.loadSnapshot()
+  if (storedMarchTableSnapshot) {
+    isRestoringMarchTable = true
+    try {
+      applyMarchTableSnapshot(storedMarchTableSnapshot)
+      if (storedMarchTableSnapshot.mapView && Number.isFinite(storedMarchTableSnapshot.mapView.lat) && Number.isFinite(storedMarchTableSnapshot.mapView.lng)) {
+        map.value.setView([
+          storedMarchTableSnapshot.mapView.lat,
+          storedMarchTableSnapshot.mapView.lng
+        ], storedMarchTableSnapshot.mapView.zoom || 13, { animate: false })
+      }
+    } finally {
+      isRestoringMarchTable = false
+    }
+  } else {
+    const storedMapView = navigationStore.consumeMarchTableMapView()
+    if (storedMapView && Number.isFinite(storedMapView.lat) && Number.isFinite(storedMapView.lng)) {
+      const targetZoom = Number.isFinite(storedMapView.zoom) ? storedMapView.zoom : map.value.getZoom()
+      map.value.setView([storedMapView.lat, storedMapView.lng], targetZoom, { animate: false })
+    }
+  }
+
+  setTimeout(() => {
+    if (map.value) {
+      map.value.invalidateSize()
+      calculateRoute()
+    }
+  }, 0)
+
   // Funkcja do automatycznego ustawiania bearing mapy zgodnie z kierunkiem UTM
   function updateMapBearingToUtm () {
     const center = map.value.getCenter()
+    currentMapZoneLabel.value = getZoneLabelFromLatLng(center.lat, center.lng)
     const utmCenter = utm.fromLatLon(center.lat, center.lng)
     // Punkt 1km na północ w tej samej strefie
     const utmNorthEasting = utmCenter.easting
@@ -1850,7 +2378,6 @@ onMounted(() => {
     const angleDeg = -angleRad * 180 / Math.PI
     if (typeof map.value.setBearing === 'function') {
       map.value.setBearing(angleDeg)
-      // Opcjonalnie: log do debugowania
       console.log('[Leaflet.Rotate] Ustawiono bearing mapy:', angleDeg)
     }
   }
@@ -1860,28 +2387,19 @@ onMounted(() => {
   setTimeout(updateMapBearingToUtm, 500)
   map.value.on('click', (e) => {
     if (addSpecialMode) {
-      // Add special point
       const type = specialType.value
       const name = type === 'INNY' ? specialCustomName.value : type
-      specialPoints.value.push({ lat: e.latlng.lat, lng: e.latlng.lng, type, name })
-      let icon = iconOther
-      if (type === 'PZPR') icon = iconPzpr
-      else if (type === 'MEDEVAC') icon = iconMedevac
-      else if (type === 'OP') icon = iconOp
-      else if (type === 'BAZA') icon = iconBaza
-      const marker = L.marker([e.latlng.lat, e.latlng.lng], { icon }).addTo(map.value)
-      pointHistory.value.push({ type: 'special', marker, idx: specialPoints.value.length - 1 })
+      specialPoints.value.push({ lat: e.latlng.lat, lng: e.latlng.lng, type, name, note: '' })
+      pointHistory.value.push({ type: 'special', marker: null, idx: specialPoints.value.length - 1 })
       addSpecialMode = false
       specialType.value = ''
       specialCustomName.value = ''
+      calculateRoute()
       return
     }
     if (!pinMode.value) return
     pins.value.push({ lat: e.latlng.lat, lng: e.latlng.lng })
-    const marker = L.marker([e.latlng.lat, e.latlng.lng], { icon: iconPin }).addTo(map.value)
-    markers.value.push(marker)
-    pointHistory.value.push({ type: 'pin', marker, idx: pins.value.length - 1 })
-    updateMarkerIcons()
+    pointHistory.value.push({ type: 'pin', marker: null, idx: pins.value.length - 1 })
     pinMode.value = false
     calculateRoute()
   })
@@ -1897,7 +2415,6 @@ onMounted(() => {
 
   const debouncedMapRerender = debounce(() => {
     if (showMgrsGrid.value && map.value) {
-      // ZAWSZE usuń starą warstwę i utwórz nową
       if (map.value._mgrsGridLayer) {
         map.value.removeLayer(map.value._mgrsGridLayer)
         map.value._mgrsGridLayer = null
@@ -1911,9 +2428,9 @@ onMounted(() => {
       map.value._mgrsGridLayer = null
     }
     rerenderMapElements()
+    persistMarchTableSession()
   }, 350)
   map.value.on('zoomend moveend resize', debouncedMapRerender)
-  // Dodatkowo, jeśli kontener mapy zmienia rozmiar (np. parent resize), nasłuchuj na resize observer
   const mapContainer = document.getElementById('march-map')
   if (window.ResizeObserver && mapContainer) {
     const resizeObserver = new ResizeObserver(() => {
@@ -1921,7 +2438,6 @@ onMounted(() => {
     })
     resizeObserver.observe(mapContainer)
   }
-  // Rysuj siatkę od razu jeśli checkbox aktywny
   if (showMgrsGrid.value) debouncedMapRerender()
 })
 
@@ -2001,6 +2517,9 @@ watch(showMgrsGrid, (val) => {
     // Zabezpieczenie: nie blokuj UI
     map.value._mgrsGridLayer = null
   }
+  if (!isRestoringMarchTable) {
+    persistMarchTableSession()
+  }
 })
 
 watch(showPdfDialog, (val) => {
@@ -2013,6 +2532,9 @@ watch(showPdfDialog, (val) => {
 watch(inputMode, (val, oldVal) => {
   if (val !== oldVal) {
     pinMode.value = false
+  }
+  if (!isRestoringMarchTable) {
+    persistMarchTableSession()
   }
 })
 
@@ -2088,8 +2610,17 @@ watch(selectedMapLayer, (val, oldVal) => {
       if (isLayerLoading.value) finishLayerLoad()
     }, 3000)
   }
+  if (!isRestoringMarchTable) {
+    persistMarchTableSession()
+  }
 })
 
+watch(preserveTable24h, (enabled) => {
+  if (isRestoringMarchTable) return
+  if (enabled) {
+    persistMarchTableSession()
+  }
+})
 // Dynamiczny styl kontenera mapy na desktopie
 const mainContainerStyle = computed(() => {
   if (isMobile.value) return 'width:100%;max-width:100vw;'

@@ -576,6 +576,19 @@ body.body--dark .text-dark {
   color: var(--g-dark-text, #e8eaed) !important;
 }
 
+body.body--dark .dark\:bg-grey-10,
+.theme-dark .dark\:bg-grey-10,
+.theme-tactical .dark\:bg-grey-10 {
+  background: var(--g-dark-surface-2, #303134) !important;
+  color: var(--g-dark-text, #e8eaed) !important;
+}
+
+body.body--dark .dark\:text-white,
+.theme-dark .dark\:text-white,
+.theme-tactical .dark\:text-white {
+  color: var(--g-dark-text, #e8eaed) !important;
+}
+
 body.body--dark .bg-warning,
 body.body--dark .q-banner.bg-warning {
   background: color-mix(in srgb, var(--g-dark-warning, #fdd663) 28%, var(--g-dark-surface-2, #303134) 72%) !important;
