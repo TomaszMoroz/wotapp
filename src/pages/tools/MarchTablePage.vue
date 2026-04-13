@@ -10,98 +10,205 @@
       <div class="row items-start justify-center">
         <div class="flex column" :class="isMobile ? 'col-12' : ''" style="width:100%;">
           <div class="q-mb-md column q-gutter-sm">
-            <!-- ...istniejące filtry, przyciski, dialogi... -->
-            <div class="row items-center q-gutter-xs">
-              <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" class="col" />
-              <q-select
-                v-model="selectedMapLayer"
-                :options="mapLayerOptions"
-                dense outlined emit-value map-options
-                style="min-width:120px;max-width:180px;"
-                :dropdown-icon="'layers'"
-                aria-label="Wybierz warstwę mapy"
-                class="col-auto q-ml-sm"
-              />
-            </div>
-            <div class="row items-center q-gutter-xs">
-              <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
-              <q-checkbox v-model="showMgrsGrid" label="Grid MGRS" color="green" class="q-ml-md" />
-              <q-checkbox v-model="preserveTable24h" label="Zachowaj tabelę 24h" color="amber-8" class="q-ml-md" />
-              <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
-              <q-toggle
-                v-model="inputMode"
-                :label="inputMode === 'map' ? 'punkty na mapie' : 'wpisz gridy'"
-                true-value="map"
-                false-value="grid"
-                color="primary"
-                class="q-ml-md"
-              />
-              <q-btn flat dense round icon="palette" class="q-ml-xs" @click="showPaletteDialog = true" aria-label="Kolory" />
-              <q-dialog v-model="showPaletteDialog">
-                <q-card style="min-width:340px;max-width:95vw;">
-                  <q-card-section class="text-h6">Dostosuj kolory mapy</q-card-section>
-                  <q-card-section>
-                    <div class="q-mb-md">
-                      <div v-for="(item, idx) in paletteItems" :key="item.key" class="row items-center q-gutter-sm q-mb-sm">
-                        <span class="col">{{ item.label }}</span>
-                        <div
-                          class="col-auto cursor-pointer"
-                          :style="`width:32px;height:32px;border-radius:6px;border:2px solid #ccc;background:${item.color}`"
-                          @click="openColorPicker(idx)"
-                        ></div>
-                      </div>
+            <template v-if="!isMobile">
+              <div class="row items-center q-gutter-xs">
+                <q-input v-model="search" label="Wyszukaj teren (nazwa lub MGRS)" outlined dense @keyup.enter="searchArea" class="col" />
+                <q-select
+                  v-model="selectedMapLayer"
+                  :options="mapLayerOptions"
+                  dense outlined emit-value map-options
+                  style="min-width:120px;max-width:180px;"
+                  :dropdown-icon="'layers'"
+                  aria-label="Wybierz warstwę mapy"
+                  class="col-auto q-ml-sm"
+                />
+              </div>
+              <div class="row items-center q-gutter-xs">
+                <q-btn label="Pokaż teren" color="primary" class="q-my-sm" @click="searchArea" />
+                <q-checkbox v-model="showMgrsGrid" label="Grid MGRS" color="green" class="q-ml-md" />
+                <q-checkbox v-model="preserveTable24h" label="Zachowaj tabelę 24h" color="amber-8" class="q-ml-md" />
+                <q-btn flat dense icon="my_location" label="Moje położenie" color="primary" class="q-ml-sm" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
+                <q-toggle
+                  v-model="inputMode"
+                  :label="inputMode === 'map' ? 'punkty na mapie' : 'wpisz gridy'"
+                  true-value="map"
+                  false-value="grid"
+                  color="primary"
+                  class="q-ml-md"
+                />
+                <q-btn flat dense round icon="palette" class="q-ml-xs" @click="showPaletteDialog = true" aria-label="Kolory" />
+              </div>
+              <div class="row items-center q-gutter-xs q-mt-xs">
+                <q-select
+                  v-model="mgrsZoneMode"
+                  :options="mgrsZoneModeOptions"
+                  label="Kontekst strefy"
+                  dense outlined emit-value map-options
+                  style="min-width: 150px; max-width: 200px;"
+                />
+                <q-select
+                  v-if="mgrsZoneMode === 'manual'"
+                  v-model="manualMgrsZoneLabel"
+                  :options="mgrsZoneOptions"
+                  label="Strefa robocza"
+                  dense outlined
+                  style="min-width: 170px; max-width: 220px;"
+                />
+                <q-chip dense square color="green-9" text-color="white">
+                  Aktywna: {{ activeMgrsZoneLabel || 'auto' }}
+                </q-chip>
+                <q-chip dense square color="grey-8" text-color="white">
+                  Granica strefy nie nadpisuje punktów
+                </q-chip>
+              </div>
+            </template>
+            <template v-else>
+              <q-card flat bordered class="march-mobile-panel">
+                <q-card-section class="q-pa-sm">
+                  <div class="march-mobile-section-title">Wyszukiwanie i mapa</div>
+                  <q-input v-model="search" label="Nazwa terenu lub MGRS" outlined dense @keyup.enter="searchArea" class="full-width" />
+                  <div class="row q-col-gutter-sm q-mt-sm">
+                    <div class="col-7">
+                      <q-btn label="Pokaż teren" color="primary" class="full-width" @click="searchArea" />
                     </div>
-                    <q-dialog v-model="showColorPickerDialog">
-                      <q-card style="min-width:220px;max-width:95vw;">
-                        <q-card-section class="text-h6">Wybierz kolor</q-card-section>
-                        <q-card-section>
-                          <q-color v-model="paletteItems[selectedPaletteIdx].color" format="hex" panel="palette" @update:model-value="onPaletteColorChange" />
-                        </q-card-section>
-                        <q-card-actions align="right">
-                          <q-btn flat label="OK" color="primary" v-close-popup />
-                        </q-card-actions>
-                      </q-card>
-                    </q-dialog>
-                  </q-card-section>
-                  <q-card-actions align="right">
-                    <q-btn flat label="Zamknij" color="primary" v-close-popup />
-                  </q-card-actions>
-                </q-card>
-              </q-dialog>
-            </div>
-            <div class="row items-center q-gutter-xs q-mt-xs">
-              <q-select
-                v-model="mgrsZoneMode"
-                :options="mgrsZoneModeOptions"
-                label="Kontekst strefy"
-                dense outlined emit-value map-options
-                style="min-width: 150px; max-width: 200px;"
-              />
-              <q-select
-                v-if="mgrsZoneMode === 'manual'"
-                v-model="manualMgrsZoneLabel"
-                :options="mgrsZoneOptions"
-                label="Strefa robocza"
-                dense outlined
-                style="min-width: 170px; max-width: 220px;"
-              />
-              <q-chip dense square color="green-9" text-color="white">
-                Aktywna: {{ activeMgrsZoneLabel || 'auto' }}
-              </q-chip>
-              <q-chip dense square color="grey-8" text-color="white">
-                Granica strefy nie nadpisuje punktów
-              </q-chip>
-            </div>
+                    <div class="col-5">
+                      <q-btn flat dense icon="my_location" label="Moja poz." color="primary" class="full-width" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
+                    </div>
+                  </div>
+                  <q-select
+                    v-model="selectedMapLayer"
+                    :options="mapLayerOptions"
+                    dense outlined emit-value map-options
+                    label="Warstwa mapy"
+                    :dropdown-icon="'layers'"
+                    aria-label="Wybierz warstwę mapy"
+                    class="full-width q-mt-sm"
+                  />
+                </q-card-section>
+              </q-card>
+
+              <q-card flat bordered class="march-mobile-panel">
+                <q-expansion-item icon="tune" label="Ustawienia mapy i sesji" header-class="march-mobile-expansion__header" expand-separator>
+                  <div class="q-pa-sm">
+                    <div class="text-caption text-grey-7 q-mb-xs">Tryb dodawania punktów</div>
+                    <q-btn-toggle
+                      v-model="inputMode"
+                      spread
+                      unelevated
+                      toggle-color="primary"
+                      :options="[
+                        { label: 'Mapa', value: 'map', icon: 'place' },
+                        { label: 'MGRS', value: 'grid', icon: 'grid_on' }
+                      ]"
+                      class="full-width"
+                    />
+                    <div class="column q-gutter-sm q-mt-md">
+                      <q-toggle v-model="showMgrsGrid" label="Pokaż grid MGRS" color="green" />
+                      <q-toggle v-model="preserveTable24h" label="Zachowaj tabelę 24h" color="amber-8" />
+                    </div>
+                    <q-btn flat no-caps icon="palette" label="Kolory mapy" color="primary" class="q-mt-md" @click="showPaletteDialog = true" />
+                    <q-select
+                      v-model="mgrsZoneMode"
+                      :options="mgrsZoneModeOptions"
+                      label="Kontekst strefy"
+                      dense outlined emit-value map-options
+                      class="full-width q-mt-md"
+                    />
+                    <q-select
+                      v-if="mgrsZoneMode === 'manual'"
+                      v-model="manualMgrsZoneLabel"
+                      :options="mgrsZoneOptions"
+                      label="Strefa robocza"
+                      dense outlined
+                      class="full-width q-mt-sm"
+                    />
+                    <div class="row q-gutter-xs q-mt-md">
+                      <q-chip dense square color="green-9" text-color="white">
+                        Aktywna: {{ activeMgrsZoneLabel || 'auto' }}
+                      </q-chip>
+                      <q-chip dense square color="grey-8" text-color="white" class="march-mobile-chip-wide">
+                        Granica strefy nie nadpisuje punktów
+                      </q-chip>
+                    </div>
+                  </div>
+                </q-expansion-item>
+              </q-card>
+            </template>
+
+            <q-dialog v-model="showPaletteDialog">
+              <q-card style="min-width:340px;max-width:95vw;">
+                <q-card-section class="text-h6">Dostosuj kolory mapy</q-card-section>
+                <q-card-section>
+                  <div class="q-mb-md">
+                    <div v-for="(item, idx) in paletteItems" :key="item.key" class="row items-center q-gutter-sm q-mb-sm">
+                      <span class="col">{{ item.label }}</span>
+                      <div
+                        class="col-auto cursor-pointer"
+                        :style="`width:32px;height:32px;border-radius:6px;border:2px solid #ccc;background:${item.color}`"
+                        @click="openColorPicker(idx)"
+                      ></div>
+                    </div>
+                  </div>
+                  <q-dialog v-model="showColorPickerDialog">
+                    <q-card style="min-width:220px;max-width:95vw;">
+                      <q-card-section class="text-h6">Wybierz kolor</q-card-section>
+                      <q-card-section>
+                        <q-color v-model="paletteItems[selectedPaletteIdx].color" format="hex" panel="palette" @update:model-value="onPaletteColorChange" />
+                      </q-card-section>
+                      <q-card-actions align="right">
+                        <q-btn flat label="OK" color="primary" v-close-popup />
+                      </q-card-actions>
+                    </q-card>
+                  </q-dialog>
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="Zamknij" color="primary" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
           </div>
           <div id="march-map"
             :style="isMobile ? 'height: 60vh; min-height: 320px; max-height: 80vh' : 'height: 600px'"
             style="width:100%;border-radius:8px;overflow:hidden;"
             class="q-mb-md"
           ></div>
-          <div class="q-mb-md row items-center" :class="!isMobile ? 'q-gutter-xs' : 'wrap q-gutter-sm'">
-            <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" class="q-mr-md" />
-            <q-btn label="Dodaj z MGRS" color="green-9" outline @click="showRouteMgrsDialog = true" class="q-mr-md" />
-            <q-dialog v-model="showGridDialog">
+          <div v-if="!isMobile" class="q-mb-md row items-center q-gutter-xs">
+            <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" />
+            <q-btn label="Dodaj z MGRS" color="green-9" outline @click="showRouteMgrsDialog = true" />
+            <q-btn label="Dodaj pkt spec." color="blue-7" @click="showSpecialDialog = true" :disable="false" />
+            <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" />
+            <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" />
+            <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" />
+            <q-btn icon="picture_as_pdf" color="grey-9" @click="showPdfDialog = true" />
+            <q-btn icon="delete" color="negative" @click="clearAll" />
+          </div>
+          <div v-else class="q-mb-md column q-gutter-sm">
+            <q-card flat bordered class="march-mobile-panel">
+              <q-card-section class="q-pa-sm">
+                <div class="march-mobile-section-title">Dodawanie punktów</div>
+                <div class="march-mobile-action-grid">
+                  <q-btn icon="add_location_alt" label="Dodaj punkt" color="green-7" @click="handleAddPoint" class="full-width" />
+                  <q-btn icon="grid_on" label="Z MGRS" color="green-9" outline @click="showRouteMgrsDialog = true" class="full-width" />
+                  <q-btn icon="place" label="Punkt spec." color="blue-7" @click="showSpecialDialog = true" class="full-width" />
+                  <q-btn icon="undo" label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" class="full-width" />
+                </div>
+              </q-card-section>
+            </q-card>
+
+            <q-card flat bordered class="march-mobile-panel">
+              <q-card-section class="q-pa-sm">
+                <div class="march-mobile-section-title">Narzędzia i eksport</div>
+                <div class="march-mobile-action-grid">
+                  <q-btn icon="file_download" label="GPX" color="primary" @click="exportGPX" :disable="pins.length < 2" class="full-width" />
+                  <q-btn icon="access_time" label="ETA" color="secondary" @click="showEtaDialog = true" class="full-width" />
+                  <q-btn icon="picture_as_pdf" label="PDF" color="grey-9" @click="showPdfDialog = true" class="full-width" />
+                  <q-btn icon="delete" label="Wyczyść" color="negative" @click="clearAll" class="full-width" />
+                </div>
+              </q-card-section>
+            </q-card>
+          </div>
+
+          <q-dialog v-model="showGridDialog">
               <q-card style="min-width:320px;max-width:95vw;">
                 <q-card-section class="text-h6">Dodaj punkt przez grid MGRS</q-card-section>
                 <q-card-section>
@@ -120,8 +227,8 @@
                   <q-btn flat label="OK" color="primary" @click="addGridPoint" />
                 </q-card-actions>
               </q-card>
-            </q-dialog>
-            <q-dialog v-model="showRouteMgrsDialog">
+          </q-dialog>
+          <q-dialog v-model="showRouteMgrsDialog">
               <q-card style="min-width:320px;max-width:95vw;">
                 <q-card-section class="text-h6">Dodaj punkt do trasy z MGRS</q-card-section>
                 <q-card-section>
@@ -141,9 +248,8 @@
                   <q-btn flat label="Dodaj" color="primary" @click="addRoutePointFromMgrs" />
                 </q-card-actions>
               </q-card>
-            </q-dialog>
-            <q-btn label="Dodaj pkt spec." color="blue-7" @click="showSpecialDialog = true" :disable="false" class="q-mr-md" />
-            <q-dialog v-model="showSpecialDialog">
+          </q-dialog>
+          <q-dialog v-model="showSpecialDialog">
               <q-card style="min-width:320px;max-width:95vw;">
                 <q-card-section class="text-h6">Dodaj punkt specjalny</q-card-section>
                 <q-card-section>
@@ -172,13 +278,7 @@
                   />
                 </q-card-actions>
               </q-card>
-            </q-dialog>
-            <q-btn label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" class="q-mr-md" />
-            <q-btn icon="file_download" color="primary" label="GPX" @click="exportGPX" :disable="pins.length < 2" class="q-mr-md" />
-            <q-btn icon="access_time" color="secondary" @click="showEtaDialog = true" class="q-mr-md" />
-            <q-btn icon="picture_as_pdf" color="grey-9" @click="showPdfDialog = true" class="q-mr-md" />
-            <q-btn icon="delete" color="negative" @click="clearAll" />
-          </div>
+          </q-dialog>
 
           <!-- Dialog wyboru typu punktu dla lokalizacji użytkownika -->
           <q-dialog v-model="showUserLocationDialog">
@@ -2673,7 +2773,57 @@ onBeforeUnmount(() => {
 .march-btn {
   min-width: 140px;
 }
+.march-mobile-panel {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.march-mobile-section-title {
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(45, 62, 47, 0.82);
+}
+
+.march-mobile-action-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.march-mobile-chip-wide {
+  max-width: 100%;
+  white-space: normal;
+  height: auto;
+  line-height: 1.2;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.march-mobile-expansion__header {
+  min-height: 52px;
+}
+
+.theme-dark .march-mobile-section-title {
+  color: rgba(242, 242, 242, 0.82);
+}
 @media (max-width: 600px) {
+  .march-main-container {
+    padding-bottom: 8px;
+  }
+
+  .march-mobile-panel {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 8px 24px rgba(17, 24, 39, 0.08);
+  }
+
+  .theme-dark .march-mobile-panel {
+    background: rgba(35, 37, 38, 0.94);
+  }
+
   .mobile-march-table {
     width: 100%;
     max-width: 100vw;
@@ -2697,6 +2847,12 @@ onBeforeUnmount(() => {
     min-width: 0;
     max-width: 100%;
   }
+
+  .march-mobile-action-grid :deep(.q-btn) {
+    min-height: 44px;
+    border-radius: 12px;
+  }
+
   .row.items-center.no-wrap.q-gutter-xs > .row.items-center.no-wrap.q-gutter-xs.q-ml-md {
     flex-wrap: wrap;
     gap: 4px;
