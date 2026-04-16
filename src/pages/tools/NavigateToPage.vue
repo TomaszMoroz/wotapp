@@ -449,9 +449,9 @@ onMounted(() => {
       attribution: '© OpenTopoMap',
       maxZoom: 17
     }),
-    tourist: L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}.png', {
-      attribution: '© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors',
-      maxZoom: 20
+    tourist: L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19
     })
   }
   baseLayer = baseLayers[resolveBaseLayerKey(selectedMapLayer.value)]
