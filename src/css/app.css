@@ -276,23 +276,34 @@ body.body--dark textarea {
   color: var(--q-text-main) !important;
 }
 
-/* Taktyczny dark mode */
+/* Taktyczny dark mode – pełna skala szarości */
 .theme-tactical {
   --q-bg-main: #050505;
   --q-bg-secondary: #111;
-  --q-text-main: #c62828;
-  --q-accent: #e53935;
+  --q-text-main: #d0d0d0;
+  --q-accent: #888;
   --q-header: #111;
   --q-card: #111;
   --q-btn: #1a1a1a;
-  --q-btn-text: #c62828;
-  --q-chip-bg: #111;
-  --q-chip-text: #c62828;
-  --q-icon-main: #c62828;
-  --q-icon-accent: #e53935;
-  --q-icon-muted: #444;
+  --q-btn-text: #d0d0d0;
+  --q-chip-bg: #222;
+  --q-chip-text: #bbb;
+  --q-icon-main: #aaa;
+  --q-icon-accent: #888;
+  --q-icon-muted: #555;
   background: var(--q-bg-main) !important;
   color: var(--q-text-main) !important;
+  /* Desaturacja całego UI */
+  filter: grayscale(1) brightness(0.8) contrast(1.05);
+}
+/* Wyłącz podwójny filtr na mapach – mają własny */
+.theme-tactical #march-map,
+.theme-tactical #navigate-map {
+  filter: none !important;
+}
+.theme-tactical #march-map .leaflet-tile-pane,
+.theme-tactical #navigate-map .leaflet-tile-pane {
+  filter: grayscale(1) brightness(0.55) contrast(1.1);
 }
 .theme-tactical .q-page,
 .theme-tactical .q-layout,

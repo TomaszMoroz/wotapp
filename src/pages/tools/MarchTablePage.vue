@@ -723,7 +723,7 @@ function navigateToSelectedPoint () {
     type: context.type
   })
   showPointActionsDialog.value = false
-  router.push('/tools/navigate-to').catch(() => {})
+  router.push({ path: '/tools/navigate-to', query: { mapLayer: selectedMapLayer.value } }).catch(() => {})
 }
 
 function openPointNoteDialog () {
@@ -2426,6 +2426,10 @@ onMounted(() => {
       attribution: '© OpenTopoMap',
       maxZoom: 17
     }),
+    tourist: L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}.png', {
+      attribution: '© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors',
+      maxZoom: 20
+    }),
     sat: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       attribution: '© Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
       maxZoom: 19
@@ -2641,6 +2645,7 @@ watch(inputMode, (val, oldVal) => {
 const mapLayerOptions = [
   { label: 'OpenStreetMap', value: 'osm' },
   { label: 'Topograficzna', value: 'topo' },
+  { label: 'Turystyczna', value: 'tourist' },
   { label: 'Satelitarna', value: 'sat' }
 ]
 const selectedMapLayer = ref('osm')
@@ -2879,6 +2884,11 @@ onBeforeUnmount(() => {
 /* Pulsujący marker lokalizacji użytkownika (niezależny od scoped) */
 .user-location-marker {
   position: relative;
+}
+
+/* Taktyczna maska mapy - odcienie szarości */
+.theme-tactical #march-map .leaflet-tile-pane {
+  filter: grayscale(1) brightness(0.55) contrast(1.1);
 }
 
 .pulse-dot {

@@ -140,7 +140,7 @@
             <q-separator />
             <q-card-section class="q-pa-none">
               <div class="map-wrap">
-                <div id="navigate-map" :class="['navigate-map', { 'navigate-map--night': selectedMapLayer === 'night' }]" ></div>
+                <div id="navigate-map" :class="['navigate-map', { 'navigate-map--night': selectedMapLayer === 'night', 'navigate-map--tactical': themeMode === 'tactical' && selectedMapLayer !== 'night' }]" ></div>
                 <div class="map-overlay map-overlay--north">
                   <div class="north-arrow">↑</div>
                   <div class="north-label">N</div>
@@ -175,9 +175,11 @@ import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useQuasar } from 'quasar'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 import * as mgrs from 'mgrs'
 import { useNavigationStore } from 'stores/navigation-store'
+import { storeToRefs } from 'pinia'
+import { useThemeStore } from 'stores/theme-store'
 
 defineOptions({
   name: 'NavigateToPage'
@@ -185,7 +187,9 @@ defineOptions({
 
 const $q = useQuasar()
 const router = useRouter()
+const route = useRoute()
 const navigationStore = useNavigationStore()
+const { themeMode } = storeToRefs(useThemeStore())
 
 const isMobile = computed(() => $q.screen.lt.md)
 const map = ref(null)
@@ -195,10 +199,12 @@ const targetInput = ref('')
 const target = ref(navigationStore.target || null)
 const pickMode = ref(false)
 const showMobileStatsPanel = ref(true)
-const selectedMapLayer = ref('osm')
+const validMapLayers = ['osm', 'topo', 'tourist', 'night']
+const selectedMapLayer = ref(validMapLayers.includes(route.query.mapLayer) ? route.query.mapLayer : 'osm')
 const mapLayerOptions = [
   { label: 'Standardowa', value: 'osm' },
   { label: 'Topograficzna', value: 'topo' },
+  { label: 'Turystyczna', value: 'tourist' },
   { label: 'Nocna', value: 'night' }
 ]
 let watchId = null
@@ -442,6 +448,10 @@ onMounted(() => {
     topo: L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
       attribution: '© OpenTopoMap',
       maxZoom: 17
+    }),
+    tourist: L.tileLayer('https://tiles.stadiamaps.com/tiles/outdoors/{z}/{x}/{y}.png', {
+      attribution: '© Stadia Maps, © OpenMapTiles, © OpenStreetMap contributors',
+      maxZoom: 20
     })
   }
   baseLayer = baseLayers[resolveBaseLayerKey(selectedMapLayer.value)]
@@ -561,6 +571,15 @@ onBeforeUnmount(() => {
 
 .navigate-map--night :deep(.leaflet-control-container),
 .navigate-map--night :deep(.leaflet-control-attribution) {
+  filter: none;
+}
+
+.navigate-map--tactical :deep(.leaflet-tile-pane) {
+  filter: grayscale(1) brightness(0.55) contrast(1.1);
+}
+
+.navigate-map--tactical :deep(.leaflet-control-container),
+.navigate-map--tactical :deep(.leaflet-control-attribution) {
   filter: none;
 }
 

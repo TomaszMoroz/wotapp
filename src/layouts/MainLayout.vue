@@ -86,7 +86,7 @@
         <q-btn
           flat
           dense
-          icon="dark_mode"
+          :icon="themeIcon"
           aria-label="Motyw"
           @click="cycleTheme"
           class="q-ml-sm dashboard-toolbar-btn"
@@ -495,16 +495,27 @@ const themeClass = computed(() => {
 
 const themeLabel = computed(() => {
   if (themeMode.value === 'dark') return 'Ciemny'
+  if (themeMode.value === 'tactical') return 'Taktyczny'
   return 'Jasny'
+})
+
+const themeIcon = computed(() => {
+  if (themeMode.value === 'dark') return 'dark_mode'
+  if (themeMode.value === 'tactical') return 'gps_fixed'
+  return 'wb_sunny'
 })
 
 function cycleTheme () {
   if (themeMode.value === 'light') themeStore.setThemeMode('dark')
+  else if (themeMode.value === 'dark') themeStore.setThemeMode('tactical')
   else themeStore.setThemeMode('light')
 }
 
 watch(themeMode, val => {
-  Dark.set(val === 'dark')
+  Dark.set(val === 'dark' || val === 'tactical')
+  document.body.classList.remove('theme-dark', 'theme-tactical')
+  if (val === 'dark') document.body.classList.add('theme-dark')
+  else if (val === 'tactical') document.body.classList.add('theme-tactical')
 }, { immediate: true })
 
 const deferredPrompt = ref(null)
