@@ -11,6 +11,7 @@ const routes = [
       { path: '/tactics/procedures', component: () => import('pages/tactics/TacticsProceduresPage.vue') },
       { path: '/tactics/command', component: () => import('pages/tactics/CommandPage.vue') },
       { path: '/tactics/radio', component: () => import('pages/tactics/TacticsRadioPage.vue') },
+      { path: '/tactics/offensive', component: () => import('pages/tactics/TacticsOffensivePage.vue') },
       { path: '/topography', component: () => import('pages/topography/TopographyPage.vue') },
       { path: '/topography/mgrs', component: () => import('pages/topography/articles/MgrsPage.vue') },
       { path: '/shooting', component: () => import('pages/shooting/ShootingPage.vue') },

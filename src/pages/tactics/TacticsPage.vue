@@ -58,6 +58,21 @@
           </q-card-section>
         </q-card>
 
+        <!-- Działania ofensywne -->
+        <q-card
+          class="modern-category-card bg-red-8"
+          clickable
+          @click="navigateTo('/tactics/offensive')"
+        >
+          <q-card-section class="text-center">
+            <div class="modern-card-icon-wrapper">
+              <q-icon name="arrow_forward" size="3rem" color="white" />
+            </div>
+            <div class="text-h6 q-mt-md text-weight-bold text-white">Działania ofensywne</div>
+            <div class="text-caption text-military-light">Natarcie, szturm, rajd, pościg</div>
+          </q-card-section>
+        </q-card>
+
         <!-- Łączność -->
         <q-card
           class="modern-category-card bg-military-green"
