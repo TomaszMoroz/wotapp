@@ -62,495 +62,392 @@
 
               <div class="modern-content-body">
 
-                <!-- 1. Ogólne zasady natarcia -->
+                <!-- 1. Ogólne zasady działań zaczepnych -->
                 <div v-if="selectedTopic.id === 1">
-                  <h4>Ogólne zasady działań ofensywnych</h4>
+                  <h4>6.1. Prowadzenie działań zaczepnych</h4>
                   <p>
-                    Działania ofensywne mają na celu zniszczenie lub zneutralizowanie sił przeciwnika,
-                    zajęcie lub opanowanie terenu oraz stworzenie warunków do prowadzenia dalszych operacji.
-                    Są podstawową formą działania umożliwiającą przejęcie i utrzymanie inicjatywy.
+                    Pododdziały lekkiej piechoty realizując działania zaczepne będą je wykonywały
+                    w sposób dynamiczny w formie: szturmu, napadu, wypadu, rajdu oraz innych form
+                    określonych w regulaminach działań taktycznych WOT.
+                  </p>
+                  <p>
+                    W działaniach ofensywnych sekcja zwykle będzie działać w składzie plutonu,
+                    chociaż nie wyklucza się także działań samodzielnych.
                   </p>
 
-                  <div class="q-pa-md bg-red-1 rounded-borders q-mt-md q-mb-lg">
+                  <h5>Formy działań zaczepnych:</h5>
+                  <div class="q-gutter-sm q-mb-lg">
+                    <q-chip color="red-8" text-color="white" icon="bolt" label="Szturm" />
+                    <q-chip color="red-7" text-color="white" icon="flash_on" label="Napad" />
+                    <q-chip color="red-6" text-color="white" icon="directions_walk" label="Wypad" />
+                    <q-chip color="red-5" text-color="white" icon="loop" label="Rajd" />
+                  </div>
+
+                  <h5>Cele działań:</h5>
+                  <div class="q-pa-md bg-red-1 rounded-borders q-mb-md">
                     <div class="text-weight-medium text-red-8 q-mb-xs">
                       <q-icon name="gps_fixed" class="q-mr-xs" />
-                      Cel działań ofensywnych
+                      W szturmie, rajdzie i napadzie
                     </div>
                     <ul class="q-mb-none">
-                      <li>Zniszczenie lub zneutralizowanie sił przeciwnika</li>
-                      <li>Zajęcie kluczowych obiektów i rubieży terenowych</li>
-                      <li>Pozbawienie przeciwnika inicjatywy</li>
-                      <li>Stworzenie warunków do prowadzenia dalszych operacji</li>
+                      <li>Opanowanie wskazanego obiektu</li>
+                      <li>Zniszczenie obiektu lub określonych sił przeciwnika</li>
+                    </ul>
+                  </div>
+                  <div class="q-pa-md bg-orange-1 rounded-borders q-mb-md">
+                    <div class="text-weight-medium text-orange-8 q-mb-xs">
+                      <q-icon name="search" class="q-mr-xs" />
+                      W wypadzie
+                    </div>
+                    <ul class="q-mb-none">
+                      <li>Schwytanie jeńca</li>
+                      <li>Zdobycie dokumentów, wzorów uzbrojenia lub wyposażenia</li>
+                      <li>Zniszczenie obiektu</li>
                     </ul>
                   </div>
 
-                  <h5>Rodzaje działań ofensywnych:</h5>
-                  <div class="q-gutter-sm q-mb-lg">
-                    <q-chip color="red-8" text-color="white" icon="arrow_forward" label="Natarcie" />
-                    <q-chip color="red-7" text-color="white" icon="bolt" label="Szturm" />
-                    <q-chip color="red-6" text-color="white" icon="loop" label="Rajd" />
-                    <q-chip color="red-5" text-color="white" icon="directions_run" label="Pościg" />
-                    <q-chip color="red-4" text-color="white" icon="flash_on" label="Atak z zaskoczenia" />
-                  </div>
-
-                  <h5>Zasady ogólne:</h5>
+                  <h5>Obiekty działań zaczepnych sekcji lekkiej piechoty:</h5>
                   <ul>
-                    <li><strong>Inicjatywa:</strong> Stałe przejmowanie i utrzymywanie inicjatywy działania</li>
-                    <li><strong>Koncentracja sił:</strong> Skupienie sił i środków na kierunku głównego uderzenia</li>
-                    <li><strong>Tempo:</strong> Utrzymywanie tempa działania uniemożliwiającego reorganizację przeciwnika</li>
-                    <li><strong>Elastyczność:</strong> Szybka zmiana planów i działań w odpowiedzi na rozwój sytuacji</li>
-                    <li><strong>Zaskoczenie:</strong> Działanie w nieoczekiwanym miejscu, czasie i z zaskakującym kierunkiem uderzenia</li>
-                    <li><strong>Masowanie ognia:</strong> Skupienie ognia na krytycznych celach w kluczowych momentach</li>
-                    <li><strong>Zabezpieczenie:</strong> Ochrona sił własnych przed zaskakującymi działaniami przeciwnika</li>
+                    <li>Obsługa km, moździerza, granatnika</li>
+                    <li>Pojazd</li>
+                    <li>Posterunek, część małego wzgórza</li>
+                    <li>Budynek lub pomieszczenie w budynku</li>
                   </ul>
-
-                  <h5>Warunki skutecznego natarcia:</h5>
-                  <ul>
-                    <li>Dokładne rozpoznanie pozycji i sił przeciwnika</li>
-                    <li>Przewaga ogniowa w miejscu przełamania</li>
-                    <li>Zsynchronizowane działanie ognia i manewru</li>
-                    <li>Zabezpieczenie skrzydeł i tyłu</li>
-                    <li>Utrzymanie gotowości odwodów</li>
-                  </ul>
-                </div>
-
-                <!-- 2. Przygotowanie natarcia -->
-                <div v-else-if="selectedTopic.id === 2">
-                  <h4>Przygotowanie do natarcia</h4>
-                  <p>
-                    Staranne przygotowanie jest warunkiem koniecznym sukcesu działań ofensywnych.
-                    Obejmuje rozpoznanie, planowanie, wydanie rozkazu i ostateczne przygotowania
-                    do ataku.
-                  </p>
-
-                  <h5>Etapy przygotowania:</h5>
-                  <ol>
-                    <li>
-                      <strong>Rozpoznanie rejonu natarcia (REKON):</strong>
-                      <ul>
-                        <li>Określenie pozycji, sił i rozmieszczenia przeciwnika</li>
-                        <li>Rozpoznanie rubieży wyjściowej i kierunków podejścia</li>
-                        <li>Ustalenie przeszkód terenowych i pól minowych</li>
-                        <li>Identyfikacja miejsc ubezpieczeń i posterunków</li>
-                      </ul>
-                    </li>
-
-                  <div class="q-mb-lg text-center q-mt-sm">
-                    <q-img
-                      src="~assets/tactics/4.png"
-                      alt="Rekonesans obiektu — schemat"
-                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
-                      fit="contain"
-                    />
-                    <div class="text-caption text-military-dark q-mt-xs">Rekonesans obiektu</div>
-                  </div>
-
-                    <li>
-                      <strong>Analiza METT-TC:</strong>
-                      <ul>
-                        <li><strong>M</strong>ission — cel natarcia i zadania szczegółowe</li>
-                        <li><strong>E</strong>nemy — siły, rozmieszczenie, możliwości przeciwnika</li>
-                        <li><strong>T</strong>errain &amp; Weather — wpływ terenu i pogody na działanie</li>
-                        <li><strong>T</strong>roops — własne siły i środki dostępne do natarcia</li>
-                        <li><strong>T</strong>ime — czas dostępny na przygotowanie i wykonanie</li>
-                        <li><strong>C</strong>ivilian — obecność i wpływ ludności cywilnej</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <strong>Planowanie natarcia:</strong>
-                      <ul>
-                        <li>Określenie głównego i zapasowego kierunku ataku</li>
-                        <li>Wyznaczenie rubieży wyjściowej do ataku (RWA)</li>
-                        <li>Podział zadań między pododdziały (grupy)</li>
-                        <li>Koordynacja ognia i manewru — plan ognia</li>
-                        <li>Planowanie drogi wycofania</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <strong>Wydanie rozkazu bojowego (OPORD / 5-punktowy rozkaz):</strong>
-                      <ul>
-                        <li>Sytuacja — informacje o przeciwniku i siłach własnych</li>
-                        <li>Zadanie — co, kiedy, gdzie, po co</li>
-                        <li>Wykonanie — jak, podział ról, koordynacja</li>
-                        <li>Zabezpieczenie — logistyka, medycyna, łączność</li>
-                        <li>Dowodzenie i sygnały — hierarchia, sygnały, hasła</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <strong>Końcowe przygotowania:</strong>
-                      <ul>
-                        <li>Sprawdzenie uzbrojenia, amunicji i wyposażenia</li>
-                        <li>Weryfikacja łączności radiowej</li>
-                        <li>Omówienie sygnałów i haseł</li>
-                        <li>Ostateczne briefingi i pytania</li>
-                      </ul>
-                    </li>
-                  </ol>
-
-                  <div class="q-pa-md bg-amber-1 rounded-borders q-mt-md">
-                    <div class="text-weight-medium text-amber-8 q-mb-xs">
-                      <q-icon name="warning" class="q-mr-xs" />
-                      Zasada podstawowa
-                    </div>
-                    <div class="text-body2">
-                      Im więcej czasu poświęcono na przygotowanie, tym mniejsze ryzyko i strat podczas
-                      wykonania. Nigdy nie rezygnuj z rozpoznania.
-                    </div>
-                  </div>
-                </div>
-
-                <!-- 3. Podejście i atak -->
-                <div v-else-if="selectedTopic.id === 3">
-                  <h4>Podejście do pozycji i atak</h4>
-                  <p>
-                    Faza podejścia (atak z marszu lub podejście taktyczne) kończy się osiągnięciem
-                    rubieży wyjściowej do ataku, skąd następuje bezpośrednie uderzenie na pozycję
-                    przeciwnika.
-                  </p>
-
-                  <h5>Fazy natarcia sekcji:</h5>
-                  <ol>
-                    <li>
-                      <strong>Wyjście na rubież wyjściową do ataku (RWA):</strong>
-                      <ul>
-                        <li>Przemieszczenie skryte, z zachowaniem szyku taktycznego</li>
-                        <li>Formacja zależna od terenu i zagrożenia (Podwójny Sierżant lub linię)</li>
-                        <li>Zachowanie dyscypliny milczenia i maskowania</li>
-                        <li>Utrzymanie łączności z dowódcą i innymi elementami</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <strong>Przygotowanie ogniowe:</strong>
-                      <ul>
-                        <li>Skupienie ognia na zidentyfikowanych stanowiskach przeciwnika</li>
-                        <li>Osłona manewrującego elementu szturmowego</li>
-                        <li>Neutralizacja ubezpieczeń i obserwatorów</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <strong>Bezpośredni atak (szturm):</strong>
-                      <ul>
-                        <li>Przemieszczenie grupy szturmowej pod osłoną ognia</li>
-                        <li>Opanowanie rubieży za pozycją przeciwnika</li>
-                        <li>Przejęcie inicjatywy w walce wręcz lub na bliskie odległości</li>
-                      </ul>
-                    </li>
-                    <li>
-                      <strong>Konsolidacja i reorganizacja:</strong>
-                      <ul>
-                        <li>Zabezpieczenie zdobytego terenu — obrona 360°</li>
-                        <li>Sprawdzenie stanu osobowego i wyposażenia</li>
-                        <li>Przeszukanie pozycji, jeńcy, dokumenty</li>
-                        <li>Meldunek do dowódcy nadrzędnego</li>
-                        <li>Przygotowanie do kolejnego zadania</li>
-                      </ul>
-                    </li>
-                  </ol>
 
                   <div class="q-pa-md bg-blue-1 rounded-borders q-mt-md">
                     <div class="text-weight-medium text-blue-8 q-mb-xs">
                       <q-icon name="info" class="q-mr-xs" />
-                      Zasada 3:1
+                      Uwaga
                     </div>
                     <div class="text-body2">
-                      Do skutecznego natarcia zaleca się trzykrotną przewagę liczebną lub ogniową
-                      nad broniącym się przeciwnikiem w miejscu przełamania.
+                      Szturm jako forma działań może być jednocześnie częścią składową innych form
+                      działania takich jak napad, wypad, rajd.
                     </div>
                   </div>
                 </div>
 
-                <!-- 4. Ogień i manewr -->
-                <div v-else-if="selectedTopic.id === 4">
-                  <h4>Techniki natarcia — Ogień i manewr</h4>
+                <!-- 2. Szturm -->
+                <div v-else-if="selectedTopic.id === 2">
+                  <h4>6.2. Prowadzenie działań szturmowych</h4>
                   <p>
-                    Podstawowa zasada działań ofensywnych: element ubezpieczający (<em>wspierający</em>)
-                    prowadzi ogień, przykuwając uwagę przeciwnika, podczas gdy element manewrujący
-                    (<em>szturmowy</em>) przemieszcza się do pozycji umożliwiającej atak.
+                    Prowadzenie działań szturmowych stanowi formę aktywnego działania pododdziału,
+                    a jego celem jest zdobycie obiektu przeciwnika, wynikające z danej sytuacji bojowej
+                    i jest rezultatem decyzji dowódcy.
+                  </p>
+                  <p>
+                    <strong>Szturm</strong> jest jedną z form reakcji plutonu/sekcji lub taktycznego zachowania
+                    w przypadku wykrycia lub wejścia w zasadzkę, z zastosowaniem wszelkich dostępnych środków walki.
                   </p>
 
-                  <h5>Techniki przemieszczania:</h5>
-
-                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-md">
-                    <div class="text-weight-bold text-military-secondary q-mb-xs">1. Bounding Overwatch (Skoki pod osłoną)</div>
-                    <ul class="q-mb-none">
-                      <li>Sekcja podzielona na dwa elementy: ubezpieczający i manewrujący</li>
-                      <li>Element ubezpieczający zajmuje pozycję i prowadzi ogień obserwacyjny</li>
-                      <li>Element manewrujący wykonuje skok do kolejnej pozycji z osłoną</li>
-                      <li>Role zmieniają się po każdym skoku</li>
-                      <li>Stosowane w warunkach kontaktu ogniowego lub jego prawdopodobieństwa</li>
-                    </ul>
+                  <div class="q-pa-md bg-red-1 rounded-borders q-mb-lg">
+                    <div class="text-weight-medium text-red-8 q-mb-xs">
+                      <q-icon name="priority_high" class="q-mr-xs" />
+                      Kontakt z przeciwnikiem — dwa przypadki
+                    </div>
+                    <ol class="q-mb-none">
+                      <li>Pluton lub sekcja zostaje wykryta przez przeciwnika — najczęściej wpada w zasadzkę</li>
+                      <li>Przeciwnik zostaje wykryty przez pluton lub sekcję</li>
+                    </ol>
                   </div>
 
-                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-md">
-                    <div class="text-weight-bold text-military-secondary q-mb-xs">2. Alternating Bounds (Skoki naprzemienne)</div>
-                    <ul class="q-mb-none">
-                      <li>Pary (buddy teams) poruszają się na zmianę</li>
-                      <li>Jeden żołnierz ubezpiecza, drugi wykonuje skok</li>
-                      <li>Ciągła i wzajemna osłona przez cały ruch</li>
-                      <li>Stosowane przy bezpośrednim kontakcie z przeciwnikiem</li>
-                    </ul>
-                  </div>
-
-                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-md">
-                    <div class="text-weight-bold text-military-secondary q-mb-xs">3. Successive Bounds (Skoki sekwencyjne)</div>
-                    <ul class="q-mb-none">
-                      <li>Całe elementy przemieszczają się jedna pozycja do przodu</li>
-                      <li>Drugi element pozostaje na miejscu jako podstawa ognia</li>
-                      <li>Wolniejsze, ale zapewnia masywniejszą siłę ognia w każdej chwili</li>
-                      <li>Stosowane gdy zagrożenie jest mniejsze lub teren trudny</li>
-                    </ul>
-                  </div>
-
-                  <h5>Koordynacja ognia i manewru:</h5>
-                  <ul>
-                    <li><strong>Sygnały dowodzenia:</strong> Dowódca zarządza ogniem i ruchem sygnałami głosowymi, radiowymi lub wzrokowymi</li>
-                    <li><strong>Sektory ognia:</strong> Każdy żołnierz ma wyznaczony sektor odpowiedzialności — ogień się nie krzyżuje</li>
-                    <li><strong>Limit amunicji:</strong> Wyznaczenie limitu i dyscyplina ogniowa — nie strzelamy bezmyślnie</li>
-                    <li><strong>Zmiana magazynka:</strong> Taktyczna wymiana — ogłoszenie „zmiana", partner przejmuje ogień</li>
-                    <li><strong>Linia ognia:</strong> Zakaz prowadzenia ognia przez pozycje własnych żołnierzy</li>
-                  </ul>
-
-                  <h5>Komenda „KONTAKT":</h5>
+                  <h5>Najważniejsze zasady prowadzenia szturmu:</h5>
                   <ol>
-                    <li><strong>ODPOWIEDZ OGNIEM</strong> — natychmiastowa reakcja ogniowa na przeciwnika</li>
-                    <li><strong>PODAJ KIERUNEK</strong> — komunikat o kierunku kontaktu (zegar lub azymut)</li>
-                    <li><strong>ZAJMIJ OSŁONĘ</strong> — przemieszczenie za osłonę lub zakrycie</li>
-                    <li><strong>MELDUJ</strong> — meldunek do dowódcy o kontakcie</li>
+                    <li><strong>Prędkość i zaskoczenie</strong></li>
+                    <li><strong>Skoordynowane prowadzenie ognia</strong></li>
+                    <li><strong>Gwałtowność akcji i prędkość wykonywanego manewru</strong></li>
+                    <li><strong>Planowe wycofanie</strong> — w uporządkowany sposób, zachowując ubezpieczenie</li>
                   </ol>
-                </div>
 
-                <!-- 5. Szturm na pozycję -->
-                <div v-else-if="selectedTopic.id === 5">
-                  <h4>Szturm na pozycję przeciwnika</h4>
+                  <h5>Wariant 1 — Szturm bezpośredni (Rys. 109)</h5>
                   <p>
-                    Szturm to bezpośredni, zdecydowany atak na pozycję/obiekt z zamiarem jej opanowania.
-                    Wymaga zsynchronizowanego ognia, manewru i zdecydowanego działania w końcowej fazie.
+                    Sekcja porusza się szykiem „podwójny sierżant". Nawiązuje kontakt wzrokowy
+                    (sygnał: „ZEJDŹ, SCHOWAJ, UKRYJ SIĘ") lub ogniowy (sygnał: „KONTAKT")
+                    z przeciwnikiem z przodu. Dowódca wypracowuje decyzję — <strong>SZTURM</strong>.
+                  </p>
+                  <p>
+                    Na komendę dowódcy podsekcja <strong>ALFA</strong> zajmuje stanowiska ogniowe
+                    i wykonuje nawałę ogniową. W tym czasie podsekcja <strong>BRAWO</strong> skokami
+                    przemieszcza się na rubież ataku bliżej przeciwnika. Po zajęciu stanowisk BRAWO
+                    wykonuje nawałę ogniową, a ALFA skokami przemieszcza się dalej. Sekwencja
+                    kontynuowana jest dotąd, aż obie podsekcje zbliżą się na odległość do wykonania szturmu.
+                    Podsekcje nie przekraczają wyznaczonej przez dowódcę <strong>GD</strong>.
                   </p>
 
                   <div class="q-mb-lg text-center">
                     <q-img
                       src="~assets/tactics/1.png"
-                      alt="Wariant 1. Szturm na stanowisko ogniowe przeciwnika (s. 253)"
+                      alt="Rys. 109. Szturm sekcji na stanowisko ogniowe przeciwnika"
                       style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
                       fit="contain"
                     />
-                    <div class="text-caption text-military-dark q-mt-xs">Wariant 1. Szturm na stanowisko ogniowe przeciwnika (s. 253)</div>
+                    <div class="text-caption text-military-dark q-mt-xs">Rys. 109. Szturm sekcji na stanowisko ogniowe przeciwnika</div>
                   </div>
 
-                  <h5>Elementy szturmu:</h5>
-                  <ul>
-                    <li>
-                      <strong>Grupa wsparcia (GW):</strong>
-                      Zapewnia podstawę ognia, neutralizując pozycje ogniowe i przykuwając uwagę przeciwnika
-                    </li>
-                    <li>
-                      <strong>Grupa szturmowa (GS):</strong>
-                      Wykonuje bezpośrednie uderzenie na pozycję pod osłoną ognia GW
-                    </li>
-                    <li>
-                      <strong>Ubezpieczenie skrzydeł i tyłu:</strong>
-                      Ochrona przed kontratakiem i zamknięciem dróg odwrotu
-                    </li>
-                  </ul>
-
-                  <h5>Przebieg szturmu:</h5>
-                  <ol>
-                    <li><strong>Przygotowanie ogniowe:</strong> GW otwiera ogień na pozycje przeciwnika — supresja</li>
-                    <li><strong>Sygnał do szturmu:</strong> Dowódca wydaje rozkaz do ataku GS</li>
-                    <li><strong>Szybkie podejście:</strong> GS przemieszcza się do granicy pola szturmowego (w skokach lub biegiem)</li>
-                    <li><strong>Przejście granicy:</strong> GS wchodzi na pozycję przeciwnika — ogień z biegu, granaty</li>
-                    <li><strong>Czyszczenie pozycji:</strong> Systematyczne eliminowanie oporu — oczyszczanie kolejnych stanowisk</li>
-                    <li><strong>Rubież zbiórki:</strong> GS osiąga wyznaczoną rubież za pozycją — wołanie „CLEAR"</li>
-                    <li><strong>Dołączenie GW:</strong> Grupa wsparcia dołącza do GS na zdobytej pozycji</li>
-                  </ol>
+                  <h5>Wariant 2 — Szturm z obejściem (Rys. 110)</h5>
+                  <p>
+                    Dowódca wypracowuje decyzję — <strong>SZTURM Z OBEJŚCIEM</strong>.
+                    Podsekcja <strong>ALFA</strong> (ogniowa) zajmuje stanowiska i wykonuje nawałę ogniową
+                    — ogień nasila się w miarę zbliżania się podsekcji szturmowej do przeciwnika.
+                    Podsekcja <strong>BRAWO</strong> (szturmowa) wykonuje szybkie obejście i skrycie
+                    przemieszcza się na kolejne stanowiska bliżej przeciwnika.
+                  </p>
+                  <p>
+                    Po zajęciu rubieży ataku BRAWO wykonuje szturm, a ALFA przenosi ogień poza GD
+                    lub przerywa ogień. Jeśli stanowisko jest poza zasięgiem ognia ALFA,
+                    może ona skokami przemieścić się bliżej.
+                  </p>
 
                   <div class="q-mb-lg text-center">
                     <q-img
                       src="~assets/tactics/2.png"
-                      alt="Szturm na stanowisko ogniowe — warianty działania (s. 254)"
+                      alt="Rys. 110. Szturm na stanowisko ogniowe przeciwnika z obejściem"
                       style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
                       fit="contain"
                     />
-                    <div class="text-caption text-military-dark q-mt-xs">Warianty szturmu na stanowisko ogniowe (s. 254)</div>
+                    <div class="text-caption text-military-dark q-mt-xs">Rys. 110. Szturm na stanowisko ogniowe przeciwnika z obejściem</div>
                   </div>
-
-                  <h5>Czyszczenie pozycji (stanowiska):</h5>
-                  <ul>
-                    <li><strong>Podejście z flanki lub tyłu:</strong> Nigdy frontalnie bez zdecydowanej supresji</li>
-                    <li><strong>Granaty:</strong> Rzut granatu przed wejściem — okrzyk „GRANAT", schowanie, detonacja, wejście</li>
-                    <li><strong>Kąt 90°:</strong> Podchodzenie do okopów pod kątem prostym do osi okopu</li>
-                    <li><strong>Dwójkowy system:</strong> Jeden wchodzi, drugi ubezpiecza i prowadzi ogień wzdłuż okopu</li>
-                    <li><strong>Komunikacja:</strong> Stałe informowanie partnera o pozycji własnej</li>
-                  </ul>
-
-                  <div class="q-mb-lg text-center q-mt-sm">
-                    <q-img
-                      src="~assets/tactics/6.png"
-                      alt="Działanie zespołów po wejściu do obiektu"
-                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
-                      fit="contain"
-                    />
-                    <div class="text-caption text-military-dark q-mt-xs">Działanie zespołów po wejściu do obiektu</div>
-                  </div>
-
-                  <div class="q-pa-md bg-red-1 rounded-borders q-mt-md">
-                    <div class="text-weight-medium text-red-8 q-mb-xs">
-                      <q-icon name="priority_high" class="q-mr-xs" />
-                      Krytyczne błędy podczas szturmu
-                    </div>
-                    <ul class="q-mb-none">
-                      <li>Prowadzenie ognia w kierunku własnych żołnierzy szturmujących (fratricyde)</li>
-                      <li>Zatrzymywanie się przed pozycją — zawsze przejść przez cel</li>
-                      <li>Utrata łączności i koordynacji między GW i GS</li>
-                      <li>Niepełne oczyszczenie pozycji przed konsolidacją</li>
-                    </ul>
-                  </div>
-                </div>
-
-                <!-- 6. Rajd -->
-                <div v-else-if="selectedTopic.id === 6">
-                  <h4>Rajd</h4>
-                  <p>
-                    Rajd to krótkotrwała, szybka operacja ofensywna głęboko w ugrupowaniu
-                    lub na tyłach przeciwnika, po której siły wracają do bazy lub innego
-                    wyznaczonego rejonu. Nie zakłada trwałego zajęcia terenu.
-                  </p>
-
-                  <h5>Cechy charakterystyczne rajdu:</h5>
-                  <ul>
-                    <li>Krótki czas trwania — w, wykonaj zadanie, wyjdź</li>
-                    <li>Cel: zniszczenie obiektu, uwolnienie zakładników, schwytanie osoby, zbieranie danych</li>
-                    <li>Brak zamiaru trwałego zajęcia terenu</li>
-                    <li>Zaskoczenie jako kluczowy element sukcesu</li>
-                    <li>Wcześniej przygotowana droga odwrotu</li>
-                  </ul>
-
-                  <h5>Fazy rajdu:</h5>
-                  <ol>
-                    <li><strong>Rejon ześrodkowania (RZ):</strong> Punkt zbiórki przed akcją, przegląd i weryfikacja planu</li>
-                    <li><strong>Podejście:</strong> Skryte podejście do obiektu z zachowaniem szyku taktycznego</li>
-                    <li><strong>Zajęcie pozycji:</strong> Rozmieszczenie elementów — ubezpieczenie, wsparcie, szturm</li>
-                    <li><strong>Uderzenie:</strong> Szybkie, zdecydowane wykonanie zadania na obiekcie</li>
-                    <li><strong>Konsolidacja:</strong> Krótka — sprawdzenie sił, zabezpieczenie jeńców/materiałów</li>
-                    <li><strong>Odskok:</strong> Szybkie wyjście z rejonu — z góry ustalona trasa i punkt zbiórki</li>
-                    <li><strong>Powrót:</strong> Przemieszczenie do bazy lub wyznaczonego rejonu</li>
-                  </ol>
-
-                  <div class="q-mb-lg text-center">
-                    <q-img
-                      src="~assets/tactics/3.png"
-                      alt="Napad na obiekt — schemat działania"
-                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
-                      fit="contain"
-                    />
-                    <div class="text-caption text-military-dark q-mt-xs">Napad na obiekt — schemat działania</div>
-                  </div>
-
-                  <h5>Kluczowe zasady rajdu:</h5>
-                  <ul>
-                    <li><strong>Timing:</strong> Precyzyjne określenie czasu H (zero hour) i synchronizacja działań</li>
-                    <li><strong>Drogi odwrotu:</strong> Minimum dwie wcześniej rozpoznane trasy wycofania</li>
-                    <li><strong>Punkt zbiórki (PZ):</strong> Wyznaczony przed akcją — spotkanie po zerwaniu kontaktu</li>
-                    <li><strong>Zminimalizowanie śladu:</strong> Nie zostawiaj rannych, sprzętu ani śladów możliwych do identyfikacji</li>
-                    <li><strong>Komunikacja:</strong> Stała łączność z dowódcą nadrzędnym przez cały czas akcji</li>
-                  </ul>
-
-                  <div class="q-mb-lg text-center q-mt-md">
-                    <q-img
-                      src="~assets/tactics/5.png"
-                      alt="Schemat organizacji napadu"
-                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
-                      fit="contain"
-                    />
-                    <div class="text-caption text-military-dark q-mt-xs">Schemat organizacji napadu</div>
-                  </div>
-
-                  <div class="q-mb-lg text-center q-mt-md">
-                    <q-img
-                      src="~assets/tactics/7.png"
-                      alt="Odejście z rejonu/obiektu"
-                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
-                      fit="contain"
-                    />
-                    <div class="text-caption text-military-dark q-mt-xs">Odejście z rejonu/obiektu</div>
-                  </div>
-                </div>
-
-                <!-- 7. Konsolidacja i reorganizacja -->
-                <div v-else-if="selectedTopic.id === 7">
-                  <h4>Konsolidacja i reorganizacja po natarciu</h4>
-                  <p>
-                    Po opanowaniu celu każda sekcja/oddział musi przeprowadzić konsolidację
-                    i reorganizację zanim podejmie kolejne działania. Zaniedbanie tej fazy
-                    prowadzi do podatności na kontratak.
-                  </p>
-
-                  <h5>Konsolidacja (natychmiastowa — pierwsze 15 minut):</h5>
-                  <ol>
-                    <li><strong>Obrona 360°:</strong> Natychmiastowe ubezpieczenie dookoła zdobytej pozycji</li>
-                    <li><strong>Wołanie „CLEAR":</strong> Potwierdzenie oczyszczenia wszystkich stanowisk</li>
-                    <li><strong>Jeńcy i ranni:</strong> Obezwładnienie jeńców, pierwsza pomoc dla rannych — priorytet własnych</li>
-                    <li><strong>Meldunek SALUTE:</strong> Przekazanie meldunku o sytuacji do dowódcy nadrzędnego</li>
-                    <li><strong>Obserwacja:</strong> Wyznaczenie posterunków obserwacyjnych na prawdopodobnych kierunkach kontrataku</li>
-                  </ol>
-
-                  <h5>Reorganizacja (do 30 minut):</h5>
-                  <ol>
-                    <li><strong>Stan osobowy:</strong> Sprawdzenie KIA/WIA, identyfikacja brakujących żołnierzy</li>
-                    <li><strong>Amunicja:</strong> Skontrolowanie stanów, redystrybucja, uzupełnienie krytycznych braków</li>
-                    <li><strong>Uzbrojenie i sprzęt:</strong> Sprawdzenie działania, ewentualne zastąpienie uszkodzonego sprzętu</li>
-                    <li><strong>Leczenie rannych:</strong> TCCC — leczenie ran i ewakuacja zgodnie z priorytetami</li>
-                    <li><strong>Przeszukanie zdobytej pozycji:</strong> Dokumenty, sprzęt, broń, mapy, urządzenia łączności</li>
-                    <li><strong>Zniszczenie lub zabranie zdobyczy:</strong> Wg rozkazu — broń, amunicja, sprzęt przeciwnika</li>
-                    <li><strong>Przygotowanie do następnego działania:</strong> Aktualizacja planu, nowe zadania</li>
-                  </ol>
 
                   <div class="q-pa-md bg-amber-1 rounded-borders q-mt-md">
                     <div class="text-weight-medium text-amber-8 q-mb-xs">
                       <q-icon name="warning" class="q-mr-xs" />
-                      Pamiętaj
+                      Który wariant wybrać?
                     </div>
-                    <div class="text-body2">
-                      Kontratak najczęściej następuje zaraz po utracie pozycji przez przeciwnika.
-                      Nigdy nie rezygnuj z natychmiastowej obrony 360° po opanowaniu celu.
-                    </div>
+                    <ul class="q-mb-none">
+                      <li><strong>Szturm</strong> — teren otwarty, płaski (polana, łąka, rzadki las), z bliskiej odległości</li>
+                      <li><strong>Szturm z obejściem</strong> — teren zakryty, pagórkowaty (gęsty las, zabudowa jednorodzinna) zapewniający skrytość podsekcji obejścia</li>
+                    </ul>
                   </div>
                 </div>
 
-                <!-- 8. Pościg -->
-                <div v-else-if="selectedTopic.id === 8">
-                  <h4>Pościg</h4>
+                <!-- 3. Napad -->
+                <div v-else-if="selectedTopic.id === 3">
+                  <h4>6.3. Napad i napad ogniowy</h4>
                   <p>
-                    Pościg to działanie ofensywne podjęte w celu zniszczenia wycofujących się
-                    sił przeciwnika zanim zdążą zorganizować nową obronę lub uciec z zasięgu.
-                    Wymaga zdecydowania i wysokiego tempa działania.
+                    <strong>Napad</strong> to nagłe, gwałtowne uderzenie na stacjonarny obiekt przeciwnika,
+                    wraz ze zorganizowanym wycofaniem się po wykonaniu zadania.
                   </p>
 
-                  <h5>Warunki podjęcia pościgu:</h5>
+                  <h5>Napad organizuje się w celu:</h5>
                   <ul>
-                    <li>Potwierdzenie wycofywania się sił przeciwnika</li>
-                    <li>Posiadanie wystarczających sił i środków do kontynuacji działań</li>
-                    <li>Zgoda/rozkaz dowódcy nadrzędnego</li>
-                    <li>Zabezpieczone linie komunikacyjne i tyły</li>
+                    <li>Obezwładnienia lub zniszczenia</li>
+                    <li>Dezorganizacji pracy/funkcjonowania obiektu</li>
+                    <li>Zdobycia dokumentów, materiałów, uzbrojenia lub sprzętu</li>
+                    <li>Ujęcia jeńca lub uprowadzenia ważnej osobistości</li>
                   </ul>
 
-                  <h5>Zasady prowadzenia pościgu:</h5>
+                  <div class="q-mb-lg text-center q-mt-md">
+                    <q-img
+                      src="~assets/tactics/3.png"
+                      alt="Rys. 111. Schemat ideowy wykonania napadu na obiekt"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Rys. 111. Schemat ideowy wykonania napadu na obiekt</div>
+                  </div>
+
+                  <h5>Rodzaje napadu:</h5>
+                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-md">
+                    <div class="text-weight-bold text-military-secondary q-mb-xs">Napad ogniowy (bez wtargnięcia)</div>
+                    <p class="q-mb-none text-body2">Polega na ostrzelaniu maksymalną siłą ogniową obiektu w celu zniszczenia jego urządzeń i siły żywej.</p>
+                  </div>
+                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-md">
+                    <div class="text-weight-bold text-military-secondary q-mb-xs">Napad z wtargnięciem na obiekt</div>
+                    <p class="q-mb-none text-body2">Organizowany w celu schwytania jeńca, zabrania dokumentów, nowych wzorów uzbrojenia bądź uzupełnienia własnych zasobów.</p>
+                  </div>
+
+                  <h5>Podstawowe cechy działania w czasie napadu:</h5>
                   <ul>
-                    <li><strong>Utrzymanie kontaktu:</strong> Nie wolno utracić kontaktu z wycofującym się przeciwnikiem</li>
-                    <li><strong>Maksymalne tempo:</strong> Pościg musi być szybszy niż wycofanie — presja nieustannie</li>
-                    <li><strong>Uprzedzenie:</strong> Wysyłanie oddziałów obejścia na prawdopodobne drogi odwrotu</li>
-                    <li><strong>Ogień:</strong> Nieprzerwany ogień na cofającego się przeciwnika — brak możliwości reorganizacji</li>
-                    <li><strong>Zabezpieczenie boków:</strong> Ochrona przed zasadzkami na bokami i tyłami</li>
-                    <li><strong>Granice pościgu:</strong> Wyznaczenie rubieży do której pościg jest dozwolony bez nowych rozkazów</li>
+                    <li>Skrytość działania</li>
+                    <li>Wykorzystanie elementu zaskoczenia</li>
+                    <li>Skoordynowane prowadzenie ognia przez poszczególne elementy</li>
+                    <li>Gwałtowność akcji</li>
+                    <li>Zorganizowane wycofanie</li>
                   </ul>
 
-                  <h5>Typowe błędy podczas pościgu:</h5>
+                  <h5>Rekonesans rejonu obiektu (Rys. 113)</h5>
+                  <p>
+                    Pluton zatrzymuje się ok. 500–600 m od obiektu i wykonuje procedurę „HAK".
+                    Dowódca z radiotelefonistą, strzelcem wyborowym i dwoma żołnierzami rozpoznaje
+                    Rejon Ześrodkowania (RZ) — ok. 300–400 m od obiektu. Kierunek „godz. 12" określa się
+                    na obiekt, „godz. 6" w kierunku podejścia. Wykonywana jest „Procedura 5-25".
+                    W RZ organizowany jest system obserwacji i ubezpieczenia 360°.
+                  </p>
+                  <p>
+                    W rejon obiektu udają się dowódca z dowódcami grup i elementem <strong>„oko"</strong>
+                    (dwaj żołnierze obserwujący zmiany sytuacji do momentu rozpoczęcia napadu).
+                    Podczas rekonesansu ustalają: miejsce GU, GW, GS, GD, punkt medyczny
+                    oraz <strong>PR</strong> — punkt w terenie, przez który przechodzą wszyscy żołnierze.
+                  </p>
+
+                  <div class="q-mb-lg text-center">
+                    <q-img
+                      src="~assets/tactics/4.png"
+                      alt="Rys. 113. Rekonesans rejonu obiektu napadu"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Rys. 113. Rekonesans rejonu obiektu napadu</div>
+                  </div>
+
+                  <h5>Schemat organizacji do napadu (Rys. 114)</h5>
+                  <div class="q-mb-lg text-center">
+                    <q-img
+                      src="~assets/tactics/5.png"
+                      alt="Rys. 114. Schemat organizacji do napadu"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Rys. 114. Schemat organizacji do napadu</div>
+                  </div>
+
+                  <h5>Ugrupowanie do napadu:</h5>
+                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-sm">
+                    <div class="text-weight-bold text-red-8 q-mb-xs">GU — Grupa Ubezpieczenia</div>
+                    <ul class="q-mb-none text-body2">
+                      <li>Prowadzenie obserwacji i meldowanie o przeciwniku</li>
+                      <li>Ubezpieczenie rejonu obiektu z kierunków największego zagrożenia</li>
+                      <li>Niedopuszczenie sił przeciwnika do/z rejonu napadu</li>
+                      <li>Wyposażenie: miny kierunkowe, środki przeciwpancerne</li>
+                    </ul>
+                  </div>
+                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-sm">
+                    <div class="text-weight-bold text-red-8 q-mb-xs">GW — Grupa Wsparcia</div>
+                    <ul class="q-mb-none text-body2">
+                      <li>Obsługa broni zespołowej — stanowisko o najlepszych możliwościach prowadzenia ognia</li>
+                      <li>Wsparcie GS ogniem broni zespołowej</li>
+                    </ul>
+                  </div>
+                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-md">
+                    <div class="text-weight-bold text-red-8 q-mb-xs">GS — Grupa Szturmowa</div>
+                    <ul class="q-mb-none text-body2">
+                      <li>Główna siła uderzeniowa — pozycja zapewniająca maskowanie przed obserwacją z obiektu</li>
+                      <li>W składzie: Zespół Torujący, Zespoły Przeszukujące, Zespół Niszczący, Zespół Ewakuacyjno-Ratunkowy</li>
+                    </ul>
+                  </div>
+
+                  <h5>Wykonanie napadu</h5>
+                  <p>
+                    Na sygnał dowódcy GS skrycie podchodzi możliwie najbliżej obiektu.
+                    Sygnałem rozpoczęcia napadu jest otwarcie ognia przez GW.
+                    GW maksymalnie razi przeciwnika w obiekcie, następuje gwałtowne uderzenie ogniowe
+                    wraz z wdarciem się do obiektu przez GS przez wykonane przejście w zaporach.
+                    W momencie wdzierania się GS — GW przenosi lub przerywa ogień.
+                    GS, stosując zasadę wzajemnego ubezpieczania się, skokami zajmuje GD.
+                  </p>
+
+                  <div class="q-pa-md bg-red-1 rounded-borders q-mb-md">
+                    <div class="text-weight-medium text-red-8 q-mb-xs">
+                      <q-icon name="checklist" class="q-mr-xs" />
+                      Dowódca plutonu musi pamiętać o:
+                    </div>
+                    <ul class="q-mb-none">
+                      <li>Organizacji ubezpieczenia terenu w zakresie 360°</li>
+                      <li>Podziale broni zespołowej jeśli obsługi zostały wyłączone z walki</li>
+                      <li>Udzieleniu pomocy i przygotowaniu do ewakuacji rannych</li>
+                      <li>Równomiernym rozdziale pozostałej amunicji między żołnierzy</li>
+                      <li>Zachowaniu „łańcucha dowodzenia"</li>
+                    </ul>
+                  </div>
+
+                  <div class="q-mb-lg text-center">
+                    <q-img
+                      src="~assets/tactics/6.png"
+                      alt="Rys. 116. Działanie zespołów po wejściu do obiektu napadu"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Rys. 116. Działanie zespołów po wejściu do obiektu napadu</div>
+                  </div>
+
+                  <h5>Odejście z rejonu napadu (Rys. 117)</h5>
+                  <p>
+                    Odejście następuje w sposób zorganizowany. Na pierwszy sygnał dowódcy żołnierze GS
+                    (oprócz Zespołu Niszczącego) wycofują się przez przejście w zaporze, gdzie są
+                    liczeni „w bramce", a następnie biegiem do PR i dalej do RZ.
+                    Dowódca podaje drugi sygnał do Zespołu Niszczącego — odpalenie zapalników
+                    z planowaną zwłoką. Wybuch jest sygnałem dla GU do wycofania się przez PR do RZ.
+                  </p>
+                  <p>
+                    Po przeliczeniu żołnierzy dowódca nakazuje przemarsz do rejonu ok. 800–1000 m,
+                    gdzie odtwarzana jest zdolność bojowa pododdziału.
+                  </p>
+
+                  <div class="q-mb-lg text-center">
+                    <q-img
+                      src="~assets/tactics/7.png"
+                      alt="Rys. 117. Odejście z rejonu (obiektu) napadu"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Rys. 117. Odejście z rejonu (obiektu) napadu</div>
+                  </div>
+                </div>
+
+                <!-- 4. Wypad -->
+                <div v-else-if="selectedTopic.id === 4">
+                  <h4>6.4. Wypad</h4>
+                  <p>
+                    <strong>Wypad</strong> to jeden z rodzajów działań zaczepnych w warunkach bezpośredniej
+                    styczności wojsk. Polega na skrytym przekroczeniu linii styczności przez wydzielony
+                    pododdział (grupę wypadową) — z zadaniem wykonania zasadzki lub napadu na zawczasu
+                    zaplanowany obiekt w ugrupowaniu przeciwnika, lub zdobycia danych rozpoznawczych,
+                    wraz ze zorganizowanym wycofaniem się w ugrupowanie wojsk własnych.
+                  </p>
+
+                  <h5>Wypad organizuje się w celu:</h5>
                   <ul>
-                    <li>Wpadnięcie w zasadzkę — pogoń "na ślepo" bez rozpoznania</li>
-                    <li>Przekroczenie granic ugrupowania — wyjście poza przydzielony rejon działania</li>
-                    <li>Utrata kontroli nad jednostkami — zbyt szybkie tempo bez koordynacji</li>
-                    <li>Wyczerpanie sił i amunicji bez możliwości uzupełnienia</li>
+                    <li>Zdobycia danych rozpoznawczych</li>
+                    <li>Ujęcia jeńców</li>
+                    <li>Niszczenia istotnych obiektów</li>
                   </ul>
+
+                  <h5>Wybór sposobu wykonania zadania zależy od:</h5>
+                  <ul>
+                    <li>Posiadanych sił i środków</li>
+                    <li>Pory dnia (noc/dzień)</li>
+                    <li>Rozpoznania kierunku (pasa) przenikania</li>
+                    <li>Aktywności wojsk przeciwnika na linii styczności</li>
+                    <li>Rodzaju i obrony obiektu</li>
+                  </ul>
+
+                  <h5>Podstawowe cechy działania w czasie wypadu:</h5>
+                  <ul>
+                    <li>Organizacja rozpoznania kierunku lub pasa przenikania</li>
+                    <li>Synchronizacja działań z wojskami w styczności</li>
+                    <li>Skrytość działania w czasie przenikania</li>
+                    <li>Wykorzystanie elementu zaskoczenia</li>
+                    <li>Gwałtowność akcji</li>
+                    <li>Zorganizowane wycofanie we współdziałaniu z wojskami własnymi</li>
+                  </ul>
+
+                  <h5>Fazy realizacji wypadu:</h5>
+                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-sm">
+                    <div class="text-weight-bold text-military-secondary q-mb-xs">FAZA I — Planowanie i rekonesans</div>
+                    <ul class="q-mb-none text-body2">
+                      <li>Planowanie przez mikro sztab (pllp, slp), koordynacja z wojskami w styczności</li>
+                      <li>Przygotowanie do działania (w tym trening działania)</li>
+                    </ul>
+                  </div>
+                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-sm">
+                    <div class="text-weight-bold text-military-secondary q-mb-xs">FAZA II — Realizacja</div>
+                    <ul class="q-mb-none text-body2">
+                      <li>Wyjście na kierunek/pas przenikania</li>
+                      <li>Przejście przez linię styczności, koordynowane z działaniami mylącymi (jeśli są)</li>
+                      <li>Osiągnięcie rejonu bazy przejściowej</li>
+                      <li>Potwierdzenie założeń przyjętych w planowaniu (rekonesans)</li>
+                      <li>Wykonanie nakazanego/zaplanowanego zadania</li>
+                      <li>Odtworzenie gotowości w bazie przejściowej i odejście w kierunku linii styczności</li>
+                      <li>Przekroczenie linii styczności i powrót w ugrupowanie wojsk własnych</li>
+                    </ul>
+                  </div>
+                  <div class="q-pa-md bg-grey-2 rounded-borders q-mb-sm">
+                    <div class="text-weight-bold text-military-secondary q-mb-xs">FAZA III — Odtwarzanie gotowości</div>
+                    <ul class="q-mb-none text-body2">
+                      <li>Powrót do MCzP</li>
+                      <li>Przekazanie pozyskanych danych rozpoznawczych</li>
+                      <li>Fizyczne odtworzenie zdolności bojowej pododdziału</li>
+                    </ul>
+                  </div>
                 </div>
 
               </div>
@@ -583,14 +480,10 @@ const searchQuery = ref('')
 const selectedTopic = ref(null)
 
 const topics = [
-  { id: 1, title: 'Ogólne zasady natarcia', ref: 'S. 251–252' },
-  { id: 2, title: 'Przygotowanie do natarcia', ref: 'S. 253–255' },
-  { id: 3, title: 'Podejście i atak', ref: 'S. 256–258' },
-  { id: 4, title: 'Techniki natarcia — ogień i manewr', ref: 'S. 259–261' },
-  { id: 5, title: 'Szturm na pozycję', ref: 'S. 262–264' },
-  { id: 6, title: 'Rajd', ref: 'S. 265–266' },
-  { id: 7, title: 'Konsolidacja i reorganizacja', ref: 'S. 267' },
-  { id: 8, title: 'Pościg', ref: 'S. 268' }
+  { id: 1, title: 'Ogólne zasady działań zaczepnych', ref: 'S. 251' },
+  { id: 2, title: 'Szturm — działania szturmowe', ref: 'S. 252–255' },
+  { id: 3, title: 'Napad i napad ogniowy', ref: 'S. 256–265' },
+  { id: 4, title: 'Wypad', ref: 'S. 265–267' }
 ]
 
 const filteredTopics = computed(() => {
