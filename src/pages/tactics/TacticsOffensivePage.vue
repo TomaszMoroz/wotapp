@@ -134,6 +134,17 @@
                         <li>Identyfikacja miejsc ubezpieczeń i posterunków</li>
                       </ul>
                     </li>
+
+                  <div class="q-mb-lg text-center q-mt-sm">
+                    <q-img
+                      src="~assets/tactics/4.png"
+                      alt="Rekonesans obiektu — schemat"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Rekonesans obiektu</div>
+                  </div>
+
                     <li>
                       <strong>Analiza METT-TC:</strong>
                       <ul>
@@ -236,11 +247,6 @@
                     </li>
                   </ol>
 
-                  <div class="diagram-container q-my-lg">
-                    <img :src="sier1Img" alt="Szyk do natarcia — Podwójny Sierżant" class="tactical-diagram q-mb-md" />
-                    <div class="text-caption text-center text-military-dark">Szyk taktyczny do natarcia — Podwójny Sierżant</div>
-                  </div>
-
                   <div class="q-pa-md bg-blue-1 rounded-borders q-mt-md">
                     <div class="text-weight-medium text-blue-8 q-mb-xs">
                       <q-icon name="info" class="q-mr-xs" />
@@ -304,11 +310,6 @@
                     <li><strong>Linia ognia:</strong> Zakaz prowadzenia ognia przez pozycje własnych żołnierzy</li>
                   </ul>
 
-                  <div class="diagram-container q-my-lg">
-                    <img :src="sier2Img" alt="Ogień i manewr — sektory ognia" class="tactical-diagram q-mb-md" />
-                    <div class="text-caption text-center text-military-dark">Sektory ognia w trakcie manewru</div>
-                  </div>
-
                   <h5>Komenda „KONTAKT":</h5>
                   <ol>
                     <li><strong>ODPOWIEDZ OGNIEM</strong> — natychmiastowa reakcja ogniowa na przeciwnika</li>
@@ -325,6 +326,16 @@
                     Szturm to bezpośredni, zdecydowany atak na pozycję/obiekt z zamiarem jej opanowania.
                     Wymaga zsynchronizowanego ognia, manewru i zdecydowanego działania w końcowej fazie.
                   </p>
+
+                  <div class="q-mb-lg text-center">
+                    <q-img
+                      src="~assets/tactics/1.png"
+                      alt="Wariant 1. Szturm na stanowisko ogniowe przeciwnika (s. 253)"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Wariant 1. Szturm na stanowisko ogniowe przeciwnika (s. 253)</div>
+                  </div>
 
                   <h5>Elementy szturmu:</h5>
                   <ul>
@@ -353,6 +364,16 @@
                     <li><strong>Dołączenie GW:</strong> Grupa wsparcia dołącza do GS na zdobytej pozycji</li>
                   </ol>
 
+                  <div class="q-mb-lg text-center">
+                    <q-img
+                      src="~assets/tactics/2.png"
+                      alt="Szturm na stanowisko ogniowe — warianty działania (s. 254)"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Warianty szturmu na stanowisko ogniowe (s. 254)</div>
+                  </div>
+
                   <h5>Czyszczenie pozycji (stanowiska):</h5>
                   <ul>
                     <li><strong>Podejście z flanki lub tyłu:</strong> Nigdy frontalnie bez zdecydowanej supresji</li>
@@ -362,9 +383,14 @@
                     <li><strong>Komunikacja:</strong> Stałe informowanie partnera o pozycji własnej</li>
                   </ul>
 
-                  <div class="diagram-container q-my-lg">
-                    <img :src="zas1Img" alt="Układ sił — szturm na pozycję" class="tactical-diagram q-mb-md" />
-                    <div class="text-caption text-center text-military-dark">Układ elementów podczas szturmu</div>
+                  <div class="q-mb-lg text-center q-mt-sm">
+                    <q-img
+                      src="~assets/tactics/6.png"
+                      alt="Działanie zespołów po wejściu do obiektu"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Działanie zespołów po wejściu do obiektu</div>
                   </div>
 
                   <div class="q-pa-md bg-red-1 rounded-borders q-mt-md">
@@ -410,6 +436,16 @@
                     <li><strong>Powrót:</strong> Przemieszczenie do bazy lub wyznaczonego rejonu</li>
                   </ol>
 
+                  <div class="q-mb-lg text-center">
+                    <q-img
+                      src="~assets/tactics/3.png"
+                      alt="Napad na obiekt — schemat działania"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Napad na obiekt — schemat działania</div>
+                  </div>
+
                   <h5>Kluczowe zasady rajdu:</h5>
                   <ul>
                     <li><strong>Timing:</strong> Precyzyjne określenie czasu H (zero hour) i synchronizacja działań</li>
@@ -418,6 +454,26 @@
                     <li><strong>Zminimalizowanie śladu:</strong> Nie zostawiaj rannych, sprzętu ani śladów możliwych do identyfikacji</li>
                     <li><strong>Komunikacja:</strong> Stała łączność z dowódcą nadrzędnym przez cały czas akcji</li>
                   </ul>
+
+                  <div class="q-mb-lg text-center q-mt-md">
+                    <q-img
+                      src="~assets/tactics/5.png"
+                      alt="Schemat organizacji napadu"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Schemat organizacji napadu</div>
+                  </div>
+
+                  <div class="q-mb-lg text-center q-mt-md">
+                    <q-img
+                      src="~assets/tactics/7.png"
+                      alt="Odejście z rejonu/obiektu"
+                      style="max-width: 100%; border-radius: 8px; border: 1px solid #e0e0e0;"
+                      fit="contain"
+                    />
+                    <div class="text-caption text-military-dark q-mt-xs">Odejście z rejonu/obiektu</div>
+                  </div>
                 </div>
 
                 <!-- 7. Konsolidacja i reorganizacja -->
@@ -448,11 +504,6 @@
                     <li><strong>Zniszczenie lub zabranie zdobyczy:</strong> Wg rozkazu — broń, amunicja, sprzęt przeciwnika</li>
                     <li><strong>Przygotowanie do następnego działania:</strong> Aktualizacja planu, nowe zadania</li>
                   </ol>
-
-                  <div class="diagram-container q-my-lg">
-                    <img :src="okrImg" alt="Obrona okrężna po zdobyciu pozycji" class="tactical-diagram q-mb-md" />
-                    <div class="text-caption text-center text-military-dark">Organizacja obrony okrężnej po zdobyciu pozycji</div>
-                  </div>
 
                   <div class="q-pa-md bg-amber-1 rounded-borders q-mt-md">
                     <div class="text-weight-medium text-amber-8 q-mb-xs">
@@ -525,10 +576,6 @@
 <script setup>
 import { ref, computed } from 'vue'
 import BackNav from 'components/BackNav.vue'
-import sier1Img from 'assets/sier1.png'
-import sier2Img from 'assets/sier2.png'
-import zas1Img from 'assets/zas1.png'
-import okrImg from 'assets/okr.png'
 
 defineOptions({ name: 'TacticsOffensivePage' })
 
@@ -536,14 +583,14 @@ const searchQuery = ref('')
 const selectedTopic = ref(null)
 
 const topics = [
-  { id: 1, title: 'Ogólne zasady natarcia',         ref: 'S. 251–252' },
-  { id: 2, title: 'Przygotowanie do natarcia',       ref: 'S. 253–255' },
-  { id: 3, title: 'Podejście i atak',                ref: 'S. 256–258' },
+  { id: 1, title: 'Ogólne zasady natarcia', ref: 'S. 251–252' },
+  { id: 2, title: 'Przygotowanie do natarcia', ref: 'S. 253–255' },
+  { id: 3, title: 'Podejście i atak', ref: 'S. 256–258' },
   { id: 4, title: 'Techniki natarcia — ogień i manewr', ref: 'S. 259–261' },
-  { id: 5, title: 'Szturm na pozycję',               ref: 'S. 262–264' },
-  { id: 6, title: 'Rajd',                            ref: 'S. 265–266' },
-  { id: 7, title: 'Konsolidacja i reorganizacja',    ref: 'S. 267' },
-  { id: 8, title: 'Pościg',                          ref: 'S. 268' },
+  { id: 5, title: 'Szturm na pozycję', ref: 'S. 262–264' },
+  { id: 6, title: 'Rajd', ref: 'S. 265–266' },
+  { id: 7, title: 'Konsolidacja i reorganizacja', ref: 'S. 267' },
+  { id: 8, title: 'Pościg', ref: 'S. 268' }
 ]
 
 const filteredTopics = computed(() => {
