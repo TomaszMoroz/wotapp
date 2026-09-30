@@ -29,6 +29,15 @@
               </div>
               <div class="distance-badge">
                 <q-chip
+                  color="blue-grey-7"
+                  text-color="white"
+                  icon="adjust"
+                  size="lg"
+                  class="q-mr-sm"
+                >
+                  {{ zeroLabel }}
+                </q-chip>
+                <q-chip
                   :color="targetDistance > 0 ? 'primary' : 'grey-5'"
                   text-color="white"
                   icon="straighten"
@@ -150,6 +159,27 @@
             </div>
 
             <div class="controls-content">
+              <!-- Zero Distance -->
+              <div class="input-group">
+                <label class="input-label" :style="$q.dark.isActive ? 'color:#e0e0e0' : ''">Przystrzelanie karabinka</label>
+                <q-select
+                  v-model="zeroDistance"
+                  :options="zeroOptions"
+                  emit-value
+                  map-options
+                  outlined
+                  dense
+                  class="modern-input"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="adjust" color="primary" />
+                  </template>
+                </q-select>
+                <div class="input-hint" :style="$q.dark.isActive ? 'color:#9aa0a6' : ''">
+                  Odległość, na której tor lotu pocisku przecina linię celowania
+                </div>
+              </div>
+
               <!-- Distance Input -->
               <!-- <div class="input-group">
                 <label class="input-label">Odległość do celu</label>
@@ -229,7 +259,7 @@
           <div class="card-header-modern" :dark="$q.dark.isActive">
             <div class="header-left">
               <h3 class="section-title">Tabela balistyczna</h3>
-              <p class="section-subtitle">Wartości korekcji dla różnych dystansów</p>
+              <p class="section-subtitle">Wartości korekcji dla różnych dystansów — przystrzelanie: {{ zeroLabel }}</p>
             </div>
           </div>
 
@@ -264,7 +294,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import BackNav from 'components/BackNav.vue'
 import { useQuasar } from 'quasar'
 
@@ -272,8 +302,18 @@ const $q = useQuasar()
 
 const targetDistance = ref(100)
 const offsetValue = ref(0)
+const zeroDistance = ref(0)
 
 const quickDistances = [0, 15, 20, 25, 40, 50, 60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 400]
+
+// Przystrzelanie: odległość przecięcia toru lotu pocisku z linią celowania.
+// 0 = ustawienie fabryczne (wg instrukcji pierwsze przecięcie na 20 m)
+const zeroOptions = [
+  { label: 'Fabryczne (20 m)', value: 0 },
+  { label: '50 m', value: 50 },
+  { label: '100 m', value: 100 }
+]
+const zeroLabel = computed(() => zeroOptions.find(o => o.value === zeroDistance.value)?.label || 'Fabryczne (20 m)')
 
 // Dane balistyczne dla GROT - oficjalne dane z instrukcji WOT
 // Tabela 6: Przewyższenie toru lotu pocisku nad linią celowania (w cm)
@@ -321,12 +361,39 @@ const ballisticColumns = [
   { name: 'instruction', label: 'Instrukcja', field: 'instruction', align: 'left' }
 ]
 
+// Interpolowana wartość przewyższenia toru (fabryczne przystrzelanie) dla dowolnego dystansu
+const baseOffsetAt = (distance) => {
+  const distances = Object.keys(offsetData).map(Number).sort((a, b) => a - b)
+  if (distance <= distances[0]) return offsetData[distances[0]]
+  if (distance >= distances[distances.length - 1]) return offsetData[distances[distances.length - 1]]
+  for (let i = 0; i < distances.length - 1; i++) {
+    if (distance >= distances[i] && distance <= distances[i + 1]) {
+      const ratio = (distance - distances[i]) / (distances[i + 1] - distances[i])
+      return offsetData[distances[i]] + (offsetData[distances[i + 1]] - offsetData[distances[i]]) * ratio
+    }
+  }
+}
+
+// Zmiana przystrzelania to obrót linii celowania względem toru lotu o stały kąt,
+// więc korekta rośnie liniowo z dystansem: h'(d) = h(d) - h(Z) * d / Z
+const tiltPerMeter = computed(() => {
+  if (!zeroDistance.value) return 0
+  return baseOffsetAt(zeroDistance.value) / zeroDistance.value
+})
+
+const effectiveOffset = (distance) => Math.round(baseOffsetAt(distance) - tiltPerMeter.value * distance)
+
 const ballisticData = computed(() => {
-  return Object.entries(offsetData).map(([dist, offset]) => ({
-    distance: parseInt(dist),
-    offset,
-    instruction: offset < 0 ? 'Celuj wyżej' : offset > 0 ? 'Celuj niżej' : 'Celuj w centrum'
-  })).filter(item => item.distance % 25 === 0)
+  return Object.keys(offsetData).map(Number).sort((a, b) => a - b)
+    .filter(distance => distance % 25 === 0)
+    .map(distance => {
+      const offset = effectiveOffset(distance)
+      return {
+        distance,
+        offset,
+        instruction: offset < 0 ? 'Celuj wyżej' : offset > 0 ? 'Celuj niżej' : 'Celuj w centrum'
+      }
+    })
 })
 
 const aimPoint = computed(() => {
@@ -345,37 +412,10 @@ const aimPoint = computed(() => {
 })
 
 const calculateOffset = () => {
-  const distance = targetDistance.value
-  if (distance === 0) {
-    offsetValue.value = offsetData[0]
-    return
-  }
-
-  const distances = Object.keys(offsetData).map(Number).sort((a, b) => a - b)
-
-  if (distance <= distances[0]) {
-    offsetValue.value = offsetData[distances[0]]
-    return
-  }
-
-  if (distance >= distances[distances.length - 1]) {
-    offsetValue.value = offsetData[distances[distances.length - 1]]
-    return
-  }
-
-  for (let i = 0; i < distances.length - 1; i++) {
-    if (distance >= distances[i] && distance <= distances[i + 1]) {
-      const d1 = distances[i]
-      const d2 = distances[i + 1]
-      const o1 = offsetData[d1]
-      const o2 = offsetData[d2]
-
-      const ratio = (distance - d1) / (d2 - d1)
-      offsetValue.value = Math.round(o1 + (o2 - o1) * ratio)
-      break
-    }
-  }
+  offsetValue.value = effectiveOffset(targetDistance.value)
 }
+
+watch(zeroDistance, calculateOffset)
 
 const setDistance = (distance) => {
   targetDistance.value = distance
@@ -576,6 +616,12 @@ body.body--dark .target-svg {
   font-weight: 600;
   font-size: 0.95rem;
   margin-bottom: 12px;
+}
+
+.input-hint {
+  color: #6c757d;
+  font-size: 0.8rem;
+  margin-top: 8px;
 }
 
 .modern-input {

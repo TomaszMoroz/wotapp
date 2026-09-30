@@ -1012,9 +1012,6 @@ body.body--dark .modern-content-card .q-card__title {
 
 /* --- 2026 UI refresh --- */
 .dashboard-header {
-  position: sticky;
-  top: 0;
-  z-index: 2000;
   backdrop-filter: blur(14px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
