@@ -588,6 +588,9 @@ const preserveTable24h = computed({
   set: (value) => marchTableSessionStore.setKeep24h(value)
 })
 let isRestoringMarchTable = false
+// Podczas eksportu PDF mapa jest chwilowo ustawiana "północą do góry" –
+// flaga blokuje automatyczne ustawianie bearingu do północy UTM
+let pdfExportInProgress = false
 
 const isLayerLoading = ref(false)
 function handleAddPoint () {
@@ -1710,78 +1713,135 @@ function handlePdfExport () {
     routeName = pdfCustomName.value || pdfSelectedName.value || 'Tabela marszu'
   }
   if (pdfOptions.value.includes('map') && map.value) {
-    // Tymczasowo ukryj linie trasy i markery jeśli nie są zaznaczone
     const showLines = pdfMapOptions.value.includes('routeLines')
     const showMarkers = pdfMapOptions.value.includes('routeMarkers')
-    // Ukryj linie trasy
-    polylines.value.forEach(l => {
-      if (!showLines) l.setStyle({ opacity: 0 })
-      else l.setStyle({ opacity: 1 })
-    })
-    // Ukryj markery
-    markers.value.forEach(m => {
-      if (!showMarkers) m.setOpacity(0)
-      else m.setOpacity(1)
-    })
 
-    // leaflet-image wymaga iconUrl; tymczasowo usuń markery bez obrazka (np. divIcon)
-    const detachedMarkers = []
-    map.value.eachLayer(layer => {
-      if (!(layer instanceof L.Marker)) return
-      const iconUrl = layer?.options?.icon?.options?.iconUrl
-      if (typeof iconUrl !== 'string' || iconUrl.length === 0) {
-        if (map.value.hasLayer(layer)) {
-          map.value.removeLayer(layer)
-          detachedMarkers.push(layer)
-        }
+    // Zapamiętaj bieżący widok – po eksporcie przywracamy go użytkownikowi
+    const prevCenter = map.value.getCenter()
+    const prevZoom = map.value.getZoom()
+
+    // Obraz mapy w PDF ma obejmować całą trasę oraz punkty specjalne,
+    // a nie tylko aktualny widok okna mapy (wcześniej trasa była przycinana)
+    const routeLatLngs = [
+      ...pins.value.map(p => [p.lat, p.lng]),
+      ...specialPoints.value.map(p => [p.lat, p.lng])
+    ]
+
+    // PDF ma być zorientowany północą do góry – jeśli aktywna jest rotacja
+    // mapy (leaflet-rotate / północ UTM), na czas zrzutu zerujemy bearing
+    // i blokujemy automatyczne jego przywracanie na moveend/zoomend
+    const supportsBearing = typeof map.value.setBearing === 'function' &&
+      typeof map.value.getBearing === 'function'
+    const rawBearing = supportsBearing ? map.value.getBearing() : 0
+    const prevBearing = Number.isFinite(rawBearing) ? rawBearing : 0
+    pdfExportInProgress = true
+    if (supportsBearing && prevBearing !== 0) {
+      map.value.setBearing(0)
+    }
+
+    const restoreMapState = () => {
+      if (routeLatLngs.length > 0) {
+        map.value.setView(prevCenter, prevZoom, { animate: false })
       }
-    })
+      if (supportsBearing && prevBearing !== 0) {
+        map.value.setBearing(prevBearing)
+      }
+      currentMapZoneLabel.value = getZoneLabelFromLatLng(prevCenter.lat, prevCenter.lng)
+      pdfExportInProgress = false
+    }
 
-    map.value.invalidateSize()
-    map.value.setZoom(map.value.getZoom()) // force repaint
-    map.value.eachLayer(l => {
-      if (l.redraw) l.redraw()
-    })
-    polylines.value.forEach(l => l.redraw())
-    // Wait for two animation frames and a longer timeout to ensure overlays are painted
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          leafletImage(map.value, function (err, canvas) {
-            let mapImgData = null
-            let mapImgDims = null
-            if (!err && canvas) {
-              // Rysuj siatkę MGRS tylko jeśli wybrano checkbox
-              if (pdfMapOptions.value.includes('mgrsGrid')) {
-                drawMgrsGridOnCanvas(canvas, map.value, map.value.getBounds())
-              }
-              // Rysuj linie trasy tylko jeśli wybrano checkbox
-              if (pdfMapOptions.value.includes('routeLines')) {
-                ctxDrawRouteLinesOnCanvas(canvas, map.value, pins.value)
-              }
-              // Rysuj markery trasy tylko jeśli wybrano checkbox
-              if (pdfMapOptions.value.includes('routeMarkers')) {
-                ctxDrawRouteMarkersOnCanvas(canvas, map.value, pins.value)
-              }
-              mapImgData = canvas.toDataURL('image/png')
-              mapImgDims = { width: canvas.width, height: canvas.height }
-            }
-            // Przywróć widoczność linii i markerów
-            polylines.value.forEach(l => l.setStyle({ opacity: 1 }))
-            markers.value.forEach(m => m.setOpacity(1))
-            detachedMarkers.forEach(marker => marker.addTo(map.value))
+    const captureMap = () => {
+      // Ukryj linie trasy i markery jeśli nie są zaznaczone
+      polylines.value.forEach(l => l.setStyle({ opacity: showLines ? 1 : 0 }))
+      markers.value.forEach(m => m.setOpacity(showMarkers ? 1 : 0))
 
-            if (err) {
-              $q.notify({ type: 'warning', message: 'Nie udało się dodać obrazu mapy do PDF. Zapisano dokument bez mapy.' })
-            }
-
-            exportPDF(routeName, mapImgData, mapImgDims)
-            hideLoading()
-            pdfMapOptions.value = []
-          })
-        }, 400)
+      // leaflet-image wymaga iconUrl; tymczasowo usuń markery bez obrazka (np. divIcon)
+      const detachedMarkers = []
+      map.value.eachLayer(layer => {
+        if (!(layer instanceof L.Marker)) return
+        const iconUrl = layer?.options?.icon?.options?.iconUrl
+        if (typeof iconUrl !== 'string' || iconUrl.length === 0) {
+          if (map.value.hasLayer(layer)) {
+            map.value.removeLayer(layer)
+            detachedMarkers.push(layer)
+          }
+        }
       })
-    })
+
+      map.value.invalidateSize()
+      map.value.eachLayer(l => {
+        if (l.redraw) l.redraw()
+      })
+      polylines.value.forEach(l => l.redraw())
+      // Wait for two animation frames and a longer timeout to ensure overlays are painted
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            let leafletImageFailed = false
+            try {
+              leafletImage(map.value, function (err, canvas) {
+                let mapImgData = null
+                let mapImgDims = null
+                if (!err && canvas) {
+                  // Rysuj siatkę MGRS tylko jeśli wybrano checkbox
+                  if (pdfMapOptions.value.includes('mgrsGrid')) {
+                    drawMgrsGridOnCanvas(canvas, map.value, map.value.getBounds())
+                  }
+                  // Rysuj linie trasy tylko jeśli wybrano checkbox
+                  if (pdfMapOptions.value.includes('routeLines')) {
+                    ctxDrawRouteLinesOnCanvas(canvas, map.value, pins.value)
+                  }
+                  // Rysuj markery trasy tylko jeśli wybrano checkbox
+                  if (pdfMapOptions.value.includes('routeMarkers')) {
+                    ctxDrawRouteMarkersOnCanvas(canvas, map.value, pins.value)
+                  }
+                  mapImgData = canvas.toDataURL('image/png')
+                  mapImgDims = { width: canvas.width, height: canvas.height }
+                }
+                // Przywróć widoczność linii i markerów oraz pierwotny widok mapy
+                polylines.value.forEach(l => l.setStyle({ opacity: 1 }))
+                markers.value.forEach(m => m.setOpacity(1))
+                detachedMarkers.forEach(marker => marker.addTo(map.value))
+                restoreMapState()
+
+                if (err) {
+                  $q.notify({ type: 'warning', message: 'Nie udało się dodać obrazu mapy do PDF. Zapisano dokument bez mapy.' })
+                }
+
+                exportPDF(routeName, mapImgData, mapImgDims)
+                hideLoading()
+                pdfMapOptions.value = []
+              })
+            } catch (e) {
+              leafletImageFailed = true
+            }
+            if (leafletImageFailed) {
+              polylines.value.forEach(l => l.setStyle({ opacity: 1 }))
+              markers.value.forEach(m => m.setOpacity(1))
+              detachedMarkers.forEach(marker => marker.addTo(map.value))
+              restoreMapState()
+              $q.notify({ type: 'warning', message: 'Nie udało się dodać obrazu mapy do PDF. Zapisano dokument bez mapy.' })
+              exportPDF(routeName, null, null)
+              hideLoading()
+              pdfMapOptions.value = []
+            }
+          }, 400)
+        })
+      })
+    }
+
+    if (routeLatLngs.length > 0) {
+      // Dopasuj widok do całej trasy i poczekaj na przeładowanie kafli
+      // oraz na debouncedMapRerender (~350 ms), zanim ukryjemy markery
+      map.value.fitBounds(L.latLngBounds(routeLatLngs), {
+        padding: L.point(48, 48),
+        maxZoom: 16,
+        animate: false
+      })
+      waitForBaseTiles(() => setTimeout(captureMap, 800))
+    } else {
+      captureMap()
+    }
   } else {
     // (Brak gridLayers do usuwania w tym bloku)
     exportPDF(routeName, null, null)
@@ -1789,33 +1849,34 @@ function handlePdfExport () {
   }
 }
 
-// Helper to draw MGRS grid on a canvas
+// Czeka aż warstwa bazowa dokończy ładowanie kafli (z timeoutem bezpieczeństwa)
+function waitForBaseTiles (done) {
+  let finished = false
+  const finish = () => {
+    if (finished) return
+    finished = true
+    done()
+  }
+  try {
+    if (baseLayer && typeof baseLayer.isLoading === 'function' && baseLayer.isLoading()) {
+      baseLayer.once('load', finish)
+    } else {
+      finish()
+    }
+  } catch (e) {
+    finish()
+  }
+  setTimeout(finish, 3500)
+}
+
+// Rysuje siatkę MGRS na canvasie PDF z pełnym opisem strukturalnym:
+// cyfry zasadnicze na krawędziach obrazu, oznaczenia kwadratów 100 km
+// oraz oznaczenie strefy siatki. Linie siatki UTM danej strefy pokrywają
+// się 1:1 z liniami MGRS – zgodność zweryfikowano względem biblioteki mgrs.
 function drawMgrsGridOnCanvas (canvas, map, bounds) {
   const ctx = canvas.getContext('2d')
   const gridColor = (typeof colorMgrsGrid.value !== 'undefined' && colorMgrsGrid.value) ? colorMgrsGrid.value : '#008800'
 
-  // 1) Najpierw próbujemy skopiować już narysowaną siatkę z kafli warstwy MGRS
-  // To gwarantuje zgodność 1:1 z widokiem na mapie i eliminuje błędy projekcji.
-  let copiedGridTiles = false
-  const mapEl = map.getContainer && map.getContainer()
-  if (mapEl) {
-    const mapRect = mapEl.getBoundingClientRect()
-    const gridTiles = mapEl.querySelectorAll('.leaflet-mgrs-grid-tile')
-    gridTiles.forEach((tile) => {
-      if (!(tile instanceof HTMLCanvasElement)) return
-      const rect = tile.getBoundingClientRect()
-      if (rect.width <= 0 || rect.height <= 0) return
-      const x = rect.left - mapRect.left
-      const y = rect.top - mapRect.top
-      try {
-        ctx.drawImage(tile, x, y, rect.width, rect.height)
-        copiedGridTiles = true
-      } catch {}
-    })
-  }
-  if (copiedGridTiles) return
-
-  // 2) Fallback: ręczne rysowanie siatki (gdy warstwa MGRS nie jest aktywna na mapie)
   const sw = bounds.getSouthWest()
   const ne = bounds.getNorthEast()
   const zoom = map.getZoom ? map.getZoom() : 13
@@ -1827,113 +1888,244 @@ function drawMgrsGridOnCanvas (canvas, map, bounds) {
   const maxLat = Math.max(sw.lat, ne.lat)
   const minLng = Math.min(sw.lng, ne.lng)
   const maxLng = Math.max(sw.lng, ne.lng)
+  const latPad = (maxLat - minLat) * 0.15 + 0.001
+  const lngPad = (maxLng - minLng) * 0.15 + 0.001
+  const inView = (lat, lng) =>
+    lat >= minLat - latPad && lat <= maxLat + latPad &&
+    lng >= minLng - lngPad && lng <= maxLng + lngPad
 
-  // Dla fallbacku używamy strefy ze środka widoku
-  let zoneNum = 34
-  let zoneLetter = 'U'
-  try {
-    const center = map.getCenter()
-    const centerUtm = utm.fromLatLon(center.lat, center.lng)
-    zoneNum = centerUtm.zoneNum
-    zoneLetter = centerUtm.zoneLetter
-  } catch {}
+  const W = canvas.width
+  const H = canvas.height
+  const toPx = (lat, lng) => map.latLngToContainerPoint([lat, lng])
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v))
 
-  let minE = Infinity; let maxE = -Infinity; let minN = Infinity; let maxN = -Infinity
-  const samplePoints = [
-    [minLat, minLng], [minLat, maxLng], [maxLat, minLng], [maxLat, maxLng],
-    [(minLat + maxLat) / 2, (minLng + maxLng) / 2]
-  ]
-  samplePoints.forEach(([lat, lng]) => {
-    try {
-      const utmPt = utm.fromLatLon(lat, lng, zoneNum)
-      minE = Math.min(minE, utmPt.easting)
-      maxE = Math.max(maxE, utmPt.easting)
-      minN = Math.min(minN, utmPt.northing)
-      maxN = Math.max(maxN, utmPt.northing)
-    } catch {}
+  const drawBadge = (text, x, y, options = {}) => {
+    const badgeFont = options.font || 'bold 12px Arial'
+    const badgeBackground = options.background || 'rgba(17, 24, 39, 0.82)'
+    const badgeTextColor = options.color || '#f8fafc'
+    const paddingX = options.paddingX ?? 5
+    const paddingY = options.paddingY ?? 3
+    ctx.save()
+    ctx.font = badgeFont
+    const metrics = ctx.measureText(text)
+    const fontSizeMatch = /^(?:bold\s+)?(\d+(?:\.\d+)?)px/.exec(badgeFont)
+    const fontSize = fontSizeMatch ? Number(fontSizeMatch[1]) : 12
+    const boxWidth = Math.ceil(metrics.width + paddingX * 2)
+    const boxHeight = Math.ceil(fontSize + paddingY * 2)
+    const boxX = Math.round(x - boxWidth / 2)
+    const boxY = Math.round(y - boxHeight / 2)
+    ctx.fillStyle = badgeBackground
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.18)'
+    ctx.lineWidth = 1
+    ctx.fillRect(boxX, boxY, boxWidth, boxHeight)
+    ctx.strokeRect(boxX, boxY, boxWidth, boxHeight)
+    ctx.fillStyle = badgeTextColor
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
+    ctx.fillText(text, x, y + 0.5)
+    ctx.restore()
+  }
+
+  // UTM->latlng bez trybu strict (easting poza zakresem 100km-1000km jest
+  // poprawny przy rysowaniu siatki strefy wychodzącej za jej granicę).
+  const toLatLon = (e, n, zoneNum, zoneLetter) =>
+    utm.toLatLon(e, n, zoneNum, zoneLetter, undefined, false)
+
+  // Zbierz wszystkie strefy UTM widoczne na obszarze (może być więcej niż jedna)
+  const zones = []
+  const registerZone = (zoneNum, zoneLetter) => {
+    if (typeof zoneNum !== 'number' || !zoneLetter) return
+    if (!zones.some(z => z.zoneNum === zoneNum)) {
+      zones.push({ zoneNum, zoneLetter })
+    }
+  }
+  for (let i = 0; i <= 4; i++) {
+    for (let j = 0; j <= 4; j++) {
+      try {
+        const u = utm.fromLatLon(minLat + (maxLat - minLat) * i / 4, minLng + (maxLng - minLng) * j / 4)
+        registerZone(u.zoneNum, u.zoneLetter)
+      } catch {}
+    }
+  }
+  if (zones.length === 0) return
+
+  // Cyfry zasadnicze MGRS dla danego kroku siatki
+  const principalLabel = (value) => {
+    if (gridStep === 1000) return String(((Math.floor(value / 1000) % 100) + 100) % 100).padStart(2, '0')
+    if (gridStep === 10000) return String(((Math.floor(value / 10000) % 10) + 10) % 10)
+    return null
+  }
+  const labelEvery = zoom >= 11 ? 1 : (zoom >= 8 ? 2 : 3)
+
+  // Przecięcie polilinii (w px) z krawędzią obrazu
+  const xAtY = (pts, edgeY) => {
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1]
+      const b = pts[i]
+      if ((a.y - edgeY) * (b.y - edgeY) <= 0 && b.y !== a.y) {
+        const x = a.x + (edgeY - a.y) / (b.y - a.y) * (b.x - a.x)
+        if (x >= -1 && x <= W + 1) return x
+      }
+    }
+    return null
+  }
+  const yAtX = (pts, edgeX) => {
+    for (let i = 1; i < pts.length; i++) {
+      const a = pts[i - 1]
+      const b = pts[i]
+      if ((a.x - edgeX) * (b.x - edgeX) <= 0 && b.x !== a.x) {
+        const y = a.y + (edgeX - a.x) / (b.x - a.x) * (b.y - a.y)
+        if (y >= -1 && y <= H + 1) return y
+      }
+    }
+    return null
+  }
+
+  ctx.save()
+  ctx.strokeStyle = gridColor
+  ctx.lineWidth = 1
+
+  zones.forEach(({ zoneNum, zoneLetter }) => {
+    let minE = Infinity
+    let maxE = -Infinity
+    let minN = Infinity
+    let maxN = -Infinity
+    for (let i = 0; i <= 6; i++) {
+      for (let j = 0; j <= 6; j++) {
+        try {
+          const u = utm.fromLatLon(minLat + (maxLat - minLat) * i / 6, minLng + (maxLng - minLng) * j / 6, zoneNum)
+          minE = Math.min(minE, u.easting)
+          maxE = Math.max(maxE, u.easting)
+          minN = Math.min(minN, u.northing)
+          maxN = Math.max(maxN, u.northing)
+        } catch {}
+      }
+    }
+    if (![minE, maxE, minN, maxN].every(Number.isFinite)) return
+    minE = Math.floor(minE / gridStep) * gridStep - gridStep
+    maxE = Math.ceil(maxE / gridStep) * gridStep + gridStep
+    minN = Math.floor(minN / gridStep) * gridStep - gridStep
+    maxN = Math.ceil(maxN / gridStep) * gridStep + gridStep
+
+    // Linie easting (pionowe) – opis na górnej i dolnej krawędzi obrazu
+    let eIdx = 0
+    for (let e = minE; e <= maxE; e += gridStep) {
+      const pts = []
+      for (let i = 0; i <= 40; i++) {
+        const n = minN + (maxN - minN) * i / 40
+        try {
+          const ll = toLatLon(e, n, zoneNum, zoneLetter)
+          if (inView(ll.latitude, ll.longitude)) pts.push(toPx(ll.latitude, ll.longitude))
+        } catch {}
+      }
+      if (pts.length > 1) {
+        ctx.beginPath()
+        ctx.moveTo(pts[0].x, pts[0].y)
+        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y)
+        ctx.stroke()
+
+        const label = eIdx % labelEvery === 0 ? principalLabel(e) : null
+        if (label) {
+          const badgeOpts = { font: 'bold 11px Arial', paddingX: 4, paddingY: 2 }
+          const xTop = xAtY(pts, 0)
+          if (xTop !== null) drawBadge(label, clamp(xTop, 15, W - 15), 11, badgeOpts)
+          const xBottom = xAtY(pts, H)
+          if (xBottom !== null) drawBadge(label, clamp(xBottom, 15, W - 15), H - 11, badgeOpts)
+        }
+        eIdx++
+      }
+    }
+
+    // Linie northing (poziome) – opis na lewej i prawej krawędzi obrazu
+    let nIdx = 0
+    for (let n = minN; n <= maxN; n += gridStep) {
+      const pts = []
+      for (let i = 0; i <= 40; i++) {
+        const e = minE + (maxE - minE) * i / 40
+        try {
+          const ll = toLatLon(e, n, zoneNum, zoneLetter)
+          if (inView(ll.latitude, ll.longitude)) pts.push(toPx(ll.latitude, ll.longitude))
+        } catch {}
+      }
+      if (pts.length > 1) {
+        ctx.beginPath()
+        ctx.moveTo(pts[0].x, pts[0].y)
+        for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y)
+        ctx.stroke()
+
+        const label = nIdx % labelEvery === 0 ? principalLabel(n) : null
+        if (label) {
+          const badgeOpts = { font: 'bold 11px Arial', paddingX: 4, paddingY: 2 }
+          const yLeft = yAtX(pts, 0)
+          if (yLeft !== null) drawBadge(label, 14, clamp(yLeft, 14, H - 14), badgeOpts)
+          const yRight = yAtX(pts, W)
+          if (yRight !== null) drawBadge(label, W - 14, clamp(yRight, 14, H - 14), badgeOpts)
+        }
+        nIdx++
+      }
+    }
+
+    // Oznaczenia kwadratów 100 km (np. „34UEC”) w środkach kwadratów –
+    // literatura pobierana z prawdziwego zapisu MGRS, więc poprawna także
+    // przy granicy stref
+    const sq = 100000
+    for (let sqE = Math.floor(minE / sq) * sq; sqE <= maxE; sqE += sq) {
+      for (let sqN = Math.floor(minN / sq) * sq; sqN <= maxN; sqN += sq) {
+        try {
+          const c = toLatLon(sqE + sq / 2, sqN + sq / 2, zoneNum, zoneLetter)
+          if (!inView(c.latitude, c.longitude)) continue
+          const p = toPx(c.latitude, c.longitude)
+          if (p.x < 26 || p.x > W - 26 || p.y < 26 || p.y > H - 26) continue
+          const mgrsRef = mgrs.forward([c.longitude, c.latitude], 0)
+          const match = mgrsRef.match(/^[0-9]{1,2}[C-HJ-NP-X][A-HJ-NP-Z]{2}/)
+          const sqLabel = match ? match[0] : mgrsRef.slice(0, 5)
+          drawBadge(sqLabel, p.x, p.y, {
+            font: 'bold 13px Arial',
+            background: 'rgba(11, 18, 32, 0.84)',
+            color: '#ffffff',
+            paddingX: 7,
+            paddingY: 4
+          })
+        } catch {}
+      }
+    }
   })
 
-  minE = Math.floor(minE / gridStep) * gridStep
-  maxE = Math.ceil(maxE / gridStep) * gridStep
-  minN = Math.floor(minN / gridStep) * gridStep
-  maxN = Math.ceil(maxN / gridStep) * gridStep
-
-  ctx.strokeStyle = gridColor
-  ctx.fillStyle = gridColor
-  ctx.lineWidth = 1
-  ctx.font = 'bold 12px Arial'
-
-  // Pionowe (easting)
-  let eIdx = 0
-  const eLabelEvery = zoom >= 11 ? 1 : (zoom >= 8 ? 2 : 3)
-  for (let e = minE; e <= maxE; e += gridStep) {
-    const points = []
-    for (let i = 0; i <= 20; i++) {
-      const n = minN + ((maxN - minN) * i / 20)
-      try {
-        const ll = utm.toLatLon(e, n, zoneNum, zoneLetter)
-        points.push([ll.latitude, ll.longitude])
-      } catch {}
-    }
-    if (points.length < 2) continue
-
-    ctx.beginPath()
-    points.forEach((ll, i) => {
-      const p = map.latLngToContainerPoint(ll)
-      if (i === 0) ctx.moveTo(p.x, p.y)
-      else ctx.lineTo(p.x, p.y)
-    })
-    ctx.stroke()
-
-    if (eIdx % eLabelEvery === 0) {
-      for (let i = 0; i < points.length; i++) {
-        const p = map.latLngToContainerPoint(points[i])
-        if (p.y >= 0 && p.y <= 25 && p.x >= 10 && p.x <= canvas.width - 10) {
-          ctx.textAlign = 'center'
-          ctx.textBaseline = 'top'
-          ctx.fillText(String(Math.floor(e / gridStep)).padStart(2, '0').slice(-2), p.x, 2)
-          break
-        }
+  // Granica stref UTM (czerwona linia) jeśli widok przecina granicę
+  if (zones.length > 1) {
+    ctx.strokeStyle = '#FF0000'
+    ctx.lineWidth = 2.5
+    const boundaryPts = []
+    const lngStep = (maxLng - minLng) / 80
+    for (let i = 0; i <= 60; i++) {
+      const lat = minLat + (maxLat - minLat) * i / 60
+      for (let j = 0; j < 80; j++) {
+        const lng = minLng + lngStep * j
+        try {
+          if (utm.fromLatLon(lat, lng).zoneNum !== utm.fromLatLon(lat, lng + lngStep).zoneNum) {
+            boundaryPts.push(toPx(lat, lng + lngStep / 2))
+            break
+          }
+        } catch {}
       }
     }
-    eIdx++
+    if (boundaryPts.length > 1) {
+      ctx.beginPath()
+      ctx.moveTo(boundaryPts[0].x, boundaryPts[0].y)
+      for (let i = 1; i < boundaryPts.length; i++) ctx.lineTo(boundaryPts[i].x, boundaryPts[i].y)
+      ctx.stroke()
+    }
+    ctx.strokeStyle = gridColor
+    ctx.lineWidth = 1
   }
 
-  // Poziome (northing)
-  let nIdx = 0
-  const nLabelEvery = zoom >= 11 ? 1 : (zoom >= 8 ? 2 : 3)
-  for (let n = minN; n <= maxN; n += gridStep) {
-    const points = []
-    for (let i = 0; i <= 20; i++) {
-      const e = minE + ((maxE - minE) * i / 20)
-      try {
-        const ll = utm.toLatLon(e, n, zoneNum, zoneLetter)
-        points.push([ll.latitude, ll.longitude])
-      } catch {}
-    }
-    if (points.length < 2) continue
+  // Oznaczenie strefy siatki w lewym górnym rogu
+  const zoneText = `MGRS ${zones.map(z => `${z.zoneNum}${z.zoneLetter}`).join(' / ')}`
+  ctx.font = 'bold 11px Arial'
+  const zoneTextWidth = ctx.measureText(zoneText).width
+  drawBadge(zoneText, 12 + zoneTextWidth / 2 + 8, 13, { font: 'bold 11px Arial', paddingX: 6, paddingY: 3 })
 
-    ctx.beginPath()
-    points.forEach((ll, i) => {
-      const p = map.latLngToContainerPoint(ll)
-      if (i === 0) ctx.moveTo(p.x, p.y)
-      else ctx.lineTo(p.x, p.y)
-    })
-    ctx.stroke()
-
-    if (nIdx % nLabelEvery === 0) {
-      for (let i = 0; i < points.length; i++) {
-        const p = map.latLngToContainerPoint(points[i])
-        if (p.x >= 0 && p.x <= 25 && p.y >= 10 && p.y <= canvas.height - 10) {
-          ctx.textAlign = 'left'
-          ctx.textBaseline = 'middle'
-          ctx.fillText(String(Math.floor(n / gridStep)).padStart(2, '0').slice(-2), 2, p.y)
-          break
-        }
-      }
-    }
-    nIdx++
-  }
+  ctx.restore()
 }
 
 // Nowa warstwa siatki MGRS na bazie L.GridLayer
@@ -2080,7 +2272,7 @@ const MGRSGridLayer = L.GridLayer.extend({
         for (let i = 0; i <= nSteps; i++) {
           const n = minN + (maxN - minN) * (i / nSteps)
           try {
-            const latlng = utm.toLatLon(e, n, zoneNum, zoneLetter)
+            const latlng = utm.toLatLon(e, n, zoneNum, zoneLetter, undefined, false)
             if (latlng.latitude >= minLat - 0.1 && latlng.latitude <= maxLat + 0.1 &&
                 latlng.longitude >= minLng - 0.1 && latlng.longitude <= maxLng + 0.1) {
               points.push([latlng.latitude, latlng.longitude])
@@ -2127,7 +2319,7 @@ const MGRSGridLayer = L.GridLayer.extend({
         for (let i = 0; i <= eSteps; i++) {
           const e = minE + (maxE - minE) * (i / eSteps)
           try {
-            const latlng = utm.toLatLon(e, n, zoneNum, zoneLetter)
+            const latlng = utm.toLatLon(e, n, zoneNum, zoneLetter, undefined, false)
             if (latlng.latitude >= minLat - 0.1 && latlng.latitude <= maxLat + 0.1 &&
                 latlng.longitude >= minLng - 0.1 && latlng.longitude <= maxLng + 0.1) {
               points.push([latlng.latitude, latlng.longitude])
@@ -2175,7 +2367,7 @@ const MGRSGridLayer = L.GridLayer.extend({
           for (let squareE = minSquareE; squareE <= maxSquareE; squareE += squareStep) {
             for (let squareN = minSquareN; squareN <= maxSquareN; squareN += squareStep) {
               try {
-                const centerLatLng = utm.toLatLon(squareE + (squareStep / 2), squareN + (squareStep / 2), zoneNum, zoneLetter)
+                const centerLatLng = utm.toLatLon(squareE + (squareStep / 2), squareN + (squareStep / 2), zoneNum, zoneLetter, undefined, false)
                 const centerPoint = map.project([centerLatLng.latitude, centerLatLng.longitude], coords.z)
                 const tileX = centerPoint.x - coords.x * size.x
                 const tileY = centerPoint.y - coords.y * size.y
@@ -2469,6 +2661,7 @@ onMounted(() => {
 
   // Funkcja do automatycznego ustawiania bearing mapy zgodnie z kierunkiem UTM
   function updateMapBearingToUtm () {
+    if (pdfExportInProgress) return
     const center = map.value.getCenter()
     currentMapZoneLabel.value = getZoneLabelFromLatLng(center.lat, center.lng)
     const utmCenter = utm.fromLatLon(center.lat, center.lng)

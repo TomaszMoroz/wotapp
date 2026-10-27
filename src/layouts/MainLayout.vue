@@ -28,10 +28,10 @@
   <q-card>
     <q-card-section>
       <div class="text-h6">
-        {{ (pushEnabled || pushPermission === 'granted') ? 'Powiadomienia push są włączone' : 'Włączyć powiadomienia push?' }}
+        {{ pushEnabled ? 'Powiadomienia push są włączone' : 'Włączyć powiadomienia push?' }}
       </div>
       <div class="q-mt-sm">
-        <template v-if="pushEnabled || pushPermission === 'granted'">
+        <template v-if="pushEnabled">
           Otrzymujesz komunikaty, szkolenia i alarmy. Możesz wyłączyć subskrypcję powiadomień push.
         </template>
         <template v-else>
@@ -42,7 +42,7 @@
     <q-card-actions align="right">
       <q-btn flat label="Anuluj" color="primary" v-close-popup />
       <q-btn
-        v-if="!(pushEnabled || pushPermission === 'granted')"
+        v-if="!pushEnabled"
         flat label="Włącz" color="positive" @click="enablePushNotifications"
       />
       <q-btn
@@ -96,8 +96,8 @@
         <q-btn
           flat
           dense
-          :icon="(pushEnabled || pushPermission === 'granted') ? 'notifications_off' : 'notifications'"
-          :aria-label="(pushEnabled || pushPermission === 'granted') ? 'Wyłącz powiadomienia push' : 'Włącz powiadomienia push'"
+          :icon="pushEnabled ? 'notifications_off' : 'notifications'"
+          :aria-label="pushEnabled ? 'Wyłącz powiadomienia push' : 'Włącz powiadomienia push'"
           @click="pushDialog = true"
           class="q-ml-sm dashboard-toolbar-btn"
         />
@@ -603,21 +603,48 @@ function shouldRemindPush () {
 }
 
 onMounted(async () => {
+  pushPermission.value = typeof Notification !== 'undefined' ? Notification.permission : 'default'
   if ('serviceWorker' in navigator && 'PushManager' in window) {
     try {
       const reg = await navigator.serviceWorker.ready
       const sub = await reg.pushManager.getSubscription()
       pushEnabled.value = !!sub
+      // Zgoda udzielona, ale subskrypcja nie istnieje (np. po zmianie/rejestracji SW) — odtwórz ją
+      if (!sub && pushPermission.value === 'granted') {
+        await resubscribePush(reg)
+      }
     } catch (e) {
       pushEnabled.value = false
     }
   }
-  pushPermission.value = typeof Notification !== 'undefined' ? Notification.permission : 'default'
   // Przypomnienie o powiadomieniach push po kilku dniach od odmowy
   if (!pushEnabled.value && shouldRemindPush()) {
     pushDialog.value = true
   }
 })
+
+async function resubscribePush (reg) {
+  try {
+    const vapidRes = await fetch('https://kitabag.smallhost.pl/api/push/vapidPublicKey')
+    if (!vapidRes.ok) return
+    const { publicKey } = await vapidRes.json()
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(publicKey)
+    })
+    const resp = await fetch('https://kitabag.smallhost.pl/api/push/subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(sub)
+    })
+    if (resp.ok) {
+      pushEnabled.value = true
+      $q.notify({ type: 'info', message: 'Przywrócono subskrypcję powiadomień push.' })
+    }
+  } catch (e) {
+    // cicho — użytkownik może ręcznie włączyć push z poziomu dialogu
+  }
+}
 
 async function unsubscribePushNotifications () {
   pushDialog.value = false
