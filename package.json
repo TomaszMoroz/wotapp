@@ -11,7 +11,9 @@
     "dev": "quasar dev",
     "dev:pwa": "quasar dev -m pwa",
     "build": "quasar build",
-    "build:pwa": "quasar build -m pwa"
+    "build:pwa": "quasar build -m pwa",
+    "deploy:pwa": "./scripts/deploy-pwa.sh",
+    "deploy:pwa:upload": "./scripts/deploy-pwa.sh --no-build"
   },
   "dependencies": {
     "@quasar/extras": "^1.16.4",
