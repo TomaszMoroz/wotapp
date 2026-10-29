@@ -63,76 +63,21 @@
               </div>
             </template>
             <template v-else>
-              <q-card flat bordered class="march-mobile-panel">
-                <q-card-section class="q-pa-sm">
-                  <div class="march-mobile-section-title">Wyszukiwanie i mapa</div>
-                  <q-input v-model="search" label="Nazwa terenu lub MGRS" outlined dense @keyup.enter="searchArea" class="full-width" />
-                  <div class="row q-col-gutter-sm q-mt-sm">
-                    <div class="col-7">
-                      <q-btn label="Pokaż teren" color="primary" class="full-width" @click="searchArea" />
-                    </div>
-                    <div class="col-5">
-                      <q-btn flat dense icon="my_location" label="Moja poz." color="primary" class="full-width" @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację" />
-                    </div>
-                  </div>
-                  <q-select
-                    v-model="selectedMapLayer"
-                    :options="mapLayerOptions"
-                    dense outlined emit-value map-options
-                    label="Warstwa mapy"
-                    :dropdown-icon="'layers'"
-                    aria-label="Wybierz warstwę mapy"
-                    class="full-width q-mt-sm"
-                  />
-                </q-card-section>
-              </q-card>
-
-              <q-card flat bordered class="march-mobile-panel">
-                <q-expansion-item icon="tune" label="Ustawienia mapy i sesji" header-class="march-mobile-expansion__header" expand-separator>
-                  <div class="q-pa-sm">
-                    <div class="text-caption text-grey-7 q-mb-xs">Tryb dodawania punktów</div>
-                    <q-btn-toggle
-                      v-model="inputMode"
-                      spread
-                      unelevated
-                      toggle-color="primary"
-                      :options="[
-                        { label: 'Mapa', value: 'map', icon: 'place' },
-                        { label: 'MGRS', value: 'grid', icon: 'grid_on' }
-                      ]"
-                      class="full-width"
-                    />
-                    <div class="column q-gutter-sm q-mt-md">
-                      <q-toggle v-model="showMgrsGrid" label="Pokaż grid MGRS" color="green" />
-                      <q-toggle v-model="preserveTable24h" label="Zachowaj tabelę 24h" color="amber-8" />
-                    </div>
-                    <q-btn flat no-caps icon="palette" label="Kolory mapy" color="primary" class="q-mt-md" @click="showPaletteDialog = true" />
-                    <q-select
-                      v-model="mgrsZoneMode"
-                      :options="mgrsZoneModeOptions"
-                      label="Kontekst strefy"
-                      dense outlined emit-value map-options
-                      class="full-width q-mt-md"
-                    />
-                    <q-select
-                      v-if="mgrsZoneMode === 'manual'"
-                      v-model="manualMgrsZoneLabel"
-                      :options="mgrsZoneOptions"
-                      label="Strefa robocza"
-                      dense outlined
-                      class="full-width q-mt-sm"
-                    />
-                    <div class="row q-gutter-xs q-mt-md">
-                      <q-chip dense square color="green-9" text-color="white">
-                        Aktywna: {{ activeMgrsZoneLabel || 'auto' }}
-                      </q-chip>
-                      <q-chip dense square color="grey-8" text-color="white" class="march-mobile-chip-wide">
-                        Granica strefy nie nadpisuje punktów
-                      </q-chip>
-                    </div>
-                  </div>
-                </q-expansion-item>
-              </q-card>
+              <!-- Kompaktowy pasek wyszukiwania nad mapą -->
+              <div class="row items-center q-gutter-xs no-wrap march-mobile-search">
+                <q-input
+                  v-model="search"
+                  placeholder="Nazwa terenu lub MGRS"
+                  outlined dense
+                  @keyup.enter="searchArea"
+                  class="col march-mobile-search__input"
+                >
+                  <template #append>
+                    <q-btn flat round dense icon="search" color="primary" @click="searchArea" aria-label="Pokaż teren" />
+                  </template>
+                </q-input>
+                <q-btn flat round dense icon="tune" color="primary" @click="showMobileSettings = true" aria-label="Ustawienia mapy i sesji" />
+              </div>
             </template>
 
             <q-dialog v-model="showPaletteDialog">
@@ -166,12 +111,88 @@
                 </q-card-actions>
               </q-card>
             </q-dialog>
+
+            <!-- Bottom sheet ustawień (mobile) -->
+            <q-dialog v-model="showMobileSettings" position="bottom">
+              <q-card class="march-mobile-settings">
+                <q-card-section class="q-pa-md">
+                  <div class="march-mobile-section-title">Ustawienia mapy i sesji</div>
+                  <div class="text-caption text-grey-7 q-mb-xs">Tryb dodawania punktów</div>
+                  <q-btn-toggle
+                    v-model="inputMode"
+                    spread
+                    unelevated
+                    toggle-color="primary"
+                    :options="[
+                      { label: 'Mapa', value: 'map', icon: 'place' },
+                      { label: 'MGRS', value: 'grid', icon: 'grid_on' }
+                    ]"
+                    class="full-width"
+                  />
+                  <q-select
+                    v-model="selectedMapLayer"
+                    :options="mapLayerOptions"
+                    dense outlined emit-value map-options
+                    label="Warstwa mapy"
+                    :dropdown-icon="'layers'"
+                    aria-label="Wybierz warstwę mapy"
+                    class="full-width q-mt-md"
+                  />
+                  <div class="column q-mt-sm">
+                    <q-toggle v-model="showMgrsGrid" label="Pokaż grid MGRS" color="green" />
+                    <q-toggle v-model="preserveTable24h" label="Zachowaj tabelę 24h" color="amber-8" />
+                  </div>
+                  <q-btn flat no-caps icon="palette" label="Kolory mapy" color="primary" class="q-mt-xs" @click="showPaletteDialog = true" />
+                  <q-select
+                    v-model="mgrsZoneMode"
+                    :options="mgrsZoneModeOptions"
+                    label="Kontekst strefy"
+                    dense outlined emit-value map-options
+                    class="full-width q-mt-md"
+                  />
+                  <q-select
+                    v-if="mgrsZoneMode === 'manual'"
+                    v-model="manualMgrsZoneLabel"
+                    :options="mgrsZoneOptions"
+                    label="Strefa robocza"
+                    dense outlined
+                    class="full-width q-mt-sm"
+                  />
+                  <div class="row q-gutter-xs q-mt-md">
+                    <q-chip dense square color="green-9" text-color="white">
+                      Aktywna: {{ activeMgrsZoneLabel || 'auto' }}
+                    </q-chip>
+                    <q-chip dense square color="grey-8" text-color="white" class="march-mobile-chip-wide">
+                      Granica strefy nie nadpisuje punktów
+                    </q-chip>
+                  </div>
+                </q-card-section>
+                <q-card-actions align="right">
+                  <q-btn flat label="Gotowe" color="primary" v-close-popup />
+                </q-card-actions>
+              </q-card>
+            </q-dialog>
           </div>
-          <div id="march-map"
-            :style="isMobile ? 'height: 60vh; min-height: 320px; max-height: 80vh' : 'height: 600px'"
-            style="width:100%;border-radius:8px;overflow:hidden;"
-            class="q-mb-md"
-          ></div>
+          <div class="march-map-wrap q-mb-md" :style="isMobile ? 'height: 62vh; min-height: 340px' : 'height: 600px'">
+            <div id="march-map" style="width:100%;height:100%;border-radius:8px;overflow:hidden;"></div>
+            <template v-if="isMobile">
+              <div v-if="pinMode" class="march-map-hint">Kliknij na mapie, aby dodać punkt</div>
+              <div class="march-map-fabs column items-center q-gutter-sm">
+                <q-btn
+                  fab icon="add_location_alt" :color="pinMode ? 'amber-8' : 'green-7'"
+                  @click="handleAddPoint" aria-label="Dodaj punkt"
+                />
+                <q-btn
+                  fab icon="grid_on" color="white" text-color="green-9"
+                  @click="showRouteMgrsDialog = true" aria-label="Dodaj punkt z MGRS"
+                />
+                <q-btn
+                  fab icon="my_location" color="white" text-color="primary"
+                  @click="centerOnUserLocation" :disable="locating" aria-label="Ustaw na moją lokalizację"
+                />
+              </div>
+            </template>
+          </div>
           <div v-if="!isMobile" class="q-mb-md row items-center q-gutter-xs">
             <q-btn label="Dodaj punkt" color="green-7" @click="handleAddPoint" :disable="false" />
             <q-btn label="Dodaj z MGRS" color="green-9" outline @click="showRouteMgrsDialog = true" />
@@ -182,30 +203,13 @@
             <q-btn icon="picture_as_pdf" color="grey-9" @click="showPdfDialog = true" />
             <q-btn icon="delete" color="negative" @click="clearAll" />
           </div>
-          <div v-else class="q-mb-md column q-gutter-sm">
-            <q-card flat bordered class="march-mobile-panel">
-              <q-card-section class="q-pa-sm">
-                <div class="march-mobile-section-title">Dodawanie punktów</div>
-                <div class="march-mobile-action-grid">
-                  <q-btn icon="add_location_alt" label="Dodaj punkt" color="green-7" @click="handleAddPoint" class="full-width" />
-                  <q-btn icon="grid_on" label="Z MGRS" color="green-9" outline @click="showRouteMgrsDialog = true" class="full-width" />
-                  <q-btn icon="place" label="Punkt spec." color="blue-7" @click="showSpecialDialog = true" class="full-width" />
-                  <q-btn icon="undo" label="Usuń ostatni" color="red-9" @click="removeLastPin" :disable="pins.length === 0" class="full-width" />
-                </div>
-              </q-card-section>
-            </q-card>
-
-            <q-card flat bordered class="march-mobile-panel">
-              <q-card-section class="q-pa-sm">
-                <div class="march-mobile-section-title">Narzędzia i eksport</div>
-                <div class="march-mobile-action-grid">
-                  <q-btn icon="file_download" label="GPX" color="primary" @click="exportGPX" :disable="pins.length < 2" class="full-width" />
-                  <q-btn icon="access_time" label="ETA" color="secondary" @click="showEtaDialog = true" class="full-width" />
-                  <q-btn icon="picture_as_pdf" label="PDF" color="grey-9" @click="showPdfDialog = true" class="full-width" />
-                  <q-btn icon="delete" label="Wyczyść" color="negative" @click="clearAll" class="full-width" />
-                </div>
-              </q-card-section>
-            </q-card>
+          <div v-else class="march-mobile-grid q-mb-md">
+            <q-btn icon="place" label="Spec." color="blue-7" dense no-caps @click="showSpecialDialog = true" />
+            <q-btn icon="undo" label="Usuń" color="red-9" dense no-caps @click="removeLastPin" :disable="pins.length === 0" />
+            <q-btn icon="delete" label="Wyczyść" color="negative" dense no-caps @click="clearAll" />
+            <q-btn icon="file_download" label="GPX" color="primary" dense no-caps @click="exportGPX" :disable="pins.length < 2" />
+            <q-btn icon="access_time" label="ETA" color="secondary" dense no-caps @click="showEtaDialog = true" />
+            <q-btn icon="picture_as_pdf" label="PDF" color="grey-9" dense no-caps @click="showPdfDialog = true" />
           </div>
 
           <q-dialog v-model="showGridDialog">
@@ -1220,6 +1224,7 @@ watchEffect(() => {
 
 const showPaletteDialog = ref(false)
 const showColorPickerDialog = ref(false)
+const showMobileSettings = ref(false)
 const selectedPaletteIdx = ref(0)
 const paletteItems = reactive([
   { key: 'mgrs', label: 'Siatka MGRS', color: '#008800' },
@@ -3002,6 +3007,67 @@ onBeforeUnmount(() => {
 
 .march-mobile-expansion__header {
   min-height: 52px;
+}
+
+/* Mobilny układ mapy: wyszukiwanie, FAB-y i pasek akcji */
+.march-map-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.march-map-fabs {
+  position: absolute;
+  right: 12px;
+  bottom: 18px;
+  z-index: 1100;
+}
+
+.march-map-fabs .q-btn {
+  box-shadow: 0 4px 14px rgba(17, 24, 39, 0.28);
+}
+
+.march-map-hint {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  background: rgba(45, 62, 47, 0.92);
+  color: #fff;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(17, 24, 39, 0.25);
+  pointer-events: none;
+}
+
+.march-mobile-search__input {
+  min-width: 0;
+}
+
+.march-mobile-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.march-mobile-grid :deep(.q-btn) {
+  width: 100%;
+  min-height: 44px;
+  white-space: nowrap;
+  border-radius: 10px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.march-mobile-settings {
+  width: 100%;
+  max-width: 560px;
+  max-height: 80vh;
+  border-radius: 18px 18px 0 0;
+  overflow-y: auto;
 }
 
 .theme-dark .march-mobile-section-title {
