@@ -443,6 +443,17 @@
                   type="radio"
                   inline
                 />
+                <q-input
+                  v-if="seg.terrain === 'własne'"
+                  v-model.number="seg.customPace"
+                  type="number"
+                  min="1"
+                  max="600"
+                  step="1"
+                  label="min/km"
+                  dense outlined
+                  style="width:100px"
+                />
               </div>
             </div>
             <div class="row q-gutter-md q-mt-md">
@@ -1122,8 +1133,9 @@ function onDropdownSelect (val) {
     pdfCustomName.value = ''
   }
 }
-const terrainTypes = ['ciężki', 'średni', 'łatwy']
-const terrainSpeeds = { ciężki: 1.5, średni: 3, łatwy: 5 }
+const terrainTypes = ['ciężki', 'średni', 'łatwy', 'własne']
+// Tempo marszu w minutach na kilometr
+const terrainPaceMinPerKm = { ciężki: 80, średni: 60, łatwy: 45 }
 const etaSegments = reactive([])
 const breakEvery = ref(60)
 const breakLength = ref(10)
@@ -1217,6 +1229,7 @@ watchEffect(() => {
     etaSegments.push({
       idx: i,
       terrain: 'średni',
+      customPace: 60,
       distance: parseFloat(routeTable.value[i].odleglosc)
     })
   }
@@ -1303,9 +1316,12 @@ const etaResult = computed(() => {
   let totalTime = 0 // w minutach
   let timeSinceBreak = 0
   etaSegments.forEach(seg => {
-    const speed = terrainSpeeds[seg.terrain] // km/h
+    // min/km – dla 'własne' tempo podaje użytkownik
+    const pace = seg.terrain === 'własne'
+      ? Math.max(0, Number(seg.customPace) || 0)
+      : terrainPaceMinPerKm[seg.terrain]
     const distKm = seg.distance / 1000
-    const time = distKm / speed * 60 // min
+    const time = distKm * pace // min
     totalDist += distKm
     totalTime += time
     timeSinceBreak += time
