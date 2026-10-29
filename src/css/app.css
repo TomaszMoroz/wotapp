@@ -293,9 +293,9 @@ body.body--dark textarea {
   --q-icon-muted: #555;
   background: var(--q-bg-main) !important;
   color: var(--q-text-main) !important;
-  /* Desaturacja całego UI */
-  filter: grayscale(1) brightness(0.8) contrast(1.05);
 }
+/* UWAGA: nie stosować filter na .theme-tactical/.q-page – filter tworzy
+   containing block dla position:fixed i "znika" q-header, q-drawer oraz dialogi */
 /* Wyłącz podwójny filtr na mapach – mają własny */
 .theme-tactical #march-map,
 .theme-tactical #navigate-map {
