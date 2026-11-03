@@ -36,3 +36,4 @@ yarn-error.log*
 .env.deploy
 .env.deploy.*
 __pycache__/
+*.pptx
