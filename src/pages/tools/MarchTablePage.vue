@@ -368,7 +368,7 @@
           <div v-if="!isMobile">
             <q-table
               v-if="routeTable.length > 0"
-              :rows="routeTable"
+              :rows="routeTableView"
               :columns="columns"
               row-key="id"
               flat
@@ -404,7 +404,7 @@
           <div v-else>
               <q-table
                 v-if="routeTable.length > 0"
-                :rows="routeTable"
+                :rows="routeTableView"
                 :columns="columns"
                 row-key="id"
                 flat
@@ -439,7 +439,7 @@
                 <div class="text-caption">Odcinek {{ i+1 }} ({{ seg.distance }} m):</div>
                 <q-option-group
                   v-model="seg.terrain"
-                  :options="terrainTypes.map(t => ({ label: t, value: t }))"
+                  :options="terrainTypes.map(t => ({ label: t === 'własne' ? t : `${t} (${terrainPaceKmh[t]} km/h)`, value: t }))"
                   type="radio"
                   inline
                 />
@@ -477,7 +477,7 @@
                 { label: 'Załącz mapę', value: 'map' },
                 { label: 'Nadaj nazwę', value: 'name' },
                 ...(specialPoints.length > 0 ? [{ label: 'Dodaj punkty specjalne', value: 'specialPoints' }] : []),
-                ...(routeTable.length > 0 ? [{ label: 'Dodaj tabelę', value: 'routeTable' }] : [])
+                ...(routeTable.length > 0 ? [{ label: 'Dodaj tabelę', value: 'routeTable' }, { label: 'Dodaj czasy odcinków (ETA)', value: 'etaTimes' }] : [])
               ]"
               type="checkbox"
             />
@@ -1063,6 +1063,7 @@ const columns = [
   { name: 'azymut', label: 'Azymut', field: 'azymut', align: 'left' },
   { name: 'azymutBusola', label: 'Azymut busola', field: 'azymutBusola', align: 'left' },
   { name: 'odleglosc', label: 'Odległość (m)', field: 'odleglosc', align: 'left' },
+  { name: 'czas', label: 'Czas', field: 'czas', align: 'left' },
   { name: 'uwagi', label: 'Uwagi', field: 'uwagi', align: 'left' }
 ]
 
@@ -1134,8 +1135,9 @@ function onDropdownSelect (val) {
   }
 }
 const terrainTypes = ['ciężki', 'średni', 'łatwy', 'własne']
-// Tempo marszu w minutach na kilometr
-const terrainPaceMinPerKm = { ciężki: 80, średni: 60, łatwy: 45 }
+// Tempo marszu w minutach na kilometr (latwy 2 km/h, sredni 1 km/h, ciezki 0.5 km/h)
+const terrainPaceMinPerKm = { ciężki: 120, średni: 60, łatwy: 30 }
+const terrainPaceKmh = { ciężki: 0.5, średni: 1, łatwy: 2 }
 const etaSegments = reactive([])
 const breakEvery = ref(60)
 const breakLength = ref(10)
@@ -1224,12 +1226,15 @@ const mgrsZoneOptions = computed(() => {
 
 // Synchronizuj etaSegments z routeTable
 watchEffect(() => {
+  // Zachowaj ustawienia terenu/tempa odcinka przy zmianach trasy
+  const prevByIdx = new Map(etaSegments.map(s => [s.idx, s]))
   etaSegments.length = 0
   for (let i = 1; i < routeTable.value.length; i++) {
+    const prev = prevByIdx.get(i)
     etaSegments.push({
       idx: i,
-      terrain: 'średni',
-      customPace: 60,
+      terrain: prev?.terrain || 'średni',
+      customPace: prev?.customPace ?? 60,
       distance: parseFloat(routeTable.value[i].odleglosc)
     })
   }
@@ -1339,6 +1344,28 @@ function formatEta (result) {
   const m = Math.round(minutes % 60)
   return `${h > 0 ? h + 'h ' : ''}${m}min (${result.totalDist.toFixed(2)} km)`
 }
+
+// Czas marszu pojedynczego odcinka wg ustawionego terenu/tempa
+function segmentTimeMin (seg) {
+  if (!seg || !Number.isFinite(seg.distance)) return null
+  const pace = seg.terrain === 'własne'
+    ? Math.max(0, Number(seg.customPace) || 0)
+    : terrainPaceMinPerKm[seg.terrain]
+  return (seg.distance / 1000) * pace
+}
+
+function formatMinutes (min) {
+  if (min === null) return '-'
+  const h = Math.floor(min / 60)
+  const m = Math.round(min % 60)
+  return h > 0 ? `${h}h ${m}min` : `${m}min`
+}
+
+// Wiersze tabeli marszu z kolumną „Czas” liczoną z etaSegments
+const routeTableView = computed(() => routeTable.value.map((row, i) => ({
+  ...row,
+  czas: i === 0 ? '-' : `${i}<->${i + 1}  ${formatMinutes(segmentTimeMin(etaSegments[i - 1]))}`
+})))
 
 // Prosta funkcja debounce
 function debounce (fn, delay) {
@@ -2593,10 +2620,13 @@ function exportPDF (routeName = '', mapImgData = null, mapImgDims = null) {
   }
   // Dodaj trasę jeśli wybrano
   if (pdfOptions.value.includes('routeTable') && routeTable.value.length > 0) {
+    const pdfCols = pdfOptions.value.includes('etaTimes')
+      ? columns
+      : columns.filter(c => c.name !== 'czas')
     autoTable(doc, {
       startY: y,
-      head: [columns.map(col => col.name !== 'odleglosc' ? col.label : 'Dystans (m)')],
-      body: routeTable.value.map(row => columns.map(col => row[col.field])),
+      head: [pdfCols.map(col => col.name !== 'odleglosc' ? col.label : 'Dystans (m)')],
+      body: routeTableView.value.map(row => pdfCols.map(col => row[col.field])),
       styles: { fontSize: 10 },
       headStyles: { fillColor: [45, 62, 47] }
     })
