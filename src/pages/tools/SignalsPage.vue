@@ -5,7 +5,7 @@
 
       <div class="page-header q-mb-lg">
         <div class="text-primary text-h4 text-weight-bold">Kryptonimy i sygnały</div>
-        <div class="text-grey-7 text-subtitle1">Generator kryptonimów, haseł, odzewu i sygnałów rozpoznawczych</div>
+        <div class="sig-muted text-subtitle1">Generator kryptonimów, haseł, odzewu i sygnałów rozpoznawczych</div>
       </div>
 
       <q-banner dense class="bg-amber-1 text-dark q-mb-lg" rounded>
@@ -50,7 +50,7 @@
 
           <!-- Presety ról -->
           <div v-if="csMode === 'roles'" class="q-mb-md role-presets">
-            <div class="text-caption text-grey-7 q-mb-sm">Role i liczba kryptonimów</div>
+            <div class="text-caption sig-muted q-mb-sm">Role i liczba kryptonimów</div>
             <div
               v-for="(p, pi) in rolePresets"
               :key="p.key"
@@ -124,7 +124,7 @@
                   />
                   <template v-else>
                     <span class="cs-word__text text-weight-bold text-uppercase" @click="startEdit(it.id)">{{ it.word }}</span>
-                    <span class="text-caption text-grey-6 q-ml-sm">{{ it.themeLabel }}</span>
+                    <span class="text-caption sig-muted q-ml-sm">{{ it.themeLabel }}</span>
                   </template>
                 </div>
                 <div class="row no-wrap items-center">
@@ -137,7 +137,7 @@
           </div>
           <div v-if="callsigns.length" class="row items-center q-mt-sm q-gutter-sm">
             <q-btn flat dense color="primary" icon="content_copy" label="Kopiuj wszystkie" no-caps size="sm" @click="copyAll(callsigns.map(c => `${roleDisplay(c)} ${c.word}`))" />
-            <span class="text-caption text-grey-6">{{ callsigns.length }} kryptonimów</span>
+            <span class="text-caption sig-muted">{{ callsigns.length }} kryptonimów</span>
           </div>
         </q-card-section>
       </q-card>
@@ -163,19 +163,19 @@
           <div v-if="password.length" class="pw-list">
             <div v-for="(pair, i) in password" :key="i" class="pw-row">
               <div class="pw-side">
-                <div class="text-caption text-grey-7">Hasło</div>
+                <div class="text-caption sig-muted">Hasło</div>
                 <div class="text-subtitle1 text-weight-bold text-uppercase">{{ pair.haslo }}</div>
               </div>
               <q-icon name="swap_horiz" size="sm" color="grey-6" />
               <div class="pw-side">
-                <div class="text-caption text-grey-7">Odzew</div>
+                <div class="text-caption sig-muted">Odzew</div>
                 <div class="text-subtitle1 text-weight-bold text-uppercase">{{ pair.odzew }}</div>
               </div>
               <q-btn flat round dense icon="content_copy" color="grey-6" @click="copy(`${pair.haslo} – ${pair.odzew}`)" />
             </div>
             <div class="row items-center justify-between q-mt-xs">
               <q-btn v-if="password.length > 1" flat dense no-caps icon="content_copy" color="primary" label="Kopiuj wszystkie" @click="copy(password.map(p => `${p.haslo} – ${p.odzew}`).join('\n'))" />
-              <div class="text-caption text-grey-6">{{ password.length }} par{{ password.length === 1 ? 'a' : password.length < 5 ? 'y' : '' }}</div>
+              <div class="text-caption sig-muted">{{ password.length }} par{{ password.length === 1 ? 'a' : password.length < 5 ? 'y' : '' }}</div>
             </div>
           </div>
         </q-card-section>
@@ -189,12 +189,12 @@
           </div>
           <q-btn color="primary" icon="casino" label="Generuj sygnał" no-caps class="q-mb-md" @click="generateNear" />
 
-          <q-card v-if="nearSignal" flat bordered class="bg-grey-1">
+          <q-card v-if="nearSignal" flat bordered class="sig-panel">
             <q-card-section class="row items-center q-gutter-sm">
               <q-icon :name="nearSignal.icon" size="md" color="primary" />
               <div class="col">
                 <div class="text-subtitle1 text-weight-bold">{{ nearSignal.name }}</div>
-                <div class="text-body2 text-grey-7">{{ nearSignal.text }}</div>
+                <div class="text-body2 sig-muted">{{ nearSignal.text }}</div>
               </div>
               <q-btn flat round dense icon="content_copy" color="grey-6" @click="copy(`${nearSignal.name} — ${nearSignal.text}`)" />
             </q-card-section>
@@ -211,9 +211,9 @@
           <q-btn color="primary" icon="casino" label="Generuj sygnały" no-caps class="q-mb-md" @click="generateFar" />
 
           <template v-if="farDay || farNight">
-            <q-card v-if="farDay" flat bordered class="bg-grey-1 q-mb-sm">
+            <q-card v-if="farDay" flat bordered class="sig-panel q-mb-sm">
               <q-card-section>
-                <div class="text-caption text-grey-7 q-mb-xs">Wersja dzienna</div>
+                <div class="text-caption sig-muted q-mb-xs">Wersja dzienna</div>
                 <div class="row items-center q-gutter-sm">
                   <template v-if="farDay.chips">
                     <template v-for="(c, ci) in farDay.chips" :key="ci">
@@ -227,9 +227,9 @@
               </q-card-section>
             </q-card>
 
-            <q-card v-if="farNight" flat bordered class="bg-grey-1">
+            <q-card v-if="farNight" flat bordered class="sig-panel">
               <q-card-section>
-                <div class="text-caption text-grey-7 q-mb-xs">Wersja nocna — kierowana do swoich</div>
+                <div class="text-caption sig-muted q-mb-xs">Wersja nocna — kierowana do swoich</div>
                 <div class="row items-center q-gutter-sm">
                   <div v-if="farNight.seq" class="row items-center q-gutter-xs">
                     <div
@@ -530,6 +530,15 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+/* Panele wyników — powierzchnia i tekst zgodne z motywem (light/dark/tactical) */
+.sig-panel {
+  background: var(--app-surface-2, rgba(0, 0, 0, 0.02));
+}
+
+.sig-muted {
+  color: var(--app-text-muted, #617080);
+}
+
 /* Wyniki kryptonimów — czyste karty grup w stylu aplikacji */
 .callsign-group {
   border: 1px solid var(--app-border, rgba(0, 0, 0, 0.12));
