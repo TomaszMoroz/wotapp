@@ -149,28 +149,35 @@
             <q-icon name="key" class="q-mr-sm" color="primary" />Hasło i odzew
           </div>
           <div class="row q-col-gutter-sm q-mb-md items-end">
-            <div class="col-6 col-sm-4">
+            <div class="col-4 col-sm-4">
               <q-select v-model="pwSyllables" :options="PASSWORD_SYLLABLES" label="Liczba sylab" outlined dense emit-value map-options />
             </div>
-            <div class="col-6">
-              <q-btn color="primary" icon="casino" label="Generuj parę" no-caps @click="generatePassword" />
+            <div class="col-3 col-sm-3">
+              <q-input v-model.number="pwCount" type="number" min="1" max="8" label="Liczba par" outlined dense />
+            </div>
+            <div class="col-5">
+              <q-btn color="primary" icon="casino" label="Generuj" no-caps @click="generatePassword" />
             </div>
           </div>
 
-          <q-card v-if="password" flat bordered class="bg-grey-1">
-            <q-card-section class="row items-center q-gutter-sm">
-              <div class="col">
+          <div v-if="password.length" class="pw-list">
+            <div v-for="(pair, i) in password" :key="i" class="pw-row">
+              <div class="pw-side">
                 <div class="text-caption text-grey-7">Hasło</div>
-                <div class="text-h6 text-weight-bold text-uppercase">{{ password.haslo }}</div>
+                <div class="text-subtitle1 text-weight-bold text-uppercase">{{ pair.haslo }}</div>
               </div>
               <q-icon name="swap_horiz" size="sm" color="grey-6" />
-              <div class="col">
+              <div class="pw-side">
                 <div class="text-caption text-grey-7">Odzew</div>
-                <div class="text-h6 text-weight-bold text-uppercase">{{ password.odzew }}</div>
+                <div class="text-subtitle1 text-weight-bold text-uppercase">{{ pair.odzew }}</div>
               </div>
-              <q-btn flat round dense icon="content_copy" color="grey-6" @click="copy(`${password.haslo} – ${password.odzew}`)" />
-            </q-card-section>
-          </q-card>
+              <q-btn flat round dense icon="content_copy" color="grey-6" @click="copy(`${pair.haslo} – ${pair.odzew}`)" />
+            </div>
+            <div class="row items-center justify-between q-mt-xs">
+              <q-btn v-if="password.length > 1" flat dense no-caps icon="content_copy" color="primary" label="Kopiuj wszystkie" @click="copy(password.map(p => `${p.haslo} – ${p.odzew}`).join('\n'))" />
+              <div class="text-caption text-grey-6">{{ password.length }} par{{ password.length === 1 ? 'a' : password.length < 5 ? 'y' : '' }}</div>
+            </div>
+          </div>
         </q-card-section>
       </q-card>
 
@@ -185,8 +192,11 @@
           <q-card v-if="nearSignal" flat bordered class="bg-grey-1">
             <q-card-section class="row items-center q-gutter-sm">
               <q-icon :name="nearSignal.icon" size="md" color="primary" />
-              <div class="col text-body1">{{ nearSignal.text }}</div>
-              <q-btn flat round dense icon="content_copy" color="grey-6" @click="copy(nearSignal.text)" />
+              <div class="col">
+                <div class="text-subtitle1 text-weight-bold">{{ nearSignal.name }}</div>
+                <div class="text-body2 text-grey-7">{{ nearSignal.text }}</div>
+              </div>
+              <q-btn flat round dense icon="content_copy" color="grey-6" @click="copy(`${nearSignal.name} — ${nearSignal.text}`)" />
             </q-card-section>
           </q-card>
         </q-card-section>
@@ -205,8 +215,13 @@
               <q-card-section>
                 <div class="text-caption text-grey-7 q-mb-xs">Wersja dzienna</div>
                 <div class="row items-center q-gutter-sm">
-                  <div class="far-chip" :style="{ backgroundColor: farDay.colorHex, borderColor: farDay.colorBorder }" />
-                  <div class="text-body1 text-weight-medium">{{ farDay.symbol }} {{ farDay.color }} {{ farDay.placement }}</div>
+                  <template v-if="farDay.chips">
+                    <template v-for="(c, ci) in farDay.chips" :key="ci">
+                      <div v-for="n in c.count" :key="ci + '-' + n" :class="c.round ? 'far-chip far-chip--round' : 'far-chip'" :style="{ backgroundColor: c.hex, borderColor: c.border }" />
+                    </template>
+                  </template>
+                  <q-icon v-else :name="farDay.icon" size="md" color="primary" />
+                  <div class="col text-body1 text-weight-medium">{{ farDay.text }}</div>
                   <q-btn flat round dense icon="content_copy" color="grey-6" @click="copy(farDay.text)" />
                 </div>
               </q-card-section>
@@ -214,14 +229,31 @@
 
             <q-card v-if="farNight" flat bordered class="bg-grey-1">
               <q-card-section>
-                <div class="text-caption text-grey-7 q-mb-xs">Wersja nocna — błyski światła</div>
+                <div class="text-caption text-grey-7 q-mb-xs">Wersja nocna — kierowana do swoich</div>
                 <div class="row items-center q-gutter-sm">
-                  <div class="row items-center q-gutter-xs">
-                    <template v-for="(g, gi) in farNight.groups" :key="gi">
-                      <div v-for="n in g.count" :key="gi + '-' + n" class="far-flash-dot" :style="{ backgroundColor: g.hex, boxShadow: '0 0 8px ' + g.hex }" />
-                      <div v-if="gi < farNight.groups.length - 1" class="text-caption text-grey-6 q-mx-xs">—</div>
-                    </template>
+                  <div v-if="farNight.seq" class="row items-center q-gutter-xs">
+                    <div
+                      v-for="(f, fi) in farNight.seq"
+                      :key="fi"
+                      :class="f === 'krótki' ? 'far-flash-dot' : 'far-flash-bar'"
+                      :style="farNight.color ? { backgroundColor: farNight.color, boxShadow: '0 0 8px ' + farNight.color } : {}"
+                    />
                   </div>
+                  <template v-else-if="farNight.chips">
+                    <template v-for="(c, ci) in farNight.chips" :key="ci">
+                      <div
+                        v-for="n in c.count"
+                        :key="ci + '-' + n"
+                        :class="c.round ? 'far-chip far-chip--round' : 'far-chip'"
+                        :style="{
+                          backgroundColor: c.hex,
+                          borderColor: c.border,
+                          boxShadow: c.glow ? '0 0 10px ' + c.hex : 'none'
+                        }"
+                      />
+                    </template>
+                  </template>
+                  <q-icon v-else :name="farNight.icon" size="md" color="primary" />
                   <div class="col text-body1 text-weight-medium">{{ farNight.text }}</div>
                   <q-btn flat round dense icon="content_copy" color="grey-6" @click="copy(farNight.text)" />
                 </div>
@@ -242,7 +274,7 @@ import { Notify } from 'quasar'
 import BackNav from 'components/BackNav.vue'
 import {
   CALLSIGN_THEMES, PASSWORD_WORDS, PASSWORD_SYLLABLES,
-  NEAR_SIGNALS, FAR_DAY_COLORS, FAR_DAY_SYMBOLS, FAR_DAY_PLACEMENTS, FAR_NIGHT_COLORS
+  NEAR_SIGNALS, FAR_DAY_SIGNALS, FAR_NIGHT_SIGNALS
 } from './signalsData'
 
 // --- Kryptonimy ---
@@ -435,14 +467,19 @@ function saveGroupEdit (oldBase) {
 
 // --- Hasło i odzew ---
 const pwSyllables = ref(3)
-const password = ref(null)
+const pwCount = ref(1)
+const password = ref([])
 
 function generatePassword () {
-  const pool = PASSWORD_WORDS[pwSyllables.value] || PASSWORD_WORDS[3]
-  const haslo = pick(pool)
-  let odzew = pick(pool)
-  while (odzew === haslo && pool.length > 1) odzew = pick(pool)
-  password.value = { haslo, odzew }
+  const pool = [...(PASSWORD_WORDS[pwSyllables.value] || PASSWORD_WORDS[3])]
+  const n = Math.min(Math.max(Number(pwCount.value) || 1, 1), 8)
+  const pairs = []
+  while (pairs.length < n && pool.length >= 2) {
+    const h = pool.splice(Math.floor(Math.random() * pool.length), 1)[0]
+    const o = pool.splice(Math.floor(Math.random() * pool.length), 1)[0]
+    pairs.push({ haslo: h, odzew: o })
+  }
+  password.value = pairs
 }
 
 // --- Sygnał bliższy ---
@@ -457,28 +494,9 @@ const farDay = ref(null)
 const farNight = ref(null)
 
 function generateFar () {
-  const color = pick(FAR_DAY_COLORS)
-  const symbol = pick(FAR_DAY_SYMBOLS)
-  const placement = pick(FAR_DAY_PLACEMENTS)
-  const colorCap = color.key.charAt(0).toUpperCase() + color.key.slice(1)
-  farDay.value = {
-    color: color.key,
-    colorHex: color.hex,
-    colorBorder: color.border,
-    symbol,
-    placement,
-    text: `${colorCap} ${symbol} ${placement}`
-  }
+  farDay.value = pick(FAR_DAY_SIGNALS)
 
-  const nightGroups = []
-  const n = 2 + Math.floor(Math.random() * 3) // 2-4 grupy
-  for (let i = 0; i < n; i++) {
-    nightGroups.push({ ...pick(FAR_NIGHT_COLORS), count: 1 + Math.floor(Math.random() * 3) })
-  }
-  farNight.value = {
-    groups: nightGroups,
-    text: nightGroups.map(g => `${g.count}× ${g.key}`).join(' — ') + ' (błyski)'
-  }
+  farNight.value = pick(FAR_NIGHT_SIGNALS)
 }
 
 // --- Clipboard / clear ---
@@ -497,7 +515,7 @@ function copyAll (items) {
 
 function clearAll () {
   callsigns.value = []
-  password.value = null
+  password.value = []
   nearSignal.value = null
   farDay.value = null
   farNight.value = null
@@ -622,6 +640,29 @@ onBeforeUnmount(() => {
   margin-left: 4px;
 }
 
+/* Pary hasło/odzew */
+.pw-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pw-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px;
+  border-bottom: 1px dashed var(--app-border, rgba(0, 0, 0, 0.08));
+}
+
+.pw-row:last-of-type {
+  border-bottom: none;
+}
+
+.pw-side {
+  flex: 1;
+  min-width: 0;
+}
+
 .far-chip {
   width: 28px;
   height: 28px;
@@ -630,10 +671,27 @@ onBeforeUnmount(() => {
   flex-shrink: 0;
 }
 
+.far-chip--round {
+  border-radius: 50%;
+}
+
 .far-flash-dot {
   width: 18px;
   height: 18px;
   border-radius: 50%;
   flex-shrink: 0;
+  background-color: #fff59d;
+  box-shadow: 0 0 8px #fff59d;
+  border: 1px solid var(--app-border, rgba(0, 0, 0, 0.15));
+}
+
+.far-flash-bar {
+  width: 38px;
+  height: 18px;
+  border-radius: 9px;
+  flex-shrink: 0;
+  background-color: #fff59d;
+  box-shadow: 0 0 8px #fff59d;
+  border: 1px solid var(--app-border, rgba(0, 0, 0, 0.15));
 }
 </style>
