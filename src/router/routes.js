@@ -38,6 +38,7 @@ const routes = [
       { path: '/tools/weather', component: () => import('pages/tools/WeatherVisualCrossingPage.vue') },
       { path: '/tools/navigate-to', component: () => import('pages/tools/NavigateToPage.vue') },
       { path: '/tools/march-table', component: () => import('pages/tools/MarchTablePage.vue') },
+      { path: '/tools/signals', component: () => import('pages/tools/SignalsPage.vue') },
       { path: '/abc', component: () => import('pages/abc/AbcPage.vue') },
       { path: '/abc/rotation', name: 'abc-rotation', component: () => import('pages/abc/AbcRotationPage.vue') },
       { path: '/abc/backpack', name: 'abc-backpack', component: () => import('pages/abc/AbcBackpackPage.vue') },
