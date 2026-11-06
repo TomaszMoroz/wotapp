@@ -294,6 +294,27 @@ body.body--dark textarea {
   background: var(--q-bg-main) !important;
   color: var(--q-text-main) !important;
 }
+/* Tactical = pełny grayscale: kolorowe ikony kafelków i akcenty → neutralne szarości */
+.theme-tactical .feature-icon,
+.theme-tactical .tone-forest,
+.theme-tactical .tone-earth,
+.theme-tactical .tone-khaki,
+.theme-tactical .tone-stone,
+.theme-tactical .tone-sky {
+  background: linear-gradient(135deg, #3a3a3a, #555) !important;
+}
+.theme-tactical .q-icon {
+  color: var(--q-icon-main, #aaa) !important;
+}
+.theme-tactical .sig-notice {
+  border-left-color: #888 !important;
+}
+.theme-tactical .far-chip,
+.theme-tactical .far-flash-dot,
+.theme-tactical .far-flash-bar {
+  filter: grayscale(1) !important;
+}
+
 /* UWAGA: nie stosować filter na .theme-tactical/.q-page – filter tworzy
    containing block dla position:fixed i "znika" q-header, q-drawer oraz dialogi */
 /* Wyłącz podwójny filtr na mapach – mają własny */

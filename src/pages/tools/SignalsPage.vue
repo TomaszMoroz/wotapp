@@ -8,7 +8,7 @@
         <div class="sig-muted text-subtitle1">Generator kryptonimów, haseł, odzewu i sygnałów rozpoznawczych</div>
       </div>
 
-      <q-banner dense class="bg-amber-1 text-dark q-mb-lg" rounded>
+      <q-banner dense class="sig-notice q-mb-lg" rounded>
         <template #avatar><q-icon name="info" color="amber-9" /></template>
         <b>Aplikacja nie zapisuje treści.</b> Wygenerowane kryptonimy, hasła i sygnały istnieją tylko na tym ekranie — są automatycznie czyszczone po wyjściu z modułu. Skopiuj je przyciskiem, zanim je wyczyścisz lub zamkniesz stronę.
       </q-banner>
@@ -537,6 +537,13 @@ onBeforeUnmount(() => {
 
 .sig-muted {
   color: var(--app-text-muted, #617080);
+}
+
+/* Banner informacyjny — akcent amber, tło/tekst z motywu */
+.sig-notice {
+  background: var(--app-surface-2, rgba(0, 0, 0, 0.02));
+  color: var(--app-text, #18212f);
+  border-left: 4px solid #f9a825;
 }
 
 /* Wyniki kryptonimów — czyste karty grup w stylu aplikacji */
