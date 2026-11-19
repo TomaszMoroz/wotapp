@@ -443,6 +443,11 @@ async function assess () {
       }
       const over = s.max > tier.wind
       const near = !over && s.max > tier.wind * 0.8
+      const overHrs = idx
+        .map(i => ({ t: h.time[i].slice(11, 16), v: h[l.speed]?.[i] }))
+        .filter(x => x.v != null && x.v > tier.wind)
+        .map(x => x.t)
+      const overSpan = overHrs.length ? ` (${overHrs[0]}–${overHrs[overHrs.length - 1]})` : ''
       return {
         level: l.level,
         avg: s.avg,
@@ -451,11 +456,29 @@ async function assess () {
         status: over ? `za silny (>${tier.wind})` : near ? 'blisko limitu' : 'ok',
         statusClass: over ? 'text-negative text-weight-bold' : near ? 'text-warning text-weight-bold' : 'text-positive',
         over,
-        near
+        near,
+        overSpan
       }
     })
     const gustArr = h.windgusts_10m || []
     const gustMax = Math.max(0, ...idx.map(i => gustArr[i] || 0))
+
+    // Kp (aktywność geomagnetyczna) z NOAA SWPC — wpływa na GNSS/RTH drona
+    let kpMax = null
+    let kpPredicted = false
+    try {
+      const kr = await axios.get('https://services.swpc.noaa.gov/products/noaa-planetary-k-index-forecast.json', { timeout: 8000 })
+      const entries = (kr.data || [])
+        .map(({ time_tag: t, kp, observed: kind }) => ({ d: new Date(t + 'Z'), kp: +kp, kind }))
+        .filter(x => !isNaN(x.kp))
+        .filter(x => x.d.toLocaleDateString('sv-SE') === props.date)
+        .filter(x => x.d.getHours() < hourTo.value && x.d.getHours() + 3 > hourFrom.value)
+      if (entries.length) {
+        const top = entries.reduce((a, b) => (b.kp > a.kp ? b : a))
+        kpMax = top.kp
+        kpPredicted = top.kind === 'predicted'
+      }
+    } catch { /* brak danych Kp — pomijamy */ }
 
     const temp = summarize(h.temperature_2m, idx)
     const vis = summarize(h.visibility, idx)
@@ -538,26 +561,53 @@ async function assess () {
 
     const noGo = []
     const caution = []
-    const overLevels = wind.filter(w => w.over).map(w => `${w.level} (maks ${fmt1(w.max)} m/s)`)
+    const okItems = []
+    const span = hrs => hrs.length ? ` (${hrs[0]}–${hrs[hrs.length - 1]})` : ''
+    const hrsAt = (arr, pred) => idx.filter(i => pred(arr?.[i])).map(i => h.time[i].slice(11, 16))
+
+    // Wiatr: poziomy ponad limit / blisko limitu / w normie
+    const overLevels = wind.filter(w => w.over).map(w => `${w.level} (maks ${fmt1(w.max)} m/s${w.overSpan})`)
     const nearLevels = wind.filter(w => w.near).map(w => `${w.level} (maks ${fmt1(w.max)} m/s)`)
-    if (overLevels.length) {
-      noGo.push(`wiatr ponad limit ${fmt1(tier.wind)} m/s na wys. ${overLevels.join(', ')}`)
-      const okLevels = wind.filter(w => !w.over && !w.near && w.status !== 'brak danych').map(w => w.level)
-      if (okLevels.length) caution.push(`w normie na wys. ${okLevels.join(', ')} — lot możliwy poniżej przekroczonego poziomu`)
-    } else if (nearLevels.length) {
-      caution.push(`wiatr blisko limitu na wys. ${nearLevels.join(', ')}`)
-    }
-    if (gustMax > tier.gust) noGo.push(`porywy ${gustMax.toFixed(1)} m/s ponad limit ${tier.gust} m/s`)
-    else if (gustMax > tier.gust * 0.8) caution.push(`porywy do ${gustMax.toFixed(1)} m/s`)
-    if (thunder) noGo.push('burza w oknie czasowym')
-    if (vis && vis.min < 500) noGo.push('widzialność <500 m — utrata VLOS')
+    const okLevels = wind.filter(w => !w.over && !w.near && w.status !== 'brak danych').map(w => w.level)
+    if (overLevels.length) noGo.push(`wiatr ponad limit ${fmt1(tier.wind)} m/s na wys. ${overLevels.join(', ')}`)
+    else if (nearLevels.length) caution.push(`wiatr blisko limitu na wys. ${nearLevels.join(', ')}`)
+    if (okLevels.length) okItems.push(`wiatr w normie: wys. ${okLevels.join(', ')}`)
+    else if (!overLevels.length) okItems.push('wiatr w normie na wszystkich poziomach')
+
+    // Porywy
+    const gustOverHrs = hrsAt(gustArr, v => v != null && v > tier.gust)
+    if (gustMax > tier.gust) noGo.push(`porywy ponad limit ${fmt1(tier.gust)} m/s${span(gustOverHrs)} (maks ${fmt1(gustMax)})`)
+    else if (gustMax > tier.gust * 0.8) caution.push(`porywy do ${fmt1(gustMax)} m/s`)
+    else okItems.push(`porywy ${fmt1(gustMax)} m/s — w normie`)
+
+    // Burza / konwekcja
+    const tsHrs = hrsAt(h.weathercode, c => c >= 95)
+    if (thunder) noGo.push(`burza w oknie${span(tsHrs)}`)
+    else okItems.push('bez burzy')
+    if (cape && cape.max > 1000) noGo.push(`CAPE ${Math.round(cape.max)} — silna konwekcja`)
+    else if (cape && cape.max > 500) caution.push(`CAPE ${Math.round(cape.max)} — możliwe prądy wznoszące`)
+    else if (cape) okItems.push(`CAPE ${Math.round(cape.max)} — brak konwekcji`)
+
+    // Widzialność
+    const visBadHrs = hrsAt(h.visibility, v => v != null && v < 500)
+    if (vis && vis.min < 500) noGo.push(`widzialność <500 m${span(visBadHrs)} — utrata VLOS`)
     else if (vis && vis.min < 3000) caution.push(`widzialność ${fmtVis(vis.min)} — ograniczony VLOS`)
-    if (dirVar < 0.35) caution.push('zmienny kierunek wiatru — możliwa turbulencja')
+    else if (vis) okItems.push(`widzialność ${fmtVis(vis.min)} — dobry VLOS`)
+
+    // Opady / oblodzenie
     const icing = freeze && freeze.min < 400 && precip > 0
     if (icing) noGo.push('ryzyko oblodzenia śmigieł (poziom zamarzania <400 m + opady)')
-    if (precip > 0 && !icing) caution.push(`opady ${precip.toFixed(1)} mm w oknie`)
-    if (cape && cape.max > 1000) noGo.push('CAPE >1000 — silna konwekcja')
-    else if (cape && cape.max > 500) caution.push(`CAPE ${Math.round(cape.max)} — możliwe prądy wznoszące/burze`)
+    else if (precip > 0) caution.push(`opady ${String(precip.toFixed(1)).replace('.', ',')} mm${prTimes.length ? ` (${prTimes[0]}–${prTimes[prTimes.length - 1]})` : ''}`)
+    else okItems.push('bez opadów')
+
+    // Aktywność geomagnetyczna (Kp) — degradacja GNSS/RTH
+    const kpSuffix = kpPredicted ? ' (prognoza)' : ''
+    if (kpMax != null && kpMax >= 7) noGo.push(`Kp ${fmt1(kpMax)}${kpSuffix} — silna burza geomagnetyczna, GPS/RTH zawodne`)
+    else if (kpMax != null && kpMax >= 5) caution.push(`Kp ${fmt1(kpMax)}${kpSuffix} — burza geomagnetyczna, możliwe zakłócenia GNSS`)
+    else if (kpMax != null) okItems.push(`Kp ${fmt1(kpMax)}${kpSuffix} — GNSS bez zakłóceń`)
+
+    // Pozostałe uwagi
+    if (dirVar < 0.35) caution.push('zmienny kierunek wiatru — możliwa turbulencja')
     if (temp && temp.min < 0) caution.push(`mróz ${temp.min}°C — mniejsza pojemność baterii`)
     const w180 = summarize(h.windspeed_180m, idx)
     const w10 = summarize(h.windspeed_10m, idx)
@@ -565,8 +615,14 @@ async function assess () {
       caution.push('wiatr wyraźnie narasta z wysokością — unikać wysokich przelotów')
     }
 
+    // Werdykt: ograniczenie wyłącznie wysokościowe → miększy tytuł
+    const firstOverIdx = wind.findIndex(w => w.over)
+    const windOnlyNoGo = noGo.length === 1 && overLevels.length > 0 && firstOverIdx > 0
+    const safeLevel = windOnlyNoGo ? wind[firstOverIdx - 1].level : null
     const verdict = noGo.length
-      ? { label: 'NIE LATAĆ', icon: 'cancel', cls: 'verdict--no' }
+      ? windOnlyNoGo
+        ? { label: `LOT OGRANICZONY DO ${safeLevel.toUpperCase()}`, icon: 'warning', cls: 'verdict--warn' }
+        : { label: 'NIE LATAĆ', icon: 'cancel', cls: 'verdict--no' }
       : caution.length
         ? { label: 'LATAĆ Z OGRANICZENIAMI', icon: 'warning', cls: 'verdict--warn' }
         : { label: 'WARUNKI DOBRE DO LOTU', icon: 'check_circle', cls: 'verdict--go' }
@@ -602,6 +658,7 @@ async function assess () {
         { label: 'Chmury niskie', value: cloudLow ? `${cloudLow.avg}%` : '—' },
         { label: 'Poziom zamarzania', value: freeze ? `${Math.round(freeze.min)} m` : '—' },
         { label: 'CAPE maks', value: cape ? `${Math.round(cape.max)} J/kg` : '—' },
+        { label: 'Kp maks', value: kpMax != null ? fmt1(kpMax) : '—' },
         { label: 'Wschód słońca', value: (data.daily?.sunrise?.[0] || '').slice(11) || '—' },
         { label: 'Zachód słońca', value: (data.daily?.sunset?.[0] || '').slice(11) || '—' }
       ],
