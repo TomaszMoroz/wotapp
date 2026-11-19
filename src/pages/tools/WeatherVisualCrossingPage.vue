@@ -5,7 +5,24 @@
     <div class="text-subtitle2 q-mb-lg">Prognoza i historia pogody dla wybranego obszaru (do 15 dni w przód, 7+ dni wstecz)</div>
     <q-card class="q-pa-md">
       <q-card-section>
-        <q-input v-model="area" label="Podaj lokalizację (np. miasto)" filled class="q-mb-md" />
+        <q-option-group
+          v-model="mode"
+          :options="[
+            { label: 'Prognoza standardowa', value: 'std' },
+            { label: 'Ocena lotów BSP (dron)', value: 'bsp' }
+          ]"
+          type="radio"
+          :inline="!$q.screen.xs"
+          :dense="$q.screen.xs"
+          class="q-mb-md"
+        />
+        <q-input
+          v-model="area"
+          label="Lokalizacja lub koordynaty MGRS"
+          hint="np. Kraków albo MGRS: 34U DA, 34U DA 1234 5678, 34UDA1234567890"
+          filled
+          class="q-mb-md"
+        />
         <q-input
           label="Wybierz datę"
           v-model="dateRange.from"
@@ -25,15 +42,29 @@
             />
           </q-menu>
         </q-input>
-        <q-btn
-          :loading="loadingWeather"
-          label="Pobierz dane Visual Crossing"
-          color="primary"
-          @click="fetchWeatherData"
-          class="q-mb-md"
-        />
+        <div v-if="mode === 'std'" class="row items-center q-gutter-sm q-mb-md">
+          <q-btn
+            :loading="loadingWeather"
+            label="Pobierz dane Visual Crossing"
+            color="primary"
+            no-caps
+            @click="fetchWeatherData"
+          />
+          <q-btn
+            v-if="weatherData" flat round dense icon="refresh" color="primary"
+            :loading="loadingWeather" @click="fetchWeatherData" aria-label="Odśwież dane"
+          >
+            <q-tooltip>Odśwież dane dla tego samego zestawu</q-tooltip>
+          </q-btn>
+        </div>
       </q-card-section>
-      <q-card-section v-if="weatherData">
+      <q-card-section v-if="mode === 'bsp'">
+        <WeatherBspCard :location="area" :date="dateRange.from" />
+      </q-card-section>
+      <q-card-section v-if="mode === 'std' && weatherData">
+        <div v-if="weatherData.resolvedAddress" class="text-caption loc-label q-mb-sm">
+          Lokalizacja: {{ weatherData.resolvedAddress }} ({{ weatherData.latitude?.toFixed(4) }}, {{ weatherData.longitude?.toFixed(4) }})
+        </div>
         <q-list bordered class="weather-list q-mb-md">
           <q-item-label header>Prognoza / Historia pogody</q-item-label>
           <q-item v-for="(data, index) in weatherData.days" :key="index">
@@ -169,8 +200,11 @@ import { ref, reactive } from 'vue'
 import { useQuasar, date } from 'quasar'
 import axios from 'axios'
 import BackNav from 'components/BackNav.vue'
+import WeatherBspCard from 'components/WeatherBspCard.vue'
+import * as mgrs from 'mgrs'
 
 const $q = useQuasar()
+const mode = ref('std')
 const today = date.formatDate(Date.now(), 'YYYY-MM-DD')
 const area = ref('')
 const weatherData = ref(null)
@@ -183,15 +217,30 @@ const VC_API_KEY = 'MWXSN4NYNQBKTY7PWCA5XR5TJ'
 
 const fetchWeatherData = async () => {
   if (!area.value) {
-    $q.notify({ type: 'negative', message: 'Podaj lokalizację.' })
+    $q.notify({ type: 'negative', message: 'Podaj lokalizację lub koordynaty MGRS.' })
     return
   }
   loadingWeather.value = true
   try {
-    const query = encodeURIComponent(area.value.trim())
+    let query = area.value.trim()
+    // Wpisano MGRS? (np. 34UDA, 34U DA 12 34, 34UDA1234567890 — dowolne spacje,
+    // precyzja 0/2/4/6/8/10 cyfr). Kształt rozpoznajemy luźno, waliduje biblioteka mgrs.
+    const compact = query.replace(/\s+/g, '')
+    if (/^\d{1,2}[A-Z]{3}\d*$/i.test(compact)) {
+      try {
+        const coords = mgrs.toPoint(compact.toUpperCase())
+        query = coords[1] + ',' + coords[0] // lat,lon — Visual Crossing przyjmuje współrzędne w ścieżce
+      } catch (e) {
+        $q.notify({
+          type: 'negative',
+          message: 'Nieprawidłowy MGRS — sprawdź strefę, litery i parzystą liczbę cyfr (0–10).'
+        })
+        loadingWeather.value = false
+        return
+      }
+    }
     const dateStr = dateRange.from
-    // Visual Crossing pozwala na zakresy, ale tu pobieramy 1 dzień (można rozwinąć na zakres)
-    const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${query}/${dateStr}?unitGroup=metric&key=${VC_API_KEY}&lang=pl&include=hours`
+    const url = `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${encodeURIComponent(query)}/${dateStr}?unitGroup=metric&key=${VC_API_KEY}&lang=pl&include=hours`
     const response = await axios.get(url)
     weatherData.value = response.data
     showHourly.value = Array(weatherData.value.days?.length || 1).fill(false)
@@ -234,6 +283,9 @@ function formatSevereRisk (val) {
 </script>
 
 <style scoped>
+.loc-label {
+  color: var(--app-text-muted, #617080);
+}
 .text-h5 {
   color: var(--military-primary, #2D3E2F);
 }
